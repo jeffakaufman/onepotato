@@ -171,6 +171,9 @@ function ToggleBoxes(BoxClass) {
 		
 						<div class="panel-body">
 						<!--Shipping Addresses-->
+						
+						@if (count($shippingAddresses) >= 1)
+						
 						@foreach ($shippingAddresses as $shippingAddress)
 							    
 						@if ($shippingAddress->is_current === 1)	
@@ -226,9 +229,65 @@ function ToggleBoxes(BoxClass) {
 					                </div>
 					            </div>
 					    @endif
-
+							
+							
 
 						@endforeach
+						
+						@else
+						
+							<div class="form-group">
+					                <label for="shipping_address" class="col-sm-3 control-label">Shipping Address</label>
+
+					                <div class="col-sm-6">
+					                    <input type="text" name="shipping_address" id="shipping_address" class="form-control" value="">
+					                </div>
+								</div>
+								<div class="form-group">
+									<label for="shipping_address_line_2" class="col-sm-3 control-label">Shippping Address Line 2</label>
+
+					                <div class="col-sm-6">
+					                    <input type="text" name="shipping_address_line_2" id="shipping_address_line_2" class="form-control" value="">
+					                </div>
+					            </div>
+
+
+
+								<div class="form-group">
+									<label for="shipping_city" class="col-sm-3 control-label">Shipping City</label>
+
+					                <div class="col-sm-6">
+					                    <input type="text" name="shipping_city" id="shipping_city" class="form-control" value="">
+					                </div>
+					            </div>
+
+								<div class="form-group">
+									<label for="shipping_state" class="col-sm-3 control-label">Shipping State</label>
+
+					                <div class="col-sm-6">
+					                    <input type="text" name="shipping_state" id="shipping_state" class="form-control" value="">
+					                </div>
+					            </div>
+
+								<div class="form-group">
+									<label for="billing_state" class="col-sm-3 control-label">Shipping Zip</label>
+
+						            <div class="col-sm-6">
+						               <input type="text" name="shipping_zip" id="shipping_zip" class="form-control" value="">
+						            </div>
+						       </div>
+
+
+
+					            <div class="form-group">
+					                <div class="col-sm-offset-3 col-sm-6">
+					                    <button type="submit" class="btn btn-default">
+					                        <i class="fa fa-plus"></i> Add Shipping Address
+					                    </button>
+					                </div>
+					            </div>
+						
+						@endif
 				</div>
 			</div>
 		</div>
@@ -278,9 +337,7 @@ function ToggleBoxes(BoxClass) {
 							<label for="note_text" class="col-sm-3 control-label">Note</label>
 
 				            <div class="col-sm-6">
-				               	<textarea rows="4" cols="50" name="note_text">
-								
-								</textarea>
+				               	<textarea rows="4" cols="50" name="note_text"></textarea>
 				            </div>
 				       </div>
 						 <div class="form-group">

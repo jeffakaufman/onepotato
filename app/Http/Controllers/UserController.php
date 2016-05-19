@@ -152,23 +152,26 @@ class UserController extends Controller
 		$user->billing_state = $request->billing_state;
 		$user->billing_zip = $request->billing_zip;
 		
-		$count = Shipping_address::find($request->shipping_address_id)->count();
 		
-		if ($count>0) {
+		if ($request->shipping_address_id != '') {
 			
 			$shippingAddress = Shipping_address::find($request->shipping_address_id);
 		
 		} else {
 			
-			$shippingAddress = new ShippingAddress;
+			$shippingAddress = new Shipping_address;
 		}
 	
-		
+		$shippingAddress->user_id = $id;
+		$shippingAddress->is_current = 1;
 		$shippingAddress->shipping_address = $request->shipping_address;
 		$shippingAddress->shipping_address_2 = $request->shipping_address_2;
 		$shippingAddress->shipping_city = $request->shipping_city;
 		$shippingAddress->shipping_state = $request->shipping_state;
 		$shippingAddress->shipping_zip = $request->shipping_zip;
+		
+		$shippingAddress->save();
+		$user->save();
 		
 		/*check to see if there's a new note */
 		if ($request->note_text != '') {
@@ -183,8 +186,7 @@ class UserController extends Controller
 		 
 		
 		
-		$shippingAddress->save();
-	    $user->save();
+	
 
 	    return redirect('/user/' . $id);
 	
