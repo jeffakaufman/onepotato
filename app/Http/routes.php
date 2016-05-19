@@ -33,7 +33,8 @@ Route::post('menu/edit', function() {
 
 Route::post('/menus', 'MenusController@saveMenu');
 
-
+Route::get('user/new', 'UserController@newUser');
+Route::post('user/new', 'UserController@createUser');
 Route::get('/users', 'UserController@showUsers');
 Route::get('/user/{id}', 'UserController@showUser');
 Route::post('/user/{id}', 'UserController@updateUser');
