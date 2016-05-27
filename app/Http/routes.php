@@ -38,3 +38,8 @@ Route::post('user/new', 'UserController@createUser');
 Route::get('/users', 'UserController@showUsers');
 Route::get('/user/{id}', 'UserController@showUser');
 Route::post('/user/{id}', 'UserController@updateUser');
+Route::get('/user/subscriptions/{id}', 'UserController@showSubscription');
+Route::post('/user/subscriptions/{id}', 'UserController@updateSubscription');
+Route::post('/user/csr_note/{id}', 'UserController@saveCSRNote');
+
+Route::get('/user/payments/{id}', 'UserController@showPayments');
