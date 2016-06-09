@@ -9,6 +9,8 @@ use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
 use App\Product;
+use App\Referral;
+use Mail;
 
 class UserController extends Controller
 {
@@ -307,7 +309,101 @@ class UserController extends Controller
 		
 		
 	}
-    
+	
+	
+	
+	public function showReferrals($id) {
+		
+			$referrals = Referral::where('referrer_user_id',$id)->get();
+			$user = User::find($id);
+			$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+
+			//return "test";
+			return view('user-referrals')->with(['user'=>$user, 'csr_notes'=>$csr_notes, 'referrals'=>$referrals]);
+			
+					
+	}
+	
+	public function sendReferral($id, Request $request) {
+		
+			
+			$user = User::find($id);
+			
+			//validate form
+			$validator = Validator::make($request->all(), [
+		        'send_email' => 'required|max:255|email'
+		    ]);
+
+		    if ($validator->fails()) {
+		        return redirect('/user/referrals/' . $id)
+		            ->withInput()
+		            ->withErrors($validator);
+		    }
+			
+			
+			
+			
+			//send email
+			$to_send = $request->send_email;
+			$custom_message = $request->custom_message;
+			
+			//record a new referral in the referral table
+			$referral = new Referral;
+			$referral->referral_email = $to_send;
+			$referral->did_subscribe = 0;
+			$referral->referrer_user_id = $id;
+			
+			
+			$referral->save();
+			
+			
+			$data = [
+			           'friendname' => $user->name,
+			           'custommessage' => $custom_message,
+					   'to_send' => $to_send,
+					   'friendid' => $id,
+					   'referralid' => $referral->id
+			];
+			
+			Mail::send('emailtest', $data , function($message) use ($to_send)
+			{
+				    $message->from('mattkirkpatrick@gmail.com');
+				    $message->to($to_send, '')->subject('A Message from a Friend at One Potato!');
+			});
+		
+			//return "test";
+			return redirect('/user/referrals/' . $id);
+			
+					
+	}
+
+    public function recordReferral (Request $request) {
+			
+			//http://onepotato.app/referral/subscribe/?u=mattkirkpatrick@yahoo.com&f=1
+			//$id = $request->f;
+			$referrerid = $request->f;
+			$newuserid = $request->u;
+			
+			//record that the user has subscribed--this is stubbed in for now
+			$referral = Referral::where('id',$newuserid)->firstorfail();
+			$referral->did_subscribe = 1;
+			$referral->save();
+			
+			//return "test";
+			return redirect('/user/referrals/' . $referrerid);
+		
+	}
+
+	public function showTest ($id) {
+		
+		
+			Mail::send('emailtest', array('key' => 'value'), function($message)
+			{
+			    $message->from('mattkirkpatrick@gmail.com');
+			    $message->to('mattkirkpatrick@gmail.com', 'Matt Kirkpatrick')->subject('Welcome!');
+			});
+			return "test";
+	}
 	
 	
 }

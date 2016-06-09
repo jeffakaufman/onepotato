@@ -1,6 +1,22 @@
 <?php
-
 return [
+
+			"driver" => "smtp",
+            "host" => "mailtrap.io",
+            "port" => 2525,
+            "from" => array(
+                "address" => "from@example.com",
+                "name" => "Example"
+            ),
+            "username" => "09a5440b2e9119",
+            "password" => "096bdb9851cc3f",
+            "sendmail" => "/usr/sbin/sendmail -bs",
+            "pretend" => false
+];
+
+
+
+//return [
 
     /*
     |--------------------------------------------------------------------------
@@ -16,7 +32,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+  //  'driver' => env('MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +45,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    // 'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +58,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+ //   'port' => env('MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +71,7 @@ return [
     |
     */
 
-    'from' => ['address' => null, 'name' => null],
+  //  'from' => ['address' => null, 'name' => null],
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +84,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+   // 'encryption' => env('MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +97,7 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
+    // 'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +110,7 @@ return [
     |
     */
 
-    'password' => env('MAIL_PASSWORD'),
+   // 'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -107,6 +123,6 @@ return [
     |
     */
 
-    'sendmail' => '/usr/sbin/sendmail -bs',
+    //'sendmail' => '/usr/sbin/sendmail -bs',
 
-];
+// ];

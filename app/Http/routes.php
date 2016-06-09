@@ -43,3 +43,11 @@ Route::post('/user/subscriptions/{id}', 'UserController@updateSubscription');
 Route::post('/user/csr_note/{id}', 'UserController@saveCSRNote');
 
 Route::get('/user/payments/{id}', 'UserController@showPayments');
+Route::get('/referral/subscribe/', 'UserController@recordReferral');
+
+
+Route::get('/user/referrals/{id}', 'UserController@showReferrals');
+Route::post('/user/referrals/{id}', 'UserController@sendReferral');
+
+Route::get('user/test/{id}', 'UserController@showTest');
+
