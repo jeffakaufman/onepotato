@@ -58,15 +58,32 @@ class MenusController extends Controller
     
     public function uploadFileToS3(Request $request)
     {
-    	$image = $request->file('image');
-    	$filename = $image. '.' . $request->file('image')->guessExtension();
-    	//$filename ='bob.jpg';
-    	
-echo $filename;
-    	
-    	Storage::disk('s3')->put('onepotato-menu-cards/' . $filename, file_get_contents($image));
+    	$validator = Validator::make($request->all(), [
+	        'menu_title' => 'required|max:255',
+		    'menu_description' => 'required|max:1000',
+		    'image' => 'required'
+	    ]);
 
+	    if ($validator->fails()) {
+	        return redirect('/menus')
+	            ->withInput()
+	            ->withErrors($validator);
+	    }
+    
+    	$image = $request->file('image');
+    	$datestamp = date("FY");
+    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
     	
+    	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
+    	$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+
+echo "<img src='".$imagename."'>";
+	    $menu = new Menus;
+	    $menu->menu_title = $request->menu_title;
+		$menu->menu_description = $request->menu_description;
+		$menu->image = $imagename;
+	    $menu->save();
+
     	
     }
     

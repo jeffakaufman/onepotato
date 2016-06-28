@@ -40,69 +40,44 @@
 							        <!-- Display Validation Errors -->
 								        @include('errors.errors')
 								 
-{!! Form::open(
-    array(
-        'url' => 'menufile', 
-        'class' => 'form-horizontal', 
-        'files' => true)) !!}
-
-<div class="form-group">
-    {!! Form::label('Menu Title', null,array('class'=>'col-sm-3 control-label')) !!}
-    <div class="col-sm-6">
-	    {!! Form::text('menu_title', null, array('placeholder'=>'Menu Title','class'=>'form-control')) !!}
-	</div>
-</div>
-
-<div class="form-group">
-    {!! Form::label('Menu Description', null,array('class'=>'col-sm-3 control-label')) !!}
-    <div class="col-sm-6">
-	    {!! Form::text('menu_description', null, array('placeholder'=>'Menu Description','class'=>'form-control')) !!}
-	</div>
-</div>
-
-<div class="form-group">
-    {!! Form::label('Product Image', null,array('class'=>'col-sm-3 control-label')) !!}
-    <div class="col-sm-6">
-	    {!! Form::file('image', null, array('class'=>'form-control')) !!}
-	</div>
-</div>
-
-<div class="form-group">
-	<div class="col-sm-offset-3 col-sm-6">
-	    {!! Form::submit('Create Menu!', null,array('class'=>'"btn btn-default')) !!}
-	</div>
-</div>
-{!! Form::close() !!}
-</div>
 							        <!-- New Menu Form -->
-							        <form action="{{ url('menus') }}" method="POST" class="form-horizontal">
-							            {{ csrf_field() }}
+							        {!! Form::open(
+							            array(
+							                'url' => 'menufile', 
+							                'class' => 'form-horizontal', 
+							                'files' => true)) !!}
 
-							            <!-- Task Name -->
-							            <div class="form-group">
-							                <label for="menu_title" class="col-sm-3 control-label">Menu Title</label>
+							        <div class="form-group">
+							            {!! Form::label('Menu Title', null,array('class'=>'col-sm-3 control-label')) !!}
+							            <div class="col-sm-6">
+							        	    {!! Form::text('menu_title', null, array('placeholder'=>'Menu Title','class'=>'form-control')) !!}
+							        	</div>
+							        </div>
 
-							                <div class="col-sm-6">
-							                    <input type="text" name="menu_title" id="menu_title" class="form-control">
-							                </div>
-										</div>
-										<div class="form-group">
-											<label for="menu_description" class="col-sm-3 control-label">Menu Description</label>
+							        <div class="form-group">
+							            {!! Form::label('Menu Description', null,array('class'=>'col-sm-3 control-label')) !!}
+							            <div class="col-sm-6">
+							        	    {!! Form::text('menu_description', null, array('placeholder'=>'Menu Description','class'=>'form-control')) !!}
+							        	</div>
+							        </div>
 
-							                <div class="col-sm-6">
-							                    <input type="text" name="menu_description" id="menu_description" class="form-control">
-							                </div>
-							            </div>
+							        <div class="form-group">
+							            {!! Form::label('Product Image', null,array('class'=>'col-sm-3 control-label')) !!}
+							            <div class="col-sm-6">
+							        	    {!! Form::file('image', null, array('class'=>'form-control')) !!}
+							        	</div>
+							        </div>
 
-							            <!-- Add Task Button -->
-							            <div class="form-group">
-							                <div class="col-sm-offset-3 col-sm-6">
-							                    <button type="submit" class="btn btn-default">
+							        <div class="form-group">
+							        	<div class="col-sm-offset-3 col-sm-6"><button type="submit" class="btn btn-default">
 							                        <i class="fa fa-plus"></i> Add Menu
-							                    </button>
-							                </div>
-							            </div>
-							        </form>
+							        							                    </button>
+							        </div>
+							        	</div>
+							                   
+							        {!! Form::close() !!}
+							        </div>
+							       
 							    </div>
 
 
