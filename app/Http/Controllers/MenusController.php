@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Storage;
 
 
 class MenusController extends Controller
@@ -53,6 +55,22 @@ class MenusController extends Controller
 		return view('menu')->with(['menu'=>$menu]);;
 
     }
+    
+    public function uploadFileToS3(Request $request)
+    {
+    	$image = $request->file('image');
+    	$filename = $image. '.' . $request->file('image')->guessExtension();
+    	//$filename ='bob.jpg';
+    	
+echo $filename;
+    	
+    	Storage::disk('s3')->put('onepotato-menu-cards/' . $filename, file_get_contents($image));
+
+    	
+    	
+    }
+    
+    
 
 	public function saveMenu(Request $request) {
 		

@@ -17,10 +17,6 @@ Route::get('/home', 'HomeController@show');
 
 Route::get('/menus', 'MenusController@showMenus');
 Route::get('/menu/{id}', 'MenusController@showMenu');
-
-
-//Route::get('/menus', 'MenusController@show');
-
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
         return View::make('menu-edit') 
@@ -32,6 +28,7 @@ Route::post('menu/edit', function() {
 });
 
 Route::post('/menus', 'MenusController@saveMenu');
+Route::post('/menufile', 'MenusController@uploadFileToS3');
 
 Route::get('user/new', 'UserController@newUser');
 Route::post('user/new', 'UserController@createUser');

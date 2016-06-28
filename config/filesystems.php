@@ -56,10 +56,10 @@ return [
 
         's3' => [
             'driver' => 's3',
-            'key' => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+            'key' => 'AKIAINGIJTWWNMSGFFJQ',
+            'secret' => 'H3brxCIMH4JiXf5Y+aKtinNiT5cU4c1iV4mExWl2',
+            'region' => 'us-west-1',
+            'bucket' => 'onepotato-menu-cards',
         ],
 
     ],

@@ -40,8 +40,41 @@
 							        <!-- Display Validation Errors -->
 								        @include('errors.errors')
 								 
+{!! Form::open(
+    array(
+        'url' => 'menufile', 
+        'class' => 'form-horizontal', 
+        'files' => true)) !!}
 
-							        <!-- New Task Form -->
+<div class="form-group">
+    {!! Form::label('Menu Title', null,array('class'=>'col-sm-3 control-label')) !!}
+    <div class="col-sm-6">
+	    {!! Form::text('menu_title', null, array('placeholder'=>'Menu Title','class'=>'form-control')) !!}
+	</div>
+</div>
+
+<div class="form-group">
+    {!! Form::label('Menu Description', null,array('class'=>'col-sm-3 control-label')) !!}
+    <div class="col-sm-6">
+	    {!! Form::text('menu_description', null, array('placeholder'=>'Menu Description','class'=>'form-control')) !!}
+	</div>
+</div>
+
+<div class="form-group">
+    {!! Form::label('Product Image', null,array('class'=>'col-sm-3 control-label')) !!}
+    <div class="col-sm-6">
+	    {!! Form::file('image', null, array('class'=>'form-control')) !!}
+	</div>
+</div>
+
+<div class="form-group">
+	<div class="col-sm-offset-3 col-sm-6">
+	    {!! Form::submit('Create Menu!', null,array('class'=>'"btn btn-default')) !!}
+	</div>
+</div>
+{!! Form::close() !!}
+</div>
+							        <!-- New Menu Form -->
 							        <form action="{{ url('menus') }}" method="POST" class="form-horizontal">
 							            {{ csrf_field() }}
 
