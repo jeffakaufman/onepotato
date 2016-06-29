@@ -15,8 +15,6 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
-Route::get('/menus', 'MenusController@showMenus');
-Route::get('/menu/{id}', 'MenusController@showMenu');
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
         return View::make('menu-edit') 
@@ -24,17 +22,26 @@ Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id)
     }));
 
 Route::post('menu/edit', function() {
-	        //do something
-});
-
+		        //do something
+	});
+	
 Route::post('/menus', 'MenusController@saveMenu');
 Route::post('/menufile', 'MenusController@uploadFileToS3');
 
+Route::get('/menus', 'MenusController@showMenus');
+Route::get('/menu/{id}', 'MenusController@showMenu');
+
 Route::get('user/new', 'UserController@newUser');
 Route::post('user/new', 'UserController@createUser');
+Route::post('user/payment/{id}', 'UserController@createUserPayment');
+Route::post('user/new/subscription/{id}', 'UserController@createUserSubscription');
+
 Route::get('/users', 'UserController@showUsers');
 Route::get('/user/{id}', 'UserController@showUser');
 Route::post('/user/{id}', 'UserController@updateUser');
+Route::get('/user/payment/{id}', 'UserController@showPayment');
+Route::post('/user/payment/{id}', 'UserController@savePayment');
+
 Route::get('/user/subscriptions/{id}', 'UserController@showSubscription');
 Route::post('/user/subscriptions/{id}', 'UserController@updateSubscription');
 Route::post('/user/csr_note/{id}', 'UserController@saveCSRNote');
@@ -47,4 +54,5 @@ Route::get('/user/referrals/{id}', 'UserController@showReferrals');
 Route::post('/user/referrals/{id}', 'UserController@sendReferral');
 
 Route::get('user/test/{id}', 'UserController@showTest');
+
 
