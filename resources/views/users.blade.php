@@ -10,6 +10,9 @@
                     <div class="panel-heading">Users</div>
 
                     <div class="panel-body">
+		
+	
+						<a href="/user/new/">Create a New User</a><br/><br />
                         @foreach ($users as $user)
 						    <div><span style="display:inline-block;width:30px;" class="user_id">{{ $user->id }}</span><span class="user_name" style="display:inline-block;width:200px;"><a href="/user/{{ $user->id }}">{{ $user->name }}</a></span><span  style="display:inline-block;width:200px;" class="user_name">{{ $user->email }}</span>
 	                        </div>
