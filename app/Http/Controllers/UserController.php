@@ -64,16 +64,152 @@ class UserController extends Controller
 
 	public function newUser() {
 		
-		return view('newuser');
+		
+		return view('user-new');
 		
 	}
+	
+	public function createUser(Request $request) {
+		
+		//validation
+		$validator = Validator::make($request->all(), [
+	        'user_name' => 'required|max:255',
+		    'user_email' => 'required|max:1000',
+			'user_password' => 'required|max:255'
+	    ]);
+
+	    if ($validator->fails()) {
+	        return redirect('/user/new')
+	            ->withInput()
+	            ->withErrors($validator);
+	    }
+
+	    $user = new User;
+	    $user->name = $request->user_name;
+		$user->email = $request->user_email;
+		$user->password = $request->user_password;
+		$user->save();
+		
+		return view('user-new-payment')->with(['user'=>$user]);
+		
+		
+		
+	}
+	
+	public function createUserPayment($id, Request $request) {
+		
+			$user = User::find($id);
+			//$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->firstOrFail();
+			
+			//figure out which plan the user is currently subscribed to
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			
+			// Get the credit card details submitted by the form
+			$token = $request->stripeToken;
+			
+			$customer = \Stripe\Customer::create(array(
+					  "source" => $token,
+					  "plan" => 'account_only',
+					  "email" => $user->email)
+			);
+						
+			$user->stripe_id = $customer->id;
+			
+			
+				
+			$user->save();
+			
+			//create a record in subscriptions table to store the subscription id
+				
+			//return "test";
+			return view('user-new-plan')->with(['user'=>$user]);
+			
+			//NOTE: When a user changes their plan, need to ALSO update that in STRIPE
+		
+		
+	}
+	
+	public function createUserSubscription($id, Request $request) {
+		
+		$validator = Validator::make($request->all(), [
+	        'plan_type' => 'required|max:255',
+		    'plan_size' => 'required|max:1000'
+	    ]);
+
+	    if ($validator->fails()) {
+	        return redirect('/user/subscriptions/' . $id)
+	            ->withInput()
+	            ->withErrors($validator);
+	    }
+	
+		/*sku decoder - 
+		01 veg/onmivore
+		02	num adults
+		03	num children (04= 4 children)
+		00  unused
+		00	unused
+		*/
+		
+		$plan_type = $request->plan_type;
+		$plan_size = $request->plan_size;
+		$num_kids = $request->num_children;
+		$theSKU = '';
+		
+		
+		if ($plan_type=='vegetarian') {
+			$theSKU = "01";
+		}
+		if ($plan_type=='omnivore') {
+			$theSKU = "02";
+		}
+		
+		
+		//num adults defaults to 02
+		$theSKU .= "02";
+		
+		if ($plan_size=="family") {
+			
+			if ($num_kids=="0") {$theSKU .= "00";}
+			if ($num_kids=="1") {$theSKU .= "01";}
+			if ($num_kids=="2") {$theSKU .= "02";}
+			if ($num_kids=="3") {$theSKU .= "03";}
+			if ($num_kids=="0") {$theSKU .= "04";}
+			
+		}else{
+			$theSKU .= "00";
+		}
+		
+		$theSKU .= "0000";
+		
+	
+		
+		//look up the product ID
+		$newProduct = Product::where('sku',$theSKU)->firstOrFail();
+		
+		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
+		$userSubscription->product_id = $newProduct->id;
+		$userSubscription->dietary_preferences = implode(",",$request->prefs);
+		$userSubscription->save();
+		
+		//update STRIPE
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+	
+		$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id );
+		$subscription->plan = $newProduct->stripe_plan_id;
+		$subscription->save();
+		
+		
+	}
+	
 
 	/**
      * Show the application dashboard.
      *
      * @return Response
      */
-    public function createUser(Request $request)
+    public function createUser_old (Request $request)
     {
 
 		$validator = Validator::make($request->all(), [
@@ -285,6 +421,14 @@ class UserController extends Controller
 		$userSubscription->product_id = $newProduct->id;
 		$userSubscription->dietary_preferences = implode(",",$request->prefs);
 		$userSubscription->save();
+		
+		//update STRIPE
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+	
+		$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id );
+		$subscription->plan = $newProduct->stripe_plan_id;
+		$subscription->save();
+		
 			
 			//figure out the sku based on plan_type, plan_size, and number of children
 
@@ -385,7 +529,7 @@ class UserController extends Controller
 			$newuserid = $request->u;
 			
 			//record that the user has subscribed--this is stubbed in for now
-			$referral = Referral::where('id',$newuserid)->firstorfail();
+			$referral = Referral::where('id',$newuserid)->firstorfailfs();
 			$referral->did_subscribe = 1;
 			$referral->save();
 			
@@ -394,6 +538,68 @@ class UserController extends Controller
 		
 	}
 
+	public function showPayment ($id, Request $request) {
+		
+			$user = User::find($id);
+			$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+			
+		
+			//return "test";
+			return view('payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
+		
+	}
+	
+	public function savePayment ($id, Request $request) {
+		
+			$user = User::find($id);
+			$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+			$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->firstOrFail();
+			
+			//figure out which plan the user is currently subscribed to
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			
+			// Get the credit card details submitted by the form
+			$token = $request->stripeToken;
+			
+		
+			//first see if there's already a record for this customer in STRIPE and update using Token
+			if ($user->stripe_id != '') {
+			
+				$customer = \Stripe\Customer::retrieve($user->stripe_id);
+				$customer->source = $token; // obtained with Stripe.js
+				$customer->email = $user->email;
+				$customer->plan = $userProduct->stripe_plan_id;
+				$customer->save();
+				
+			}else{
+				
+					$customer = \Stripe\Customer::create(array(
+					  "source" => $token,
+					  "plan" => $userProduct->stripe_plan_id,
+					  "email" => $user->email)
+					);
+						
+					$user->stripe_id = $customer->id;
+				
+					$user->save();
+				
+			}
+			
+		
+			
+			
+			
+		
+			
+			//return "test";
+			return view('payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
+			
+			//NOTE: When a user changes their plan, need to ALSO update that in STRIPE
+		
+	}
+	
 	public function showTest ($id) {
 		
 		
@@ -404,6 +610,7 @@ class UserController extends Controller
 			});
 			return "test";
 	}
+	
 	
 	
 }
