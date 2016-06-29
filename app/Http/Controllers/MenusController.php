@@ -77,12 +77,13 @@ class MenusController extends Controller
     	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
     	$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
 
-echo "<img src='".$imagename."'>";
 	    $menu = new Menus;
 	    $menu->menu_title = $request->menu_title;
 		$menu->menu_description = $request->menu_description;
 		$menu->image = $imagename;
 	    $menu->save();
+
+	    return redirect('/menus');
 
     	
     }
