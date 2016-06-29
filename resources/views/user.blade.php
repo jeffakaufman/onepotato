@@ -30,7 +30,7 @@ function ToggleBoxes(BoxClass) {
                    
                     <div class="panel-body">
 						<span class="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.userinformation');">User Information</a>  <i class="fa fa-lemon-o"></i></span>
-                        <span class="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.billingaddress');">Payment Information</a>   <i class="fa fa-lemon-o"></i></span>
+                        <span class="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.billingaddress');">Billing Address</a>   <i class="fa fa-lemon-o"></i></span>
 						<span style="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.shippingaddress');">Shipping Addresses</a></span>
                     </div>
                 </div>
