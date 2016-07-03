@@ -1,6 +1,4 @@
-@extends('spark::layouts.app')
 
-@section('content')
 <home :menus="menus" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
@@ -17,13 +15,9 @@
 							<span style="padding-left:10px;">{{ $menu->menu_delivery_date}}</span></div>
 						@endforeach
                     </div>
-					
-
-
                 </div>
             </div>
         </div>
-
 
 
 		
@@ -92,7 +86,5 @@
 
     </div>
 </home>
-@endsection
-
 
 

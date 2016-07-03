@@ -8,4 +8,5 @@ class Menus extends Model
 {
     protected $table = 'menus';
 	public $timestamps = true;
+
 }
