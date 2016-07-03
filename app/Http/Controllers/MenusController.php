@@ -62,13 +62,14 @@ class MenusController extends Controller
 	        'menu_title' => 'required|max:255',
 		    'menu_description' => 'required|max:1000',
 		    'image' => 'required'
-	    ]);
+	    ]); 
 
 	    if ($validator->fails()) {
-	        return redirect('/menus')
+	        return redirect('/admin/whatscooking')
 	            ->withInput()
 	            ->withErrors($validator);
 	    }
+
     
     	$image = $request->file('image');
     	$datestamp = date("FY");
@@ -82,8 +83,8 @@ class MenusController extends Controller
 		$menu->menu_description = $request->menu_description;
 		$menu->image = $imagename;
 	    $menu->save();
-
-	    return redirect('/menus');
+	    $menu->whatscookings()->attach($request->whatscooking_id);
+	    return redirect('/admin/whatscooking');
 
     	
     }

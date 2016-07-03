@@ -4,14 +4,14 @@
 <home :menus="menus" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
+			<!-- Display Validation Errors -->
+			@include('errors.errors')
 		
 		<div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-9 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add New Menus</div>
+                    <div class="panel-heading">Add Week</div>
                     	<div class="panel-body">
-							<!-- Display Validation Errors -->
-								@include('errors.errors')
 							 
 							<!-- New Menu Form -->
 							    {!! Form::open(
@@ -45,17 +45,19 @@
         
         
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-9 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">What's Cooking!</div>
 
                     <div class="panel-body">
+				        <div class="row">
+            				<div class="col-md-9">
     	                    @foreach ($whatscookings as $whatscooking)
-							    {{ $whatscooking->week_of }} <br>
-							    @include('menus', ['menus'=>$menus])
+							    @include('menus', ['whatscooking'=>$whatscooking,'menus'=>$whatscooking->menus()->get()])
 							@endforeach
+                    		</div>
+                    	</div>
                     </div>
-
                 </div>
             </div>
         </div>

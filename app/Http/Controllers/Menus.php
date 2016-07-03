@@ -11,6 +11,6 @@ class Menus extends Model
 	
 	public function whatscookings()
     {
-        return $this->belongsToMany('App\WhatsCookings');
+        return $this->belongsToMany('App\Http\Controllers\WhatsCookings');
     }
 }
