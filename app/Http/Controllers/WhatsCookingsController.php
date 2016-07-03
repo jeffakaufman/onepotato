@@ -39,8 +39,9 @@ class WhatsCookingsController extends Controller
     {
 
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
-		$menus = WhatsCookings::find($whatscookings[2]->id)->menus()->get();
-		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);;
+		//$menus = WhatsCookings::find($whatscookings[2]->id)->menus()->get();
+		$menus = [];
+		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);
 
     }
 
