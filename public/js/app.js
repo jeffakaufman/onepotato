@@ -33434,12 +33434,14 @@ var app = new Vue({
  | application. This is also a convenient spot for you to load all of
  | your components that you write while building your applications.
  */
+// register
+
 
 require('./../spark-components/bootstrap');
 
 require('./home');
-
-},{"./../spark-components/bootstrap":58,"./home":55}],55:[function(require,module,exports){
+require('./whatscookings');
+},{"./../spark-components/bootstrap":58,"./home":55,"./whatscookings":155}],55:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -33449,6 +33451,15 @@ Vue.component('home', {
         //
     }
 });
+
+Vue.component('whatscookings', {
+
+
+    ready: function ready() {
+        //
+    }
+});
+
 
 },{}],56:[function(require,module,exports){
 'use strict';

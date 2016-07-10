@@ -35,11 +35,10 @@ class WhatsCookingsController extends Controller
      *
      * @return Response
      */
-    public function showWhatsCookings()
+    public function showWhatsCooking($id)
     {
 
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
-		//$menus = WhatsCookings::find($whatscookings[2]->id)->menus()->get();
 		$menus = [];
 		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);
 
@@ -50,76 +49,57 @@ class WhatsCookingsController extends Controller
      *
      * @return Response
      */
-    public function showWhatsCooking($id)
+    public function showWhatsCookings($id = null)
     {
-
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
-		$menus = WhatsCookings::find($whatscookings[2]->id)->menus()->get();
-		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);;
-
-
-//		$whatscookings = WhatsCookings::find($id);
-		//$menus = $whatscookings->menus()->get();
-		//echo $whatscookings->menus();
-//		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$whatscookings->menus()->get()]);;
-//		return view('whatscooking')->with(['whatscookings'=>$whatscookings]);;
-
+		$last = isset($id) ? WhatsCookings::find($id) : '';
+		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
     }
-    
-	public function saveWhatsCooking(Request $request) {
-		
-		/*
-		$validator = Validator::make($request->all(), [
-	        'menu_title' => 'required|max:255',
-		    'menu_description' => 'required|max:1000'
-	    ]);
 
-	    if ($validator->fails()) {
-	        return redirect('/menus')
-	            ->withInput()
-	            ->withErrors($validator);
-	    }
-*/
-	    $whatscookings = new WhatsCookings;
-	    $whatscookings->product_type = $request->product_type;
-		$whatscookings->week_of = new \DateTime($request->week_of);
-		//$whatscookings->menus()->attach(1);
-	    $whatscookings->save();
-	    return redirect('/admin/whatscooking');
-	
-	}
-	
 	
     
-    public function saveMenu(Request $request)
+    public function saveWhatsCooking(Request $request)
     {
-    	$validator = Validator::make($request->all(), [
+	    $whatscookings = $request->all();
+	    
+    	$validator = Validator::make($whatscookings, [
+	        'product_type' => 'required|max:255',
 	        'menu_title' => 'required|max:255',
 		    'menu_description' => 'required|max:1000',
-		    'image' => 'required'
 	    ]);
 
 	    if ($validator->fails()) {
-	        return redirect('/menus')
+	        return redirect('/admin/whatscooking')
 	            ->withInput()
 	            ->withErrors($validator);
 	    }
-    
+
+     	$test = WhatsCookings::where('week_of', $request->week_of)
+     			->where('product_type', $request->product_type)
+     			->first();
+     	
+     	$id = isset($test) ? $test->id : WhatsCookings::Create($whatscookings)->id;
+
+    	if (array_key_exists('image', $whatscookings)) {
+    		$image = $request->file('image');
+    	}   
+    	
+    	
     	$image = $request->file('image');
     	$datestamp = date("FY");
-    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
-    	
-    	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
-    	$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
 
 	    $menu = new Menus;
 	    $menu->menu_title = $request->menu_title;
 		$menu->menu_description = $request->menu_description;
-		$menu->image = $imagename;
+		
+		if ($image) {
+	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+   		 	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
+    		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+			$menu->image = $imagename;
+		}
 	    $menu->save();
-
-	    return redirect('/admin/whatscooking');
-
-    	
+		$menu->whatscookings()->attach($id);
+	    return redirect('/admin/whatscooking/'.$id);
     }
 }
