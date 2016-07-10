@@ -86,7 +86,7 @@
 	                        	<div class="col-md-1"><h5>Week</h5></div>
 								<div class="col-md-1"><h5>Type</h5></div>
 	                        	<div class="col-md-2"><h5>Menu Title</h5></div>
-								<div class="col-md-2"><h5>Recipe Card</h5></div>
+								<div class="col-md-2"><h5>Image</h5></div>
 						</div>
 				        <div class="row">
     	                    @foreach ($whatscookings as $whatscooking)
@@ -95,7 +95,13 @@
 							    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
 							    	<div class="col-md-1">{{ $whatscooking->product_type }}</div>
 	            	            	<div class="col-md-2"><a href="/menu/{{ $menu->id }}">{{ $menu->menu_title }}</a></div>
+	            	            	@if($menu->image )
 									<div class="col-md-2"><img height="100px" src="{{ $menu->image }}"/></div>
+									@else
+									<div class="col-md-2"><img height="100px" src="/img/foodpot.jpg"/></div>
+									@endif
+	            	            	<div class="col-md-2"><div class="btn btn-default"">Edit</div></div>
+	            	            	
 								</div>
 								@endforeach
     	                    @endforeach
