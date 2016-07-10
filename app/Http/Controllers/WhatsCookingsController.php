@@ -91,6 +91,14 @@ class WhatsCookingsController extends Controller
 	    $menu = new Menus;
 	    $menu->menu_title = $request->menu_title;
 		$menu->menu_description = $request->menu_description;
+        $menu->hasBeef = $request->hasBeef ? $request->hasBeef : 0;
+        $menu->hasPoultry = $request->hasPoultry ? $request->hasPoultry : 0;
+        $menu->hasFish = $request->hasFish ? $request->hasFish : 0;
+        $menu->hasLamb = $request->hasLamb ? $request->hasLamb : 0;
+        $menu->hasPork = $request->hasPork ? $request->hasPork : 0;
+        $menu->hasShellfish = $request->hasShellfish ? $request->hasShellfish : 0;
+        $menu->hasNoGluten = $request->hasNoGluten ? $request->hasNoGluten : 0;
+        $menu->hasNuts = $request->hasNuts ? $request->hasNuts : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
