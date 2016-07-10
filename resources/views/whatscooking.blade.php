@@ -2,6 +2,42 @@
 
 @section('content')
 
+<div class="modal fade" id="favoritesModal" 
+     tabindex="-1" role="dialog" 
+     aria-labelledby="favoritesModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" 
+          data-dismiss="modal" 
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" 
+        id="favoritesModalLabel">The Sun Also Rises</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+        Please confirm you would like to add 
+        <b><span id="fav-title">The Sun Also Rises</span></b> 
+        to your favorites list.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" 
+           class="btn btn-default" 
+           data-dismiss="modal">Close</button>
+        <span class="pull-right">
+          <button type="button" class="btn btn-primary">
+            Add to Favorites
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+@include('menu-edit')
+
 <whatscookings :whatscookings="whatscookings" inline-template>
 
     <div class="container">
@@ -14,7 +50,6 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Add Week</div>
                     	<div class="panel-body">
-							 
 							<!-- New Menu Form -->
 							    {!! Form::open(
 							        array(
@@ -95,8 +130,7 @@
                 </div>
             </div>
         </div>
-        
-        
+    
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -105,66 +139,56 @@
 					<div class="container">
                     	<div class="row">
 	                        	<div class="col-md-1"><h5>Week</h5></div>
-								<div class="col-md-1"><h5>Type</h5></div>
+								<div class="col-md-2"><h5>Type</h5></div>
 	                        	<div class="col-md-2"><h5>Menu Title</h5></div>
 	                        	<div class="col-md-2"><h5>Ingredients</h5></div>
-								<div class="col-md-2"><h5>Image</h5></div>
+								<div class="col-md-2 text-center"><h5>Image</h5></div>
 						</div>
 				        <div class="row">
-    	                    @foreach ($whatscookings as $whatscooking)
-		                        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
-							    <div class="row" style="margin-bottom:20px">
-							    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
-							    	<div class="col-md-1">{{ $whatscooking->product_type }}</div>
-	            	            	<div class="col-md-2"><a href="/menu/{{ $menu->id }}">{{ $menu->menu_title }}</a></div>
-	            	            	<div class="col-md-2">
-		            	            	@if($menu->hasBeef)
-		            	            		Beef</br>
+							<div class="container">
+    	                	    @foreach ($whatscookings as $whatscooking)
+		                	        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
+								    <div class="row" style="margin-bottom:20px">
+								    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
+								    	<div class="col-md-2">{{ $whatscooking->product_type }}</div>
+	            	    	        	<div class="col-md-2"><a href="/menu/{{ $menu->id }}">{{ $menu->menu_title }}</a></div>
+	            	    	        	<div class="col-md-2">
+		            		            	@if($menu->hasBeef)
+		            		            		Beef</br>
+											@endif
+	        	    		            	@if($menu->hasPoultry)
+	            			            		Chicken</br>
+											@endif
+	            	    		        	@if($menu->hasFish)
+	            	    	    	    		Fish</br>
+											@endif
+	            	    	        		@if($menu->hasLamb)
+	            	    	        			Lamb</br>
+											@endif
+		            		            	@if($menu->hasPork)
+	    	        		            		Pork</br>
+											@endif
+	            			            	@if($menu->hasShellfish)
+	            			            		Shellfish</br>
+											@endif
+	            	    	    	    	@if($menu->hasNoGluten)
+	            	    	        			Gluten Free</br>
+											@endif
+	            	    	        		@if($menu->hasNuts)
+	            	    	        			Nuts
+											@endif
+										</div>
+	            	        	    	@if($menu->image)
+										<div class="col-md-2 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
+										@else
+										<div class="col-md-2 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
 										@endif
-	        	    	            	@if($menu->hasPoultry)
-	            		            		Chicken</br>
-										@endif
-	            	    	        	@if($menu->hasFish)
-	            	        	    		Fish</br>
-										@endif
-	            	            		@if($menu->hasLamb)
-	            	            			Lamb</br>
-										@endif
-		            	            	@if($menu->hasPork)
-	    	        	            		Pork</br>
-										@endif
-	            		            	@if($menu->hasShellfish)
-	            		            		Shellfish</br>
-										@endif
-	            	        	    	@if($menu->hasNoGluten)
-	            	            			Gluten Free</br>
-										@endif
-	            	            		@if($menu->hasNuts)
-	            	            			Nuts</br>
-										@endif
+	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscookings="{{ $whatscookings }}" data-target="#menuEditModal">Edit</div></div>
 									</div>
-
-
-
-
-
-
-
-
-
-
-
-	            	            	@if($menu->image)
-									<div class="col-md-2"><img height="100px" src="{{ $menu->image }}"/></div>
-									@else
-									<div class="col-md-2"><img height="100px" src="/img/foodpot.jpg"/></div>
-									@endif
-	            	            	<div class="col-md-2"><div class="btn btn-default"">Edit</div></div>
-	            	            	
-								</div>
-								@endforeach
-    	                    @endforeach
-                    	</div>
+									@endforeach
+    		                    @endforeach
+            	        		</div>
+                	    	</div>
                     	</div>
                     </div>
                 </div>
