@@ -56,6 +56,20 @@ class WhatsCookingsController extends Controller
 		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
     }
 
+
+	/**
+     * Show the application dashboard.
+     *
+     * @return Response
+     */
+    public function updateWhatsCooking(Request $request)
+    {
+		echo(implode(",",$request->all()));
+		//$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
+		//$last = isset($id) ? WhatsCookings::find($id) : '';
+		//return view('whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
+    }
+
 	
     
     public function saveWhatsCooking(Request $request)

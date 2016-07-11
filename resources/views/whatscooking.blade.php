@@ -2,40 +2,6 @@
 
 @section('content')
 
-<div class="modal fade" id="favoritesModal" 
-     tabindex="-1" role="dialog" 
-     aria-labelledby="favoritesModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" 
-          data-dismiss="modal" 
-          aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" 
-        id="favoritesModalLabel">The Sun Also Rises</h4>
-      </div>
-      <div class="modal-body">
-        <p>
-        Please confirm you would like to add 
-        <b><span id="fav-title">The Sun Also Rises</span></b> 
-        to your favorites list.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" 
-           class="btn btn-default" 
-           data-dismiss="modal">Close</button>
-        <span class="pull-right">
-          <button type="button" class="btn btn-primary">
-            Add to Favorites
-          </button>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-
 @include('menu-edit')
 
 <whatscookings :whatscookings="whatscookings" inline-template>
@@ -48,7 +14,7 @@
 		<div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Add Week</div>
+                    <div class="panel-heading">Add Menu</div>
                     	<div class="panel-body">
 							<!-- New Menu Form -->
 							    {!! Form::open(
@@ -144,46 +110,58 @@
 	                        	<div class="col-md-2"><h5>Ingredients</h5></div>
 								<div class="col-md-2 text-center"><h5>Image</h5></div>
 						</div>
+								<div class="row">
+									<div class="col-md-12 ">
+										<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;">
+									</div>
+								</div>
 				        <div class="row">
 							<div class="container">
     	                	    @foreach ($whatscookings as $whatscooking)
 		                	        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
-								    <div class="row" style="margin-bottom:20px">
+								    <div class="row" style="margin-top:20px;margin-bottom:20px">
 								    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
 								    	<div class="col-md-2">{{ $whatscooking->product_type }}</div>
 	            	    	        	<div class="col-md-2"><a href="/menu/{{ $menu->id }}">{{ $menu->menu_title }}</a></div>
 	            	    	        	<div class="col-md-2">
+	            	    	        		<ul style="list-style-image: url('/img/pot.png');">
 		            		            	@if($menu->hasBeef)
-		            		            		Beef</br>
+		            		            		<li>Beef</li>
 											@endif
 	        	    		            	@if($menu->hasPoultry)
-	            			            		Chicken</br>
+	            			            		<li>Chicken</li>
 											@endif
 	            	    		        	@if($menu->hasFish)
-	            	    	    	    		Fish</br>
+	            	    	    	    		<li>Fish</li>
 											@endif
 	            	    	        		@if($menu->hasLamb)
-	            	    	        			Lamb</br>
+	            	    	        			<li>Lamb</li>
 											@endif
 		            		            	@if($menu->hasPork)
-	    	        		            		Pork</br>
+	    	        		            		<li>Pork</li>
 											@endif
 	            			            	@if($menu->hasShellfish)
-	            			            		Shellfish</br>
+	            			            		<li>Shellfish</li>
 											@endif
 	            	    	    	    	@if($menu->hasNoGluten)
-	            	    	        			Gluten Free</br>
+	            	    	        			<li>Gluten Free</li>
 											@endif
 	            	    	        		@if($menu->hasNuts)
-	            	    	        			Nuts
+	            	    	        			<li>Nuts</li>
 											@endif
+											<ul>
 										</div>
 	            	        	    	@if($menu->image)
 										<div class="col-md-2 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
 										@else
 										<div class="col-md-2 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
 										@endif
-	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscookings="{{ $whatscookings }}" data-target="#menuEditModal">Edit</div></div>
+	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div></div>
+									</div>
+									<div class="row">
+										<div class="col-md-12 ">
+											<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;">
+										</div>
 									</div>
 									@endforeach
     		                    @endforeach
@@ -196,8 +174,32 @@
         </div>
     </div>
 </div>
+<script>
+$('#menuEditModal').on('show.bs.modal', function(e) {
+console.log($(e.relatedTarget).data('whatscooking'));
+    //get data-id attribute of the clicked element
+    var menu = $(e.relatedTarget).data('menu');
+    var whatscooking = $(e.relatedTarget).data('whatscooking');
 
-
+    $("#menuEditModal #week_of").val( whatscooking.week_of );
+    $("#menuEditModal #whatscooking_id").val( whatscooking.id );
+    $("#menuEditModal #vegetarian_type").prop( "checked",whatscooking.product_type == 'Vegetarian' );
+    $("#menuEditModal #omnivore_type").prop( "checked",whatscooking.product_type == 'Omnivore' );
+    $("#menuEditModal #menu_title").val( menu.menu_title );
+    $("#menuEditModal #menu_id").val( menu.id );
+    if (menu.image) {$("#menuEditModal #image").attr("src", menu.image ); }
+    $("#menuEditModal #menu_description").val( menu.menu_description );
+    $("#menuEditModal #hasBeef").prop( "checked", menu.hasBeef );
+    $("#menuEditModal #hasFish").prop( "checked", menu.hasFish );
+    $("#menuEditModal #hasLamb").prop( "checked", menu.hasLamb );
+    $("#menuEditModal #hasNoGluten").prop( "checked", menu.hasNoGluten );
+    $("#menuEditModal #hasNuts").prop( "checked", menu.hasNuts );
+    $("#menuEditModal #hasPork").prop( "checked", menu.hasPork );
+    $("#menuEditModal #hasPoultry").prop( "checked", menu.hasPoultry );
+    $("#menuEditModal #hasShellfish").prop( "checked", menu.hasShellfish );
+   // $("#delForm").attr('action', 'put your action here with productId');//e.g. 'domainname/products/' + productId
+});
+</script>
 </whatscookings>
 @endsection
 

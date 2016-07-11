@@ -57,6 +57,7 @@ Route::get('user/test/{id}', 'UserController@showTest');
 
 	
 Route::post('/whatscooking', 'WhatsCookingsController@saveWhatsCooking');
+Route::put('/whatscooking', 'WhatsCookingsController@updateWhatsCooking');
 
 Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 

@@ -12,82 +12,78 @@
         id="favoritesModalLabel">Edit Menu</h4>
       </div>
       <div class="modal-body">
-     {{$whatscookings}}<!-- New Menu Form -->
-    {!! Form::open(
-        array(
-            'url' => 'whatscooking', 
-            'class' => 'form-horizontal', 
-            'files' => true)) !!}          
+     <!-- Edit Menu Form -->
+    <form method="POST" action="/whatscooking" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+    <input name="_token" type="hidden" value="kxGpfAuyrx3dywcDGTE3c7mKSDNWF6QAFTtB1pvp">
+    <input type="hidden" name="_method" value="PUT">
+    
+        	    <input name="whatscooking_id" id="whatscooking_id" type="hidden">
+        	    <input name="menu_id" id="menu_id" type="hidden">      
 <div class="form-group">
-    {!! Form::label('Type', null,array('class'=>'col-sm-2 control-label')) !!}
+    <label for="Type" class="col-sm-2 control-label">Type</label>
     <div class="col-sm-6">
-   	    {!! Form::radio('product_type', 'Omnivore') !!} Omnivore<br />
-       	{!! Form::radio('product_type', 'Vegetarian') !!} Vegetarian
+   	    <input name="product_type" id="omnivore_type" type="radio" value="Omnivore"> Omnivore<br />
+       	<input name="product_type" id="vegetarian_type" type="radio" value="Vegetarian"> Vegetarian
     </div>     
 </div>
 <div class="form-group">
-    {!! Form::label('Ingredients', null,array('class'=>'col-sm-2 control-label')) !!}
-    <div class="col-sm-6">
+    <label for="Ingredients" class="col-sm-2 control-label">Ingredients</label>
+    <div class="col-sm-8">
     	<div class="row">
     		<div class="col-sm-4">
-    		{!! Form::checkbox('hasBeef',1,false) !!} Beef<br />
-    		{!! Form::checkbox('hasPoultry',1,false) !!} Poultry<br />
-    		{!! Form::checkbox('hasFish',1,false) !!} Fish<br />
+    		<input name="hasBeef" id="hasBeef" type="checkbox" value="1"> Beef<br />
+    		<input name="hasPoultry" id="hasPoultry" type="checkbox" value="1"> Poultry<br />
+    		<input name="hasFish" id="hasFish" type="checkbox" value="1"> Fish<br />
     		</div>
     		<div class="col-sm-4">
-    		{!! Form::checkbox('hasLamb',1,false) !!} Lamb<br />
-    		{!! Form::checkbox('hasPork',1,false) !!} Pork<br />
-    		{!! Form::checkbox('hasShellfish',1,false) !!} Shellfish<br />
+    		<input name="hasLamb" id="hasLamb" type="checkbox" value="1"> Lamb<br />
+    		<input name="hasPork" id="hasPork" type="checkbox" value="1"> Pork<br />
+    		<input name="hasShellfish" id="hasShellfish" type="checkbox" value="1"> Shellfish<br />
     		</div>
     		<div class="col-sm-4">
-    		{!! Form::checkbox('hasNoGluten',1,false) !!} Gluten-Free<br />
-    		{!! Form::checkbox('hasNuts',1,false) !!} Nuts<br />
+    		<input name="hasNoGluten" id="hasNoGluten" type="checkbox" value="1"> Gluten-Free<br />
+    		<input name="hasNuts" id="hasNuts" type="checkbox" value="1"> Nuts<br />
     		</div>  
     	</div>  
     </div>     
 </div>
 <div class="form-group">
-    {!! Form::label('Week Of', null,array('class'=>'col-sm-2 control-label')) !!}
+    <label for="Week Of" class="col-sm-2 control-label">Week Of</label>
     <div class="col-sm-6">
-  	    {!! Form::date('week_of', $last->week_of); !!}
+  	    <input name="week_of" id="week_of" type="date" value="2016-08-02">
    	</div>
 </div>
         <div class="form-group">
-            {!! Form::label('Title', null,array('class'=>'col-sm-2 control-label')) !!}
+            <label for="Title" class="col-sm-2 control-label">Title</label>
             <div class="col-sm-6">
-        	    {!! Form::text('menu_title', null, array('placeholder'=>'Menu Title','class'=>'form-control')) !!}
+        	    <input placeholder="Menu Title" class="form-control" name="menu_title" id="menu_title" type="text">
         	</div>
         </div>
 
         <div class="form-group">
-            {!! Form::label('Description', null,array('class'=>'col-sm-2 control-label')) !!}
+            <label for="Description" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-6">
-        	    {!! Form::text('menu_description', null, array('placeholder'=>'Menu Description','class'=>'form-control')) !!}
+        	    <input placeholder="Menu Description" class="form-control" name="menu_description" id="menu_description" type="text">
         	</div>
         </div>
 
         <div class="form-group">
-            {!! Form::label('Image', null,array('class'=>'col-sm-2 control-label')) !!}
+            <label for="Image" class="col-sm-2 control-label">Image</label>
             <div class="col-sm-6">
-        	    {!! Form::file('image', null, array('class'=>'form-control')) !!}
+            	<img height="100px" src="/img/foodpot.jpg" id="image" style="margin-bottom:15px" />
+        	    <input name="image" type="file">
         	</div>
         </div>
-					        <div class="form-group">
-					        	<div class="col-sm-offset-3 col-sm-6"><button type="submit" class="btn btn-default">
-			                        <i class="fa fa-plus"></i> Add Menu</button>
-					        	</div>
-					        </div>
-    {!! Form::close() !!}
       </div>
       <div class="modal-footer">
-        <button type="button" 
-           class="btn btn-default" 
-           data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">Close</button>
         <span class="pull-right">
-          <button type="button" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary">
             Submit
           </button>
         </span>
+        
+    </form>
       </div>
     </div>
   </div>
