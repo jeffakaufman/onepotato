@@ -1,0 +1,53 @@
+.spark-profile-photo {
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    height: 40px;
+    padding: 2px;
+    width: 40px;
+}
+    
+.spark-profile-photo-lg {
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    padding: 2px;
+    height: 75px;
+    width: 75px;
+}
+
+.spark-profile-photo-xl {
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    padding: 2px;
+    height: 125px;
+    width: 125px;
+}
+
+.spark-nav-profile-photo {
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    padding: 2px;
+    height: 50px;
+    width: 50px;
+}
+
+.spark-team-photo {
+    border: 2px solid $border-color;
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.spark-team-photo-xs {
+    border-radius: 50%;
+    height: 1.28571429em;
+    width: 1.28571429em;
+}
+
+
+.profile-photo-preview, .team-photo-preview {
+    display: inline-block;
+    background-position: center;
+    background-size: cover;
+    height: 150px;
+    vertical-align: middle;
+    width: 150px;
+}

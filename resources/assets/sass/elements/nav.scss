@@ -1,0 +1,136 @@
+.navbar {
+	background: $bg-color;
+	color: $brand-primary;
+	font-size: 14px;
+	letter-spacing: 0.1em;
+	font-weight: 300;
+	margin-bottom: 20px;
+	height: $navbar-height;
+	border-color: $brand-primary;
+	text-transform: uppercase;
+
+	.navbar-brand {
+		font-size: 28px;
+		
+		img {
+			height: 48px;
+		}
+		i {
+			color: $brand-primary;
+		}
+	}
+	
+	.navbar-nav {
+		padding-top: 0px;
+		
+		&.navbar-left li {
+			padding: 18px 0 13px 0;
+    		margin: 0 23px;
+		}
+		li.active {
+			border-bottom: 5px solid $brand-primary;
+		}
+		&.navbar-left .icon {
+			display: block;
+		    font-size: 30px;
+		    margin-bottom: 5px;
+		    line-height: 42px;
+		    text-align: center;
+		}
+		&.navbar-right .icon {
+			font-size: 21px;
+		}
+		&.navbar-left .icon-truck, &.navbar-left .icon-creditcard {
+			font-size: 24px;
+		}
+	}
+
+	.dropdown-menu {
+		li {
+			font-size: 14px;
+
+			a {
+				font-weight: 300;
+				line-height: 25px;
+				vertical-align: middle;
+			}
+		}
+	}
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    background-color: transparent;
+    color: #969ea2;
+}
+.with-navbar {
+    padding-top: 120px;
+}
+#register .navbar-right {
+	display: none;
+}
+
+.navbar-nav > li > a {
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.navbar-nav > li > a,
+.navbar-brand,
+.hamburger {
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-icon {
+    padding-top: 3px;
+    position: relative;
+
+    .activity-indicator {
+        width: 13px;
+        height: 13px;
+        border-radius: 10px;
+        background: $brand-danger;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        position: absolute;
+        right: -1px;
+        transition: all .15s;
+        transform: scale(.85);
+    }
+
+    .icon { font-size: 21px; }
+}
+
+.has-activity-indicator:hover .activity-indicator {
+    transform: scale(1.1);
+}
+
+.navbar .dropdown-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.navbar .dropdown-menu > li > a {
+    font-weight: 300;
+
+    i {
+        color: lighten($text-color, 25%);
+    }
+
+    i.text-success {
+        color: $brand-success;
+    }
+}
+
+.hamburger { float: right; }
+
+
+@media (min-width: 768px) {
+
+	.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+		margin: 10px 90px 0 0;
+	}
+
+}
