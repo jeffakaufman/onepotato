@@ -32,9 +32,15 @@ body {
 	font-size: $font-size-base;
 	color: $text-color;
 }
+h1 {
+	font-family: $font-family-bold;
+	color: $brand-secondary;
+	font-size: 30px;
+}
 strong, b, h2, h3, h4, h5 {
 	font-family: $font-family-semibold;
 	color: $brand-secondary;
+	letter-spacing: 0.05em;
 }
 a {
     color: $text-color;
