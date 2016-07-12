@@ -61,3 +61,4 @@ Route::post('/whatscooking', 'WhatsCookingsController@saveWhatsCooking');
 Route::get('/admin/whatscooking', 'WhatsCookingsController@showWhatsCookings');
 Route::get('/admin/whatscooking/{id}', 'WhatsCookingsController@showWhatsCooking');
 
+Route::get('/admin/dashboard', 'DashboardController@show');
