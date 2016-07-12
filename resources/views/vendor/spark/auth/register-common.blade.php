@@ -147,15 +147,15 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <span v-if="paidPlans.length > 0">
+                <h1 v-if="paidPlans.length > 0">
                     Profile
-                </span>
+                </h1>
 
-                <span v-else>
+                <h1 v-else>
                     Let’s get started!
                     <div class="panel-subtitle">Everything you need to make organic & delicious dinners
 the whole family will love delivered straight to your door each week.</div>
-                </span>
+                </h1>
             </div>
 
             <div class="panel-body nopadding">
@@ -189,6 +189,7 @@ the whole family will love delivered straight to your door each week.</div>
         <p>Meals arrive in a recyclable insulated box so food stays fresh until you open it.</p>
     </div>
     <div class="col-md-4">
+        <div style="position: absolute; top: -5px; right: 0;"><img src="/img/badge_free_shipping.png"></div>
         <img src="/img/p_register.jpg">
     </div>
 </div>

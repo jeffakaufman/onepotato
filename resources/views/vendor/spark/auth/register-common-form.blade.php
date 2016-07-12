@@ -14,7 +14,7 @@
 
     <div class="reg-field">
         <!-- Name -->
-        <div class="field" :class="{'has-error': registerForm.errors.has('name')}">
+        <!-- <div class="field" :class="{'has-error': registerForm.errors.has('name')}">
             
             <input type="name" class="form-control" name="name" v-model="registerForm.name" placeholder="Name" autofocus>
 
@@ -22,7 +22,7 @@
                 @{{ registerForm.errors.get('name') }}
             </span>
             
-        </div>
+        </div> -->
 
         <!-- E-Mail Address -->
         <div class="field" :class="{'has-error': registerForm.errors.has('email')}">
@@ -72,20 +72,18 @@
     <div class="reg-button">
         <!-- Terms And Conditions -->
         <div v-if=" ! selectedPlan || selectedPlan.price == 0">
-            <div class="form-group" :class="{'has-error': registerForm.errors.has('terms')}">
-                <div class="col-md-6 col-md-offset-4">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="terms" v-model="registerForm.terms">
-                            I Accept The <a href="/terms" target="_blank">Terms Of Service</a>
-                        </label>
+            <!-- <div class="form-group" style="display: none" :class="{'has-error': registerForm.errors.has('terms')}">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="terms" v-model="registerForm.terms" checked>
+                        I Accept The <a href="/terms" target="_blank">Terms Of Service</a>
+                    </label>
 
-                        <span class="help-block" v-show="registerForm.errors.has('terms')">
-                            @{{ registerForm.errors.get('terms') }}
-                        </span>
-                    </div>
+                    <span class="help-block" v-show="registerForm.errors.has('terms')">
+                        @{{ registerForm.errors.get('terms') }}
+                    </span>
                 </div>
-            </div>
+            </div> -->
 
             <button class="btn btn-primary" @click.prevent="register" :disabled="registerForm.busy">
                 <span v-if="registerForm.busy">

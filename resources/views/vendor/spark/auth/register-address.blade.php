@@ -1,9 +1,20 @@
+<!-- Name -->
+<div class="form-group" :class="{'has-error': registerForm.errors.has('name')}">
+
+    <div class="col-md-6">
+        <input type="name" class="form-control" name="name" v-model="registerForm.name" placeholder="Name" autofocus>
+
+        <span class="help-block" v-show="registerForm.errors.has('name')">
+            @{{ registerForm.errors.get('name') }}
+        </span>
+    </div>
+</div>
+
 <!-- Address -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('address')}">
-    <label class="col-md-4 control-label">Address</label>
 
     <div class="col-sm-6">
-        <input type="text" class="form-control" v-model="registerForm.address" lazy>
+        <input type="text" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
 
         <span class="help-block" v-show="registerForm.errors.has('address')">
             @{{ registerForm.errors.get('address') }}
@@ -13,10 +24,9 @@
 
 <!-- Address Line 2 -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('address_line_2')}">
-    <label class="col-md-4 control-label">Address Line 2</label>
 
     <div class="col-sm-6">
-        <input type="text" class="form-control" v-model="registerForm.address_line_2" lazy>
+        <input type="text" class="form-control" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
 
         <span class="help-block" v-show="registerForm.errors.has('address_line_2')">
             @{{ registerForm.errors.get('address_line_2') }}
@@ -26,10 +36,9 @@
 
 <!-- City -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('city')}">
-    <label class="col-md-4 control-label">City</label>
 
     <div class="col-sm-6">
-        <input type="text" class="form-control" v-model="registerForm.city" lazy>
+        <input type="text" class="form-control" v-model="registerForm.city" lazy placeholder="City">
 
         <span class="help-block" v-show="registerForm.errors.has('city')">
             @{{ registerForm.errors.get('city') }}
@@ -39,7 +48,6 @@
 
 <!-- State & ZIP Code -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('state')}">
-    <label class="col-md-4 control-label">State & ZIP / Postal Code</label>
 
     <!-- State -->
     <div class="col-sm-3">
@@ -62,10 +70,9 @@
 
 <!-- Country -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('country')}">
-    <label class="col-md-4 control-label">Country</label>
 
     <div class="col-sm-6">
-        <select class="form-control" v-model="registerForm.country" lazy>
+        <select class="form-control" v-model="registerForm.country" lazy placeholder="Country">
             @foreach (app(Laravel\Spark\Repositories\Geography\CountryRepository::class)->all() as $key => $country)
                 <option value="{{ $key }}">{{ $country }}</option>
             @endforeach
@@ -79,10 +86,9 @@
 
 <!-- European VAT ID -->
 <div class="form-group" :class="{'has-error': registerForm.errors.has('vat_id')}" v-if="countryCollectsVat">
-    <label class="col-md-4 control-label">VAT ID</label>
 
     <div class="col-sm-6">
-        <input type="text" class="form-control" v-model="registerForm.vat_id" lazy>
+        <input type="text" class="form-control" v-model="registerForm.vat_id" lazy placeholder="VAT ID">
 
         <span class="help-block" v-show="registerForm.errors.has('vat_id')">
             @{{ registerForm.errors.get('vat_id') }}

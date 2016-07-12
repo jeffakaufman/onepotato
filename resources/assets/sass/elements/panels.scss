@@ -1,7 +1,12 @@
 .panel {
-	border: none;
 	box-shadow: none;
 	background: none;
+	border: none;
+}
+.panel-form {
+	background: #fff; 
+	border: $border-color 1px solid;
+	border-radius: 0;
 }
 .panel-body {
 	font-weight: 300;
@@ -13,16 +18,26 @@
 
 .panel-heading, .panel-default > .panel-heading {
 	border-bottom: 0;
-    font-size: 28px;
-    font-weight: bold;
-    color: $brand-secondary;
+    font-size: 18px;
+    font-family: $font-family-semibold;
+    color: $brand-primary;
+    text-transform: uppercase;
     text-align: center;
     background: none;
-    .panel-subtitle {
-		font-size: 21px;
-		text-align: center;
-		color: $text-color;
-		font-weight: normal;
+    
+	h1 {
+		text-transform: none;
+		line-height: 1.3em;
+		letter-spacing: 0.09em; 
+		
+		.panel-subtitle {
+			font-size: 21px;
+			text-align: center;
+			color: $text-color;
+			font-family: $font-family-sans-serif;
+			line-height: 1.3em;
+			letter-spacing: 0;
+		}
 	}
 }
 .panel-flush {

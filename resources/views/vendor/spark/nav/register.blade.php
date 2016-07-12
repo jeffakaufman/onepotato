@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="spark-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav navbar-left">
-                <li><i class="icon icon-apron"></i>1. Welcome</li>
+                <li @if (Request::is('register*'))class="active"@endif><i class="icon icon-apron"></i>1. Welcome</li>
                 <li><i class="icon icon-silverware"></i>2. Select Plan</li>
                 <li><i class="icon icon-sliders"></i>3. Preferences</li>
                 <li><i class="icon icon-truck"></i>4. Delivery</li>
