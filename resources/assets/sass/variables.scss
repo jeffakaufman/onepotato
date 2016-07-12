@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'proxima_novasemibold';
+    src: url('/font/proximanova-sbold-webfont.woff2') format('woff2'),
+         url('/font/proximanova-sbold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'proxima_nova_rgregular';
+    src: url('/font/proximanova-reg-webfont.woff2') format('woff2'),
+         url('/font/proximanova-reg-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*
+ * Variables...
+ */
+$bg-color: #f9ffff;
+$brand-primary: #1db8bf;
+$brand-secondary: #e91e25;
+$brand-success: #adce42;
+$brand-danger: #fe7f65;
+
+$state-success-text: #ffffff;
+$state-success-bg: #adce42;
+$state-success-border: #adce42;
+
+$state-info-text: #ffffff;
+$state-info-bg: #5291cb;
+$state-info-border: #5291cb;
+
+$state-danger-text: #ffffff;
+$state-danger-bg: #fe7f65;
+$state-danger-border: #fe7f65;
+
+$text-color: #404040;
+$text-color-light: #a8a8a8;
+$link-hover-color: #e91e25;
+$link-hover-decoration: none;
+
+$border-color: #cccccc;
+
+$font-family-sans-serif: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+$font-family-semibold: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+$font-size-base: 14px;
+
+$btn-font-weight: 300;
+
+$navbar-height: 99px;
+
+$panel-default-heading-bg: #ffffff;
+$panel-default-text: #969696;

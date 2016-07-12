@@ -1,0 +1,36 @@
+.panel {
+	border: none;
+	box-shadow: none;
+	background: none;
+}
+.panel-body {
+	font-weight: 300;
+	
+	&.nopadding {
+		padding: 15px 0;
+	}
+}
+
+.panel-heading, .panel-default > .panel-heading {
+	border-bottom: 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: $brand-secondary;
+    text-align: center;
+    background: none;
+    .panel-subtitle {
+		font-size: 21px;
+		text-align: center;
+		color: $text-color;
+		font-weight: normal;
+	}
+}
+.panel-flush {
+	.panel-body, .panel-header {
+		padding: 0;
+	}
+}
+
+body#settings .panel-heading, body#settings .panel-default > .panel-heading {
+	text-align: left;
+}

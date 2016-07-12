@@ -1,0 +1,50 @@
+.spark-screen {
+	label {
+    	font-weight: 300;
+    }
+
+	.has-error {
+	  @include form-control-validation($state-danger-bg, $state-danger-bg, $state-danger-bg);
+
+	  .control-label {
+	  	color: $text-color;
+	  }
+	}
+
+	.form-control {
+		box-shadow: none;
+		border-radius: 0;
+		color: $text-color;
+		font-size: 16px;
+		padding: 22px 10px;
+	}
+	.field {
+		margin-bottom: 1em;
+	}
+	.disclaimer {
+		font-size: 10px;
+		color: $text-color-light;
+		margin: 5px 0;
+		text-align: center;
+	}
+	.reg-field {
+		float: left;
+	   	padding: 0 2px;
+	   	width: 35%;
+	}
+	.reg-button {
+		float: left;
+	   	padding: 0 2px;
+	   	width: 30%;
+	   	
+	   	.btn {
+	   		width: 100%;
+	   	}
+	}
+	@media only screen and (max-width: 549px) {
+		.reg-field, .reg-button {
+			width: 100%;
+			float: none;
+		}
+	}
+}

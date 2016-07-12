@@ -152,11 +152,13 @@
                 </span>
 
                 <span v-else>
-                    Register
+                    Let’s get started!
+                    <div class="panel-subtitle">Everything you need to make organic & delicious dinners
+the whole family will love delivered straight to your door each week.</div>
                 </span>
             </div>
 
-            <div class="panel-body">
+            <div class="panel-body nopadding">
                 <!-- Generic Error Message -->
                 <div class="alert alert-danger" v-if="registerForm.errors.has('form')">
                     @{{ registerForm.errors.get('form') }}
@@ -169,7 +171,27 @@
 
                 <!-- Registration Form -->
                 @include('spark::auth.register-common-form')
+
             </div>
         </div>
     </div>
+</div>
+
+<div class="row" v-if="paidPlans.length == 0">
+    <div class="col-md-4 col-md-offset-2">
+        <h5>NO COMMITMENT</h5>
+        <p>Skip weeks, change your family size, or cancel anytime. </p>
+
+        <h5>CUSTOMIZED TO YOUR FAMILY</h5>
+        <p>Customize to your family’s size and take advantage of special kid’s pricing. We’ll personalize your menus based on your dietary preferences.</p> 
+
+        <h5>CONVENIENT DELIVERY</h5>
+        <p>Meals arrive in a recyclable insulated box so food stays fresh until you open it.</p>
+    </div>
+    <div class="col-md-4">
+        <img src="/img/p_register.jpg">
+    </div>
+</div>
+<div class="row" v-if="paidPlans.length == 0">
+    <div class="footnote col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 </div>
