@@ -12,4 +12,4 @@
 require('./../spark-components/bootstrap');
 
 require('./home');
-require('./components/whatscookings.js');
+require('./whatscookings');

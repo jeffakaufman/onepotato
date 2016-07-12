@@ -1,4 +1,16 @@
 .spark-screen {
+	.table {
+		> thead,
+		> tbody,
+		> tfoot {
+		    > tr {
+		    	> th,
+		      	> td {
+			        border-top: 1px solid $border-color;
+			   	}
+		    }
+	    }
+	}
 	td.spark-table-pad {
 		padding-top: 14px;
 	}

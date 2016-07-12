@@ -1,6 +1,6 @@
 <spark-create-token :available-abilities="availableAbilities" inline-template>
     <div>
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-form">
             <div class="panel-heading">
                 Create API Token
             </div>

@@ -1,4 +1,4 @@
-.spark-screen {
+// .spark-screen {
 	label {
     	font-weight: 300;
     }
@@ -10,13 +10,18 @@
 	  	color: $text-color;
 	  }
 	}
+	.form-horizontal .control-label, .control-label {
+		font-size: 16px;
+	  	padding-top: 13px;
+	}
 
 	.form-control {
 		box-shadow: none;
 		border-radius: 0;
 		color: $text-color;
 		font-size: 16px;
-		padding: 22px 10px;
+		height: auto;
+		padding: 12px 10px;
 	}
 	.field {
 		margin-bottom: 1em;
@@ -47,4 +52,4 @@
 			float: none;
 		}
 	}
-}
+// }

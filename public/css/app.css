@@ -5785,16 +5785,16 @@ button.close {
     right: 0;
     top: 0; }
 
-.spark-screen .btn {
+.btn {
   font-size: 12px;
   font-weight: 500;
   text-transform: uppercase;
   transition: background-color 0.2s ease; }
 
-.spark-screen .btn-link {
+.btn-link {
   font-weight: 300; }
 
-.spark-screen .btn-primary {
+.btn-primary {
   color: #fff;
   background-color: #e91e25;
   border: none;
@@ -5804,105 +5804,113 @@ button.close {
   font-size: 18px;
   font-weight: 500; }
 
-.spark-screen .col-md-2 .btn {
+.col-md-2 .btn {
   width: 100%; }
 
-.spark-screen label {
+label {
   font-weight: 300; }
 
-.spark-screen .has-error .help-block,
-.spark-screen .has-error .control-label,
-.spark-screen .has-error .radio,
-.spark-screen .has-error .checkbox,
-.spark-screen .has-error .radio-inline,
-.spark-screen .has-error .checkbox-inline,
-.spark-screen .has-error.radio label,
-.spark-screen .has-error.checkbox label,
-.spark-screen .has-error.radio-inline label,
-.spark-screen .has-error.checkbox-inline label {
+.has-error .help-block,
+.has-error .control-label,
+.has-error .radio,
+.has-error .checkbox,
+.has-error .radio-inline,
+.has-error .checkbox-inline,
+.has-error.radio label,
+.has-error.checkbox label,
+.has-error.radio-inline label,
+.has-error.checkbox-inline label {
   color: #fe7f65; }
 
-.spark-screen .has-error .form-control {
+.has-error .form-control {
   border-color: #fe7f65;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
-  .spark-screen .has-error .form-control:focus {
+  .has-error .form-control:focus {
     border-color: #fe5532;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ffd3ca; }
 
-.spark-screen .has-error .input-group-addon {
+.has-error .input-group-addon {
   color: #fe7f65;
   border-color: #fe7f65;
   background-color: #fe7f65; }
 
-.spark-screen .has-error .form-control-feedback {
+.has-error .form-control-feedback {
   color: #fe7f65; }
 
-.spark-screen .has-error .control-label {
+.has-error .control-label {
   color: #404040; }
 
-.spark-screen .form-control {
+.form-horizontal .control-label, .control-label {
+  font-size: 16px;
+  padding-top: 13px; }
+
+.form-control {
   box-shadow: none;
   border-radius: 0;
   color: #404040;
   font-size: 16px;
-  padding: 22px 10px; }
+  height: auto;
+  padding: 12px 10px; }
 
-.spark-screen .field {
+.field {
   margin-bottom: 1em; }
 
-.spark-screen .disclaimer {
+.disclaimer {
   font-size: 10px;
   color: #a8a8a8;
   margin: 5px 0;
   text-align: center; }
 
-.spark-screen .reg-field {
+.reg-field {
   float: left;
   padding: 0 2px;
   width: 35%; }
 
-.spark-screen .reg-button {
+.reg-button {
   float: left;
   padding: 0 2px;
   width: 30%; }
-  .spark-screen .reg-button .btn {
+  .reg-button .btn {
     width: 100%; }
 
 @media only screen and (max-width: 549px) {
-  .spark-screen .reg-field, .spark-screen .reg-button {
+  .reg-field, .reg-button {
     width: 100%;
     float: none; } }
 
 .spark-profile-photo {
-  border: 2px solid #c2eef1;
+  border: 2px solid #1db8bf;
   border-radius: 50%;
   height: 40px;
   padding: 2px;
   width: 40px; }
 
 .spark-profile-photo-lg {
-  border: 2px solid #c2eef1;
+  border: 2px solid #1db8bf;
   border-radius: 50%;
   padding: 2px;
   height: 75px;
   width: 75px; }
 
 .spark-profile-photo-xl {
-  border: 2px solid #c2eef1;
+  border: 2px solid #1db8bf;
   border-radius: 50%;
   padding: 2px;
   height: 125px;
   width: 125px; }
 
 .spark-nav-profile-photo {
-  border: 2px solid #c2eef1;
+  border: 2px solid #1db8bf;
   border-radius: 50%;
   padding: 2px;
   height: 50px;
   width: 50px; }
 
+.spark-nav-profile-photo:hover {
+  border-color: #e91e25; }
+
 .spark-team-photo {
-  border: 2px solid #c2eef1;
+  border: 2px solid #1db8bf;
   border-radius: 50%;
   padding: 2px; }
 
@@ -5923,14 +5931,14 @@ button.close {
   font-weight: 300; }
 
 .navbar {
-  background: #f9ffff;
+  background: #fff;
   color: #1db8bf;
   font-size: 14px;
   letter-spacing: 0.1em;
   font-weight: 300;
   margin-bottom: 20px;
   height: 99px;
-  border-color: #1db8bf;
+  border-color: #c2eef1;
   text-transform: uppercase; }
   .navbar .navbar-brand {
     font-size: 28px; }
@@ -5957,12 +5965,21 @@ button.close {
       font-size: 21px; }
     .navbar .navbar-nav.navbar-left .icon-truck, .navbar .navbar-nav.navbar-left .icon-creditcard {
       font-size: 24px; }
+    .navbar .navbar-nav .caret {
+      color: #1db8bf; }
     .navbar .navbar-nav > li > a {
-      color: #9d9d9d;
+      color: #404040;
+      /* #9d9d9d */
       cursor: pointer;
       font-weight: 400; }
+    .navbar .navbar-nav > li > a.has-activity-indicator {
+      color: #1db8bf; }
     .navbar .navbar-nav > li > a:hover {
       color: #1db8bf; }
+      .navbar .navbar-nav > li > a:hover .caret {
+        color: #e91e25; }
+    .navbar .navbar-nav > li > a.has-activity-indicator:hover {
+      color: #e91e25; }
   .navbar .dropdown-menu li {
     font-size: 14px; }
     .navbar .dropdown-menu li a {
@@ -5983,7 +6000,7 @@ button.close {
 .navbar-nav > li > a,
 .navbar-brand,
 .hamburger {
-  height: 70px;
+  height: 99px;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-direction: row;
@@ -6027,9 +6044,12 @@ button.close {
 .hamburger {
   float: right; }
 
+.nav > li > a:focus, .nav > li > a:hover {
+  background: none; }
+
 @media (min-width: 768px) {
   .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
-    margin: 10px 90px 0 0; } }
+    margin: 0 90px 0 0; } }
 
 .panel {
   box-shadow: none;
@@ -6043,6 +6063,8 @@ button.close {
 
 .panel-body {
   font-weight: 300; }
+  .panel-body .p-b-lg {
+    margin-bottom: 1em; }
   .panel-body.nopadding {
     padding: 15px 0; }
 
@@ -6071,6 +6093,14 @@ button.close {
 
 body#settings .panel-heading, body#settings .panel-default > .panel-heading {
   text-align: left; }
+
+.spark-screen .table > thead > tr > th,
+.spark-screen .table > thead > tr > td,
+.spark-screen .table > tbody > tr > th,
+.spark-screen .table > tbody > tr > td,
+.spark-screen .table > tfoot > tr > th,
+.spark-screen .table > tfoot > tr > td {
+  border-top: 1px solid #c2eef1; }
 
 .spark-screen td.spark-table-pad {
   padding-top: 14px; }

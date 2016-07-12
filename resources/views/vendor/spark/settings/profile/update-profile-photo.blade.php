@@ -1,6 +1,6 @@
 <spark-update-profile-photo :user="user" inline-template>
     <div>
-        <div class="panel panel-default" v-if="user">
+        <div class="panel panel-default panel-form" v-if="user">
             <div class="panel-heading">Profile Photo</div>
 
             <div class="panel-body">
