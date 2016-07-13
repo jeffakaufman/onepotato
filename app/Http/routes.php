@@ -61,3 +61,15 @@ Route::post('/whatscooking', 'WhatsCookingsController@saveWhatsCooking');
 Route::get('/admin/whatscooking', 'WhatsCookingsController@showWhatsCookings');
 Route::get('/admin/whatscooking/{id}', 'WhatsCookingsController@showWhatsCooking');
 
+Route::post('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice');
+Route::get('/admin/services/invoice/test', 'SubinvoiceController@testStripeInvoice');
+Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
+Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateShippingStatus');
+
+
+Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
+Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
+
+
+
+
