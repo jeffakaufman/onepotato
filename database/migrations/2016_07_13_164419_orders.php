@@ -15,6 +15,7 @@ class Orders extends Migration
         //
 		Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
+			$table->int('order_id');
             $table->timestamps();
 			$table->datetime('ship_date');
 			$table->string('ship_carrier',255);
