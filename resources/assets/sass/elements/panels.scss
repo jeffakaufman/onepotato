@@ -1,0 +1,55 @@
+.panel {
+	box-shadow: none;
+	background: none;
+	border: none;
+}
+.panel-form {
+	background: #fff; 
+	border: $border-color 1px solid;
+	border-radius: 0;
+}
+.panel-body {
+	font-weight: 300;
+	
+	.p-b-lg {
+		margin-bottom: 1em;
+	}
+	
+	&.nopadding {
+		padding: 15px 0;
+	}
+}
+
+.panel-heading, .panel-default > .panel-heading {
+	border-bottom: 0;
+    font-size: 18px;
+    font-family: $font-family-semibold;
+    color: $brand-primary;
+    text-transform: uppercase;
+    text-align: center;
+    background: none;
+    
+	h1 {
+		text-transform: none;
+		line-height: 1.3em;
+		letter-spacing: 0.09em; 
+		
+		.panel-subtitle {
+			font-size: 21px;
+			text-align: center;
+			color: $text-color;
+			font-family: $font-family-sans-serif;
+			line-height: 1.3em;
+			letter-spacing: 0;
+		}
+	}
+}
+.panel-flush {
+	.panel-body, .panel-header {
+		padding: 0;
+	}
+}
+
+body#settings .panel-heading, body#settings .panel-default > .panel-heading {
+	text-align: left;
+}

@@ -1,5 +1,5 @@
 <spark-update-payment-method-stripe :user="user" :team="team" :billable-type="billableType" inline-template>
-    <div class="panel panel-default">
+    <div class="panel panel-default panel-form">
         <!-- Update Payment Method Heading -->
         <div class="panel-heading">
             <div class="pull-left">

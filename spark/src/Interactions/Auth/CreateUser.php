@@ -47,11 +47,12 @@ class CreateUser implements Contract
     public function rules($request)
     {
         return [
-            'name' => 'required|max:255',
+            //'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+            'zip' => 'required|max:25',
             'vat_id' => 'max:50|vat_id',
-            'terms' => 'required|accepted',
+            //'terms' => 'required|accepted',
         ];
     }
 

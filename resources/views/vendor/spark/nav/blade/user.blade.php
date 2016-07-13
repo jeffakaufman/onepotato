@@ -15,7 +15,7 @@
             <!-- Branding Image -->
             <a class="navbar-brand" href="/home">
                 <!-- Spark -->
-                <img src="/img/mono-logo.png" style="height: 32px;">
+                <img src="/img/mono-logo.png">
             </a>
         </div>
 

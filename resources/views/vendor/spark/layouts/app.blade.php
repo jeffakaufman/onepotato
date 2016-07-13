@@ -14,6 +14,8 @@
 
     <!-- CSS -->
     <link href="/css/sweetalert.css" rel="stylesheet">
+    <link href="/css/fontello.css" rel="stylesheet">
+    <link href="/css/fontello-embedded.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -30,17 +32,23 @@
         )); ?>
     </script>
 </head>
-<body class="with-navbar" v-cloak>
+<body id="{{{ bodyClass() }}}" class="with-navbar" v-cloak>
     <div id="spark-app">
         <!-- Navigation -->
         @if (Auth::check())
             @include('spark::nav.user')
         @else
-            @include('spark::nav.guest')
+            @if (Request::is('register*'))
+                @include('spark::nav.register')
+            @else
+                @include('spark::nav.guest')
+            @endif
         @endif
 
         <!-- Main Content -->
         @yield('content')
+
+        @include ('sitewide.footer')
 
         <!-- Application Level Modals -->
         @if (Auth::check())

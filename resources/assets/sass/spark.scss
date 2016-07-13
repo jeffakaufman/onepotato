@@ -1,0 +1,152 @@
+/**
+ * Elements
+ */
+
+@import "elements/alerts";
+@import "elements/buttons";
+@import "elements/forms";
+@import "elements/images";
+@import "elements/modals";
+@import "elements/nav";
+@import "elements/panels";
+@import "elements/tables";
+@import "elements/tooltips";
+
+/**
+ * Components
+ */
+
+@import "components/splash";
+@import "components/subscription";
+@import "components/settings";
+@import "components/terms";
+
+/*
+ * Misc. test
+ */
+
+body {
+	background: $bg-color;
+	font-weight: $btn-font-weight;
+	font-family: $font-family-sans-serif;
+	font-size: $font-size-base;
+	color: $text-color;
+}
+h1 {
+	font-family: $font-family-bold;
+	color: $brand-secondary;
+	font-size: 30px;
+}
+strong, b, h2, h3, h4, h5 {
+	font-family: $font-family-semibold;
+	color: $brand-secondary;
+	letter-spacing: 0.05em;
+}
+a {
+    color: $text-color;
+    text-decoration: none;
+}
+p {
+	margin: 0 0 1.5em;
+}
+img {
+	max-width: 100%;
+}
+.fa-btn {
+    margin-right: 5px;
+}
+.footnote {
+	font-size: 12px;
+	color: $text-color-light;
+	text-align: center;
+	margin-top: 5em;
+}
+#spark-layout {
+	background-color: #f5f5f5;
+}
+
+.text-success {
+	color: $state-success-bg;
+}
+
+#quote {
+	background: $brand-secondary;
+	color: #fff;
+	text-align: center;
+	font-size: 18px;
+	font-family: $font-family-semibold;
+	padding: 2.5em 0;
+	margin-top: 1.5em;
+	line-height: 1.8em;
+	
+	.quote-name {
+		font-size: 15px;
+		text-transform: uppercase;
+	}
+}
+
+#footer {
+	background: #d8fafc;
+	color: $brand-primary;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-family: $font-family-semibold;
+	
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+	li {
+		list-style: none;
+		line-height: 85px;
+		display: inline-block;
+	}
+	.links {
+		float: left;
+		
+		li {
+			margin-right: 30px;
+		}
+		a {
+			color: $brand-primary;
+		}
+		a:hover {
+			color: $brand-secondary;
+		}
+	}
+	.social {
+		float: right;
+		line-height: 85px;
+		
+		li {
+			background: $brand-primary;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			line-height: 32px;
+			margin: 0 5px;
+			text-align: center;
+			cursor: pointer;
+			
+			&:hover {
+				background: $brand-secondary;
+			}
+		}
+		.fa {
+			font-size: 18px;
+			color: #fff;
+			line-height: 32px;
+			
+		}
+	}
+}
+
+#copyright {
+	font-family: $font-family-semibold;
+	text-transform: uppercase;
+	font-size: 10px;
+	color: $brand-primary;
+	padding: 10px 0;
+}

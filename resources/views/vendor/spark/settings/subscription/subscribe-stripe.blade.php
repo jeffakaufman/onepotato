@@ -5,7 +5,7 @@
     @include('spark::settings.subscription.subscribe-common')
 
     <!-- Billing Information -->
-    <div class="panel panel-default">
+    <div class="panel panel-default panel-form">
         <div class="panel-heading">Billing Information</div>
 
         <div class="panel-body">
