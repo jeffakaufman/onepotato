@@ -2,8 +2,7 @@
 
 @section('page_header')
     <h1>
-        Dashboard
-        <small>Control panel</small>
+        Subscription Products
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -19,7 +18,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Dashboard</div>
+                    <div class="panel-heading">Subscription Products List</div>
 
                     <div class="panel-body">
 {{--                        @foreach ($recipes as $recipe)--}}

@@ -31,7 +31,7 @@
     <!-- FastClick -->
     <script src="/admin/plugins/fastclick/fastclick.js"></script>
     <link href="/admin/css/AdminLTE.min.css" rel="stylesheet">
-    <link href="/admin/css/skins/skin-green.min.css" rel="stylesheet">
+    <link href="/admin/css/skins/skin-red-light.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     @yield('scripts', '')
@@ -43,7 +43,7 @@
         )); ?>
     </script>
 </head>
-<body class="hold-transition skin-green sidebar-mini">
+<body class="hold-transition skin-red-light sidebar-mini">
     <div id="wrapper">
         <!-- Navigation -->
         {{--@if (Auth::check())--}}
@@ -57,6 +57,75 @@
         {{--@endif--}}
 
         <header class="main-header">
+            <!-- Logo -->
+            <a href="/admin/dashboard" class="logo" style="background-color: white;padding: 0;">
+                <img src="/img/mono-logo.png" style="width: 230px;"/>
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                {{--<span class="logo-mini"><b>A</b>LT</span>--}}
+                <!-- logo for regular state and mobile devices -->
+                {{--<span class="logo-lg"><b>Admin</b>LTE</span>--}}
+            </a>
+
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Alexander Pierce</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        Alexander Pierce - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li class="user-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Followers</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Sales</a>
+                                        </div>
+                                        <div class="col-xs-4 text-center">
+                                            <a href="#">Friends</a>
+                                        </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </header>
         <aside class="main-sidebar">
         @include('spark::nav.admin');
@@ -65,15 +134,7 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1>
-                    Dashboard
-                    <small>Control panel</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="#">UI</a></li>
-                    <li class="active">Buttons</li>
-                </ol>
+                @yield('page_header')
             </section>
 
             <!-- Main content -->

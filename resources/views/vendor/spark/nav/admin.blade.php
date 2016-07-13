@@ -37,13 +37,13 @@
             </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Subscription Products</a></li>
-                <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> One Time Products</a></li>
+                <li><a href="/admin/subs_products"><i class="fa fa-circle-o"></i> Subscription Products</a></li>
+                <li><a href="/admin/one_time_products"><i class="fa fa-circle-o"></i> One Time Products</a></li>
             </ul>
         </li>
 
         <li>
-            <a href="../widgets.html">
+            <a href="/admin/gift_cards">
                 <i class="fa fa-gift"></i> <span>Gift Cards</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
@@ -51,12 +51,12 @@
             </a>
         </li>
         <li>
-            <a href="../widgets.html">
+            <a href="/admin/subscriptions">
                 <i class="fa fa-list"></i> <span>Subscriptions</span>
             </a>
         </li>
         <li>
-            <a href="../widgets.html">
+            <a href="/admin/product_orders">
                 <i class="fa fa-list"></i> <span>Product Orders</span>
             </a>
         </li>
