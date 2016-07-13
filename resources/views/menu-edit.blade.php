@@ -13,8 +13,13 @@
       </div>
       <div class="modal-body">
      <!-- Edit Menu Form -->
+     {!! Form::open(
+			        array(
+			            'url' => 'whatscooking', 
+			            'class' => 'form-horizontal',
+			            'method' => 'put',
+			            'files' => true)) !!}    
     <form method="POST" action="/whatscooking" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
-    <input name="_token" type="hidden" value="kxGpfAuyrx3dywcDGTE3c7mKSDNWF6QAFTtB1pvp">
     <input type="hidden" name="_method" value="PUT">
     
         	    <input name="whatscooking_id" id="whatscooking_id" type="hidden">
