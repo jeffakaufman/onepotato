@@ -59,6 +59,7 @@ Route::get('user/test/{id}', 'UserController@showTest');
 Route::post('/whatscooking', 'WhatsCookingsController@saveWhatsCooking');
 Route::put('/whatscooking', 'WhatsCookingsController@updateWhatsCooking');
 
+
 Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
 Route::get('/admin/dashboard', 'DashboardController@show');
@@ -78,5 +79,12 @@ Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
 
+Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
+Route::get('/admin/dashboard', 'DashboardController@show');
+Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
+Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
+Route::get('/admin/gift_cards', 'GiftCardsController@show');
+Route::get('/admin/subscriptions', 'SubscriptionsController@show');
+Route::get('/admin/product_orders', 'OrdersController@show');
 
