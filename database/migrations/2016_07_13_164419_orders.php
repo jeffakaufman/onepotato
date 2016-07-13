@@ -15,13 +15,13 @@ class Orders extends Migration
         //
 		Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-			$table->int('order_id');
+			$table->integer('order_id')->nullable();
             $table->timestamps();
-			$table->datetime('ship_date');
-			$table->string('ship_carrier',255);
-			$table->string('ship_service',255);
-			$table->string('tracking_number',255);
-			$table->string('ship_station_xml',3000);
+			$table->datetime('ship_date')->nullable();;
+			$table->string('ship_carrier',255)->nullable();;
+			$table->string('ship_service',255)->nullable();;
+			$table->string('tracking_number',255)->nullable();;
+			$table->string('ship_station_xml',3000)->nullable();;
         });
     }
 
