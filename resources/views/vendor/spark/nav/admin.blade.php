@@ -2,10 +2,18 @@
     <!-- Sidebar user panel -->
     <div class="user-panel">
         <div class="pull-left image">
-            <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+            @if(Auth::check())
+            <img src="{{{ Auth::user()->photo_url }}}" class="img-circle" alt="User Image">
+            @endif
         </div>
         <div class="pull-left info">
-            <p>{{{ Auth::user()->name }}}</p>
+            <p>
+                @if(Auth::check())
+                    {{{ Auth::user()->name }}}
+                @else
+                    Unregistered
+                @endif
+            </p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
     </div>
