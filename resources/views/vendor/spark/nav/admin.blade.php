@@ -5,10 +5,158 @@
             <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-            <p>Alexander Pierce</p>
+            <p>{{{ Auth::user()->name }}}</p>
             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
     </div>
+    {{--
+Alexander Pierce App\User Object
+(
+    [fillable:protected] => Array
+        (
+            [0] => name
+            [1] => email
+        )
+
+    [hidden:protected] => Array
+        (
+            [0] => password
+            [1] => remember_token
+            [2] => authy_id
+            [3] => country_code
+            [4] => phone
+            [5] => card_brand
+            [6] => card_last_four
+            [7] => card_country
+            [8] => billing_address
+            [9] => billing_address_line_2
+            [10] => billing_city
+            [11] => billing_zip
+            [12] => billing_country
+            [13] => extra_billing_information
+        )
+
+    [casts:protected] => Array
+        (
+            [trial_ends_at] => date
+            [uses_two_factor_auth] => boolean
+        )
+
+    [connection:protected] =>
+    [table:protected] =>
+    [primaryKey:protected] => id
+    [keyType:protected] => int
+    [perPage:protected] => 15
+    [incrementing] => 1
+    [timestamps] => 1
+    [attributes:protected] => Array
+        (
+            [id] => 1
+            [name] => Aleksey Zagarov
+            [email] => azagarov@gmail.com
+            [password] => $2y$10$0xTMzevARIuCSiNM0dxVm.laR6WFW3n//n.YxhwworWODfulISQI6
+            [remember_token] =>
+            [photo_url] =>
+            [uses_two_factor_auth] => 0
+            [authy_id] =>
+            [country_code] =>
+            [phone] =>
+            [two_factor_reset_code] =>
+            [current_team_id] =>
+            [stripe_id] =>
+            [current_billing_plan] =>
+            [card_brand] =>
+            [card_last_four] =>
+            [card_country] =>
+            [billing_address] =>
+            [billing_address_line_2] =>
+            [billing_city] =>
+            [billing_state] =>
+            [billing_zip] =>
+            [billing_country] =>
+            [vat_id] =>
+            [extra_billing_information] =>
+            [trial_ends_at] => 2016-04-29 06:54:34
+            [last_read_announcements_at] => 2016-04-19 06:54:34
+            [created_at] => 2016-04-19 06:54:35
+            [updated_at] => 2016-06-03 09:00:41
+        )
+
+    [original:protected] => Array
+        (
+            [id] => 1
+            [name] => Aleksey Zagarov
+            [email] => azagarov@gmail.com
+            [password] => $2y$10$0xTMzevARIuCSiNM0dxVm.laR6WFW3n//n.YxhwworWODfulISQI6
+            [remember_token] =>
+            [photo_url] =>
+            [uses_two_factor_auth] => 0
+            [authy_id] =>
+            [country_code] =>
+            [phone] =>
+            [two_factor_reset_code] =>
+            [current_team_id] =>
+            [stripe_id] =>
+            [current_billing_plan] =>
+            [card_brand] =>
+            [card_last_four] =>
+            [card_country] =>
+            [billing_address] =>
+            [billing_address_line_2] =>
+            [billing_city] =>
+            [billing_state] =>
+            [billing_zip] =>
+            [billing_country] =>
+            [vat_id] =>
+            [extra_billing_information] =>
+            [trial_ends_at] => 2016-04-29 06:54:34
+            [last_read_announcements_at] => 2016-04-19 06:54:34
+            [created_at] => 2016-04-19 06:54:35
+            [updated_at] => 2016-06-03 09:00:41
+        )
+
+    [relations:protected] => Array
+        (
+        )
+
+    [visible:protected] => Array
+        (
+        )
+
+    [appends:protected] => Array
+        (
+        )
+
+    [guarded:protected] => Array
+        (
+            [0] => *
+        )
+
+    [dates:protected] => Array
+        (
+        )
+
+    [dateFormat:protected] =>
+    [touches:protected] => Array
+        (
+        )
+
+    [observables:protected] => Array
+        (
+        )
+
+    [with:protected] => Array
+        (
+        )
+
+    [morphClass:protected] =>
+    [exists] => 1
+    [wasRecentlyCreated] =>
+    [currentToken:protected] =>
+)
+1
+
+    --}}
     <!-- search form -->
     <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
