@@ -7,6 +7,7 @@
 <style>
 	
 </style>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
 <script>
 /*stripe code*/

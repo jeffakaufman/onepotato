@@ -58,7 +58,7 @@ class WhatsCookingsController extends Controller
 
 
 	/**
-     * Show the application dashboard.
+     * Update a menu.
      *
      * @return Response
      */
