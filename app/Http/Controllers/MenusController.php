@@ -44,7 +44,7 @@ class MenusController extends Controller
     }
 
 	/**
-     * Show the application dashboard.
+     * Show a menu item.
      *
      * @return Response
      */
