@@ -96,6 +96,12 @@ class UserController extends Controller
 		
 	}
 	
+	public function testCreateUserPayment ($id, Request $request) {
+		
+		echo "help";
+		
+	}
+	
 	public function createUserPayment($id, Request $request) {
 		
 			$user = User::find($id);
@@ -104,16 +110,23 @@ class UserController extends Controller
 			$userProduct = Product::where('id',$productID)->firstOrFail();
 			
 			//figure out which plan the user is currently subscribed to
+			
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			
 			
 			// Get the credit card details submitted by the form
 			$token = $request->stripeToken;
+			
+			echo $token;
+			echo $user->email;
+			
 			
 			$customer = \Stripe\Customer::create(array(
 					  "source" => $token,
 					  "plan" => 'account_only',
 					  "email" => $user->email)
 			);
+			
 						
 			$user->stripe_id = $customer->id;
 			
@@ -345,16 +358,27 @@ class UserController extends Controller
 		
 		//get subscriptions (subscriptions table), join Product, join Dietary Preferences 
 		
-		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
-		$productID = $userSubscription->product_id;
-		$userProduct = Product::where('id',$productID)->firstOrFail();
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		
+		if ($userSubscription) {
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->firstOrFail();
+		}
+		
 		$user = User::find($id);
 		$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
 		
 	
 		
 		//return "test";
+		
+		if ($userSubscription) {
 		return view('user-subscriptions')->with(['user'=>$user, 'userSubscription'=>$userSubscription, 'csr_notes'=>$csr_notes,'userProduct'=>$userProduct]);
+		}else{
+			
+			return ("test");
+			
+		}
 		
 		
 		
