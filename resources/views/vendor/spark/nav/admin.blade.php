@@ -197,6 +197,11 @@ Alexander Pierce App\User Object
                 <li><a href="/admin/one_time_products"><i class="fa fa-circle-o"></i> One Time Products</a></li>
             </ul>
         </li>
+        <li>
+            <a href="/admin/users">
+                <i class="fa fa-user"></i> <span>Users</span>
+            </a>
+        </li>
 
         <li>
             <a href="/admin/gift_cards">

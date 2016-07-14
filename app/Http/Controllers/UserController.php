@@ -25,7 +25,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the users
      *
      * @return Response
      */
@@ -43,7 +43,7 @@ class UserController extends Controller
     public function showUsers()
     {
         	$users = User::get();
-			return view('users')->with(['users'=>$users]);
+			return view('adminusers')->with(['users'=>$users]);
     }
 
 	/**

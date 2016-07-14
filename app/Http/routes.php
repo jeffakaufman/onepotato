@@ -81,6 +81,7 @@ Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus'
 
 Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
+Route::get('/admin/users', 'UserController@showUsers');
 Route::get('/admin/dashboard', 'DashboardController@show');
 Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
 Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
