@@ -216,6 +216,12 @@ Alexander Pierce App\User Object
                 <i class="fa fa-list"></i> <span>Product Orders</span>
             </a>
         </li>
+        <li>
+            <a href="/admin/whatscooking">
+                <i class="fa fa-cutlery"></i> <span>What's Cooking</span>
+            </a>
+        </li>
+
 <!--
         <li class="treeview">
             <a href="#">

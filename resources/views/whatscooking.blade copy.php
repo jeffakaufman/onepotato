@@ -1,26 +1,18 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app')
 
-@section('page_header')
+@section('content')
 
 @include('menu-edit')
-    <h1>
-        What's Cooking
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">UI</a></li>
-        <li class="active">Buttons</li>
-    </ol>
-@endsection
-@section('content')
+
 <whatscookings :whatscookings="whatscookings" inline-template>
+
     <div class="container">
         <!-- Application Dashboard -->
 			<!-- Display Validation Errors -->
 			@include('errors.errors')
 		
 		<div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Add Menu</div>
                     	<div class="panel-body">
@@ -106,33 +98,31 @@
         </div>
     
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                  	<div class="panel-heading">What's Cooking!</div>
 					<div class="panel-body">
 					<div class="container">
                     	<div class="row">
-							<div class="container col-md-9">
-	                        	<div class="col-md-1"><strong>Week</strong></div>
-								<div class="col-md-2"><strong>Type</strong></div>
-	                        	<div class="col-md-2"><strong>Title</strong></div>
-	                        	<div class="col-md-2"><strong>Ingredients</strong></div>
-								<div class="col-md-2 text-center"><strong>Image</strong></div>
-							</div>
+	                        	<div class="col-md-1"><h5>Week</h5></div>
+								<div class="col-md-2"><h5>Type</h5></div>
+	                        	<div class="col-md-2"><h5>Menu Title</h5></div>
+	                        	<div class="col-md-2"><h5>Ingredients</h5></div>
+								<div class="col-md-2 text-center"><h5>Image</h5></div>
 						</div>
-						<div class="row">
-							<div class="col-md-9">
-								<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;margin-top:3px;margin-bottom:0px">
-							</div>
-						</div>
+								<div class="row">
+									<div class="col-md-12 ">
+										<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;">
+									</div>
+								</div>
 				        <div class="row">
-							<div class="container col-md-9">
+							<div class="container">
     	                	    @foreach ($whatscookings as $whatscooking)
 		                	        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
 								    <div class="row" style="margin-top:20px;margin-bottom:20px">
 								    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
 								    	<div class="col-md-2">{{ $whatscooking->product_type }}</div>
-	            	    	        	<div class="col-md-2">{{ $menu->menu_title }}</div>
+	            	    	        	<div class="col-md-2"><a href="/menu/{{ $menu->id }}">{{ $menu->menu_title }}</a></div>
 	            	    	        	<div class="col-md-2">
 	            	    	        		<ul style="list-style-image: url('/img/pot.png');">
 		            		            	@if($menu->hasBeef)
