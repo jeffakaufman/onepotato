@@ -1,7 +1,18 @@
-@extends('spark::layouts.app')
+@extends('spark::layouts.app-admin')
 
+@section('page_header')
+
+@include('menu-edit')
+    <h1>
+        {{ $user->name }}'s Referrals
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">UI</a></li>
+        <li class="active">Buttons</li>
+    </ol>
+@endsection
 @section('content')
-
 <?php
 
 function ReadableDietaryPreferences($diet_prefs) {

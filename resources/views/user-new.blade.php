@@ -1,6 +1,17 @@
-@extends('spark::layouts.app')
+@extends('spark::layouts.app-admin')
 
-@section('content')
+@section('page_header')
+
+@include('menu-edit')
+    <h1>
+        New User
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">UI</a></li>
+        <li class="active">Buttons</li>
+    </ol>
+@endsection
 <home :menu="menu" inline-template>
 
 <div class="container">
