@@ -100,6 +100,11 @@ Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
 Route::get('/admin/gift_cards', 'GiftCardsController@show');
 Route::get('/admin/subscriptions', 'SubscriptionsController@show');
 Route::get('/admin/product_orders', 'OrdersController@show');
+Route::get('/admin/customers', 'CustomersController@show');
+Route::get('/admin/shipments', 'ShipmentsController@show');
+Route::get('/admin/coupons', 'CouponsController@show');
+Route::get('/admin/menu_information', 'MenuInformationController@show');
+Route::get('/admin/recipes', 'RecipesController@showRecipes');
 
 
 Route::get('user/test/{id}', 'UserController@showTest');

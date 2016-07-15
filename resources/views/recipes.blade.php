@@ -1,4 +1,4 @@
-@extends('spark::layouts.app')
+@extends('spark::layouts.app', ['menuitem' => 'recipes'])
 
 @section('content')
 <home :recipes="recipes" inline-template>

@@ -1,8 +1,8 @@
-@extends('spark::layouts.app-admin', ['menuitem' => 'giftcards'])
+@extends('spark::layouts.app-admin', ['menuitem' => 'coupons'])
 
 @section('page_header')
     <h1>
-        Gift Cards
+        Coupons
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Gift Cards List</div>
+                    <div class="panel-heading">Coupons List</div>
 
                     <div class="panel-body">
 {{--                        @foreach ($recipes as $recipe)--}}

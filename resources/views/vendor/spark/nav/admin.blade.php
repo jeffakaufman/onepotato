@@ -193,17 +193,17 @@ Alexander Pierce App\User Object
             </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="/admin/subs_products"><i class="fa fa-circle-o"></i> Subscription Products</a></li>
-                <li><a href="/admin/one_time_products"><i class="fa fa-circle-o"></i> One Time Products</a></li>
+                <li class="menuitem-subscription-products"><a href="/admin/subs_products"><i class="fa fa-circle-o"></i> Subscription Products</a></li>
+                <li class="menuitem-one-time-products"><a href="/admin/one_time_products"><i class="fa fa-circle-o"></i> One Time Products</a></li>
             </ul>
         </li>
-        <li>
+        <li class="menuitem-users">
             <a href="/admin/users">
                 <i class="fa fa-user"></i> <span>Users</span>
             </a>
         </li>
 
-        <li>
+        <li class="menuitem-giftcards">
             <a href="/admin/gift_cards">
                 <i class="fa fa-gift"></i> <span>Gift Cards</span>
             <span class="pull-right-container">
@@ -211,19 +211,44 @@ Alexander Pierce App\User Object
             </span>
             </a>
         </li>
-        <li>
+        <li class="menuitem-subscriptions">
             <a href="/admin/subscriptions">
                 <i class="fa fa-list"></i> <span>Subscriptions</span>
             </a>
         </li>
-        <li>
+        <li class="menuitem-orders">
             <a href="/admin/product_orders">
                 <i class="fa fa-list"></i> <span>Product Orders</span>
             </a>
         </li>
-        <li>
+        <li class="menuitem-whatscooking">
             <a href="/admin/whatscooking">
                 <i class="fa fa-cutlery"></i> <span>What's Cooking</span>
+            </a>
+        </li>
+        <li class="menuitem-customers">
+            <a href="/admin/customers">
+                <i class="fa fa-list"></i> <span>Customers</span>
+            </a>
+        </li>
+        <li class="menuitem-shipments">
+            <a href="/admin/shipments">
+                <i class="fa fa-list"></i> <span>Shipments</span>
+            </a>
+        </li>
+        <li class="menuitem-coupons">
+            <a href="/admin/coupons">
+                <i class="fa fa-list"></i> <span>Coupons</span>
+            </a>
+        </li>
+        <li class="menuitem-menu-information">
+            <a href="/admin/menu_information">
+                <i class="fa fa-list"></i> <span>Menu Information</span>
+            </a>
+        </li>
+        <li class="menuitem-recipes">
+            <a href="/admin/recipes">
+                <i class="fa fa-list"></i> <span>Recipes</span>
             </a>
         </li>
 
@@ -364,3 +389,15 @@ Alexander Pierce App\User Object
 -->
     </ul>
 </section>
+
+<script language="JavaScript" type="text/javascript">
+    $(document).ready(function() {
+        var _activeMenuItem = '{{ $menuitem }}';
+        var _className = 'li.menuitem-'+_activeMenuItem;
+        $(_className).addClass('active');
+
+        if($(_className).parent().parent().hasClass('treeview')) {
+            $(_className).parent().parent().addClass('active');
+        }
+    });
+</script>
