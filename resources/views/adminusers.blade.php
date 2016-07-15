@@ -1,4 +1,4 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app-admin', ['menuitem' => 'users'])
 
 @section('page_header')
 
@@ -26,7 +26,8 @@
 	
 						<a href="/user/new/">Create a New User</a><br/><br />
                         @foreach ($users as $user)
-						    <div><span style="display:inline-block;width:30px;" class="user_id">{{ $user->id }}</span><span class="user_name" style="display:inline-block;width:200px;"><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></span><span  style="display:inline-block;width:200px;" class="user_name">{{ $user->email }}</span>
+						    <div>
+						    	<span style="display:inline-block;width:30px;" class="user_id">{{ $user->id }}</span><span class="user_name" style="display:inline-block;width:200px;"><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></span><span  style="display:inline-block;width:200px;" class="user_name">{{ $user->email }}</span>
 	                        </div>
 						@endforeach
                     </div>
