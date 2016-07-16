@@ -27,10 +27,12 @@
  * Variables...
  */
 $bg-color: #f9ffff;
+$bg-color-note: #e8f9fa;
+$bg-color-status: #eefeff;
 $brand-primary: #1db8bf;
 $brand-secondary: #e91e25;
 $brand-success: #adce42;
-$brand-danger: #fe7f65;
+$brand-danger: #e91e25; /* #fe7f65 */
 
 $state-success-text: #ffffff;
 $state-success-bg: #adce42;
@@ -41,12 +43,13 @@ $state-info-bg: #5291cb;
 $state-info-border: #5291cb;
 
 $state-danger-text: #ffffff;
-$state-danger-bg: #fe7f65;
-$state-danger-border: #fe7f65;
+$state-danger-bg: #e91e25; /* #fe7f65 */
+$state-danger-border: #e91e25; /* #fe7f65 */
 
 $text-color: #404040;
 $text-color-light: #a8a8a8;
 $link-hover-color: #e91e25;
+$edit-link-color: #e82128;
 $link-hover-decoration: none;
 
 $border-color: #c2eef1;
@@ -58,7 +61,9 @@ $font-size-base: 14px;
 
 $btn-font-weight: 300;
 
-$navbar-height: 99px;
+$navbar-height: 60px;
+$navbar-desktop-height: 99px;
+
 
 $panel-default-heading-bg: #ffffff;
 $panel-default-text: #969696;

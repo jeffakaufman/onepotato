@@ -2,10 +2,9 @@
 	background: #fff;
 	color: $brand-primary;
 	font-size: 14px;
-	letter-spacing: 0.1em;
+	letter-spacing: 0.05em;
 	font-weight: 300;
 	margin-bottom: 20px;
-	height: $navbar-height;
 	border-color: $border-color;
 	text-transform: uppercase;
 
@@ -13,7 +12,14 @@
 		font-size: 28px;
 		
 		img {
-			height: 48px;
+			height: 40px;
+			
+			@media (min-width: 768px) {
+				height: auto;
+			}
+			@media (min-width: 992px) {
+				height: 48px;
+			}
 		}
 		i {
 			color: $brand-primary;
@@ -24,28 +30,72 @@
 		padding-top: 0px;
 		
 		&.navbar-left li {
-			padding: 18px 0 9px 0;
-    		margin: 0 23px;
-    		
-    		&.active {
-    			border-bottom: 4px solid $brand-primary;
-    		}
+			font-size: 18px;
+			position: relative;
+			line-height: 2em;
+			
+			span {
+				padding: 0 0 9px 0;
+				display: inline-block;
+				text-align: center;
+				transition: border 1s ease;
+				
+				@media (min-width: 768px) {
+					position: absolute;
+					bottom: 0;
+					left: 50%;
+					-webkit-transform: translateX(-50%);
+					transform: translateX(-50%);
+					border-bottom: 4px solid #fff;
+				}
+			}
+			@media (min-width: 768px) {
+				font-size: 11px;
+				line-height: 1.5em;
+				height: $navbar-desktop-height;
+			}
+			@media (min-width: 992px) {
+				font-size: 14px;
+			}
 		}
-		li.active {
-			border-bottom: 5px solid $brand-primary;
-		}
+		
 		&.navbar-left .icon {
-			display: block;
-		    font-size: 30px;
-		    margin-bottom: 5px;
-		    line-height: 42px;
+			display: inline-block;
+		    font-size: 40px;
+		    width: 80px;
+		 	vertical-align: middle;
 		    text-align: center;
+		    
+		    @media (min-width: 768px) {
+		    	font-size: 20px;
+		    	width: 50px;
+		    }
 		}
 		&.navbar-right .icon {
 			font-size: 21px;
 		}
 		&.navbar-left .icon-truck, &.navbar-left .icon-creditcard {
-			font-size: 24px;
+			font-size: 27px;
+			
+			@media (min-width: 768px) {
+		    	font-size: 14px;
+		    }
+		}
+		@media (min-width: 768px) {
+
+			li.active span {
+				border-bottom: 4px solid $brand-primary;
+			}
+			&.navbar-left .icon {
+				display: block;
+				width: auto;
+				font-size: 30px;
+				line-height: 42px;
+				margin-bottom: 5px;
+			}
+			&.navbar-left .icon-truck, &.navbar-left .icon-creditcard {
+				font-size: 24px;
+			}
 		}
 		.caret {
     		color: $brand-primary;
@@ -86,17 +136,61 @@
     background-color: transparent;
     color: #969ea2;
 }
-.with-navbar {
-    padding-top: 120px;
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: $border-color;
 }
-#register .navbar-right {
-	display: none;
+.navbar-inverse .navbar-toggle {
+	border-color: #fff; 
+	
+	.icon-bar {
+		background-color: $brand-primary;
+	}
+	
+	&:hover, &:focus {
+		background-color: transparent;
+		
+		.icon-bar {
+			background-color: $brand-secondary;
+		}
+	}
+
+}
+.with-navbar {
+    padding-top: 60px;
+    
+    @media (min-width: 768px) {
+    	padding-top: 100px;
+    }
+    &.register-preferences, &.register-delivery {
+    	padding-top: 100px;
+    	
+    	@media (min-width: 768px) {
+    		padding-top: 130px;
+    	}
+    }
+}
+body.register {
+
+	.navbar-left {
+		float: none;
+		white-space: nowrap;
+		width: 100%;
+		
+		li {
+			
+			@media (min-width: 768px) {
+				width: 20%;
+			}
+		}
+	}
+	.navbar-right {
+		display: none;
+	}
 }
 
 .navbar-nav > li > a,
 .navbar-brand,
 .hamburger {
-    height: 99px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -150,11 +244,44 @@
 	background: none;
 }
 
-
-@media (min-width: 768px) {
-
-	.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
-		margin: 0 90px 0 0;
+.container {
+	
+	.navbar-nav > li > a,
+	.navbar-brand,
+	.hamburger {
+	    height: $navbar-height;
 	}
 
+	@media (min-width: 768px) {
+		.navbar-nav > li > a,
+		.navbar-brand,
+		.hamburger {
+		    height: $navbar-desktop-height;
+		}
+		.navbar-header {
+			width: 30%;
+		}
+		.navbar-collapse {
+			margin-left: 30%;
+			width: 70%;
+		}
+	}
+	@media (min-width: 992px) {
+	    .navbar-header {
+			width: 30%;
+		}
+		.navbar-collapse {
+			margin-left: 30%;
+			width: 70%;
+		}
+	}
+	@media (min-width: 1200px) {
+		.navbar-header {
+			width: 30%;
+		}
+		.navbar-collapse {
+			margin-left: 30%;
+			width: 70%;
+		}
+	}
 }

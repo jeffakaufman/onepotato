@@ -32,7 +32,7 @@
         )); ?>
     </script>
 </head>
-<body id="{{{ bodyClass() }}}" class="with-navbar" v-cloak>
+<body class="with-navbar {{{ bodyClass() }}}" v-cloak>
     <div id="spark-app">
         <!-- Navigation -->
         @if (Auth::check())

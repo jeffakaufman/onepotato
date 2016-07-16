@@ -13,3 +13,6 @@ require('./../spark-components/bootstrap');
 
 require('./home');
 require('./whatscookings');
+//require('./preferences');
+require('./delivery');
+require('./payment');

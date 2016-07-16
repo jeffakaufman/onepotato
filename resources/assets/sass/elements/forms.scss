@@ -1,7 +1,69 @@
 // .spark-screen {
-	label {
-    	font-weight: 300;
-    }
+	.radio, .checkbox {
+		display: inline-block;
+		
+		&.nomargin {
+			margin: 0;
+		}
+	}
+	.radio + .radio, .checkbox + .checkbox {
+		margin: 10px 0;
+		
+		&.nomargin {
+			margin: 0;
+		}
+	}
+	.radio label, .checkbox label {
+	    display: block;
+	    cursor: pointer;
+	    position: relative;
+	    padding: 10px 10px 10px 35px;
+	    font-size: 13px;
+	    border: 1px solid #fff;
+	}
+	.radio label:before, .checkbox label:before {
+	    content: "";
+	    display: inline-block;
+	 
+	    width: 16px;
+	    height: 16px;
+	 
+	    margin-right: 10px;
+	    position: absolute;
+	    left: 12px;
+	    bottom: 12px;
+		border: 1px solid #ccc;
+	}
+	.radio label:before {
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+	}
+	input[type=radio], input[type=checkbox] {
+	    display: none;
+	}
+	input[type=radio]:checked + label:before {
+	    content: "\2022";
+	    color: #f3f3f3;
+	    font-size: 30px;
+	    text-align: center;
+	    line-height: 11px;
+	    background-color: $brand-primary;
+	    border-color: $brand-primary;
+	}
+	input[type=radio]:checked + label {
+		border: 1px solid $brand-primary;
+	}
+	input[type=checkbox]:checked + label:before {
+		font-family: 'FontAwesome';
+	    content: '\f00c'; /* "\2713"; */
+	    font-size: 13px;
+	    color: #f3f3f3;
+	    text-align: center;
+	    line-height: 14px;
+	    background-color: $brand-primary;
+	    border-color: $brand-primary;
+	}
 
 	.has-error {
 	  @include form-control-validation($state-danger-bg, $state-danger-bg, $state-danger-bg);
@@ -13,6 +75,7 @@
 	.form-horizontal .control-label, .control-label {
 		font-size: 16px;
 	  	padding-top: 13px;
+	  	text-align: left;
 	}
 
 	.form-control {
@@ -22,6 +85,18 @@
 		font-size: 16px;
 		height: auto;
 		padding: 12px 10px;
+		line-height: 1em;
+		
+		&.inline {
+			display: inline-block;
+			width: auto;
+		}
+	}
+	select.form-control {
+		padding: 5px 10px;
+	}
+	.form-row {
+		margin-bottom: 10px;
 	}
 	.field {
 		margin-bottom: 1em;
@@ -31,6 +106,13 @@
 		color: $text-color-light;
 		margin: 5px 0;
 		text-align: center;
+		
+		&.text-right {
+			text-align: right;
+		}
+		&.text-left {
+			text-align: left;
+		}
 	}
 	.reg-field {
 		float: left;

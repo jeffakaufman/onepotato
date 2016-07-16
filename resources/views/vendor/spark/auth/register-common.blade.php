@@ -194,5 +194,5 @@ the whole family will love delivered straight to your door each week.</div>
     </div>
 </div>
 <div class="row" v-if="paidPlans.length == 0">
-    <div class="footnote col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
+    <div class="footnote pad col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 </div>

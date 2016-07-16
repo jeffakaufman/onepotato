@@ -15,6 +15,19 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
+Route::get('/register/select_plan', function() {
+	return view('register.select_plan');
+});
+Route::get('/register/preferences', function() {
+	return view('register.preferences');
+});
+Route::get('/register/delivery', function() {
+	return view('register.delivery');
+});
+Route::get('/register/payment', function() {
+	return view('register.payment');
+});
+
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
         return View::make('menu-edit') 
