@@ -2,11 +2,22 @@
 	box-shadow: none;
 	background: none;
 	border: none;
+	
+	&.marginless {
+		margin-bottom: 0;
+	}
+	h2, h3, h4, h5 {
+		color: $brand-primary;
+	}
 }
 .panel-form {
 	background: #fff; 
 	border: $border-color 1px solid;
 	border-radius: 0;
+	
+	.panel-heading, .panel-default > .panel-heading {
+		padding-top: 10px;
+	}
 }
 .panel-body {
 	font-weight: 300;
@@ -16,18 +27,56 @@
 	}
 	
 	&.nopadding {
+		padding: 0 15px;
+	}
+	&.nosidepadding {
 		padding: 15px 0;
+	}
+	.panel-subtitle2 {
+		font-size: 14px;
+		color: $brand-primary;
+		text-transform: uppercase;
+		text-align: center;
+		font-family: $font-family-semibold;
 	}
 }
 
 .panel-heading, .panel-default > .panel-heading {
+	padding: 25px 15px 0 15px;
 	border-bottom: 0;
     font-size: 18px;
-    font-family: $font-family-semibold;
+    font-family: $font-family-bold;
     color: $brand-primary;
     text-transform: uppercase;
     text-align: center;
     background: none;
+    letter-spacing: 0.09em; 
+    
+    @media only screen and (min-width: 992px) {
+    	padding: 0 15px 0 15px;
+    }
+
+    &.with-subtitle {
+    	padding: 10px 15px;
+    }
+    &.extrapadding {
+    	padding: 20px 15px 0 15px;
+    	
+    	@media only screen and (min-width: 768px) {
+			padding: 20px 30px 0 30px;
+		}
+    }
+    &.text-left {
+    	text-align: left;
+    }
+    .panel-subtitle {
+		font-size: 14px;
+		color: $text-color;
+		font-family: $font-family-sans-serif;
+		line-height: 1.2em;
+		text-transform: none; 
+		letter-spacing: 0;
+	}
     
 	h1 {
 		text-transform: none;
@@ -35,12 +84,15 @@
 		letter-spacing: 0.09em; 
 		
 		.panel-subtitle {
-			font-size: 21px;
-			text-align: center;
+			font-size: 18px;
 			color: $text-color;
 			font-family: $font-family-sans-serif;
 			line-height: 1.3em;
 			letter-spacing: 0;
+			
+			@media (min-width: 1200px) {
+				font-size: 21px;
+			}
 		}
 	}
 }

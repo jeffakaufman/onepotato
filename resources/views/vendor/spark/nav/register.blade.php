@@ -18,11 +18,11 @@
         <div class="collapse navbar-collapse" id="spark-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav navbar-left">
-                <li @if (Request::is('register*'))class="active"@endif><i class="icon icon-apron"></i>1. Welcome</li>
-                <li><i class="icon icon-silverware"></i>2. Select Plan</li>
-                <li><i class="icon icon-sliders"></i>3. Preferences</li>
-                <li><i class="icon icon-truck"></i>4. Delivery</li>
-                <li><i class="icon icon-creditcard"></i>5. Payment</li>
+                <li @if (Request::is('register'))class="active"@endif><span><i class="icon icon-apron"></i>1. Welcome</span></li>
+                <li @if (Request::is('register/select_plan'))class="active"@endif><span><i class="icon icon-silverware"></i>2. Select Plan</span></li>
+                <li @if (Request::is('register/preferences'))class="active"@endif><span><i class="icon icon-sliders"></i>3. Preferences</span></li>
+                <li @if (Request::is('register/delivery'))class="active"@endif><span><i class="icon icon-truck"></i>4. Delivery</span></li>
+                <li @if (Request::is('register/payment'))class="active"@endif><span><i class="icon icon-creditcard"></i>5. Payment</span></li>
             </ul>
 
             <!-- Right Side Of Navbar -->
