@@ -1,4 +1,4 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app-admin', ['menuitem' => 'users'])
 
 @section('page_header')
 

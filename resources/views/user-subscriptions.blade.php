@@ -1,4 +1,4 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app-admin', ['menuitem' => 'users'])
 
 @section('page_header')
 
@@ -12,6 +12,7 @@
         <li class="active">Buttons</li>
     </ol>
 @endsection
+@section('content')
 <?php
 
 function ReadableDietaryPreferences($diet_prefs) {
@@ -80,7 +81,7 @@ function ReadableDietaryPreferences($diet_prefs) {
     <div class="container">
 
 		<!--page sub nav-->
-		@include('admin-menu')
+		@include('admin-menu',['submenu' => 'subscription'])
 		
 		<!--end page nave -->
 		

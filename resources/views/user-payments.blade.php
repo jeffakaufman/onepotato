@@ -1,4 +1,4 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app-admin', ['menuitem' => 'users'])
 
 @section('page_header')
 
@@ -33,7 +33,7 @@ function ToggleBoxes(BoxClass) {
     <div class="container">
 	
 		<!--page sub nav-->
-		@include('admin-menu')
+		@include('admin-menu',['submenu' => 'accountInfo'])
 		
 		
         <!-- Application Dashboard -->

@@ -1,4 +1,4 @@
-@extends('spark::layouts.app-admin')
+@extends('spark::layouts.app-admin', ['menuitem' => 'users'])
 
 @section('page_header')
 
@@ -22,18 +22,19 @@
 </style>
 <script>
 function ToggleBoxes(BoxClass) {
-	
-	$('.userinformation').hide();
-	$('.billingaddress').hide();
-	$('.shippingaddress').hide();
-	$(BoxClass).show();
+	$('#'+'userinformation').removeClass("active");
+	$('#'+BoxClass).className += "active";
+	$('.'+'userinformation').hide();
+	$('.'+'billingaddress').hide();
+	$('.'+'shippingaddress').hide();
+	$('.'+BoxClass).show();
 }
 </script>
 <!--end temp CSS-->
     <div class="container">
 	
 		<!--page sub nav-->
-		@include('admin-menu')
+		@include('admin-menu',['submenu' => 'accountInfo'])
 		
 		<!--page nav-->
 		<div class="row">
@@ -41,9 +42,11 @@ function ToggleBoxes(BoxClass) {
                 <div class="panel panel-default">
                    
                     <div class="panel-body">
-						<span class="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.userinformation');">User Information</a>  <i class="fa fa-lemon-o"></i></span>
-                        <span class="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.billingaddress');">Billing Address</a>   <i class="fa fa-lemon-o"></i></span>
-						<span style="nav_link"><a href="javascript:void(0);" onclick="ToggleBoxes('.shippingaddress');">Shipping Addresses</a></span>
+                    	<ul class="nav nav-tabs">
+							<li class="nav_link active" id="userinformation"><a href="javascript:void(0);" onclick="ToggleBoxes('userinformation');">User Information</a></li>
+    	                    <li class="nav_link" id="billingaddress"><a href="javascript:void(0);" onclick="ToggleBoxes('billingaddress');">Billing Address</a></li>
+							<li style="nav_link" id="shippingaddress"><a href="javascript:void(0);" onclick="ToggleBoxes('shippingaddress');">Shipping Addresses</a></li>
+						</ul>
                     </div>
                 </div>
             </div>
