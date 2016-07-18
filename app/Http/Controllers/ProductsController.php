@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Product;
 
 
 class ProductsController extends Controller
@@ -25,7 +26,8 @@ class ProductsController extends Controller
      */
     public function subscriptionList()
     {
-        return view('subscription_products');
+        $products = Product::get();
+        return view('subscription_products')->with(['products'=>$products]);;
     }
 
     /**

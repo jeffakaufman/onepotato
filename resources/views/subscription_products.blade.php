@@ -12,19 +12,26 @@
 @endsection
 
 @section('content')
-<home :recipes="recipes" inline-template>
+<home :products="products" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-7 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Subscription Products List</div>
 
                     <div class="panel-body">
-{{--                        @foreach ($recipes as $recipe)--}}
-						    {{--<div><span class="recipe_id">{{ $recipe->id }}</span>--}}
-{{--	                        <span class="recipe_title"><a href="/recipe/{{ $recipe->id }}">{{ $recipe->recipe_title }}</a></span>--}}
-						{{--@endforeach--}}
+                        <div class="row">
+	                       	<div class="product_title col-md-6"><strong>Name</strong></div>
+	                       	<div class="product_cost col-md-2 text-right"><strong>Cost</strong></div>
+	                       	<div class="product_sku col-md-3 text-center"><strong>Sku</strong></div>
+	                    </div>
+                        @foreach ($products as $product)
+                        <div class="row">
+	                        	<div class="product_title col-md-6">{{ $product->product_description }}</div>
+	                        	<div class="product_cost col-md-2 text-right">${{ number_format($product->cost, 2) }}</div>
+	                        	<div class="product_sku col-md-3 text-center">{{ $product->sku }}</div>
+	                        </div>
+						@endforeach
                     </div>
 					
 
