@@ -4,11 +4,5 @@ Vue.component('home', {
     ready() {
         //
     },
-
-    computed: {
-
-    	usersName() {
-    		return this.user.name;
-    	}
-    }
+    
 });
