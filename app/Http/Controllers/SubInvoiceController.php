@@ -90,8 +90,8 @@ class SubinvoiceController extends Controller
 			$id = $invoice->user_id;
 			$stripe_id = $invoice->stripe_sub_id;			
 		
-			$user = User::where('id', $id)->firstorfail();
-			$shippingAddress = Shipping_address::where('user_id',$id)->where('is_current', '1')->firstorfail();
+			$user = User::where('id', $id)->first();
+			$shippingAddress = Shipping_address::where('user_id',$id)->where('is_current', '1')->first();
 			
 			
 			//create the customer data
@@ -120,8 +120,8 @@ class SubinvoiceController extends Controller
 			
 			$ship_xml .= "</Customer>";
 			
-			$subscriber = UserSubscription::where('stripe_id',$stripe_id)->firstOrFail();
-			$product = Product::where('id',$subscriber->product_id)->firstOrFail();
+			$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+			$product = Product::where('id',$subscriber->product_id)->first();
 			
 			$ship_xml .= "<Items><Item>";
 			
