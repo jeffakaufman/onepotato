@@ -36,6 +36,9 @@ Route::get('/register/delivery', function() {
 Route::get('/register/payment', function() {
 	return view('register.payment');
 });
+Route::get('/register/congrats', function() {
+	return view('register.congrats');
+});
 
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
