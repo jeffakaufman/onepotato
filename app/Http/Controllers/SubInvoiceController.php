@@ -73,7 +73,7 @@ class SubinvoiceController extends Controller
 			$ship_xml .= "<OrderNumber><![CDATA[" . $order_id . "]]></OrderNumber>";
 			$ship_xml .= "<OrderDate>" . $invoice->charge_date . "</OrderDate>";
 			$ship_xml .= "<OrderStatus><![CDATA[paid]]></OrderStatus>";
-			$ship_xml .= "<LastModified" . $invoice->charge_date . "</LastModified>";
+			$ship_xml .= "<LastModified>" . $invoice->charge_date . "</LastModified>";
 			$ship_xml .= "<ShippingMethod><![CDATA[USPSPriorityMail]]></ShippingMethod>";
 			$ship_xml .= "<PaymentMethod><![CDATA[Credit Card]]></PaymentMethod>";
 			$ship_xml .= "<OrderTotal>" . $invoice->charge_amount / 100 . "</OrderTotal>";
