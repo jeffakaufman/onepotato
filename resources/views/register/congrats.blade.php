@@ -29,7 +29,7 @@ your account. You will also need to create a password.</div>
                     
                         @include('spark::shared.errors')
 
-                        <form class="form-horizontal" role="form" method="POST" action="/login">
+                        <form class="form-horizontal" role="form">
                             {{ csrf_field() }}
 
                             <!-- E-Mail Address -->
