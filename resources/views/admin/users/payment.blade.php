@@ -116,7 +116,7 @@ function stripeResponseHandler(status, response) {
     <div class="container">
 	
 		<!--page sub nav-->
-		@include('admin-menu',['submenu' => 'payment'])
+		@include('admin.users.admin-menu',['submenu' => 'payment'])
 		
 	
 		
@@ -198,7 +198,7 @@ function stripeResponseHandler(status, response) {
 
 	
 		        </form>
-		@include('csr-notes')
+		@include('admin.users.csr-notes')
 			
 		    </div>
 

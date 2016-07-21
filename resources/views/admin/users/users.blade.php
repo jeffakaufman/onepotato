@@ -2,7 +2,6 @@
 
 @section('page_header')
 
-@include('menu-edit')
     <h1>
         Users
     </h1>

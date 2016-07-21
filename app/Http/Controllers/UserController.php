@@ -11,6 +11,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use Mail;
+use CountryState;
 
 class UserController extends Controller
 {
@@ -31,7 +32,7 @@ class UserController extends Controller
      */
     public function show()
     {
-        return view('user');
+        return view('admin/users/user');
     }
 
 	
@@ -43,7 +44,7 @@ class UserController extends Controller
     public function showUsers()
     {
         	$users = User::get();
-			return view('adminusers')->with(['users'=>$users]);
+			return view('admin.users.users')->with(['users'=>$users]);
     }
 
 	/**
@@ -55,17 +56,35 @@ class UserController extends Controller
     {
 
 		$user = User::find($id);
+		$states = CountryState::getStates('US');
 		$shippingAddresses = Shipping_address::where('user_id',$id)->orderBy('is_current', 'desc')->get();
 		$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
 		
-		return view('user')->with(['user'=>$user, 'shippingAddresses'=>$shippingAddresses, 'csr_notes'=>$csr_notes]);
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		
+		if ($userSubscription) {
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->firstOrFail();
+		}
+		
+		$referrals = Referral::where('referrer_user_id',$id)->get();
+	
+		
+		return view('admin.users.user')
+				->with(['user'=>$user, 
+						'shippingAddresses'=>$shippingAddresses, 
+						'userSubscription'=>$userSubscription, 
+						'csr_notes'=>$csr_notes,
+						'userProduct'=>$userProduct, 
+						'states'=>$states,
+						'referrals'=>$referrals]);
 
     }
 
 	public function newUser() {
 		
 		
-		return view('user-new');
+		return view('admin.users.user-new');
 		
 	}
 	
@@ -90,7 +109,7 @@ class UserController extends Controller
 		$user->password = $request->user_password;
 		$user->save();
 		
-		return view('user-new-payment')->with(['user'=>$user]);
+		return view('admin.users.user-new-payment')->with(['user'=>$user]);
 		
 		
 		
@@ -137,7 +156,7 @@ class UserController extends Controller
 			//create a record in subscriptions table to store the subscription id
 				
 			//return "test";
-			return view('user-new-plan')->with(['user'=>$user]);
+			return view('admin/users/user-new-plan')->with(['user'=>$user]);
 			
 			//NOTE: When a user changes their plan, need to ALSO update that in STRIPE
 		
@@ -367,16 +386,13 @@ class UserController extends Controller
 		
 		$user = User::find($id);
 		$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
-		
-	
-		
-		//return "test";
+
 		
 		if ($userSubscription) {
-		return view('user-subscriptions')->with(['user'=>$user, 'userSubscription'=>$userSubscription, 'csr_notes'=>$csr_notes,'userProduct'=>$userProduct]);
+			return view('admin.users.user-subscriptions')->with(['user'=>$user, 'userSubscription'=>$userSubscription, 'csr_notes'=>$csr_notes,'userProduct'=>$userProduct]);
 		}else{
 			
-			return ("test");
+			//return ("test");
 			
 		}
 		
@@ -472,7 +488,7 @@ class UserController extends Controller
 		$user = User::find($id);
 	
 		//return "test";
-		return view('user-payments')->with(['user'=>$user]);
+		return view('admin/users/user-payments')->with(['user'=>$user]);
 		
 		
 		
@@ -486,8 +502,7 @@ class UserController extends Controller
 			$user = User::find($id);
 			$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
 
-			//return "test";
-			return view('user-referrals')->with(['user'=>$user, 'csr_notes'=>$csr_notes, 'referrals'=>$referrals]);
+			return view('admin/users/user-referrals')->with(['user'=>$user, 'csr_notes'=>$csr_notes, 'referrals'=>$referrals]);
 			
 					
 	}
@@ -569,7 +584,7 @@ class UserController extends Controller
 			
 		
 			//return "test";
-			return view('payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
+			return view('admin/users/payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
 		
 	}
 	
@@ -618,7 +633,7 @@ class UserController extends Controller
 		
 			
 			//return "test";
-			return view('payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
+			return view('admin/users/payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
 			
 			//NOTE: When a user changes their plan, need to ALSO update that in STRIPE
 		
