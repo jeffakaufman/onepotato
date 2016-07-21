@@ -23,11 +23,9 @@
 }
 
 .spark-nav-profile-photo {
-    border: 2px solid $brand-primary;
-    border-radius: 50%;
-    padding: 2px;
-    height: 50px;
-    width: 50px;
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
 }
 .spark-nav-profile-photo:hover {
     border-color: $brand-secondary;

@@ -1,8 +1,8 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-left" :class="{'btn-table-align': hasMonthlyAndYearlyPlans}">
+        <!-- <div class="pull-left" :class="{'btn-table-align': hasMonthlyAndYearlyPlans}">
             Subscribe
-        </div>
+        </div> -->
 
         <!-- Interval Selector Button Group -->
         <div class="pull-right">

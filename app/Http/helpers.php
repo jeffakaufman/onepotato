@@ -14,7 +14,7 @@ function bodyClass() {
         array_push( $body_classes, $class );
     }
      
-    return ! empty( $body_classes ) ? implode( ' ', $body_classes ) : NULL;
+    return ! empty( $body_classes ) ? implode( ' ', $body_classes ) : 'home';
     
 }
 

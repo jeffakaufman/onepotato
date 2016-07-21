@@ -3,7 +3,7 @@
 @section('content')
 <preferences :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: Family, 2 children <a href="#" class="sidelink">(change)</a>
+        PLAN TYPE: {{$children}} <a href="#" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -18,6 +18,10 @@
                 </div>
             </div>
         </div>
+		<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/preferences') }}">
+			 {{ csrf_field() }}
+			<input type="hidden" name="children" value="{{$children}}" />
+			<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form marginless">
@@ -35,7 +39,7 @@
                             <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $x.xx per week.</div>
                         </div>
                         <div class="row padtop">
-                            <div class="col-xs-12 extrapadding">Uncheck the foods you don’t eat below:</div>
+                            <div class="col-xs-12 extrapadding">Check the foods you don’t eat below:</div>
                         </div>
                         <div class="row">
                             <div class="col-xs-3 checkbox">
@@ -118,5 +122,6 @@
             </div>
         </div>
     </div>
+</form>
 </preferences>
 @endsection

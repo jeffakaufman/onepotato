@@ -24,7 +24,9 @@
 /*
  * Misc. test
  */
-
+body, html {
+    height: 100%;
+}
 body {
 	background: $bg-color;
 	font-weight: $btn-font-weight;
@@ -32,22 +34,41 @@ body {
 	font-size: $font-size-base;
 	color: $text-color;
 }
-h1 {
-	font-family: $font-family-bold;
-	color: $brand-secondary;
-	font-size: 24px;
-	
-	@media (min-width: 1200px) {
-		font-size: 30px;
-	}
-}
 strong, b, h2, h3, h4, h5 {
 	font-family: $font-family-semibold;
 	color: $brand-secondary;
 	letter-spacing: 0.05em;
 }
+h1 {
+	font-family: $font-family-bold;
+	color: $brand-secondary;
+	font-size: 24px;
+	text-transform: none;
+	line-height: 1.3em;
+	letter-spacing: 0.09em;
+	
+	@media (min-width: 1200px) {
+		font-size: 30px;
+	}
+}
+h2 {
+	font-size: 18px;
+	font-family: $font-family-bold;
+	text-transform: uppercase;
+	color: $text-color2;
+}
+.tab-pane h2 {
+	border-bottom: $text-color2 1px solid;
+	padding-bottom: 1em;
+}
+.edit-link {
+	display: block;
+	text-align: right;
+	margin-bottom: 0.5em;
+	font-size: 12px;
+}
 a {
-    color: $text-color;
+    color: $brand-primary;
     text-decoration: none;
 }
 p {
@@ -81,7 +102,7 @@ img {
 	}
 }
 .note {
-	background: $bg-color-note;
+	background: $bg-color-highlight;
 	margin-top: -1px;
 	padding: 15px;
 	
@@ -93,6 +114,87 @@ img {
 		padding: 0.5em 0;
 	}
 }
+.tab-content {
+	padding: 5px 15px;
+}
+body.with-navbar {
+    padding-top: 60px;
+    
+    @media (min-width: 992px) {
+    	padding-top: 110px;
+    }
+    &.home {
+    	padding-top: 50px;
+    	
+    	@media (min-width: 992px) {
+    		padding-top: 100px;
+    	}
+    }
+    &.register-preferences, &.register-delivery {
+    	padding-top: 100px;
+    	
+    	@media (min-width: 992px) {
+    		padding-top: 130px;
+    	}
+    }
+}
+#hero {
+  margin-bottom: 50px;
+	overflow: hidden;
+	width: 100%;
+	height: 500px;
+	position: relative;
+	clear: both;
+	background: transparent url(/img/hero1.jpg) center center no-repeat fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale');
+	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')";
+	
+	h2 {
+		font-family: $font-family-bold;
+		color: $brand-secondary;
+		font-size: 32px;
+		text-transform: none;
+		line-height: 1.3em;
+		letter-spacing: 0.09em;
+		
+		@media (min-width: 1200px) {
+			font-size: 52px;
+		}
+
+		.subtitle {
+			font-size: 21px;
+			color: $text-color;
+			font-family: $font-family-sans-serif;
+			line-height: 1.3em;
+			letter-spacing: 0;
+			
+			@media (min-width: 1200px) {
+				font-size: 26px;
+			}
+		}
+	}
+}
+
+.wrap-center{
+	margin: 0 auto;
+	position: relative;
+	max-width: 63.231em;
+}
+
+.hero-centered {
+	text-align: center;
+	position: absolute;
+	display: block;
+	max-width: 65.231em;
+	height: inherit;
+	overflow: hidden;
+	margin-top: 100px;
+}
+
 #planType {
 	position: fixed;
 	width: 100%;

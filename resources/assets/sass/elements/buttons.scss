@@ -43,7 +43,7 @@
 	.btn-link {
 		font-weight: 300;
 	}
-	.btn-primary {
+	.btn-primary, .btn-secondary {
 	    color: #fff;
 	    background-color: $brand-secondary;
 	    border: none;
@@ -52,6 +52,9 @@
 	    text-transform: uppercase;
 	    font-size: 18px;
 	    font-weight: 500;
+	}
+	.btn-secondary {
+		background-color: $brand-primary;
 	}
 	.col-md-2 .btn {
 		width: 100%;

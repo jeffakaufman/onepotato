@@ -7,6 +7,7 @@
     </div>
     <div class="container">
         <!-- Application Dashboard -->
+	
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -17,12 +18,16 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>		
+<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/delivery') }}">
+					 {{ csrf_field() }}
+
+					<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default panel-form">
 
-                    <form role="form">
+                  	
 
                         <div class="panel-heading text-left extrapadding">Delivery Location <a href="#" class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
@@ -58,7 +63,7 @@
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
+                                        <input type="text" class="form-control" name="address" v-model="registerForm.address" lazy placeholder="Address">
 
                                         <span class="help-block" v-show="registerForm.errors.has('address')">
                                             @{{ registerForm.errors.get('address') }}
@@ -67,7 +72,7 @@
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" class="form-control" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
+                                        <input type="text" class="form-control" name="address_line_2" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
 
                                         <span class="help-block" v-show="registerForm.errors.has('address_line_2')">
                                             @{{ registerForm.errors.get('address_line_2') }}
@@ -77,7 +82,7 @@
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" v-model="registerForm.city" lazy placeholder="City">
+                                        <input type="text" class="form-control" name="city" v-model="registerForm.city" lazy placeholder="City">
 
                                         <span class="help-block" v-show="registerForm.errors.has('city')">
                                             @{{ registerForm.errors.get('city') }}
@@ -86,7 +91,7 @@
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                        <input type="text" class="form-control" placeholder="State" v-model="registerForm.state" lazy>
+                                        <input type="text" class="form-control" name="state" placeholder="State" v-model="registerForm.state" lazy>
 
                                         <span class="help-block" v-show="registerForm.errors.has('state')">
                                             @{{ registerForm.errors.get('state') }}
@@ -94,7 +99,7 @@
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                        <input type="text" class="form-control" placeholder="Zip" v-model="registerForm.zip" lazy>
+                                        <input type="text" class="form-control" name="zip" placeholder="Zip" v-model="registerForm.zip" lazy>
 
                                         <span class="help-block" v-show="registerForm.errors.has('zip')">
                                             @{{ registerForm.errors.get('zip') }}
@@ -104,9 +109,9 @@
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                        <input type="text" class="form-control" placeholder="Phone Number" v-model="registerForm.phone" lazy>
+                                        <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy>
 
-                                        <span class="help-block" v-show="registerForm.errors.has('country')">
+                                        <span class="help-block" v-show="registerForm.errors.has('phone')">
                                             @{{ registerForm.errors.get('phone') }}
                                         </span>
                                 </div>
@@ -117,7 +122,7 @@
                         <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a href="#" class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row extrapadding">
-                                <div class="col-sm-12 nosidepadding"><textarea class="form-control"></textarea></div>
+                                <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control"></textarea></div>
                             </div>
                         </div>
 
@@ -146,7 +151,7 @@
                             </div>
                         </div>
 
-                    </form>
+                 
 
                 </div>
 
@@ -160,7 +165,7 @@
                         </div>
                     </div>
                 </div>
-                
+             </form>
             </div>
         </div>
     </div>

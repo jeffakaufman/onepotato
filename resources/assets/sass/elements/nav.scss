@@ -14,9 +14,6 @@
 		img {
 			height: 40px;
 			
-			@media (min-width: 768px) {
-				height: auto;
-			}
 			@media (min-width: 992px) {
 				height: 48px;
 			}
@@ -28,6 +25,7 @@
 	
 	.navbar-nav {
 		padding-top: 0px;
+		margin: 0;
 		
 		&.navbar-left li {
 			font-size: 18px;
@@ -71,15 +69,17 @@
 		    	width: 50px;
 		    }
 		}
-		&.navbar-right .icon {
-			font-size: 21px;
-		}
-		&.navbar-left .icon-truck, &.navbar-left .icon-creditcard {
-			font-size: 27px;
+		&.navbar-right {
+
+			float: right;
+			text-transform: none;
 			
-			@media (min-width: 768px) {
-		    	font-size: 14px;
-		    }
+			> li {
+				float: left;
+			}
+			.icon {
+				font-size: 21px;
+			}
 		}
 		@media (min-width: 768px) {
 
@@ -93,15 +93,12 @@
 				line-height: 42px;
 				margin-bottom: 5px;
 			}
-			&.navbar-left .icon-truck, &.navbar-left .icon-creditcard {
-				font-size: 24px;
-			}
 		}
 		.caret {
     		color: $brand-primary;
     	}
 		> li > a {
-			color: $text-color; /* #9d9d9d */
+			color: $brand-primary; /* #9d9d9d */
 			cursor: pointer;
     		font-weight: 400;
     	}
@@ -109,7 +106,7 @@
     		color: $brand-primary;
     	}
     	> li > a:hover {
-    		color: $brand-primary;
+    		color: $brand-secondary;
     		
     		.caret {
 	    		color: $brand-secondary;
@@ -121,6 +118,10 @@
 	}
 
 	.dropdown-menu {
+		border-color: $border-color;
+		border-radius: 0;
+		padding: 0;
+		
 		li {
 			font-size: 14px;
 
@@ -128,19 +129,48 @@
 				font-weight: 300;
 				line-height: 25px;
 				vertical-align: middle;
+				padding: 4px 10px;
+				text-transform: none;
+				color: $brand-primary;
+				background: $bg-color-highlight;
+				
+				&:hover {
+					background: #fff;
+				}
+			}
+
+			&.divider {
+				margin: 0;
+				background: $border-color;
 			}
 		}
 	}
 }
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     background-color: transparent;
-    color: #969ea2;
+    color: $brand-primary;
+}
+.navbar-inverse {
+
+  .navbar-nav {
+
+    > .active > a {
+      &,
+      &:hover,
+      &:focus {
+        color: $brand-secondary;
+        background-color: transparent;
+        font-family: $font-family-semibold;
+      }
+    }
+  }
 }
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
     border-color: $border-color;
 }
 .navbar-inverse .navbar-toggle {
 	border-color: #fff; 
+	margin-right: 0;
 	
 	.icon-bar {
 		background-color: $brand-primary;
@@ -154,21 +184,13 @@
 		}
 	}
 
+	@media (max-width: 992px) {
+		
+		display: block;
+		
+	}
 }
-.with-navbar {
-    padding-top: 60px;
-    
-    @media (min-width: 768px) {
-    	padding-top: 100px;
-    }
-    &.register-preferences, &.register-delivery {
-    	padding-top: 100px;
-    	
-    	@media (min-width: 768px) {
-    		padding-top: 130px;
-    	}
-    }
-}
+
 body.register {
 
 	.navbar-left {
@@ -240,11 +262,28 @@ body.register {
 
 .hamburger { float: right; }
 
-.nav > li > a:focus, .nav > li > a:hover {
-	background: none;
+.nav-sidebar {
+
+	> li {
+		
+		text-transform: uppercase;
+		font-family: $font-family-semibold;
+		color: $text-color2;
+		font-size: 14px;
+		
+		&.active {
+			background: $bg-color-highlight;
+			border: $border-color 1px solid;
+			border-right: 0;
+		}
+		> a:focus, > a:hover {
+			background: none;
+		}
+	}
 }
 
-.container {
+
+.navbar-fixed-top .container {
 	
 	.navbar-nav > li > a,
 	.navbar-brand,
@@ -252,13 +291,30 @@ body.register {
 	    height: $navbar-height;
 	}
 
-	@media (min-width: 768px) {
+	.navbar-header {
+		width: 100%;
+		margin: 0;
+	}
+	@media (min-width: 992px) {
 		.navbar-nav > li > a,
 		.navbar-brand,
 		.hamburger {
 		    height: $navbar-desktop-height;
+		    
+		    &.dropdown-toggle {
+		    	height: $navbar-height;
+		    	margin-top: 20px;
+		    	
+		    	img {
+		    		float: left;
+		    		margin-right: 10px;
+		    	}
+		    	div {
+    				line-height: 1.2em;
+		    	}
+		    }
 		}
-		.navbar-header {
+		.navbar-brand {
 			width: 30%;
 		}
 		.navbar-collapse {
@@ -266,22 +322,11 @@ body.register {
 			width: 70%;
 		}
 	}
-	@media (min-width: 992px) {
-	    .navbar-header {
-			width: 30%;
-		}
-		.navbar-collapse {
-			margin-left: 30%;
-			width: 70%;
-		}
+	@media (max-width: 1199px) {
+		width: auto;
 	}
 	@media (min-width: 1200px) {
-		.navbar-header {
-			width: 30%;
-		}
-		.navbar-collapse {
-			margin-left: 30%;
-			width: 70%;
-		}
+
 	}
 }
+

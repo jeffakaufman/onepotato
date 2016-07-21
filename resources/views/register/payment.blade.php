@@ -1,9 +1,109 @@
 @extends('spark::layouts.app')
 
 @section('content')
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
+<script>
+/*stripe code*/
+
+$(document).ready(function() {
+
+	// Watch for a form submission:
+	$("#payment-form").submit(function(event) {
+
+		// Flag variable:
+		//var error = false;
+
+		// disable the submit button to prevent repeated clicks:
+		$('#submitBtn').attr("disabled", "disabled");
+
+		// Get the values:
+		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
+		
+		console.log (ccNum);
+		
+		
+		// Validate the number:
+		if (!Stripe.card.validateCardNumber(ccNum)) {
+			error = true;
+			console.log ('The credit card number appears to be invalid.');
+		}
+
+		// Validate the CVC:
+		if (!Stripe.card.validateCVC(cvcNum)) {
+			error = true;
+			console.log ('The CVC number appears to be invalid.');
+		}
+
+		// Validate the expiration:
+		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
+			error = true;
+			console.log ('The expiration date appears to be invalid.');
+		}
+
+		// Validate other form elements, if needed!
+		error = false;
+		// Check for errors:
+		if (!error) {
+
+			// Get the Stripe token:
+			Stripe.card.createToken({
+				number: ccNum,
+				cvc: cvcNum,
+				exp_month: expMonth,
+				exp_year: expYear
+			}, stripeResponseHandler);
+
+		}
+		
+		
+		// Prevent the form from submitting:
+		return false;
+
+	}); // Form submission
+
+}); // Document ready.
+
+// Function handles the Stripe response:
+function stripeResponseHandler(status, response) {
+
+	// Check for an error:
+	//if (response.error) {
+
+	//	reportError(response.error.message);
+
+	//} else { // No errors, submit the form:
+
+	  var f = $("#payment-form");
+
+	  // Token contains id, last4, and card type:
+	  var token = response['id'];
+
+	  console.log(token);
+
+	  // Insert the token into the form so it gets submitted to the server
+	  f.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
+
+	  // Submit the form:
+	  f.get(0).submit();
+
+	//}
+
+} // End of stripeResponseHandler() function.
+
+
+</script>
+
+
 <payment :user="user" inline-template>
     <div class="container">
-        <!-- Application Dashboard -->
+
+       	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
+							 {{ csrf_field() }}
+
+							<input type="hidden" name="user_id" value="{{ $user->id }}" />
+
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -115,31 +215,28 @@
                         <div id="payment_info" class="panel-body font16">
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-6 nosidepadding">
-                                    <select name="creditcard" type="select" class="form-control">
+                                    <select type="select" class="form-control">
                                         <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-12 nosidepadding">
-                                    <input type="text" class="form-control" placeholder="Card Number" v-model="" lazy>
+                                    <input type="text" class="form-control card-number" placeholder="Card Number" v-model="" lazy>
+									
                                 </div>
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-6 thinpadding first">
-                                    <select name="expmonth" type="select" class="form-control">
-                                        <option>Expiration Month</option>
-                                        <option v-for="month in months" value="@{{ month }}">@{{ month }}</option>
-                                    </select>
+                               
+									<input type="text" class="form-control card-expiry-month" value="">
                                 </div>
                                 <div class="col-xs-4 thinpadding">
-                                    <select name="expyear" type="select" class="form-control">
-                                        <option>Expiration Year</option>
-                                        <option v-for="year in years" value="@{{ year }}">@{{ year }}</option>
-                                    </select>
+                                    <input type="text" class="form-control card-expiry-year" value="">
                                 </div>
                                 <div class="col-xs-2 thinpadding last">
-                                    <input type="text" class="form-control" placeholder="CVC" v-model="registerForm.cvc" lazy>
+                                    <input type="text" class="form-control card-cvc" placeholder="CVC" v-model="registerForm.cvc" lazy>
+								
                                 </div>
                             </div>
                         </div>
@@ -221,7 +318,7 @@
                     </div>
                     
                 </div>
-
+</form>
             </div>
         </div>
     </div>

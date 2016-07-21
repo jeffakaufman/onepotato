@@ -53,7 +53,7 @@
     letter-spacing: 0.09em; 
     
     @media only screen and (min-width: 992px) {
-    	padding: 0 15px 0 15px;
+    	padding: 10px 15px;
     }
 
     &.with-subtitle {
@@ -77,24 +77,20 @@
 		text-transform: none; 
 		letter-spacing: 0;
 	}
-    
-	h1 {
-		text-transform: none;
+	h1 .panel-subtitle {
+		font-size: 18px;
 		line-height: 1.3em;
-		letter-spacing: 0.09em; 
 		
-		.panel-subtitle {
-			font-size: 18px;
-			color: $text-color;
-			font-family: $font-family-sans-serif;
-			line-height: 1.3em;
-			letter-spacing: 0;
-			
-			@media (min-width: 1200px) {
-				font-size: 21px;
-			}
+		@media (min-width: 1200px) {
+			font-size: 21px;
 		}
 	}
+	
+}
+.panel-warning > .panel-heading {
+	color: $brand-primary;
+    background-color: $bg-color-highlight;
+    border-color: $bg-color-highlight;
 }
 .panel-flush {
 	.panel-body, .panel-header {
