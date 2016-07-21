@@ -16,6 +16,10 @@ Both plans include 3 meals per week.</div>
                 </div>
             </div>
         </div><!-- .row -->
+			<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/select_plan') }}">
+				 {{ csrf_field() }}
+				<input type="hidden" name="children" value="0" />
+				<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form text-center">
@@ -50,6 +54,11 @@ Both plans include 3 meals per week.</div>
                     </div>
                 </div>
             </div>
+			</form>
+			<form class="form-horizontal" action="{{ url('/register/select_plan') }}" role="form" method="post">
+					 {{ csrf_field() }}
+				
+					<input type="hidden" name="user_id" value="{{ $user->id }}" />
             <div class="col-md-5">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Family Plan
@@ -70,8 +79,6 @@ Both plans include 3 meals per week.</div>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
                                 </select>
                             </div>
                         </div>
@@ -94,6 +101,7 @@ Both plans include 3 meals per week.</div>
                 </div>
             </div>
         </div><!-- .row -->
+		</form>
         <div class="row">
             <div class="footnote pad col-md-8 col-md-offset-2">* Based on the typical omnivore meal plan</div>
         </div><!-- .row -->

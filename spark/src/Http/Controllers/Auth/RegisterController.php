@@ -48,7 +48,7 @@ class RegisterController extends Controller
                 'coupon' => Spark::promotion()
             ]));
         }
-
+		
         return view('spark::auth.register');
     }
 
@@ -61,13 +61,17 @@ class RegisterController extends Controller
     public function register(RegisterRequest $request)
     {
         Auth::login($user = Spark::interact(
-            Register::class, [$request]
+           Register::class, [$request]
         ));
 
         event(new UserRegistered($user));
-
-        return response()->json([
-            'redirect' => $this->redirectPath()
-        ]);
+	
+		header('location:/register/sign_up/');
+	
+        //return response()->json([
+            //'redirect' => $this->redirectPath()
+			//'redirect' => "/register/select_plan/"
+			
+        //]);
     }
 }

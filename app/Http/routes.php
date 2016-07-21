@@ -15,6 +15,15 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
+// Registration...
+Route::get('/register', 'NewUserController@DisplayUserForm');
+Route::post('/register', 'NewUserController@RecordNewuser');
+Route::post('/register/select_plan', 'NewUserController@RecordPlan');
+Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
+Route::post('/register/delivery','NewUserController@RecordDeliveryPreferences');
+Route::post('/register/payment','NewUserController@RecordPayment');
+
+
 Route::get('/register/select_plan', function() {
 	return view('register.select_plan');
 });

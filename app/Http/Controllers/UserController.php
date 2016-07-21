@@ -161,7 +161,7 @@ class UserController extends Controller
 		01 veg/onmivore
 		02	num adults
 		03	num children (04= 4 children)
-		00  unused
+		01  Gluten Free
 		00	unused
 		*/
 		
