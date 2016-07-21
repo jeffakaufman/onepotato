@@ -27,7 +27,7 @@ class ProductsController extends Controller
     public function subscriptionList()
     {
         $products = Product::get();
-        return view('subscription_products')->with(['products'=>$products]);;
+        return view('admin.products.subscription_products')->with(['products'=>$products]);;
     }
 
     /**

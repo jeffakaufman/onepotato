@@ -81,7 +81,7 @@ function ReadableDietaryPreferences($diet_prefs) {
     <div class="container">
 
 		<!--page sub nav-->
-		@include('admin-menu',['submenu' => 'subscription'])
+		@include('admin.users.admin-menu',['submenu' => 'subscription'])
 		
 		<!--end page nave -->
 		
@@ -215,7 +215,7 @@ function ReadableDietaryPreferences($diet_prefs) {
 	
 		        </form>
 		
-				@include('csr-notes')
+				@include('admin.users.csr-notes')
 			
 		    </div>
 

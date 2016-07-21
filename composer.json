@@ -14,7 +14,8 @@
         "laravel/spark": "*@dev",
         "aws/aws-sdk-php-laravel": "^3.1",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "laravelcollective/html": "^5.2"
+        "laravelcollective/html": "^5.2",
+        "dougsisk/laravel-country-state": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

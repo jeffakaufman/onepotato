@@ -2,7 +2,7 @@
 
 @section('page_header')
 
-@include('menu-edit')
+@include('admin.whatscooking.menu-edit')
     <h1>
         What's Cooking
     </h1>

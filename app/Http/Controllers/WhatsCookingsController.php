@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Storage;
+use App\WhatsCookings;
+use App\Menus;
 
 
 class WhatsCookingsController extends Controller
@@ -27,7 +29,7 @@ class WhatsCookingsController extends Controller
      */
     public function show()
     {
-        return view('whatscooking');
+        return view('admin.whatscooking.whatscooking');
     }
 
 	/**
@@ -40,7 +42,7 @@ class WhatsCookingsController extends Controller
 
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
 		$menus = [];
-		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);
+		return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'menus'=>$menus]);
 
     }
 
@@ -53,7 +55,7 @@ class WhatsCookingsController extends Controller
     {
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
 		$last = isset($id) ? WhatsCookings::find($id) : '';
-		return view('whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
+		return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
     }
 
 
