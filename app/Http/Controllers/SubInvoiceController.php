@@ -106,19 +106,19 @@ class SubinvoiceController extends Controller
 			$ship_xml .= "<Name><![CDATA[" .$user->name . "]]></Name>";
 			$ship_xml .= "<Company></Company>";
 			$ship_xml .= "<Phone><![CDATA[" . $user->phone . "]]></Phone>";
-			$ship_xml .= "<Email><![CDATA[customer@mystore.com]]></Email>";
+			$ship_xml .= "<Email><![CDATA[" . $user->email . "]]></Email>";
 			$ship_xml .= "</BillTo>";
 			
 			$ship_xml .= "<ShipTo>";
-			$ship_xml .= "<Name><![CDATA[The President]]></Name>";
-			$ship_xml .= "<Company><![CDATA[US Govt]]></Company>";
-			$ship_xml .= "<Address1><![CDATA[1600 Pennsylvania Ave]]></Address1>";
-			$ship_xml .= "<Address2></Address2>";
-			$ship_xml .= "<City><![CDATA[Washington]]></City>";
-			$ship_xml .= "<State><![CDATA[DC]]></State>";
-			$ship_xml .= "<PostalCode><![CDATA[20500]]></PostalCode>";
+			$ship_xml .= "<Name><![CDATA[" . $shippingAddress->shipping_first_name . " " . $shippingAddress->shipping_last_name . "]]></Name>";
+			$ship_xml .= "<Company><![CDATA[]]></Company>";
+			$ship_xml .= "<Address1><![CDATA[" . $shippingAddress->shipping_address . "]]></Address1>";
+			$ship_xml .= "<Address2>" . $shippingAddress->shipping_address_2 . "</Address2>";
+			$ship_xml .= "<City><![CDATA[" . $shippingAddress->shipping_city . "]]></City>";
+			$ship_xml .= "<State><![CDATA[" . $shippingAddress->shipping_state . "]]></State>";
+			$ship_xml .= "<PostalCode><![CDATA[" . $shippingAddress->shipping_zip . "]]></PostalCode>";
 			$ship_xml .= "<Country><![CDATA[US]]></Country>";
-			$ship_xml .= "<Phone><![CDATA[512-555-5555]]></Phone>";
+			$ship_xml .= "<Phone><![CDATA[" . $shippingAddress->phone1 . "]]></Phone>";
 			$ship_xml .= "</ShipTo>";
 			
 			$ship_xml .= "</Customer>";
@@ -143,7 +143,15 @@ class SubinvoiceController extends Controller
 			
 			$ship_xml .= "<Name><![CDATA[DietaryPreferences]]></Name>";
 			$ship_xml .= "<Value><![CDATA[" . $subscriber->dietary_preferences . "]]></Value>";
-			$ship_xml .= "<Weight></Weight>";
+			$ship_xml .= "<Weight>0</Weight>";
+			
+			$ship_xml .= "</Option>";
+			
+			$ship_xml .= "<Option>";
+			
+			$ship_xml .= "<Name><![CDATA[ShippingInstructions]]></Name>";
+			$ship_xml .= "<Value><![CDATA[" . $shippingAddress->delivery_instructions . "]]></Value>";
+			$ship_xml .= "<Weight>0</Weight>";
 			
 			$ship_xml .= "</Option>";
 			
