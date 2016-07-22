@@ -40,7 +40,8 @@ class NewUserController extends Controller
 		$validator = Validator::make($request->all(), [
 		      
 			    'email' => 'required|email|max:1000|unique:users',
-				'password' => 'required|max:255|same:password_confirmation'
+				'password' => 'required|max:255|same:password_confirmation',
+				'zip' => 'required|digits:5',
 				
 		]);
 
@@ -56,7 +57,7 @@ class NewUserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 		
-		return view('register.select_plan')->with(['user'=>$user]);;
+		return view('register.select_plan')->with(['user'=>$user]);
 	}
 	
 	public function RecordPlan (Request $request) {

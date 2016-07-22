@@ -1,5 +1,11 @@
 @extends('spark::layouts.app')
 
+@section('register_nav')
+<script>
+$('#register2').addClass('active');
+</script>
+@endsection
+
 @section('content')
 <select_plan :user="user" inline-template>
     <div class="container">

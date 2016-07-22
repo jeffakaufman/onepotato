@@ -1,8 +1,12 @@
 @extends('spark::layouts.app')
 
+@section('register_nav')
+<script>
+$('#register1').addClass('active');
+</script>
+@endsection
+
 @section('content')
-
-
 <!-- Basic Profile -->
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -65,7 +69,7 @@ the whole family will love delivered straight to your door each week.</div>
 				        <!-- E-Mail Address -->
 				        <div class="field" :class="{'has-error': registerForm.errors.has('email')}">
 
-				            <input type="email" class="form-control" name="email" v-model="registerForm.email" placeholder="E-Mail Address">
+				            <input type="email" class="form-control" name="email" v-model="registerForm.email" tabindex="1" placeholder="E-Mail Address">
 
 				            <span class="help-block" v-show="registerForm.errors.has('email')">
 				                @{{ registerForm.errors.get('email') }}
@@ -76,7 +80,7 @@ the whole family will love delivered straight to your door each week.</div>
 				        <!-- Password -->
 				        <div class="field" :class="{'has-error': registerForm.errors.has('password')}">
 
-				            <input type="password" class="form-control" name="password" v-model="registerForm.password" placeholder="Password">
+				            <input type="password" class="form-control" name="password" tabindex="3" v-model="registerForm.password" placeholder="Password">
 
 				            <span class="help-block" v-show="registerForm.errors.has('password')">
 				                @{{ registerForm.errors.get('password') }}
@@ -84,26 +88,27 @@ the whole family will love delivered straight to your door each week.</div>
 
 				        </div>
 
-				        <!-- Password Confirmation -->
-				        <div class="field" :class="{'has-error': registerForm.errors.has('password_confirmation')}">
-
-				            <input type="password" class="form-control" name="password_confirmation" v-model="registerForm.password_confirmation" placeholder="Confirm Password">
-
-				            <span class="help-block" v-show="registerForm.errors.has('password_confirmation')">
-				                @{{ registerForm.errors.get('password_confirmation') }}
-				            </span>
-
-				        </div>
 				    </div>
 
 				    <div class="reg-field">
 				        <!-- Zip Code -->
 				        <div class="field">
-				            <input type="text" class="form-control" placeholder="Delivery Zip Code" v-model="registerForm.zip" lazy>
+				            <input type="text" class="form-control" name="zip" tabindex="2" placeholder="Delivery Zip Code" value="{{ old('zip') }}" v-model="registerForm.zip" lazy>
 
 				            <span class="help-block" v-show="registerForm.errors.has('zip')">
 				                @{{ registerForm.errors.get('zip') }}
 				            </span>
+				        </div>
+
+				        <!-- Password Confirmation -->
+				        <div class="field" :class="{'has-error': registerForm.errors.has('password_confirmation')}">
+
+				            <input type="password" class="form-control" name="password_confirmation" tabindex="4" v-model="registerForm.password_confirmation" placeholder="Confirm Password">
+
+				            <span class="help-block" v-show="registerForm.errors.has('password_confirmation')">
+				                @{{ registerForm.errors.get('password_confirmation') }}
+				            </span>
+
 				        </div>
 				    </div>
 
@@ -132,7 +137,7 @@ the whole family will love delivered straight to your door each week.</div>
 				                    Get Started
 				                </span>
 				            </button>
-				            <div class="disclaimer">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank">Terms of Use and Privacy Policy</a>.</div>
+				            <div class="disclaimer" style="margin: 10px 0;">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank">Terms of Use and Privacy Policy</a>.</div>
 
 				        </div>
 				    </div>
@@ -162,8 +167,4 @@ the whole family will love delivered straight to your door each week.</div>
 <div class="row" v-if="paidPlans.length == 0">
     <div class="footnote pad col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 </div>
-
-
-
-
-@section('content')
+@endsection

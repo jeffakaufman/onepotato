@@ -77,6 +77,9 @@ p {
 img {
 	max-width: 100%;
 }
+.alert-danger strong {
+	color: #fff;
+}
 .font11 {
 	font-size: 11px;
 }
@@ -139,19 +142,24 @@ body.with-navbar {
     }
 }
 #hero {
-  margin-bottom: 50px;
+  	margin-bottom: 50px;
 	overflow: hidden;
 	width: 100%;
-	height: 500px;
+	height: 250px;
 	position: relative;
 	clear: both;
-	background: transparent url(/img/hero1.jpg) center center no-repeat fixed;
+	background: url(/img/hero1.jpg) transparent no-repeat;
+	background-position: center center;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale');
 	-ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')";
+	transform-origin: center top;
+  transform: 
+    translateZ(-1px)
+    scale(2);
 	
 	h2 {
 		font-family: $font-family-bold;
@@ -192,7 +200,7 @@ body.with-navbar {
 	max-width: 65.231em;
 	height: inherit;
 	overflow: hidden;
-	margin-top: 100px;
+	margin-top: 140px;
 }
 
 #planType {

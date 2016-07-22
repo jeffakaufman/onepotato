@@ -40,6 +40,7 @@
         @else
             @if (Request::is('register*'))
                 @include('spark::nav.register')
+                @yield('register_nav')
             @else
                 @include('spark::nav.guest')
             @endif
@@ -48,7 +49,7 @@
         <!-- Main Content -->
         @yield('content')
 
-        @include ('sitewide.footer')
+        @include ('partials.footer')
 
         <!-- Application Level Modals -->
         @if (Auth::check())

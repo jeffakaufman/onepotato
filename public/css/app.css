@@ -5771,7 +5771,8 @@ button.close {
   transition: background-color 0.2s; }
 
 .btn-primary, .btn-info, .btn-success, .btn-warning, .btn-danger {
-  border: 0; }
+  border: 0;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
 
 .btn-default:hover {
   background-color: white; }
@@ -5816,11 +5817,6 @@ button.close {
 .radio, .checkbox {
   display: inline-block; }
   .radio.nomargin, .checkbox.nomargin {
-    margin: 0; }
-
-.radio + .radio, .checkbox + .checkbox {
-  margin: 10px 0; }
-  .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
     margin: 0; }
 
 .radio label, .checkbox label {
@@ -5925,7 +5921,7 @@ select.form-control {
   margin-bottom: 10px; }
 
 .field {
-  margin-bottom: 1em; }
+  margin-bottom: 5px; }
 
 .disclaimer {
   font-size: 10px;
@@ -6191,6 +6187,10 @@ body.register .navbar-right {
 
 .hamburger {
   float: right; }
+
+.nav-sidebar .icon {
+  margin-right: 5px;
+  width: 1.2em; }
 
 .nav-sidebar > li {
   text-transform: uppercase;
@@ -6825,6 +6825,9 @@ p {
 img {
   max-width: 100%; }
 
+.alert-danger strong {
+  color: #fff; }
+
 .font11 {
   font-size: 11px; }
 
@@ -6879,13 +6882,16 @@ body.with-navbar {
   margin-bottom: 50px;
   overflow: hidden;
   width: 100%;
-  height: 500px;
+  height: 250px;
   position: relative;
   clear: both;
-  background: transparent url(/img/hero1.jpg) center center no-repeat fixed;
+  background: url(/img/hero1.jpg) transparent no-repeat;
+  background-position: center center;
   background-size: cover;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale');
-  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')"; }
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')";
+  transform-origin: center top;
+  transform: translateZ(-1px) scale(2); }
   #hero h2 {
     font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
     color: #e91e25;
@@ -6918,7 +6924,7 @@ body.with-navbar {
   max-width: 65.231em;
   height: inherit;
   overflow: hidden;
-  margin-top: 100px; }
+  margin-top: 140px; }
 
 #planType {
   position: fixed;

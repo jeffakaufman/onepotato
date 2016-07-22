@@ -6,13 +6,6 @@
 			margin: 0;
 		}
 	}
-	.radio + .radio, .checkbox + .checkbox {
-		margin: 10px 0;
-		
-		&.nomargin {
-			margin: 0;
-		}
-	}
 	.radio label, .checkbox label {
 	    display: block;
 	    cursor: pointer;
@@ -99,7 +92,7 @@
 		margin-bottom: 10px;
 	}
 	.field {
-		margin-bottom: 1em;
+		margin-bottom: 5px;
 	}
 	.disclaimer {
 		font-size: 10px;

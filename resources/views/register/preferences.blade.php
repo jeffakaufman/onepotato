@@ -1,9 +1,15 @@
 @extends('spark::layouts.app')
 
+@section('register_nav')
+<script>
+$('#register3').addClass('active');
+</script>
+@endsection
+
 @section('content')
 <preferences :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: {{$children}} <a href="#" class="sidelink">(change)</a>
+        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -24,15 +30,15 @@
 			<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
-                <div class="panel panel-default panel-form marginless">
+                <div id="dietary_preferences" class="panel panel-default panel-form marginless">
                     <div class="panel-heading text-left extrapadding">dietary preferences</div>
                     <div class="panel-body font16">
                         <div class="row">
                             <div class="col-xs-12 extrapadding">Choose your box: <a href="#" class="sidelink">What's this?</a></div>
                         </div>
                         <div class="row nowrap extrapadding">
-                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" name="plan_type" value="Omnivore Box"> <label for="plan_type1">Omnivore Box</label></div>
-                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" name="plan_type" value="Vegetarian Box"> <label for="plan_type2">Vegetarian Box</label></div>
+                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" @click="selectAllOmnivore" name="plan_type" value="omnivore"> <label for="plan_type1">Omnivore Box</label></div>
+                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" @click="selectAllVegetarian" name="plan_type" value="vegetarian"> <label for="plan_type2">Vegetarian Box</label></div>
                         </div>
                         <div class="row extrapadding">
                             <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="glutenfree" value="Gluten free"> <label for="glutenfree">Gluten free*</label></div>
@@ -43,19 +49,19 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-3 checkbox">
-                                <input id="beef" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="beef">Beef</label>
-                                <input id="poultry" name="prefs[]" type="checkbox" value="2" class="form-control" /> <label for="poultry">Poultry</label>
+                                <input id="beef" v-model="beef" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="beef">Beef</label>
+                                <input id="poultry" v-model="poultry" name="prefs[]" type="checkbox" value="2" class="form-control" /> <label for="poultry">Poultry</label>
                             </div>
                             <div class="col-xs-3 checkbox">
-                                <input id="fish" name="prefs[]" type="checkbox" value="3" class="form-control" /> <label for="fish">Fish</label>
-                                <input id="lamb" name="prefs[]" type="checkbox" value="4" class="form-control" /> <label for="lamb">Lamb</label>
+                                <input id="fish" v-model="fish" name="prefs[]" type="checkbox" value="3" class="form-control" /> <label for="fish">Fish</label>
+                                <input id="lamb" v-model="lamb" name="prefs[]" type="checkbox" value="4" class="form-control" /> <label for="lamb">Lamb</label>
                             </div>
                             <div class="col-xs-3 checkbox">
-                                <input id="pork" name="prefs[]" type="checkbox" value="5" class="form-control" /> <label for="pork">Pork</label>
-                                <input id="shellfish" name="prefs[]" type="checkbox" value="6" class="form-control" /> <label for="shellfish">Shellfish</label>
+                                <input id="pork" v-model="pork" name="prefs[]" type="checkbox" value="5" class="form-control" /> <label for="pork">Pork</label>
+                                <input id="shellfish" v-model="shellfish" name="prefs[]" type="checkbox" value="6" class="form-control" /> <label for="shellfish">Shellfish</label>
                             </div>
                             <div class="col-xs-3 checkbox">
-                                <input id="nuts" name="prefs[]" type="checkbox" value="7" class="form-control" /> <label for="nuts">Nuts</label>
+                                <input id="nuts" v-model="nuts" name="prefs[]" type="checkbox" value="7" class="form-control" /> <label for="nuts">Nuts</label>
                             </div>
                         </div>
                     </div>

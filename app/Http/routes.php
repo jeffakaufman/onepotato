@@ -23,22 +23,21 @@ Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
 Route::post('/register/delivery','NewUserController@RecordDeliveryPreferences');
 Route::post('/register/payment','NewUserController@RecordPayment');
 
-
-Route::get('/register/select_plan', function() {
-	return view('register.select_plan');
-});
-Route::get('/register/preferences', function() {
+Route::get('/register/select_plan', array('as' => 'register_select_plan', function() {
+	return view('register.select_plan')->with(['user'=>$user]);
+}));
+Route::get('/register/preferences', array('as' => 'register_preferences', function() {
 	return view('register.preferences');
-});
-Route::get('/register/delivery', function() {
+}));
+Route::get('/register/delivery', array('as' => 'register_delivery', function() {
 	return view('register.delivery');
-});
-Route::get('/register/payment', function() {
+}));
+Route::get('/register/payment', array('as' => 'register_payment', function() {
 	return view('register.payment');
-});
-Route::get('/register/congrats', function() {
+}));
+Route::get('/register/congrats', array('as' => 'register_congrats', function() {
 	return view('register.congrats');
-});
+}));
 
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
