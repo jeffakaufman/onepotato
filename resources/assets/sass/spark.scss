@@ -133,7 +133,7 @@ body.with-navbar {
     		padding-top: 100px;
     	}
     }
-    &.register-preferences, &.register-delivery {
+    &.register-select_plan, &.register-preferences, &.register-delivery {
     	padding-top: 100px;
     	
     	@media (min-width: 992px) {
@@ -326,7 +326,7 @@ body.with-navbar {
 .plan-info {
 	font-size: 16px;
 	line-height: 1.2em;
-	padding: 10px;
+	padding: 10px 5px;
 	vertical-align: bottom;
     display: inline-block;
     float: none;

@@ -131,11 +131,11 @@ class NewUserController extends Controller
 		$subscription->plan = $newProduct->stripe_plan_id;
 		$subscription->save();
 		*/
-		
+		$numChildren = $request->children;
 		$user = User::find($request->user_id);
 	
 		
-		return view('register.delivery')->with(['user'=>$user]);
+		return view('register.delivery')->with(['children'=>$numChildren,'user'=>$user]);
 	}
 		
 	public function RecordDeliveryPreferences (Request $request) {

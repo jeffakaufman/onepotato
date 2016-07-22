@@ -6872,10 +6872,10 @@ body.with-navbar {
     @media (min-width: 992px) {
       body.with-navbar.home {
         padding-top: 100px; } }
-  body.with-navbar.register-preferences, body.with-navbar.register-delivery {
+  body.with-navbar.register-select_plan, body.with-navbar.register-preferences, body.with-navbar.register-delivery {
     padding-top: 100px; }
     @media (min-width: 992px) {
-      body.with-navbar.register-preferences, body.with-navbar.register-delivery {
+      body.with-navbar.register-select_plan, body.with-navbar.register-preferences, body.with-navbar.register-delivery {
         padding-top: 130px; } }
 
 #hero {
@@ -7023,7 +7023,7 @@ body.with-navbar {
 .plan-info {
   font-size: 16px;
   line-height: 1.2em;
-  padding: 10px;
+  padding: 10px 5px;
   vertical-align: bottom;
   display: inline-block;
   float: none;

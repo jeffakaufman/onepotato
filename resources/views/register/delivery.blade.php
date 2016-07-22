@@ -9,7 +9,7 @@ $('#register4').addClass('active');
 @section('content')
 <delivery :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: Family, 2 children <a href="#" class="sidelink">(change)</a>
+        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -38,8 +38,8 @@ $('#register4').addClass('active');
                         <div class="panel-heading text-left extrapadding">Delivery Location <a href="#" class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="Home"> <label for="delivery_home">Home</label></div>
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" value="Business"> <label for="delivery_busines">Business</label></div>
+                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" v-model="delivery_loc" value="Home" checked> <label for="delivery_home">Home</label></div>
+                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" v-model="delivery_loc" value="Business"> <label for="delivery_busines">Business</label></div>
                             </div>
                         </div>
 
@@ -50,66 +50,38 @@ $('#register4').addClass('active');
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="firstname" v-model="registerForm.firstname" placeholder="First Name" autofocus>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('firstname')">
-                                            @{{ registerForm.errors.get('firstname') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" class="form-control" name="lastname" v-model="registerForm.lastname" placeholder="Last Name" autofocus>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('lastname')">
-                                            @{{ registerForm.errors.get('lastname') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" autofocus>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="address" v-model="registerForm.address" lazy placeholder="Address">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('address')">
-                                            @{{ registerForm.errors.get('address') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address">
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" class="form-control" name="address_line_2" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('address_line_2')">
-                                            @{{ registerForm.errors.get('address_line_2') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="city" v-model="registerForm.city" lazy placeholder="City">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('city')">
-                                            @{{ registerForm.errors.get('city') }}
-                                        </span>
+                                        <input type="text" class="form-control" name="city" lazy placeholder="City">
                                 </div>
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                        <input type="text" class="form-control" name="state" placeholder="State" v-model="registerForm.state" lazy>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('state')">
-                                            @{{ registerForm.errors.get('state') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="state" placeholder="State" lazy>
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                        <input type="text" class="form-control" name="zip" placeholder="Zip" v-model="registerForm.zip" lazy>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('zip')">
-                                            @{{ registerForm.errors.get('zip') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip" v-model="registerForm.zip" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">

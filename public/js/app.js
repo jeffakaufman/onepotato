@@ -33788,16 +33788,14 @@ Vue.component('delivery', {
 
 	ready: function ready() {
 		//
+	},
+
+	data: function data() {
+		return {
+			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+		};
 	}
 });
-if (document.getElementById("#bday_select")) {
-	new Vue({
-		el: '#bday_select',
-		data: {
-			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-		}
-	});
-}
 
 },{}],56:[function(require,module,exports){
 'use strict';
@@ -33807,19 +33805,16 @@ Vue.component('payment', {
 
 	ready: function ready() {
 		//
-	}
-});
+	},
 
-if (document.getElementById("#payment_info")) {
-	new Vue({
-		el: '#payment_info',
-		data: {
+	data: function data() {
+		return {
 			cards: ['Visa', 'Mastercard', 'Discover', 'American Express'],
 			months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			years: ['2016', '2017', '2018', '2019', '2020']
-		}
-	});
-}
+		};
+	}
+});
 
 },{}],57:[function(require,module,exports){
 'use strict';
@@ -33833,21 +33828,25 @@ Vue.component('preferences', {
 
 				data: function data() {
 								return {
-												beef: false,
-												poultry: false,
-												fish: false,
-												lamb: false,
-												pork: false,
-												shellfish: false,
-												nuts: false
+												plan_type: 'Omnivore Box',
+												beef: true,
+												poultry: true,
+												fish: true,
+												lamb: true,
+												pork: true,
+												shellfish: true,
+												nuts: true
 								};
 				},
 				methods: {
 								selectAllOmnivore: function selectAllOmnivore() {
-												this.beef = true, this.beef = true, this.poultry = true, this.fish = true, this.lamb = true, this.pork = true, this.shellfish = true, this.nuts = true;
+												this.beef = true, this.poultry = true, this.fish = true, this.lamb = true, this.pork = true, this.shellfish = true, this.nuts = true;
 								},
 								selectAllVegetarian: function selectAllVegetarian() {
-												this.beef = false, this.beef = false, this.poultry = false, this.fish = false, this.lamb = false, this.pork = false, this.shellfish = false, this.nuts = true;
+												this.beef = false, this.poultry = false, this.fish = false, this.lamb = false, this.pork = false, this.shellfish = false, this.nuts = true;
+								},
+								selectOmni: function selectOmni() {
+												this.plan_type = 'Omnivore Box';
 								}
 				}
 });
