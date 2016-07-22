@@ -131,7 +131,7 @@ class SubinvoiceController extends Controller
 			$ship_xml .= "<SKU><![CDATA[" . $product->sku ."]]></SKU>";
 			$ship_xml .= "<Name><![CDATA[" . $product->product_description . "]]></Name>";
 			$ship_xml .= "<ImageUrl></ImageUrl>";
-			$ship_xml .= "<Weight></Weight>";
+			$ship_xml .= "<Weight>0</Weight>";
 			$ship_xml .= "<WeightUnits></WeightUnits>";
 			$ship_xml .= "<Quantity>1</Quantity>";
 			$ship_xml .= "<UnitPrice>" . $product->cost . "</UnitPrice>";
