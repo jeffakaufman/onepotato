@@ -141,18 +141,18 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" v-model="registerForm.firstname" placeholder="First Name" autofocus>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" v-model="registerForm.lastname" placeholder="Last Name" autofocus>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" autofocus>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" name="address" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
+                                    <input type="text" name="address" class="form-control" lazy placeholder="Address">
                                 </div>
 
                                 <!-- Address Line 2 -->
@@ -228,27 +228,27 @@ function stripeResponseHandler(status, response) {
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>PLAN TYPE</h5>
-                                Family, 2 children <a href="#" class="sidelink">(change)</a>
+                                @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
-                                <h5>DELIVERY DAY</h5>
-                                Wednesday <a href="#" class="sidelink">(change)</a>
+                                <!-- <h5>DELIVERY DAY</h5>
+                                Wednesday <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a> -->
                             </div>
                         </div>
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>DIETARY PROFILE</h5>
-                                Omnivore, gluten-free, no nuts <a href="#" class="sidelink">(change)</a>
+                                Omnivore, gluten-free, no nuts <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                May 18 <a href="#" class="sidelink">(change)</a>
+                                May 18 <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
                             <div class="col-sm-12">
                                 <h5>DELIVER TO YOUR HOME:</h5>
-                                222 South Doheny Drive, Beverly Hills, CA 90543 <a href="#" class="sidelink">(change)</a>
+                                222 South Doheny Drive, Beverly Hills, CA 90543 <a href="{{ URL::route('register_delivery') }}" class="sidelink">(change)</a>
                             </div>
                         </div>
                         
