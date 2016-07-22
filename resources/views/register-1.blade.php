@@ -12,11 +12,8 @@ $('#register1').addClass('active');
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h1 v-if="paidPlans.length > 0">
-                    Profile
-                </h1>
-
-                <h1 v-else>
+                
+                <h1>
                     Let’s get started!
                     <div class="panel-subtitle">Everything you need to make organic & delicious dinners
 the whole family will love delivered straight to your door each week.</div>
@@ -148,7 +145,7 @@ the whole family will love delivered straight to your door each week.</div>
     </div>
 </div>
 
-<div class="row" v-if="paidPlans.length == 0">
+<div class="row">
     <div class="col-md-4 col-md-offset-2">
         <h5>NO COMMITMENT</h5>
         <p>Skip weeks, change your family size, or cancel anytime. </p>
@@ -164,7 +161,7 @@ the whole family will love delivered straight to your door each week.</div>
         <img src="/img/p_register.jpg">
     </div>
 </div>
-<div class="row" v-if="paidPlans.length == 0">
+<div class="row">
     <div class="footnote pad col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 </div>
 @endsection

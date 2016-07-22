@@ -84,10 +84,10 @@ class NewUserController extends Controller
 		
 		$num_kids = $request->children;	
 		
-		if ($plan_type=='Vegetarian Box') {
+		if ($plan_type=='vegetarian') {
 			$theSKU = "01";
 		}
-		if ($plan_type=='Omnivore Box') {
+		if ($plan_type=='omnivore') {
 			$theSKU = "02";
 		}
 		
