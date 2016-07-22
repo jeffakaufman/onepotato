@@ -4,13 +4,8 @@ Vue.component('payment', {
     ready() {
         //
     },
-    
-});
-
-if( document.getElementById("#payment_info") ) {
-	new Vue({
-		el: '#payment_info',
-		data: {
+    data: function () {
+	    return {
 			cards: [
 				'Visa', 'Mastercard', 'Discover', 'American Express'
 			],
@@ -21,5 +16,5 @@ if( document.getElementById("#payment_info") ) {
 				'2016', '2017', '2018', '2019', '2020'
 			]
 		}
-	});
-}
+	}
+});

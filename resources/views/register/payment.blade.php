@@ -141,76 +141,44 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="firstname" v-model="registerForm.firstname" placeholder="First Name" autofocus>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('firstname')">
-                                            @{{ registerForm.errors.get('firstname') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="firstname" v-model="registerForm.firstname" placeholder="First Name" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" class="form-control" name="lastname" v-model="registerForm.lastname" placeholder="Last Name" autofocus>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('lastname')">
-                                            @{{ registerForm.errors.get('lastname') }}
-                                        </span>
+                                    <input type="text" class="form-control" name="lastname" v-model="registerForm.lastname" placeholder="Last Name" autofocus>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" name="address" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('address')">
-                                            @{{ registerForm.errors.get('address') }}
-                                        </span>
+                                    <input type="text" name="address" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" name="address_2" class="form-control" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('address_line_2')">
-                                            @{{ registerForm.errors.get('address_line_2') }}
-                                        </span>
+                                    <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" name="city" class="form-control" v-model="registerForm.city" lazy placeholder="City">
-
-                                        <span class="help-block" v-show="registerForm.errors.has('city')">
-                                            @{{ registerForm.errors.get('city') }}
-                                        </span>
+                                    <input type="text" name="city" class="form-control" lazy placeholder="City">
                                 </div>
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                        <input type="text" name="state" class="form-control" placeholder="State" v-model="registerForm.state" lazy>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('state')">
-                                            @{{ registerForm.errors.get('state') }}
-                                        </span>
+                                    <input type="text" name="state" class="form-control" placeholder="State" lazy>
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                        <input type="text" name="zip" class="form-control" placeholder="Zip" v-model="registerForm.zip" lazy>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('zip')">
-                                            @{{ registerForm.errors.get('zip') }}
-                                        </span>
+                                    <input type="text" name="zip" class="form-control" placeholder="Zip" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                        <input type="text" name="phone" class="form-control" placeholder="Phone Number" v-model="" lazy>
-
-                                        <span class="help-block" v-show="registerForm.errors.has('country')">
-                                            @{{ registerForm.errors.get('phone') }}
-                                        </span>
+                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" lazy>
                                 </div>
                             </div>
 
@@ -227,7 +195,7 @@ function stripeResponseHandler(status, response) {
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-12 nosidepadding">
-                                    <input type="text" class="form-control card-number" placeholder="Card Number" v-model="" lazy>
+                                    <input type="text" placeholder="Card Number" lazy>
 									
                                 </div>
                             </div>
