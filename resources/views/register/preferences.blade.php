@@ -37,8 +37,8 @@ $('#register3').addClass('active');
                             <div class="col-xs-12 extrapadding">Choose your box: <a href="#" class="sidelink">What's this?</a></div>
                         </div>
                         <div class="row nowrap extrapadding">
-                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" @click="selectAllOmnivore" name="plan_type" value="omnivore"> <label for="plan_type1">Omnivore Box</label></div>
-                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" @click="selectAllVegetarian" name="plan_type" value="vegetarian"> <label for="plan_type2">Vegetarian Box</label></div>
+                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" @click="selectAllOmnivore" name="plan_type" value="Omnivore Box"> <label for="plan_type1">Omnivore Box</label></div>
+                            <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" @click="selectAllVegetarian" name="plan_type" value="Vegetarian Box"> <label for="plan_type2">Vegetarian Box</label></div>
                         </div>
                         <div class="row extrapadding">
                             <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="glutenfree" value="Gluten free"> <label for="glutenfree">Gluten free*</label></div>
@@ -77,18 +77,6 @@ $('#register3').addClass('active');
 
                     <div class="panel-body font16">
                         <div class="row">
-                            <div class="col-xs-12 padbottom extrapadding">
-                                Box will be delivered on
-                                <select name="delivery_day" type="select" class="form-control inline">
-                                    <option></option>
-                                    <option value="mondays">Mondays</option>
-                                    <option value="tuesdays">Tuesdays</option>
-                                    <option value="wednesdays">Wednesdays</option>
-                                    <option value="thursdays">Thursdays</option>
-                                    <option value="fridays">Fridays</option>
-                                </select>
-                                by 8 p.m.
-                            </div>
                             <div class="col-xs-12 padbottom extrapadding">
                                 My first box will arrive on
                                 <select name="first_day" type="select" class="form-control inline">
