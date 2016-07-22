@@ -69,7 +69,7 @@ class SubinvoiceController extends Controller
 			//add a batch ID so that we can easily get all the orders sent to ship station
 			
 			$charge_date = new DateTime($invoice->charge_date);
-			$charge_date_formatted = $charge_date->format('Y-m-d\TH:i:s');	
+			$charge_date_formatted = $charge_date->format('m/d/Y H:i');	
 			$ship_xml .= "<Order>";
 
 			$ship_xml .= "<OrderID><![CDATA[" . $order_id . "]]></OrderID>";
