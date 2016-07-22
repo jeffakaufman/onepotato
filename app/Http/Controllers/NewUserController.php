@@ -168,13 +168,13 @@ class NewUserController extends Controller
 
 		$shippingAddress->save();
 		$user->save();
-		
+		$numChildren = $request->children;
 		//store children's birthdays
 		//add - children's birthdays
 		
 		//take them to the next step!
 		
-		return view('register.payment')->with(['user'=>$user]);
+		return view('register.payment')->with(['children'=>$numChildren,'user'=>$user]);
 		
 	}
 		
