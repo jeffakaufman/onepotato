@@ -156,6 +156,7 @@
                     <div class="panel-subtitle">Everything you need to make organic & delicious dinners
 the whole family will love delivered straight to your door each week.</div>
                 </h1>
+					
             </div>
 
             <div class="panel-body nopadding">

@@ -10,6 +10,7 @@ use App\Csr_note;
 use App\UserSubscription;
 use App\Product;
 use App\Referral;
+use Hash;
 use Mail;
 
 class NewUserController extends Controller
@@ -38,8 +39,9 @@ class NewUserController extends Controller
 		//validation
 		$validator = Validator::make($request->all(), [
 		      
-			    'email' => 'required|max:1000',
-				'password' => 'required|max:255'
+			    'email' => 'required|email|max:1000|unique:users',
+				'password' => 'required|max:255|same:password_confirmation'
+				
 		]);
 
 		if ($validator->fails()) {
@@ -51,7 +53,7 @@ class NewUserController extends Controller
 		$user = new User;
 	
 		$user->email = $request->email;
-		$user->password = $request->password;
+		$user->password = Hash::make($request->password);
 		$user->save();
 		
 		return view('register.select_plan')->with(['user'=>$user]);;
@@ -142,6 +144,9 @@ class NewUserController extends Controller
 		
 		//store shipping address
 		$shippingAddress = new Shipping_address;
+		$shippingAddress->shipping_first_name = $request->firstname;
+		$shippingAddress->shipping_last_name = $request->lastname;
+		$shippingAddress->delivery_instructions = $request->delivery_instructions;
 		$shippingAddress->shipping_address = $request->address;
 		$shippingAddress->shipping_address_2 = $request->address_line_2;
 		$shippingAddress->shipping_city = $request->city;
@@ -151,6 +156,9 @@ class NewUserController extends Controller
 		$shippingAddress->phone1 = $request->phone;
 		$shippingAddress->shipping_country = "US";
 		$shippingAddress->is_current = 1;
+		
+		if ($request->delivery_loc=="Home") {$shippingAddress->address_type="home";}
+		if ($request->delivery_loc=="Business") {$shippingAddress->address_type="business";}
 		
 		$user->name = $request->firstname . " " . $request->lastname;
 		
@@ -170,6 +178,9 @@ class NewUserController extends Controller
 	}
 		
 	public function RecordPayment (Request $request) {
+		
+		
+			//validation errors
 		
 			$user = User::find($request->user_id);
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
@@ -194,11 +205,21 @@ class NewUserController extends Controller
 			$userSubscription->stripe_id = $customer->subscriptions->data[0]->id;
 			
 			//update statuses to "active"
+			//return errors if CC didn't go through
+			
+			//record billing address
+			$user->billing_address = $request->address;
+			$user->billing_address_line_2 = $request->address_2;
+			$user->billing_city =  $request->city;
+			$user->billing_state =  $request->state;
+			$user->billing_zip =  $request->zip;
+			$user->billing_country = "US";
+			$user->phone =  $request->phone;
 			
 			$userSubscription->save();
 			$user->save();
 				
-			return "We did it!";
+			return view('register.congrats')->with(['user'=>$user]);
 			
 	}
 		

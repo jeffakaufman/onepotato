@@ -155,7 +155,7 @@ function stripeResponseHandler(status, response) {
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
+                                        <input type="text" name="address" class="form-control" v-model="registerForm.address" lazy placeholder="Address">
 
                                         <span class="help-block" v-show="registerForm.errors.has('address')">
                                             @{{ registerForm.errors.get('address') }}
@@ -164,7 +164,7 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                        <input type="text" class="form-control" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
+                                        <input type="text" name="address_2" class="form-control" v-model="registerForm.address_line_2" lazy placeholder="Address Line 2">
 
                                         <span class="help-block" v-show="registerForm.errors.has('address_line_2')">
                                             @{{ registerForm.errors.get('address_line_2') }}
@@ -174,7 +174,7 @@ function stripeResponseHandler(status, response) {
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" v-model="registerForm.city" lazy placeholder="City">
+                                        <input type="text" name="city" class="form-control" v-model="registerForm.city" lazy placeholder="City">
 
                                         <span class="help-block" v-show="registerForm.errors.has('city')">
                                             @{{ registerForm.errors.get('city') }}
@@ -183,7 +183,7 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                        <input type="text" class="form-control" placeholder="State" v-model="registerForm.state" lazy>
+                                        <input type="text" name="state" class="form-control" placeholder="State" v-model="registerForm.state" lazy>
 
                                         <span class="help-block" v-show="registerForm.errors.has('state')">
                                             @{{ registerForm.errors.get('state') }}
@@ -191,7 +191,7 @@ function stripeResponseHandler(status, response) {
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                        <input type="text" class="form-control" placeholder="Zip" v-model="registerForm.zip" lazy>
+                                        <input type="text" name="zip" class="form-control" placeholder="Zip" v-model="registerForm.zip" lazy>
 
                                         <span class="help-block" v-show="registerForm.errors.has('zip')">
                                             @{{ registerForm.errors.get('zip') }}
@@ -201,7 +201,7 @@ function stripeResponseHandler(status, response) {
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                        <input type="text" class="form-control" placeholder="Phone Number" v-model="" lazy>
+                                        <input type="text" name="phone" class="form-control" placeholder="Phone Number" v-model="" lazy>
 
                                         <span class="help-block" v-show="registerForm.errors.has('country')">
                                             @{{ registerForm.errors.get('phone') }}

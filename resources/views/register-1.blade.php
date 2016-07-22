@@ -18,7 +18,8 @@
 the whole family will love delivered straight to your door each week.</div>
                 </h1>
             </div>
-
+			 <!-- Display Validation Errors -->
+			        @include('errors.errors')
             <div class="panel-body nopadding">
                 <!-- Generic Error Message -->
                 <div class="alert alert-danger" v-if="registerForm.errors.has('form')">
