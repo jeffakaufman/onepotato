@@ -12,6 +12,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use App\Order;
+use DateTime;
 
 class SubinvoiceController extends Controller
 {
@@ -66,14 +67,16 @@ class SubinvoiceController extends Controller
 			$order->save();	
 			
 			//add a batch ID so that we can easily get all the orders sent to ship station
-
+			
+			$charge_date = new DateTime($invoice->charge_date);
+			$charge_date_formatted = $charge_date->format('Y-m-d\TH:i:s');	
 			$ship_xml .= "<Order>";
 
 			$ship_xml .= "<OrderID><![CDATA[" . $order_id . "]]></OrderID>";
 			$ship_xml .= "<OrderNumber><![CDATA[" . $order_id . "]]></OrderNumber>";
-			$ship_xml .= "<OrderDate>" . $invoice->charge_date . "</OrderDate>";
+			$ship_xml .= "<OrderDate>" . $charge_date_formatted . "</OrderDate>";
 			$ship_xml .= "<OrderStatus><![CDATA[paid]]></OrderStatus>";
-			$ship_xml .= "<LastModified>" . $invoice->charge_date . "</LastModified>";
+			$ship_xml .= "<LastModified>" . $charge_date_formatted . "</LastModified>";
 			$ship_xml .= "<ShippingMethod><![CDATA[USPSPriorityMail]]></ShippingMethod>";
 			$ship_xml .= "<PaymentMethod><![CDATA[Credit Card]]></PaymentMethod>";
 			$ship_xml .= "<OrderTotal>" . $invoice->charge_amount / 100 . "</OrderTotal>";
