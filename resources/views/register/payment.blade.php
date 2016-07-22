@@ -130,7 +130,7 @@ function stripeResponseHandler(status, response) {
                         <div class="panel-heading text-left extrapadding">Billing Information</div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="radio nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery"> <label for="same_as_delivery">Same as Delivery</label></div>
+                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery"> <label for="same_as_delivery">Same as Delivery</label></div>
                             </div>
                         </div>
 
@@ -208,7 +208,7 @@ function stripeResponseHandler(status, response) {
                                     <input type="text" class="form-control card-expiry-year" value="">
                                 </div>
                                 <div class="col-xs-2 thinpadding last">
-                                    <input type="text" class="form-control card-cvc" placeholder="CVC" v-model="registerForm.cvc" lazy>
+                                    <input type="text" class="form-control card-cvc" placeholder="CVC" lazy>
 								
                                 </div>
                             </div>
