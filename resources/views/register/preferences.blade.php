@@ -42,14 +42,14 @@ $('#register3').addClass('active');
                         </div>
                         <div class="row extrapadding">
                             <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="glutenfree" value="Gluten free"> <label for="glutenfree">Gluten free*</label></div>
-                            <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $x.xx per week.</div>
+                            <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</div>
                         </div>
                         <div class="row padtop">
-                            <div class="col-xs-12 extrapadding">Check the foods you don’t eat below:</div>
+                            <div class="col-xs-12 extrapadding">We'd like to receive the following foods:</div>
                         </div>
                         <div class="row">
                             <div class="col-xs-3 checkbox">
-                                <input id="beef" v-model="beef" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="beef">Beef</label>
+                                <input id="beef" v-model="beef" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="beef">Red Meat</label>
                                 <input id="poultry" v-model="poultry" @click="selectOmni" name="prefs[]" type="checkbox" value="2" class="form-control" /> <label for="poultry">Poultry</label>
                             </div>
                             <div class="col-xs-3 checkbox">

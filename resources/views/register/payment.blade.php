@@ -168,8 +168,16 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                    <input type="text" name="state" class="form-control" placeholder="State" lazy>
+                                    <!-- <input type="text" name="state" class="form-control" placeholder="State" lazy> -->
+
+                                    <label class="select">
+                                        <select name="state" type="select" class="form-control">
+                                            <option>Select</option>
+                                            <option v-for="state in states" value="@{{ state.abbr }}">@{{ state.state }}</option>
+                                        </select>
+                                    </label>
                                 </div>
+
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
                                     <input type="text" name="zip" class="form-control" placeholder="Zip" lazy>
@@ -188,29 +196,61 @@ function stripeResponseHandler(status, response) {
                         <div id="payment_info" class="panel-body font16">
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-6 nosidepadding">
-                                    <select type="select" class="form-control">
-                                        <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
-                                    </select>
+                                    <label class="select">
+                                        <select type="select" class="form-control">
+                                            <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
+                                        </select>
+                                    </label>
                                 </div>
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-12 nosidepadding">
-                                    <input type="text" placeholder="Card Number" lazy>
+                                    <input type="text" class="form-control" placeholder="Card Number" lazy>
 									
                                 </div>
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-6 thinpadding first">
-                               
+                                    <label class="select">
+                                        <select type="select" class="form-control card-expiry-month">
+                                            <option>Expiration Month</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="col-xs-4 thinpadding">
+                                    <label class="select">
+                                        <select type="select" class="form-control card-expiry-year">
+                                            <option>Expiration Year</option>
+                                            <option value="16">2016</option>
+                                            <option value="17">2017</option>
+                                            <option value="18">2018</option>
+                                            <option value="19">2019</option>
+                                            <option value="20">2020</option>
+                                        </select>
+                                    </label>
+                                </div>
+
+                                <!-- <div class="col-xs-6 thinpadding first">
 									<input type="text" class="form-control card-expiry-month" value="">
                                 </div>
                                 <div class="col-xs-4 thinpadding">
                                     <input type="text" class="form-control card-expiry-year" value="">
-                                </div>
+                                </div>-->
                                 <div class="col-xs-2 thinpadding last">
                                     <input type="text" class="form-control card-cvc" placeholder="CVC" lazy>
-								
-                                </div>
+                                </div> 
                             </div>
                         </div>
 

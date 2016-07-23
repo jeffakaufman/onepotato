@@ -77,7 +77,12 @@ $('#register4').addClass('active');
 
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
-                                    <input type="text" class="form-control" name="state" placeholder="State" lazy>
+                                    <label class="select">
+                                        <select name="state" type="select" class="form-control">
+                                            <option>Select</option>
+                                            <option v-for="state in states" value="@{{ state.abbr }}">@{{ state.state }}</option>
+                                        </select>
+                                    </label>
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">

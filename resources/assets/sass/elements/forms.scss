@@ -87,6 +87,27 @@
 	}
 	select.form-control {
 		padding: 5px 10px;
+		height: 45px;
+		-webkit-appearance: none;
+		border: 1px solid #ccc;
+		color: #999;
+		font-weight: 300;
+		width: 100%;
+	}
+	label.select {
+		display: block;
+	}
+	label.select:after {
+	    content:"\f0da";
+	    font-family: 'FontAwesome';
+	    color: #999;
+	    padding: 11px 8px;
+	    position: absolute; right: 12px; top: 0;
+	    z-index: 1;
+	    text-align: center;
+	    height: 100%;      
+	    pointer-events: none;
+	    box-sizing: border-box;   
 	}
 	.form-row {
 		margin-bottom: 10px;
