@@ -79,9 +79,11 @@ $('#register3').addClass('active');
                         <div class="row">
                             <div class="col-xs-12 padbottom extrapadding">
                                 My first box will arrive on
-                                <select name="first_day" type="select" class="form-control inline">
-                                    <option value="may18">May 18, 2016</option>
-                                </select>
+                                <label class="select inline">
+                                    <select name="first_day" type="select" class="form-control inline">
+                                        <option value="may18">May 18, 2016</option>
+                                    </select>
+                                </label>
                             </div>
                             <div class="col-xs-12 padding extrapadding">
                                 <div class="panel-subtitle2">your first week’s menu</div>

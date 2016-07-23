@@ -1,6 +1,7 @@
 // .spark-screen {
 	.radio, .checkbox {
 		display: inline-block;
+		padding-right: 0;
 		
 		&.nomargin {
 			margin: 0;
@@ -10,7 +11,7 @@
 	    display: block;
 	    cursor: pointer;
 	    position: relative;
-	    padding: 10px 10px 10px 35px;
+	    padding: 10px 0 10px 35px;
 	    font-size: 13px;
 	    border: 1px solid #fff;
 	}
@@ -96,18 +97,32 @@
 	}
 	label.select {
 		display: block;
+		position: relative;
+		
+		&.inline {
+			display: inline-block;
+			border: 1px solid #ccc;
+			
+			select.form-control {
+				border: none;
+				padding-right: 25px;
+			}
+		}
 	}
 	label.select:after {
-	    content:"\f0da";
+	    content:"\f0d7";
 	    font-family: 'FontAwesome';
 	    color: #999;
 	    padding: 11px 8px;
-	    position: absolute; right: 12px; top: 0;
+	    position: absolute; right: 0; top: 0;
 	    z-index: 1;
 	    text-align: center;
 	    height: 100%;      
 	    pointer-events: none;
 	    box-sizing: border-box;   
+	}
+	.field-label {
+		line-height: 45px;
 	}
 	.form-row {
 		margin-bottom: 10px;

@@ -5815,7 +5815,8 @@ button.close {
   width: 100%; }
 
 .radio, .checkbox {
-  display: inline-block; }
+  display: inline-block;
+  padding-right: 0; }
   .radio.nomargin, .checkbox.nomargin {
     margin: 0; }
 
@@ -5823,7 +5824,7 @@ button.close {
   display: block;
   cursor: pointer;
   position: relative;
-  padding: 10px 10px 10px 35px;
+  padding: 10px 0 10px 35px;
   font-size: 13px;
   border: 1px solid #fff; }
 
@@ -5924,21 +5925,31 @@ select.form-control {
   width: 100%; }
 
 label.select {
-  display: block; }
+  display: block;
+  position: relative; }
+  label.select.inline {
+    display: inline-block;
+    border: 1px solid #ccc; }
+    label.select.inline select.form-control {
+      border: none;
+      padding-right: 25px; }
 
 label.select:after {
-  content: "\f0da";
+  content: "\f0d7";
   font-family: 'FontAwesome';
   color: #999;
   padding: 11px 8px;
   position: absolute;
-  right: 12px;
+  right: 0;
   top: 0;
   z-index: 1;
   text-align: center;
   height: 100%;
   pointer-events: none;
   box-sizing: border-box; }
+
+.field-label {
+  line-height: 45px; }
 
 .form-row {
   margin-bottom: 10px; }
@@ -7047,11 +7058,15 @@ body.with-navbar {
   font-size: 16px;
   line-height: 1.2em;
   padding: 10px 5px;
-  vertical-align: bottom;
+  vertical-align: middle;
   display: inline-block;
   float: none;
   white-space: nowrap;
   min-height: 41px; }
+  .plan-info.field {
+    padding: 0 5px; }
+  .plan-info label.select {
+    margin-bottom: 0; }
 
 .plan-info.text-left {
   font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;

@@ -327,11 +327,18 @@ body.with-navbar {
 	font-size: 16px;
 	line-height: 1.2em;
 	padding: 10px 5px;
-	vertical-align: bottom;
+	vertical-align: middle;
     display: inline-block;
     float: none;
     white-space: nowrap;
     min-height: 41px;
+    
+    &.field {
+    	padding: 0 5px;
+    }
+    label.select {
+    	margin-bottom: 0;
+    }
 }
 .plan-info.text-left {
 	font-family: $font-family-bold;

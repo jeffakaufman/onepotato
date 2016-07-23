@@ -92,11 +92,11 @@ $('#register4').addClass('active');
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                        <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy>
 
-                                        <span class="help-block" v-show="registerForm.errors.has('phone')">
-                                            @{{ registerForm.errors.get('phone') }}
-                                        </span>
+                                    <span class="help-block" v-show="registerForm.errors.has('phone')">
+                                        @{{ registerForm.errors.get('phone') }}
+                                    </span>
                                 </div>
                             </div>
 
@@ -109,31 +109,41 @@ $('#register4').addClass('active');
                             </div>
                         </div>
 
-                        <div class="panel-heading text-left extrapadding">Family Information <a href="#" class="sidelink">what's this?</a>
-                            <div class="panel-subtitle">We love celebrations! Share your child’s birthday and we will send a little surprise in time for their big day.</div>
-                        </div>
-                        <div class="panel-body font16">
-                            <div id="bday_select" class="row extrapadding">
-                                <div class="col-xs col-xs-2 thinpadding first">
-                                    Child 1
-                                </div>
-                                <div class="col-xs col-xs-6 thinpadding">
-                                    <select name="child_bday1_month" type="select" class="form-control">
-                                        <option>Month</option>
-                                        <option v-for="month in months" value="@{{ month }}">@{{ month }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs col-xs-4 thinpadding last">
-                                    <select name="child_bday1_day" type="select" class="form-control">
-                                        <option>Day</option>
-                                        @for($x=1;$x<=31;$x++)
-                                            <option value={{ $x }}>{{ $x }}</option>;
-                                        @endfor
-                                    </select>
-                                </div>
+                        @if ($children > 0)
+                            <div class="panel-heading text-left extrapadding">Family Information <a href="#" class="sidelink">what's this?</a>
+                                <div class="panel-subtitle">We love celebrations! Share your child’s birthday and we will send a little surprise in time for their big day.</div>
                             </div>
-                        </div>
+                        
+                            <div class="panel-body font16">
 
+                                @for ($i = 1; $i <= $children; $i++)
+                                    <div id="bday_select" class="row extrapadding">
+                                        <div class="col-xs col-xs-2 thinpadding first field-label">
+                                            Child {{ $i }}
+                                        </div>
+                                        <div class="col-xs col-xs-6 thinpadding">
+                                            <label class="select">
+                                                <select name="child_bday{{$i}}_month" type="select" class="form-control">
+                                                    <option>Month</option>
+                                                    <option v-for="month in months" value="@{{ month }}">@{{ month }}</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                        <div class="col-xs col-xs-4 thinpadding last">
+                                            <label class="select">
+                                                <select name="child_bday{{$i}}_day" type="select" class="form-control">
+                                                    <option>Day</option>
+                                                    @for($x=1;$x<=31;$x++)
+                                                        <option value={{ $x }}>{{ $x }}</option>;
+                                                    @endfor
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endfor
+
+                            </div>
+                        @endif
                  
 
                 </div>

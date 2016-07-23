@@ -79,13 +79,15 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Number of children:</div>
-                            <div class="plan-info col-xs-6 text-left">
-                                <select name="children" type="select" class="form-control inline">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
+                            <div class="plan-info col-xs-6 text-left field">
+                                <label class="select inline">
+                                    <select name="children" type="select" class="form-control inline">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </label>
                             </div>
                         </div>
                         <div class="row nowrap">
