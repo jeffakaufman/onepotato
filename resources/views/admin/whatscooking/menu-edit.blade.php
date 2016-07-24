@@ -52,12 +52,12 @@
     	</div>  
     </div>     
 </div>
-<div class="form-group">
-    <label for="Week Of" class="col-sm-2 control-label">Week Of</label>
-    <div class="col-sm-6">
-  	    <input name="week_of" id="week_of" type="date" value="2016-08-02">
-   	</div>
-</div>
+		<div class="form-group">
+    		<label for="Week Of" class="col-sm-2 control-label">Week Of</label>
+    		<div class="col-sm-6">
+    			<div id="dateSelect"></div>
+   			</div>
+		</div>
         <div class="form-group">
             <label for="Title" class="col-sm-2 control-label">Title</label>
             <div class="col-sm-6">

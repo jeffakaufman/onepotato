@@ -66,12 +66,15 @@
 						    </div>
 						    <div class="form-group">
 						        {!! Form::label('Week Of', null,array('class'=>'col-sm-2 control-label')) !!}
-						        <div class="col-sm-6">
+						        <div class="col-sm-2">
 						        @if( $last)
-						      	    {!! Form::date('week_of', $last->week_of); !!}
+                   					{!! Form::select('week_of', $upcomingDates,$last->week_of,array('class'=>'form-control')); !!}
 						        @else
-						      	    {!! Form::date('week_of', \Carbon\Carbon::now()); !!}
+                   					{!! Form::select('week_of', $upcomingDates,null,array('class'=>'form-control')); !!}
+                   					
 						        @endif
+						       
+						       
 						       	</div>
 						    </div>
 							        <div class="form-group">
@@ -186,12 +189,63 @@
 </div>
 <script>
 $('#menuEditModal').on('show.bs.modal', function(e) {
-console.log($(e.relatedTarget).data('whatscooking'));
-    //get data-id attribute of the clicked element
+    
+    Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf())
+    	dat.setDate(dat.getDate() + days);
+    	return dat;
+	}
+
+	function getAllDays() {
+	    var s = new Date();
+	    var e = new Date(s);
+	    var a = [];
+    
+    	e.setDate(e.getDay() +126);
+
+    	while(s < e) {
+    	    if (s.getDay() == 1 ) {a.push(s)};
+    	    s = new Date(s.setDate(
+    	        s.getDate() + 1
+    	    ))
+        
+    	}
+
+    	return a;
+	};
+
     var menu = $(e.relatedTarget).data('menu');
     var whatscooking = $(e.relatedTarget).data('whatscooking');
+    
+	var weekOfCompare = new Date (whatscooking.week_of)
+    var weekOfDiv = document.getElementById("dateSelect");
 
-    $("#menuEditModal #week_of").val( whatscooking.week_of );
+	//Create array of options to be added
+	var array = getAllDays();
+
+	//Create and append select list
+	var week_of = document.createElement("select");
+	
+    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate()+1);
+	week_of.id = "week_of";
+	week_of.className += "form-control" 
+	week_of.setAttribute("name", "week_of");
+	
+	if ( weekOfDiv.hasChildNodes() ) { 
+		weekOfDiv.removeChild( weekOfDiv.childNodes[0] );
+	}
+	weekOfDiv.appendChild(week_of);
+
+	//Create and append the options
+	for (var i = 0; i < array.length; i++) {
+	    var option = document.createElement("option");
+	    option.value = array[i].getFullYear()+"-"+(array[i].getMonth()+1)+"-"+array[i].getDate();
+	    option.text = (array[i].getMonth()+1)+"/"+array[i].getDate()+"/"+array[i].getFullYear();
+	    week_of.appendChild(option);
+	}
+	
+
+    $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
     $("#menuEditModal #vegetarian_type").prop( "checked",whatscooking.product_type == 'Vegetarian' );
     $("#menuEditModal #omnivore_type").prop( "checked",whatscooking.product_type == 'Omnivore' );

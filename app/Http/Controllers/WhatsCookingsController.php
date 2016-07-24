@@ -53,9 +53,19 @@ class WhatsCookingsController extends Controller
      */
     public function showWhatsCookings($id = null)
     {
+    	$startDate = date('Y-m-d H:i:s');
+    	$endDate = date('Y-m-d H:i:s', strtotime("+12 weeks"));
+    	$upcomingDates = [];
+
+    	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
+			if (date('N', $i) == 2) {//Tuesday == 2 {
+				$upcomingDates[date('Y-m-d', $i)] = date('m/d/y', $i);
+			}   
+    	}
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
 		$last = isset($id) ? WhatsCookings::find($id) : '';
-		return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last]);;
+		//echo implode(",",$upcomingDates);
+		return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last,'upcomingDates'=>$upcomingDates]);;
     }
 
 
@@ -130,7 +140,7 @@ class WhatsCookingsController extends Controller
     public function saveWhatsCooking(Request $request)
     {
 	    $whatscookings = $request->all();
-	    
+    
     	$validator = Validator::make($whatscookings, [
 	        'product_type' => 'required|max:255',
 	        'menu_title' => 'required|max:255',
@@ -143,7 +153,7 @@ class WhatsCookingsController extends Controller
 	            ->withErrors($validator);
 	    }
 
-     	$test = WhatsCookings::where('week_of', $request->week_of)
+     	$test = WhatsCookings::where('week_of', $whatscookings['week_of'])
      			->where('product_type', $request->product_type)
      			->first();
      	
@@ -175,8 +185,10 @@ class WhatsCookingsController extends Controller
     		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
 			$menu->image = $imagename;
 		}
+	    
 	    $menu->save();
 		$menu->whatscookings()->attach($id);
+		
 	    return redirect('/admin/whatscooking/'.$id);
     }
 }
