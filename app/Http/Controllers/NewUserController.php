@@ -10,6 +10,7 @@ use App\Csr_note;
 use App\UserSubscription;
 use App\Product;
 use App\Referral;
+use App\ZipcodeStates;
 use Hash;
 use Mail;
 
@@ -26,8 +27,6 @@ class NewUserController extends Controller
     }
 
 	public function DisplayUserForm () {
-		
-		
 		return view('register-1');
 	}
 	
@@ -45,6 +44,9 @@ class NewUserController extends Controller
 				
 		]);
 
+		if (!ZipcodeStates::where('zipcode',$request->zip)->first()) {
+			return view('register.badzip');
+			}
 		if ($validator->fails()) {
 		        return redirect('/register')
 		            ->withInput()

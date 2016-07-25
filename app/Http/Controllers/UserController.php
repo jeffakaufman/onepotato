@@ -68,7 +68,6 @@ class UserController extends Controller
 		}
 		
 		$referrals = Referral::where('referrer_user_id',$id)->get();
-	
 		
 		return view('admin.users.user')
 				->with(['user'=>$user, 

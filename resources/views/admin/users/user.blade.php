@@ -4,56 +4,6 @@
 @include('admin.users.previous-shipping')
 @section('page_header')
 
-<?php
-
-function ReadableDietaryPreferences($diet_prefs) {
-	
-	$prefs = explode(",",$diet_prefs);
-	$string_pref = "";
-	
-	foreach ($prefs as $pref) {
-	
-		if ($string_pref != "") {
-			$string_pref .= ", ";
-		}
-		if ($pref=="1") {
-			$string_pref .= "Beef ";
-		}
-		if ($pref=="2") {
-			$string_pref .= "Poultry ";
-		}
-		if ($pref=="3") {
-			$string_pref .= "Fish ";
-		}
-		if ($pref=="4") {
-			$string_pref .= "Lamb ";
-		}
-		if ($pref=="5") {
-			$string_pref .= "Pork ";
-		}
-		
-		if ($pref=="6") {
-			$string_pref .= "Shellfish ";
-		}
-		if ($pref=="7") {
-			$string_pref .= "Nuts ";
-		}
-		if ($pref=="8") {
-			$string_pref .= "Adventurous ";
-		}
-		if ($pref=="9") {
-			$string_pref .= "Gluten Free ";
-		}
-		
-		
-		
-		
-	}
-	
-	return $string_pref;
-}
-
-?>
     <h1>
         {{ $user->name }}
     </h1>
@@ -91,7 +41,7 @@ function ReadableDietaryPreferences($diet_prefs) {
 									<input type="email" name="user_email" id="user_email" class="form-control" value="{{ $user->email}}" placeholder="Email">
            						</div>
 								<div class="col-sm-3">
-									{{ $userProduct->product_description }}<br> {{ ReadableDietaryPreferences($userSubscription->dietary_preferences) }}</i>
+									{{ $userProduct->product_description }}<br> {{ $userSubscription->dietary_preferences }}</i>
            						</div>
 								<div class="col-sm-1">
    					    			<button type="submit" class="btn btn-default">

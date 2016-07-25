@@ -33,11 +33,8 @@ the whole family will love delivered straight to your door each week.</div>
                 </div>
 
                 <!-- Registration Form -->
-              
-
 				<form class="form-horizontal" role="form" method="post">
 					 {{ csrf_field() }}
-
 				    <!-- Team Name -->
 				    @if (Spark::usesTeams())
 				        <div class="field" :class="{'has-error': registerForm.errors.has('team')}" v-if=" ! invitation">
