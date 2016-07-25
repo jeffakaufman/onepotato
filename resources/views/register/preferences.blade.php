@@ -9,7 +9,7 @@ $('#register3').addClass('active');
 @section('content')
 <preferences :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
+        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="javascript:history.back();" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -34,7 +34,7 @@ $('#register3').addClass('active');
                     <div class="panel-heading text-left extrapadding">dietary preferences</div>
                     <div class="panel-body font16">
                         <div class="row">
-                            <div class="col-xs-12 extrapadding">Choose your box: <a href="#" class="sidelink">What's this?</a></div>
+                            <div class="col-xs-12 extrapadding">Choose your box: <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">what's this?</a></div>
                         </div>
                         <div class="row nowrap extrapadding">
                             <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" v-model="plan_type" @click="selectAllOmnivore" name="plan_type" value="Omnivore Box"> <label for="plan_type1">Omnivore Box</label></div>
@@ -49,7 +49,7 @@ $('#register3').addClass('active');
                         </div>
                         <div class="row">
                             <div class="col-xs-3 checkbox">
-                                <input id="beef" v-model="beef" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="beef">Red Meat</label>
+                                <input id="redmeat" v-model="redmeat" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" /> <label for="redmeat">Red Meat</label>
                                 <input id="poultry" v-model="poultry" @click="selectOmni" name="prefs[]" type="checkbox" value="2" class="form-control" /> <label for="poultry">Poultry</label>
                             </div>
                             <div class="col-xs-3 checkbox">
@@ -68,7 +68,7 @@ $('#register3').addClass('active');
                 </div>
                 <div class="note text-center">
                     <h4>Your Dietary Profile</h4>
-                    You will receive a mixture of poultry, red meat, seafood and vegetarian dishes.
+                    You will receive a mixture of <span v-show="poultry">poultry,</span> <span v-show="redmeat || lamb"> red meat,</span> <span v-show="shellfish || fish"> seafood</span> <span v-show="nuts"> and vegetarian</span> dishes.
                 </div>
             </div>
             <div class="col-md-5">

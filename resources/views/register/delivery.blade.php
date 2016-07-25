@@ -9,7 +9,7 @@ $('#register4').addClass('active');
 @section('content')
 <delivery :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
+        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -35,7 +35,7 @@ $('#register4').addClass('active');
 
                   	
 
-                        <div class="panel-heading text-left extrapadding">Delivery Location <a href="#" class="sidelink">more details</a></div>
+                        <div class="panel-heading text-left extrapadding">Delivery Location<a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
                                 <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" v-model="delivery_loc" value="Home" checked> <label for="delivery_home">Home</label></div>
@@ -102,7 +102,7 @@ $('#register4').addClass('active');
 
                         </div>
 
-                        <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a href="#" class="sidelink">what's this?</a></div>
+                        <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a data-toggle="tooltip" data-title="Please be as specific as possible. Instructions such as “leave at door” should indicate the type of door (e.g. exterior or interior door) and include any other helpful context, such as a code to enter the building." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row extrapadding">
                                 <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control"></textarea></div>
@@ -110,7 +110,7 @@ $('#register4').addClass('active');
                         </div>
 
                         @if ($children > 0)
-                            <div class="panel-heading text-left extrapadding">Family Information <a href="#" class="sidelink">what's this?</a>
+                            <div class="panel-heading text-left extrapadding">Family Information <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">what's this?</a>
                                 <div class="panel-subtitle">We love celebrations! Share your child’s birthday and we will send a little surprise in time for their big day.</div>
                             </div>
                         

@@ -7,7 +7,7 @@ Vue.component('preferences', {
     data: function () {
 	    return {
 	    	plan_type: 'Omnivore Box',
-	    	beef: true,
+	    	redmeat: true,
 	    	poultry: true,
 	    	fish: true,
 	    	lamb: true,
@@ -18,7 +18,7 @@ Vue.component('preferences', {
     },
     methods: {
 	  	selectAllOmnivore: function () {
-	  		this.beef = true,
+	  		this.redmeat = true,
 	    	this.poultry = true,
 	    	this.fish = true,
 	    	this.lamb = true,
@@ -27,7 +27,7 @@ Vue.component('preferences', {
 	    	this.nuts = true;
 	  	},
 	  	selectAllVegetarian: function () {
-	  		this.beef = false,
+	  		this.redmeat = false,
 	    	this.poultry = false,
 	    	this.fish = false,
 	    	this.lamb = false,
@@ -38,5 +38,5 @@ Vue.component('preferences', {
 	  	selectOmni: function () {
 	  		this.plan_type = 'Omnivore Box'
 	  	}
-	  }
+	}
 });
