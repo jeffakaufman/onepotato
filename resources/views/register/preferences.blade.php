@@ -41,7 +41,7 @@ $('#register3').addClass('active');
                             <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" v-model="plan_type" @click="selectAllVegetarian" name="plan_type" value="Vegetarian Box"> <label for="plan_type2">Vegetarian Box</label></div>
                         </div>
                         <div class="row extrapadding">
-                            <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="glutenfree" value="Gluten free"> <label for="glutenfree">Gluten free*</label></div>
+                            <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="prefs[]" value="9"> <label for="glutenfree">Gluten free*</label></div>
                             <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</div>
                         </div>
                         <div class="row padtop">

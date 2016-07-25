@@ -29,6 +29,10 @@ $('#register4').addClass('active');
 					 {{ csrf_field() }}
 
 					<input type="hidden" name="user_id" value="{{ $user->id }}" />
+                    <input type="hidden" name="children" value="{{ $children }}" />
+                    <input type="hidden" name="plantype" value="{{ $plantype }}" />
+                    <input type="hidden" name="dietprefs" value="{{ $dietprefs }}" />
+                    <input type="hidden" name="glutenfree" value="{{ $glutenfree }}" />
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default panel-form">

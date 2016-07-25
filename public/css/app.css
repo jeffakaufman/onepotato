@@ -5923,6 +5923,8 @@ select.form-control {
   color: #999;
   font-weight: 300;
   width: 100%; }
+  select.form-control[name=children] {
+    color: #1db8bf; }
 
 label.select {
   display: block;
@@ -6165,15 +6167,15 @@ label.select:after {
     .navbar-inverse .navbar-toggle {
       display: block; } }
 
-body.register .navbar-left {
+#register-navbar .navbar-left {
   float: none;
   white-space: nowrap;
   width: 100%; }
   @media (min-width: 768px) {
-    body.register .navbar-left li {
+    #register-navbar .navbar-left li {
       width: 20%; } }
 
-body.register .navbar-right {
+#register-navbar .navbar-right {
   display: none; }
 
 .navbar-nav > li > a,
@@ -6783,6 +6785,9 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
   -ms-flex-pack: center;
   justify-content: center; }
 
+.hide {
+  display: none; }
+
 #spark-terms-screen h1 {
   font-size: 26px;
   margin-top: 35px;
@@ -6988,6 +6993,16 @@ body.with-navbar {
   letter-spacing: 0; }
   .sidelink:hover {
     color: #1db8bf; }
+
+.tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
+.sidelink + .tooltip > .tooltip-inner, .tooltip.top .tooltip-inner, .tooltip.top .tooltip-arrow {
+  background-color: #eefeff;
+  border-top-color: #eefeff; }
+
+.sidelink + .tooltip > .tooltip-inner {
+  color: #404040;
+  padding: 15px;
+  text-align: left; }
 
 .total {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }

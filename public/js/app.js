@@ -33757,6 +33757,10 @@ var app = new Vue({
   mixins: [require('spark')]
 });
 
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
 },{"./components/bootstrap":54,"spark":172,"spark-bootstrap":171}],54:[function(require,module,exports){
 'use strict';
 
@@ -33846,7 +33850,7 @@ Vue.component('preferences', {
 				data: function data() {
 								return {
 												plan_type: 'Omnivore Box',
-												beef: true,
+												redmeat: true,
 												poultry: true,
 												fish: true,
 												lamb: true,
@@ -33857,10 +33861,10 @@ Vue.component('preferences', {
 				},
 				methods: {
 								selectAllOmnivore: function selectAllOmnivore() {
-												this.beef = true, this.poultry = true, this.fish = true, this.lamb = true, this.pork = true, this.shellfish = true, this.nuts = true;
+												this.redmeat = true, this.poultry = true, this.fish = true, this.lamb = true, this.pork = true, this.shellfish = true, this.nuts = true;
 								},
 								selectAllVegetarian: function selectAllVegetarian() {
-												this.beef = false, this.poultry = false, this.fish = false, this.lamb = false, this.pork = false, this.shellfish = false, this.nuts = true;
+												this.redmeat = false, this.poultry = false, this.fish = false, this.lamb = false, this.pork = false, this.shellfish = false, this.nuts = true;
 								},
 								selectOmni: function selectOmni() {
 												this.plan_type = 'Omnivore Box';

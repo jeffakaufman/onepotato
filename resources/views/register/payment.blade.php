@@ -130,7 +130,7 @@ function stripeResponseHandler(status, response) {
                         <div class="panel-heading text-left extrapadding">Billing Information</div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery"> <label for="same_as_delivery">Same as Delivery</label></div>
+                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" onclick="popAddress()" name="same_as_delivery" value="Same as Delivery"> <label for="same_as_delivery">Same as Delivery</label></div>
                             </div>
                         </div>
 
@@ -263,12 +263,12 @@ function stripeResponseHandler(status, response) {
             <div class="col-md-6">
 
                 <div class="panel panel-default">
-                    <div class="panel-heading text-left">Order Summary</div>
+                    <div class="panel-heading text-left nopa">Order Summary</div>
                     <div class="panel-body">
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>PLAN TYPE</h5>
-                                @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ URL::route('register_select_plan') }}" class="sidelink">(change)</a>
+                                @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-3);" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <!-- <h5>DELIVERY DAY</h5>
@@ -278,17 +278,18 @@ function stripeResponseHandler(status, response) {
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>DIETARY PROFILE</h5>
-                                Omnivore, gluten-free, no nuts <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a>
+                                {{ $plantype }}, {{ $dietprefs }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                May 18 <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a>
+                                May 18 <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
                             <div class="col-sm-12">
                                 <h5>DELIVER TO YOUR HOME:</h5>
-                                222 South Doheny Drive, Beverly Hills, CA 90543 <a href="{{ URL::route('register_delivery') }}" class="sidelink">(change)</a>
+                                <span id="addy1" class="hide">{{ $firstname }}</span><span id="addy2" class="hide">{{ $lastname }}</span>
+                                <span id="addy3">{{ $address1 }}</span>, @if ($address2) <span id="addy4">{{ $address2 }}</span>, @endif <span id="addy5">{{ $city }}</span>, <span id="addy6">{{ $state }}</span> <span id="addy7">{{ $zip }}</span> <a href="javascript:history.back();" class="sidelink">(change)</a><span id="addy8" class="hide">{{ $phone }}</span>
                             </div>
                         </div>
                         
@@ -298,13 +299,15 @@ function stripeResponseHandler(status, response) {
                             <div class="panel-heading text-left">order TOTAL FOR MAY 18</div>
                             <div class="panel-body">
                                 <div class="col-xs-12 col-sm-7 nosidepadding">
-                                    <div class="col-xs-7 nosidepadding">Omnivore plan</div>
+                                    <div class="col-xs-7 nosidepadding">{{ $plantype }} plan</div>
                                     <div class="col-xs-5 text-right nosidepadding">$XX.XX</div>
                                 </div>
+                                @if ($glutenfree == 'yes')
                                 <div class="col-xs-12 col-sm-7 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Gluten free</div>
-                                    <div class="col-xs-5 nosidepadding text-right">$XX.XX</div>
+                                    <div class="col-xs-5 nosidepadding text-right">$1.50</div>
                                 </div>
+                                @endif
                                 <div class="col-xs-12 col-sm-7 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Referral code</div>
                                     <div class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
@@ -335,5 +338,17 @@ function stripeResponseHandler(status, response) {
             </div>
         </div>
     </div>
+    <script>
+    function popAddress() {
+        $('input[name=firstname]').val($('#addy1').text());
+        $('input[name=lastname]').val($('#addy2').text());
+        $('input[name=address]').val($('#addy3').text());
+        $('input[name=address_2]').val($('#addy4').text());
+        $('input[name=city]').val($('#addy5').text());
+        $('select[name=state]').val($('#addy6').text());
+        $('input[name=zip]').val($('#addy7').text());
+        $('input[name=phone]').val($('#addy8').text());
+    }
+    </script>
 </payment>
 @endsection

@@ -86,9 +86,11 @@ class NewUserController extends Controller
 		
 		if ($plan_type=='Vegetarian Box') {
 			$theSKU = "01";
+			$plantype = 'Vegetarian';
 		}
 		if ($plan_type=='Omnivore Box') {
 			$theSKU = "02";
+			$plantype = 'Omnivore';
 		}
 		
 		
@@ -103,12 +105,14 @@ class NewUserController extends Controller
 		if ($num_kids=="4") {$theSKU .= "04";}
 			
 	
-		if ($request->glutenfree) {
+		//if ($request->glutenfree) {
+		if (in_array('9', $request->prefs)) {
 			$theSKU .= "0100";
+			$glutenfree = 'yes';
 		}else{
 			$theSKU .= "0000";
+			$glutenfree = 'no';
 		}
-		
 		
 		
 		//look up the product ID
@@ -122,6 +126,19 @@ class NewUserController extends Controller
 		$userSubscription->stripe_plan=0;
 		$userSubscription->stripe_id=0;
 		$userSubscription->save();
+
+		$prefs = array();
+		if (in_array('9', $request->prefs)) array_push($prefs, 'gluten free');
+		if (in_array('1', $request->prefs)) array_push($prefs, 'red meat');
+		if (in_array('2', $request->prefs)) array_push($prefs, 'poultry');
+		if (in_array('3', $request->prefs)) array_push($prefs, 'fish');
+		if (in_array('4', $request->prefs)) array_push($prefs, 'lamb');
+		if (in_array('5', $request->prefs)) array_push($prefs, 'pork');
+		if (in_array('6', $request->prefs)) array_push($prefs, 'shellfish');
+		if (in_array('7', $request->prefs)) array_push($prefs, 'nuts');
+		else array_push($prefs, 'no nuts');
+
+		$dietprefs = implode(", ",$prefs);
 		
 		//update STRIPE
 		/*
@@ -133,9 +150,9 @@ class NewUserController extends Controller
 		*/
 		$numChildren = $request->children;
 		$user = User::find($request->user_id);
-	
 		
-		return view('register.delivery')->with(['children'=>$numChildren,'user'=>$user]);
+		
+		return view('register.delivery')->with(['children'=>$numChildren,'user'=>$user,'plantype'=>$plantype,'dietprefs'=>$dietprefs,'glutenfree'=>$glutenfree]);
 	}
 		
 	public function RecordDeliveryPreferences (Request $request) {
@@ -169,12 +186,13 @@ class NewUserController extends Controller
 		$shippingAddress->save();
 		$user->save();
 		$numChildren = $request->children;
+		
 		//store children's birthdays
 		//add - children's birthdays
 		
 		//take them to the next step!
 		
-		return view('register.payment')->with(['children'=>$numChildren,'user'=>$user]);
+		return view('register.payment')->with(['children'=>$numChildren,'user'=>$user,'plantype'=>$request->plantype,'dietprefs'=>$request->dietprefs,'glutenfree'=>$request->glutenfree,'firstname'=>$shippingAddress->shipping_first_name,'lastname'=>$shippingAddress->shipping_last_name,'address1'=>$shippingAddress->shipping_address,'address2'=>$shippingAddress->shipping_address_2,'city'=>$shippingAddress->shipping_city,'state'=>$shippingAddress->shipping_state,'zip'=>$shippingAddress->shipping_zip,'phone'=>$shippingAddress->phone1]);
 		
 	}
 		

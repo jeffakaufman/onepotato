@@ -94,6 +94,10 @@
 		color: #999;
 		font-weight: 300;
 		width: 100%;
+		
+		&[name=children] {
+			color: $brand-primary;
+		}
 	}
 	label.select {
 		display: block;

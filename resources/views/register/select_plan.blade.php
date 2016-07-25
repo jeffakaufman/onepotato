@@ -38,7 +38,7 @@ Both plans include 3 meals per week.</div>
                                 <img src="/img/p_plan_adult.jpg" alt="Adult Plan">
                             </div>
                         </div>
-                        <div class="row nowrap">
+                        <div class="row nowrap" style="height: 52px;">
                             <div class="plan-info col-xs-6 text-right">Number of adults:</div>
                             <div class="plan-info col-xs-6 text-left">2</div>
                         </div>

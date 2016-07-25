@@ -14,7 +14,7 @@
             <!-- Branding Image -->
             @include('spark::nav.brand')
 
-            <div class="collapse navbar-collapse" id="spark-navbar-collapse">
+            <div class="collapse navbar-collapse" id="register-navbar">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-left">
                     <li id="register1"><span><i class="icon icon-apron"></i>1. Welcome</span></li>

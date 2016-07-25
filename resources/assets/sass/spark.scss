@@ -235,6 +235,17 @@ body.with-navbar {
 		color: $brand-primary;
 	}
 }
+.tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
+.sidelink + .tooltip > .tooltip-inner, .tooltip.top .tooltip-inner, .tooltip.top .tooltip-arrow {
+	background-color: $bg-color-status; 
+	border-top-color: $bg-color-status; 
+}
+.sidelink + .tooltip > .tooltip-inner {
+	color: $text-color;
+	padding: 15px;
+	text-align: left;
+}
+
 .total {
 	font-family: $font-family-semibold;
 }
