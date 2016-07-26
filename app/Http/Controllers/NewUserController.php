@@ -204,6 +204,8 @@ class NewUserController extends Controller
 		$shippingAddress = new Shipping_address;
 		$shippingAddress->shipping_first_name = $request->firstname;
 		$shippingAddress->shipping_last_name = $request->lastname;
+		$user->first_name = $request->firstname;
+		$user->last_name = $request->lastname;
 		$shippingAddress->delivery_instructions = $request->delivery_instructions;
 		$shippingAddress->shipping_address = $request->address;
 		$shippingAddress->shipping_address_2 = $request->address_line_2;
