@@ -71,8 +71,19 @@ class NewUserController extends Controller
 		$numChildren = $request->children;
 		$user = User::find($request->user_id);
 		
-		$startDate = date('Y-m-d H:i:s');
-    	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
+		//calculate earliest start date
+		$today = date('Y-m-d H:i:s'); 
+		$nextTuesday = strtotime('next tuesday');
+		$dateCompare = strtotime($today);
+		
+		if (($nextTuesday-$dateCompare)/86400 < 5) { //if today's date is less than 5 days from next tuesday, go to the tuesday after
+			$startDate = date('Y-m-d', strtotime('+1 week', $nextTuesday));
+			$endDate =  date('Y-m-d', strtotime('+6 weeks', $nextTuesday));
+		} else {
+			$startDate = date('Y-m-d', $nextTuesday);
+			$endDate =  date('Y-m-d', strtotime('+5 weeks', $nextTuesday));
+		}
+
     	$upcomingDates = [];
 
     	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
@@ -80,7 +91,7 @@ class NewUserController extends Controller
 				$upcomingDates[date('m/d/y', $i)] = date('F d, Y', strtotime(date('m/d/y', $i)));
 			}   
     	}
-		
+
 		return view('register.preferences')->with(['children'=>$numChildren,'user'=>$user,'zip'=>$request->zip,'upcomingDates'=>$upcomingDates]);
 		
 	}
