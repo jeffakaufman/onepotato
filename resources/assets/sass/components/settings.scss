@@ -123,3 +123,15 @@
 .hide {
 	display: none;
 }
+.modal-content {
+	border-radius: 0;
+}
+.close {
+	color: $text-color2;
+	opacity: 1;
+	content: '\e807';
+	
+	&:hover {
+		color: $brand-secondary;
+	}
+}

@@ -5819,14 +5819,18 @@ button.close {
   padding-right: 0; }
   .radio.nomargin, .checkbox.nomargin {
     margin: 0; }
+  .radio label, .checkbox label {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    padding: 10px 0 10px 35px;
+    font-size: 13px; }
 
-.radio label, .checkbox label {
-  display: block;
-  cursor: pointer;
-  position: relative;
-  padding: 10px 0 10px 35px;
-  font-size: 13px;
-  border: 1px solid #fff; }
+.radio:first-child label {
+  margin-right: 15px; }
+
+.radio label {
+  border: 1px solid #D7D7D7; }
 
 .radio label:before, .checkbox label:before {
   content: "";
@@ -5955,6 +5959,9 @@ label.select:after {
 
 .form-row {
   margin-bottom: 10px; }
+  .form-row.padding {
+    padding: 0;
+    margin-bottom: 20px; }
 
 .field {
   margin-bottom: 5px; }
@@ -6788,6 +6795,16 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 .hide {
   display: none; }
 
+.modal-content {
+  border-radius: 0; }
+
+.close {
+  color: #585858;
+  opacity: 1;
+  content: '\e807'; }
+  .close:hover {
+    color: #e91e25; }
+
 #spark-terms-screen h1 {
   font-size: 26px;
   margin-top: 35px;
@@ -6822,10 +6839,12 @@ body {
   font-size: 14px;
   color: #404040; }
 
-strong, b, h2, h3, h4, h5 {
+h2, h3, h4, h5 {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
-  color: #e91e25;
+  color: #1db8bf;
   letter-spacing: 0.05em; }
+  h2 .red, h3 .red, h4 .red, h5 .red {
+    color: #e91e25; }
 
 h1 {
   font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
@@ -6849,10 +6868,12 @@ h2 {
   padding-bottom: 1em; }
 
 .edit-link {
-  display: block;
-  text-align: right;
+  float: right;
   margin-bottom: 0.5em;
   font-size: 12px; }
+
+strong, b {
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
 
 a {
   color: #1db8bf;
@@ -6866,6 +6887,14 @@ img {
 
 .alert-danger strong {
   color: #fff; }
+
+body.account {
+  font-size: 16px; }
+  body.account h2 {
+    margin-bottom: 1.5em; }
+  body.account h4 {
+    color: #404040;
+    font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
 
 .font11 {
   font-size: 11px; }

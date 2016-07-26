@@ -1,43 +1,68 @@
 @extends('spark::layouts.app')
 
-@section('register-nav')
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <!-- Collapsed Hamburger -->
-            <div class="hamburger">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#spark-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-
-            <!-- Branding Image -->
-            @include('spark::nav.brand')
-
-            <div class="collapse navbar-collapse" id="spark-navbar-collapse">
-                <!-- Left Side Of Navbar -->
-
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login" class="navbar-link">Login</a></li>
-                    <li><a href="/register" class="navbar-link">Register</a></li>
-                </ul>
-            </div>
-            
-        </div>
-
-    </div>
-</nav>
-@endsection
-
 @section('content')
 
     <div class="container">
 	
-BAD ZIP
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading with-subtitle">
+                        <h1>Join Our Waiting List
+                            <div class="panel-subtitle">We are stocking our kitchen -- almost ready to make dinner time as fun as it should be.</div>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default panel-form">
+
+                    <form class="form-horizontal" role="form" method="post"  action="">
+                    {{ csrf_field() }}
+
+                        <div class="panel-body">
+                        
+                            <div class="row extrapadding">
+
+                                <p>Join our list of families interested in One Potato and we'll send you meals on us once we're in your neighborhood.</p>
+
+                                
+                                <div class="form-row padding">
+                                    <!-- E-Mail Address -->
+                                    <input type="email" class="form-control" name="email" placeholder="Your email address" autofocus>
+                                </div>
+                                <div class="form-row padding">
+                                    <!-- First Name -->
+                                    <input type="text" class="form-control" name="firstname" placeholder="Your first name">
+                                </div>
+                                <div class="form-row padding">
+                                    <!-- Last Name -->
+                                    <input type="text" class="form-control" name="lastname" placeholder="Your last name">
+                                </div>
+                                <div class="form-row padding">
+                                    <!-- Zip Code -->
+                                        <input type="text" class="form-control" name="zip" placeholder="Your zip code">
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <div style="display: inline-block" class="text-center">
+                                    <button class="btn btn-primary">
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                 
+                    </form>
+                </div>
+
+             </form>
+            </div>
+        </div>
 
     </div>
 @endsection

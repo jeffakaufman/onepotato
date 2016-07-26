@@ -6,14 +6,19 @@
 		&.nomargin {
 			margin: 0;
 		}
+		label {
+		    display: block;
+		    cursor: pointer;
+		    position: relative;
+		    padding: 10px 0 10px 35px;
+		    font-size: 13px;
+		}
 	}
-	.radio label, .checkbox label {
-	    display: block;
-	    cursor: pointer;
-	    position: relative;
-	    padding: 10px 0 10px 35px;
-	    font-size: 13px;
-	    border: 1px solid #fff;
+	.radio:first-child label {
+		margin-right: 15px;
+	}
+	.radio label {
+		border: 1px solid #D7D7D7;
 	}
 	.radio label:before, .checkbox label:before {
 	    content: "";
@@ -130,6 +135,11 @@
 	}
 	.form-row {
 		margin-bottom: 10px;
+		
+		&.padding {
+			padding: 0;
+			margin-bottom: 20px;
+		}
 	}
 	.field {
 		margin-bottom: 5px;

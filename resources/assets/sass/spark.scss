@@ -34,10 +34,15 @@ body {
 	font-size: $font-size-base;
 	color: $text-color;
 }
-strong, b, h2, h3, h4, h5 {
+
+h2, h3, h4, h5 {
 	font-family: $font-family-semibold;
-	color: $brand-secondary;
+	color: $brand-primary;
 	letter-spacing: 0.05em;
+	
+	.red {
+		color: $brand-secondary;
+	}
 }
 h1 {
 	font-family: $font-family-bold;
@@ -62,10 +67,12 @@ h2 {
 	padding-bottom: 1em;
 }
 .edit-link {
-	display: block;
-	text-align: right;
+	float: right;
 	margin-bottom: 0.5em;
 	font-size: 12px;
+}
+strong, b {
+	font-family: $font-family-semibold;
 }
 a {
     color: $brand-primary;
@@ -79,6 +86,17 @@ img {
 }
 .alert-danger strong {
 	color: #fff;
+}
+body.account {
+	font-size: 16px;
+	
+	h2 {
+		margin-bottom: 1.5em;
+	}
+	h4 {
+		color: $text-color;
+		font-family: $font-family-bold;
+	}
 }
 .font11 {
 	font-size: 11px;
