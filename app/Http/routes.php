@@ -79,7 +79,8 @@ Route::post('/user/referrals/{id}', 'UserController@sendReferral');
 
 Route::get('user/test/{id}', 'UserController@showTest');
 
-	
+
+Route::get('/whatscooking/{date}', 'WhatsCookingsController@showWhatsCookingsDate');	
 Route::post('/whatscooking', 'WhatsCookingsController@saveWhatsCooking');
 Route::put('/whatscooking', 'WhatsCookingsController@updateWhatsCooking');
 

@@ -28,6 +28,7 @@ $('#register4').addClass('active');
 <form class="form-horizontal" role="form" method="post"  action="{{ url('/register/delivery') }}">
 					 {{ csrf_field() }}
 
+					<input type="hidden" name="first_day" value="{{ $first_day }}" />
 					<input type="hidden" name="user_id" value="{{ $user->id }}" />
                     <input type="hidden" name="children" value="{{ $children }}" />
                     <input type="hidden" name="plantype" value="{{ $plantype }}" />
@@ -83,14 +84,16 @@ $('#register4').addClass('active');
                                 <div class="form-row col-sm-4 thinpadding">
                                     <label class="select">
                                         <select name="state" type="select" class="form-control">
-                                            <option>Select</option>
-                                            <option v-for="state in states" value="@{{ state.abbr }}">@{{ state.state }}</option>
+                                            <option value="AZ" @if ($state == 'AZ') selected @endif>Arizona</option>
+                                            <option value="CA" @if ($state == 'CA') selected @endif>California</option>
+                                            <option value="NV" @if ($state == 'NV') selected @endif>Nevada</option>
+                                            <option value="UT" @if ($state == 'UT') selected @endif>Utah</option>
                                         </select>
                                     </label>
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" v-model="registerForm.zip" lazy>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{  $zip  }}" v-model="registerForm.zip" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">

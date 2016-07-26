@@ -26,6 +26,7 @@ Both plans include 3 meals per week.</div>
 				 {{ csrf_field() }}
 				<input type="hidden" name="children" value="0" />
 				<input type="hidden" name="user_id" value="{{ $user->id }}" />
+				<input type="hidden" name="zip" value="{{ $zip }}" />
         <div class="row">
             <div class="col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form text-center">

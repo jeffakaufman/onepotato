@@ -43,10 +43,13 @@ class NewUserController extends Controller
 				'zip' => 'required|digits:5',
 				
 		]);
-
+		
+		//make sure zipcode is on the approved list
 		if (!ZipcodeStates::where('zipcode',$request->zip)->first()) {
 			return view('register.badzip');
 			}
+		
+		
 		if ($validator->fails()) {
 		        return redirect('/register')
 		            ->withInput()
@@ -59,7 +62,7 @@ class NewUserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 		
-		return view('register.select_plan')->with(['user'=>$user]);
+		return view('register.select_plan')->with(['user'=>$user,'zip'=>$request->zip]);
 	}
 	
 	public function RecordPlan (Request $request) {
@@ -68,7 +71,17 @@ class NewUserController extends Controller
 		$numChildren = $request->children;
 		$user = User::find($request->user_id);
 		
-		return view('register.preferences')->with(['children'=>$numChildren,'user'=>$user]);
+		$startDate = date('Y-m-d H:i:s');
+    	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
+    	$upcomingDates = [];
+
+    	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
+			if (date('N', $i) == 2) {//Tuesday == 2 {
+				$upcomingDates[date('m/d/y', $i)] = date('F d, Y', strtotime(date('m/d/y', $i)));
+			}   
+    	}
+		
+		return view('register.preferences')->with(['children'=>$numChildren,'user'=>$user,'zip'=>$request->zip,'upcomingDates'=>$upcomingDates]);
 		
 	}
 	
@@ -153,14 +166,28 @@ class NewUserController extends Controller
 		$numChildren = $request->children;
 		$user = User::find($request->user_id);
 		
+		//get the state for the zip code entered at the start of registration
+		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 		
-		return view('register.delivery')->with(['children'=>$numChildren,'user'=>$user,'plantype'=>$plantype,'dietprefs'=>$dietprefs,'glutenfree'=>$glutenfree]);
+		
+		return view('register.delivery')->
+			with([
+				'children'=>$numChildren,'user'=>$user,
+				'plantype'=>$plantype,
+				'dietprefs'=>$dietprefs,
+				'zip'=>$request->zip,
+				'state'=>$state->state,
+				'first_day'=>$request->first_day,
+				'glutenfree'=>$glutenfree
+			]);
 	}
 		
 	public function RecordDeliveryPreferences (Request $request) {
 		
 		//store first and last name in User field
 		$user = User::find($request->user_id);
+		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+		$product = Product::where('id',$userSubscription->product_id)->first();
 		
 		//store shipping address
 		$shippingAddress = new Shipping_address;
@@ -194,7 +221,24 @@ class NewUserController extends Controller
 		
 		//take them to the next step!
 		
-		return view('register.payment')->with(['children'=>$numChildren,'user'=>$user,'plantype'=>$request->plantype,'dietprefs'=>$request->dietprefs,'glutenfree'=>$request->glutenfree,'firstname'=>$shippingAddress->shipping_first_name,'lastname'=>$shippingAddress->shipping_last_name,'address1'=>$shippingAddress->shipping_address,'address2'=>$shippingAddress->shipping_address_2,'city'=>$shippingAddress->shipping_city,'state'=>$shippingAddress->shipping_state,'zip'=>$shippingAddress->shipping_zip,'phone'=>$shippingAddress->phone1]);
+		return view('register.payment')->
+			with([
+				'children'=>$numChildren,
+				'user'=>$user,
+				'plantype'=>$request->plantype,
+				'dietprefs'=>$request->dietprefs,
+				'glutenfree'=>$request->glutenfree,
+				'firstname'=>$shippingAddress->shipping_first_name,
+				'lastname'=>$shippingAddress->shipping_last_name,
+				'address1'=>$shippingAddress->shipping_address,
+				'address2'=>$shippingAddress->shipping_address_2,
+				'city'=>$shippingAddress->shipping_city,
+				'state'=>$shippingAddress->shipping_state,
+				'zip'=>$shippingAddress->shipping_zip,
+				'phone'=>$shippingAddress->phone1,
+				'first_day'=>$request->first_day,
+				'product'=>$product
+				]);
 		
 	}
 		
@@ -235,6 +279,7 @@ class NewUserController extends Controller
 			$user->billing_state =  $request->state;
 			$user->billing_zip =  $request->zip;
 			$user->billing_country = "US";
+			$user->start_date =  $request->start_date;
 			$user->phone =  $request->phone;
 			
 			$userSubscription->save();

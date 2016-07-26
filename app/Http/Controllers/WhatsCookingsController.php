@@ -64,8 +64,24 @@ class WhatsCookingsController extends Controller
     	}
 		$whatscookings = WhatsCookings::orderBy('week_of','desc')->get();
 		$last = isset($id) ? WhatsCookings::find($id) : '';
-		//echo implode(",",$upcomingDates);
 		return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last,'upcomingDates'=>$upcomingDates]);;
+    }
+
+	/**
+     * Show the application dashboard.
+     *
+     * @return Response
+     */
+    public function showWhatsCookingsDate($week_of)
+    {
+
+		$whatscookings = WhatsCookings::where('week_of',$week_of)->orderBy('product_type')->get();
+		
+		foreach ($whatscookings as $whatscooking) {
+    		echo $whatscooking->menus()->get();
+		}
+		
+		//return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last,'upcomingDates'=>$upcomingDates]);;
     }
 
 

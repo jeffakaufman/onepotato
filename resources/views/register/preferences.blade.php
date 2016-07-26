@@ -26,6 +26,7 @@ $('#register3').addClass('active');
         </div>
 		<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/preferences') }}">
 			 {{ csrf_field() }}
+				<input type="hidden" name="zip" value="{{ $zip }}" />
 			<input type="hidden" name="children" value="{{$children}}" />
 			<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
@@ -68,7 +69,14 @@ $('#register3').addClass('active');
                 </div>
                 <div class="note text-center">
                     <h4>Your Dietary Profile</h4>
-                    You will receive a mixture of <span v-show="poultry">poultry,</span> <span v-show="redmeat || lamb"> red meat,</span> <span v-show="shellfish || fish"> seafood</span> <span v-show="nuts"> and vegetarian</span> dishes.
+                    You will receive a mixture of:
+                    <span v-show="redmeat"> red meat</span> 
+                    <span v-show="fish"> fish</span> 
+                    <span v-show="pork"> pork</span> 
+                    <span v-show="poultry"> poultry</span> 
+                    <span v-show="lamb"> lamb</span> 
+                    <span v-show="shellfish"> shellfish</span> 
+                    <span v-show="nuts"> nut</span> dishes.
                 </div>
             </div>
             <div class="col-md-5">
@@ -80,9 +88,7 @@ $('#register3').addClass('active');
                             <div class="col-xs-12 padbottom extrapadding">
                                 My first box will arrive on
                                 <label class="select inline">
-                                    <select name="first_day" type="select" class="form-control inline">
-                                        <option value="may18">May 18, 2016</option>
-                                    </select>
+                               		{!! Form::select('first_day', $upcomingDates,null,array('class'=>'form-control')); !!}
                                 </label>
                             </div>
                             <div class="col-xs-12 padding extrapadding">

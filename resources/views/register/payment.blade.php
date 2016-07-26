@@ -106,7 +106,7 @@ function stripeResponseHandler(status, response) {
 
        	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
 							 {{ csrf_field() }}
-
+							<input type="hidden" name="start_date" value="{{ $first_day }}" />
 							<input type="hidden" name="user_id" value="{{ $user->id }}" />
 
         <div class="row">
@@ -261,14 +261,13 @@ function stripeResponseHandler(status, response) {
             </div>
 
             <div class="col-md-6">
-
                 <div class="panel panel-default">
                     <div class="panel-heading text-left nopa">Order Summary</div>
                     <div class="panel-body">
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>PLAN TYPE</h5>
-                                @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-3);" class="sidelink">(change)</a>
+                                @if ($children == 0) Two Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-3);" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <!-- <h5>DELIVERY DAY</h5>
@@ -278,11 +277,12 @@ function stripeResponseHandler(status, response) {
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>DIETARY PROFILE</h5>
-                                {{ $plantype }}, {{ $dietprefs }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
+                                {{ $plantype }} <br>
+                                {{ $dietprefs }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                May 18 <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
+                                {{ date('F d', strtotime($first_day)) }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
@@ -296,25 +296,25 @@ function stripeResponseHandler(status, response) {
                         <p>&nbsp;</p>
 
                         <div class="row padtop font16">
-                            <div class="panel-heading text-left">order TOTAL FOR MAY 18</div>
+                            <div class="panel-heading text-left">order TOTAL FOR {{ date('F d', strtotime($first_day)) }}</div>
                             <div class="panel-body">
-                                <div class="col-xs-12 col-sm-7 nosidepadding">
-                                    <div class="col-xs-7 nosidepadding">{{ $plantype }} plan</div>
-                                    <div class="col-xs-5 text-right nosidepadding">$XX.XX</div>
+                                <div class="col-xs-12 col-sm-8 nosidepadding">
+                                    <div class="col-xs-7 nosidepadding">{{ $product->product_description }} </div>
+                                    <div class="col-xs-5 text-right nosidepadding"> ${{ $product->cost }}</div>
                                 </div>
                                 @if ($glutenfree == 'yes')
-                                <div class="col-xs-12 col-sm-7 nosidepadding">
+                                <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Gluten free</div>
                                     <div class="col-xs-5 nosidepadding text-right">$1.50</div>
                                 </div>
                                 @endif
-                                <div class="col-xs-12 col-sm-7 nosidepadding">
+                                <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Referral code</div>
                                     <div class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
                                 </div>
-                                <div class="col-xs-12 col-sm-7 nosidepadding total">
+                                <div class="col-xs-12 col-sm-8 nosidepadding total">
                                     <div class="col-xs-7 nosidepadding">TOTAL</div>
-                                    <div class="col-xs-5 nosidepadding text-right">$XX.XX</div>
+                                    <div class="col-xs-5 nosidepadding text-right">${{ $product->cost }}</div>
                                 </div>
                             </div>
                         </div>

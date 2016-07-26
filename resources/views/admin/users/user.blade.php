@@ -77,7 +77,7 @@
     	        			</div>
     	        			<div class="form-group">
 								<div class="col-sm-3 col-sm-offset-1">
-									{{ Form::select('billing_address', $states, $user->billing_state, ['class' => 'form-control col-sm-3']) }}
+									{{ Form::select('billing_state', $states, $user->billing_state, ['class' => 'form-control col-sm-3']) }}
 								</div>
 				    		<div class="col-sm-4">
 				        		<input type="text" name="shipping_zip" id="shipping_zip" class="form-control" value="{{ $user->billing_zip }}" placeholder="Billing Zip">
