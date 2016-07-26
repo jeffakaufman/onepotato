@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Storage;
+use stdClass;
 use App\WhatsCookings;
 use App\Menus;
 
@@ -70,18 +71,37 @@ class WhatsCookingsController extends Controller
 	/**
      * Show the application dashboard.
      *
-     * @return Response
+     * @return Menus for a given week
      */
     public function showWhatsCookingsDate($week_of)
     {
-
-		$whatscookings = WhatsCookings::where('week_of',$week_of)->orderBy('product_type')->get();
+		//Look, I know there is a better way but this was just easier. Make an object for each product type, put them in an array
+		//json encode, hope it works for Beverly
+		$weeksMenus = [];
+		$menus  = [];
+		$omnivoreMenus = new stdClass;
+		$vegetarianMenus = new stdClass;
 		
+		$whatscookings = WhatsCookings::where('week_of',$week_of)->where('product_type','Omnivore')->get();
 		foreach ($whatscookings as $whatscooking) {
-    		echo $whatscooking->menus()->get();
+    		$menus[] = $whatscooking->menus()->first();
 		}
+		$omnivoreMenus -> product_type = "Omnivore";
+		$omnivoreMenus -> menus = $menus;
+		$weeksMenus[]  = $omnivoreMenus;
+
+
+		$whatscookings = WhatsCookings::where('week_of',$week_of)->where('product_type','Vegetarian')->get();
+		$menus  = [];
+		foreach ($whatscookings as $whatscooking) {
+    		$menus[] = $whatscooking->menus()->first();
+		}
+		$vegetarianMenus -> product_type = "Vegetarian";
+		$vegetarianMenus -> menus = $menus;
+		$weeksMenus[]  = $vegetarianMenus;
 		
-		//return view('admin.whatscooking.whatscooking')->with(['whatscookings'=>$whatscookings,'last'=>$last,'upcomingDates'=>$upcomingDates]);;
+		$weeksMenus =  json_encode($weeksMenus);		
+		return $weeksMenus;
     }
 
 
