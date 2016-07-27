@@ -21,6 +21,13 @@ trait ManagesAppDetails
     public static $developers = [];
 
     /**
+     * The e-mail addresses of all of the application's admins.
+     *
+     * @var array
+     */
+    public static $admins = [];
+
+    /**
      * Define the application information.
      *
      * @param  array  $details
@@ -92,5 +99,27 @@ trait ManagesAppDetails
     public static function developers(array $developers)
     {
         static::$developers = $developers;
+    }
+
+    /**
+     * Determine if the given e-mail address belongs to a admin.
+     *
+     * @param  string  $email
+     * @return bool
+     */
+    public static function admin($email)
+    {
+        return in_array($email, static::$admins);
+    }
+
+    /**
+     * Set the e-mail addresses that are registered to admins.
+     *
+     * @param  array  $admins
+     * @return void
+     */
+    public static function admins(array $admins)
+    {
+        static::$admins = $admins;
     }
 }

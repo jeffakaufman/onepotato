@@ -2,6 +2,8 @@
 
 namespace Laravel\Spark\Http\Middleware;
 
+use Laravel\Spark\Spark;
+
 class VerifyUserIsSubscribed
 {
     /**
@@ -19,9 +21,15 @@ class VerifyUserIsSubscribed
             return $next($request);
         }
 
+
+        $redirectUrl = '/settings#/subscription';
+        if($this->isAdmin($request->user())) {
+            $redirectUrl = '/admin/dashboard';
+        }
+
         return $request->ajax() || $request->wantsJson()
                                 ? response('Subscription Required.', 402)
-                                : redirect('/settings#/subscription');
+                                : redirect($redirectUrl);
     }
 
     /**
@@ -41,5 +49,17 @@ class VerifyUserIsSubscribed
 
         return ($defaultSubscription && $user->onGenericTrial()) ||
                 $user->subscribed($subscription, $plan);
+    }
+
+    /**
+     * @param \Illuminate\Contracts\Auth\Authenticatable $user
+     * @return bool
+     */
+    protected function isAdmin($user) {
+        if(!$user) {
+            return false;
+        }
+
+        return Spark::admin($user->email);
     }
 }

@@ -48,6 +48,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'dev' => \Laravel\Spark\Http\Middleware\VerifyUserIsDeveloper::class,
+        'admin' => \Laravel\Spark\Http\Middleware\VerifyUserIsAdmin::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'hasTeam' => \Laravel\Spark\Http\Middleware\VerifyUserHasTeam::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,

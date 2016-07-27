@@ -23,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
     protected $developers = [];
 
     /**
+     * All of the application admin e-mail addresses.
+     *
+     * @var array
+     */
+    protected $admins = [];
+
+    /**
      * The address where customer support e-mails should be sent.
      *
      * @var string
@@ -77,6 +84,10 @@ class AppServiceProvider extends ServiceProvider
 
         if (count($this->developers) > 0) {
             Spark::developers($this->developers);
+        }
+
+        if (count($this->admins) > 0) {
+            Spark::admins($this->admins);
         }
 
         if (count($this->roles) > 0) {

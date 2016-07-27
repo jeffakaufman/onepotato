@@ -40,6 +40,14 @@ class SparkServiceProvider extends ServiceProvider
         'beverlytang@gmail.com'
     ];
 
+    protected $admins = [
+        'jeffkaufman@kaufmaninternational.com',
+        'mattkirkpatrick@gmail.com',
+        'azagarov@gmail.com',
+        'jennamstein@gmail.com',
+        'beverlytang@gmail.com'
+    ];
+
     /**
      * Indicates if the application will expose an API.
      *

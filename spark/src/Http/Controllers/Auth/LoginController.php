@@ -40,6 +40,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+
         return view('spark::auth.login');
     }
 
@@ -144,4 +145,6 @@ class LoginController extends Controller
                     ? $this->redirectAfterLogout : '/'
         );
     }
+
+    protected $redirectAfterLogout = '/home';
 }

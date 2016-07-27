@@ -119,7 +119,7 @@ Route::get('/admin/referral/subscribe/', 'UserController@recordReferral');
 Route::get('/admin/user/referrals/{id}', 'UserController@showReferrals');
 Route::post('/admin/user/referrals/{id}', 'UserController@sendReferral');
 
-Route::get('/admin/dashboard', 'DashboardController@show');
+Route::get('/admin/dashboard', ['uses' => 'DashboardController@show', 'middleware' => 'admin', ]);
 Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
 Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
 Route::get('/admin/gift_cards', 'GiftCardsController@show');

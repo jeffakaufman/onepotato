@@ -94,10 +94,17 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    @if(Auth::check())
+                                        <img src="{{{ Auth::user()->photo_url }}}" class="img-circle"" alt="User Image">
+                                    @endif
 
                                     <p>
-                                        Alexander Pierce - Web Developer
+                                        @if(Auth::check())
+                                            {{{ Auth::user()->name }}}
+                                        @else
+                                            Unregistered
+                                        @endif
+                                        - Web Developer
                                         <small>Member since Nov. 2012</small>
                                     </p>
                                 </li>
@@ -122,7 +129,7 @@
                                         <a href="#" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
