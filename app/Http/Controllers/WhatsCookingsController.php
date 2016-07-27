@@ -84,7 +84,7 @@ class WhatsCookingsController extends Controller
 		
 		$whatscookings = WhatsCookings::where('week_of',$week_of)->where('product_type','Omnivore')->get();
 		foreach ($whatscookings as $whatscooking) {
-    		$menus[] = $whatscooking->menus()->first();
+    		$menus[] = $whatscooking->menus()->get();
 		}
 		$omnivoreMenus -> product_type = "Omnivore";
 		$omnivoreMenus -> menus = $menus;
