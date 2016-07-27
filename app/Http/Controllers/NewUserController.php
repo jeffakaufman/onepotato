@@ -290,12 +290,12 @@ class NewUserController extends Controller
 			$user->billing_state =  $request->state;
 			$user->billing_zip =  $request->zip;
 			$user->billing_country = "US";
-			$user->start_date =  $request->start_date;
+			$user->start_date =  date('Y-m-d', strtotime($request->start_date));
 			$user->phone =  $request->phone;
 			
 			$userSubscription->save();
 			$user->save();
-				
+			
 			return view('register.congrats')->with(['user'=>$user,'start_date'=>$request->start_date]);
 			
 	}
