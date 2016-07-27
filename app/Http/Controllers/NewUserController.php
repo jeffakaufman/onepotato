@@ -262,7 +262,7 @@ class NewUserController extends Controller
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
-/*			
+			
 			//figure out which plan the user is currently subscribed to
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 			
@@ -275,10 +275,10 @@ class NewUserController extends Controller
 					"email" => $user->email)
 			);
 						
-			$user->stripe_id = $customer->id;*/
+			$user->stripe_id = $customer->id;
 			
 			//get the subscription ID
-			//$userSubscription->stripe_id = $customer->subscriptions->data[0]->id;
+			$userSubscription->stripe_id = $customer->subscriptions->data[0]->id;
 			
 			//update statuses to "active"
 			//return errors if CC didn't go through
@@ -293,8 +293,8 @@ class NewUserController extends Controller
 			$user->start_date =  $request->start_date;
 			$user->phone =  $request->phone;
 			
-			//$userSubscription->save();
-			//$user->save();
+			$userSubscription->save();
+			$user->save();
 				
 			return view('register.congrats')->with(['user'=>$user,'start_date'=>$request->start_date]);
 			
