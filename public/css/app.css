@@ -5807,6 +5807,10 @@ button.close {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 500; }
+  .btn-primary.small, .btn-secondary.small {
+    font-size: 14px;
+    padding: 5px 10px;
+    text-transform: none; }
 
 .btn-secondary {
   background-color: #1db8bf; }
@@ -6835,6 +6839,9 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 .hide {
   display: none; }
 
+.highlight {
+  color: #e91e25; }
+
 .modal-content {
   border-radius: 0; }
 
@@ -6948,6 +6955,9 @@ body.account {
   body.account h4 {
     color: #404040;
     font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
+    body.account h4.thin {
+      font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+      letter-spacing: 0; }
 
 .font11 {
   font-size: 11px; }

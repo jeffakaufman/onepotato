@@ -96,6 +96,11 @@ body.account {
 	h4 {
 		color: $text-color;
 		font-family: $font-family-bold;
+		
+		&.thin {
+			font-family: $font-family-semibold;
+			letter-spacing: 0;
+		}
 	}
 }
 .font11 {

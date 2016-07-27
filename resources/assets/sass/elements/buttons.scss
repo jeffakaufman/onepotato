@@ -53,6 +53,12 @@
 	    text-transform: uppercase;
 	    font-size: 18px;
 	    font-weight: 500;
+	    
+	    &.small {
+	    	font-size: 14px;
+	    	padding: 5px 10px;
+	    	text-transform: none;
+	    }
 	}
 	.btn-secondary {
 		background-color: $brand-primary;

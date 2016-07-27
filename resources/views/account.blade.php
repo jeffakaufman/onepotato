@@ -531,27 +531,43 @@
                         <h2>Customer Referrals</h2>
                         
                         <div v-if="user">
-                            
-                            <h4>You have 2 outstanding referrals:</h4>
 
+                            <div class="row">
+                                <div class="col-sm-8"><h4 class="thin">You have <span class="highlight">2</span> outstanding referrals:</h4></div>
+                                <div class="col-sm-4"><button type="submit" class="btn btn-primary small">resend all</button></div>
+                            </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Jason Stick</b></div>
-                                <div class="col-sm-8">jason@yahoo.com</div>
+                                <div class="col-sm-4">jason@yahoo.com</div>
+                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Molly Ringwald</b></div>
-                                <div class="col-sm-8">molly@ringwald.com</div>
+                                <div class="col-sm-4">molly@ringwald.com</div>
+                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
                             </div>
 
-                            <h4>You have referred 4 new customers so far. Refer two more and receive another free box!</h4>
+                            <h4 class="thin">You have referred <span class="highlight">4</span> new customers so far. Refer two more and receive another free box!</h4>
 
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Jason Stick</b></div>
-                                <div class="col-sm-8">jason@yahoo.com</div>
+                                <div class="col-sm-4">jason@yahoo.com</div>
+                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Molly Ringwald</b></div>
-                                <div class="col-sm-8">molly@ringwald.com</div>
+                                <div class="col-sm-4">molly@ringwald.com</div>
+                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
+                            </div>
+                            <div class="row padding">
+                                <div class="col-sm-4"><b>Name</b></div>
+                                <div class="col-sm-4">name@domain.com</div>
+                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
+                            </div>
+                            <div class="row padding">
+                                <div class="col-sm-4"><b>Name</b></div>
+                                <div class="col-sm-4">name@domain.com</div>
+                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
                             </div>
 
                             <h4>SEND A NEW REFERRAL TO:</h4>
