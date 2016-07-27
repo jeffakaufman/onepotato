@@ -15,6 +15,11 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('subscribed');
+
+//        if($this->isAdmin($request->user())) {
+//            $redirectUrl = '/admin/dashboard';
+//        }
+
     }
 
     /**

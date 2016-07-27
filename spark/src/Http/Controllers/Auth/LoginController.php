@@ -57,7 +57,14 @@ class LoginController extends Controller
             return $this->redirectForTwoFactorAuth($request, $user);
         }
 
-        return redirect()->intended($this->redirectPath());
+        $redirectPath = $this->redirectPath();
+        if(Spark::admin($user->email)) {
+            $redirectPath = '/admin/dashboard';
+            return redirect($redirectPath);
+        } else {
+            return redirect()->intended($redirectPath);
+        }
+
     }
 
     /**
