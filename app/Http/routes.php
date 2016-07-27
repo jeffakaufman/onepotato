@@ -103,33 +103,34 @@ Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateSh
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
+$router->group(['middleware' => 'admin'], function($router) {
+    Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
-Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
+    Route::get('/admin/users', 'UserController@showUsers');
+    Route::get('/admin/user/{id}', 'UserController@showUser');
+    Route::post('/admin/user/{id}', 'UserController@updateUser');
+    Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
+    Route::post('/admin/user/payment/{id}', 'UserController@savePayment');
+    Route::get('/admin/user/subscriptions/{id}', 'UserController@showSubscription');
+    Route::post('/admin/user/subscriptions/{id}', 'UserController@updateSubscription');
+    Route::post('/admin/user/csr_note/{id}', 'UserController@saveCSRNote');
+    Route::get('/admin/user/payments/{id}', 'UserController@showPayments');
+    Route::get('/admin/referral/subscribe/', 'UserController@recordReferral');
+    Route::get('/admin/user/referrals/{id}', 'UserController@showReferrals');
+    Route::post('/admin/user/referrals/{id}', 'UserController@sendReferral');
 
-Route::get('/admin/users', 'UserController@showUsers');
-Route::get('/admin/user/{id}', 'UserController@showUser');
-Route::post('/admin/user/{id}', 'UserController@updateUser');
-Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
-Route::post('/admin/user/payment/{id}', 'UserController@savePayment');
-Route::get('/admin/user/subscriptions/{id}', 'UserController@showSubscription');
-Route::post('/admin/user/subscriptions/{id}', 'UserController@updateSubscription');
-Route::post('/admin/user/csr_note/{id}', 'UserController@saveCSRNote');
-Route::get('/admin/user/payments/{id}', 'UserController@showPayments');
-Route::get('/admin/referral/subscribe/', 'UserController@recordReferral');
-Route::get('/admin/user/referrals/{id}', 'UserController@showReferrals');
-Route::post('/admin/user/referrals/{id}', 'UserController@sendReferral');
-
-Route::get('/admin/dashboard', ['uses' => 'DashboardController@show', 'middleware' => 'admin', ]);
-Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
-Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
-Route::get('/admin/gift_cards', 'GiftCardsController@show');
-Route::get('/admin/subscriptions', 'SubscriptionsController@show');
-Route::get('/admin/product_orders', 'OrdersController@show');
-Route::get('/admin/customers', 'CustomersController@show');
-Route::get('/admin/shipments', 'ShipmentsController@show');
-Route::get('/admin/coupons', 'CouponsController@show');
-Route::get('/admin/menu_information', 'MenuInformationController@show');
-Route::get('/admin/recipes', 'RecipesController@showRecipes');
+    Route::get('/admin/dashboard', 'DashboardController@show');
+    Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
+    Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
+    Route::get('/admin/gift_cards', 'GiftCardsController@show');
+    Route::get('/admin/subscriptions', 'SubscriptionsController@show');
+    Route::get('/admin/product_orders', 'OrdersController@show');
+    Route::get('/admin/customers', 'CustomersController@show');
+    Route::get('/admin/shipments', 'ShipmentsController@show');
+    Route::get('/admin/coupons', 'CouponsController@show');
+    Route::get('/admin/menu_information', 'MenuInformationController@show');
+    Route::get('/admin/recipes', 'RecipesController@showRecipes');
+});
 
 
 Route::get('user/test/{id}', 'UserController@showTest');
