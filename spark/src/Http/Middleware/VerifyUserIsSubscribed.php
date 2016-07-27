@@ -3,6 +3,7 @@
 namespace Laravel\Spark\Http\Middleware;
 
 use Laravel\Spark\Spark;
+use Mockery\CountValidator\Exception;
 
 class VerifyUserIsSubscribed
 {
@@ -46,9 +47,12 @@ class VerifyUserIsSubscribed
         if (! $user) {
             return false;
         }
-
-        return ($defaultSubscription && $user->onGenericTrial()) ||
-                $user->subscribed($subscription, $plan);
+        try {
+            return ($defaultSubscription && $user->onGenericTrial()) ||
+            $user->subscribed($subscription, $plan);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
