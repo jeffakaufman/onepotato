@@ -231,7 +231,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">DELIVERY ADDRESS</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'meals')) !!}
+                                        {!! Form::open(array('url' => '/account', 'class' => 'delivery')) !!}
                                         <div class="modal-body">
                                             <p>Changes will only apply to deliveries scheduled on or after Thursday, July 21st.</p>
 
@@ -398,7 +398,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">DELIVERY ADDRESS</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'meals')) !!}
+                                        {!! Form::open(array('url' => '/account', 'class' => 'account')) !!}
                                         <div class="modal-body">
 
                                             <div class="row padbottom">
@@ -467,7 +467,7 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">CREDIT CARD</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'meals')) !!}
+                                        {!! Form::open(array('url' => '/account', 'class' => 'payment')) !!}
                                         <div class="modal-body">
 
                                             <div class="row padbottom">
@@ -528,7 +528,7 @@
                     <!-- Referrals -->
                     <div role="tabpanel" class="tab-pane fade" id="referrals">
 
-                        <h2>Referrals</h2>
+                        <h2>Customer Referrals</h2>
                         
                         <div v-if="user">
                             
@@ -553,6 +553,38 @@
                                 <div class="col-sm-4"><b>Molly Ringwald</b></div>
                                 <div class="col-sm-8">molly@ringwald.com</div>
                             </div>
+
+                            <h4>SEND A NEW REFERRAL TO:</h4>
+
+                            {!! Form::open(array('url' => '/account', 'class' => 'referrals')) !!}
+
+                                <div class="row padding">
+                                    <div class="col-sm-3" style="line-height: 42px"><b>Name</b></div>
+                                    <div class="col-sm-9">
+                                        {!! Form::text('name', '', array('class' => 'form-control')) !!}
+                                    </div>
+                                </div>
+                                <div class="row padbottom">
+                                    <div class="col-sm-3" style="line-height: 42px"><b>Email</b></div>
+                                    <div class="col-sm-9">
+                                        {!! Form::email('email', '', array('class' => 'form-control')) !!}
+                                    </div>
+                                </div>
+                                <div class="row padbottom">
+                                    <div class="col-sm-3"><b></b></div>
+                                    <div class="col-sm-9">
+                                        {!! Form::textarea('message', '', array('class' => 'form-control')) !!}
+                                    </div>
+                                </div>
+                                
+                                <div class="row padbottom">
+                                    <div class="col-sm-3"><b></b></div>
+                                    <div class="col-sm-9">
+                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                    </div>
+                                </div>
+
+                            {!! Form::close() !!}
 
                         </div>
                     </div>
