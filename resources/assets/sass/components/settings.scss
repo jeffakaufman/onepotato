@@ -143,7 +143,10 @@
 	border-radius: 0;
 }
 @media (min-width: 900px) {
-	.modal-header, .modal-body {
+	.modal-header {
+		padding: 25px 25px 0 25px;
+	}
+	.modal-body {
 	    padding: 25px;
 	}
 	.modal-dialog {
@@ -153,13 +156,13 @@
 .modal-footer {
 	text-align: center;
 }
-.close {
+.modal-header .close {
 	color: $text-color2;
-	font-size: 48px;
-	font-family: 'fontello';
+	font-size: 52px;
+	font-weight: 100;
 	opacity: 1;
-	
-	content: '\e807';
+	margin-top: -10px;
+	// content: '\e807';
 	
 	&:hover {
 		color: $brand-secondary;

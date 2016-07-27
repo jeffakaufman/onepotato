@@ -25,7 +25,7 @@
 		}
 	}
 	.radio + .radio, .checkbox + .checkbox {
-		margin-top: 10px;
+		margin-top: 0;
 		
 		&.nomargin {
 			margin: 0;
@@ -113,7 +113,7 @@
 		height: 45px;
 		-webkit-appearance: none;
 		border: 1px solid #ccc;
-		color: #999;
+		// color: #999;
 		font-weight: 300;
 		width: 100%;
 		

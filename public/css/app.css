@@ -5833,7 +5833,7 @@ button.close {
     margin-top: 0; }
 
 .radio + .radio, .checkbox + .checkbox {
-  margin-top: 10px; }
+  margin-top: 0; }
   .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
     margin: 0; }
 
@@ -5935,7 +5935,6 @@ select.form-control {
   height: 45px;
   -webkit-appearance: none;
   border: 1px solid #ccc;
-  color: #999;
   font-weight: 300;
   width: 100%; }
   select.form-control[name=children] {
@@ -6840,7 +6839,9 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
   border-radius: 0; }
 
 @media (min-width: 900px) {
-  .modal-header, .modal-body {
+  .modal-header {
+    padding: 25px 25px 0 25px; }
+  .modal-body {
     padding: 25px; }
   .modal-dialog {
     width: 700px; } }
@@ -6848,13 +6849,13 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 .modal-footer {
   text-align: center; }
 
-.close {
+.modal-header .close {
   color: #585858;
-  font-size: 48px;
-  font-family: 'fontello';
+  font-size: 52px;
+  font-weight: 100;
   opacity: 1;
-  content: '\e807'; }
-  .close:hover {
+  margin-top: -10px; }
+  .modal-header .close:hover {
     color: #e91e25; }
 
 #spark-terms-screen h1 {
