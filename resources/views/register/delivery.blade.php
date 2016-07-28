@@ -55,29 +55,29 @@ $('#register4').addClass('active');
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $first_name }}" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" autofocus>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $last_name }}" autofocus>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="address" lazy placeholder="Address">
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="{{ $address }}">
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2">
+                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2" value="{{ $address2 }}">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="city" lazy placeholder="City">
+                                        <input type="text" class="form-control" name="city" lazy placeholder="City" value="{{ $city }}">
                                 </div>
 
                                 <!-- State & ZIP Code -->
@@ -99,7 +99,7 @@ $('#register4').addClass('active');
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy value="{{ $phone }}">
 
                                     <span class="help-block" v-show="registerForm.errors.has('phone')">
                                         @{{ registerForm.errors.get('phone') }}

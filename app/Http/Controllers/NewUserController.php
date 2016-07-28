@@ -31,33 +31,54 @@ class NewUserController extends Controller
 	}
 	
 	public function RecordNewuser (Request $request) {
-		
+
+//	    var_dump($request->email);
+
+	    $existingUser = User::where('email', $request->email)->first();
+
+        if($existingUser && '' == $existingUser->password) {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|max:1000',
+                'password' => 'required|max:255|same:password_confirmation',
+                'zip' => 'required|digits:5',
+
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+			    'email' => 'required|email|max:1000|unique:users',
+                'password' => 'required|max:255|same:password_confirmation',
+                'zip' => 'required|digits:5',
+
+            ]);
+        }
+
 		//add name to this
 		
 		//create a new user w form data from 
 		//validation
-		$validator = Validator::make($request->all(), [
-		      
-			    'email' => 'required|email|max:1000|unique:users',
-				'password' => 'required|max:255|same:password_confirmation',
-				'zip' => 'required|digits:5',
-				
-		]);
-		
+
 		//make sure zipcode is on the approved list
 		if (!ZipcodeStates::where('zipcode',$request->zip)->first()) {
 			return view('register.badzip');
-			}
-		
-		
+        }
+
+
+//$validator->errors()->add('email', "Bla-Bla");
+//var_dump($validator->fails());
+//var_dump($validator->errors());
+//die();
 		if ($validator->fails()) {
 		        return redirect('/register')
 		            ->withInput()
 		            ->withErrors($validator);
 		}
 
-		$user = new User;
-	
+		if($existingUser) {
+            $user = $existingUser;
+        } else {
+            $user = new User;
+        }
+
 		$user->email = $request->email;
 		$user->password = Hash::make($request->password);
 		$user->save();
@@ -180,19 +201,64 @@ class NewUserController extends Controller
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 		
-		
+
+//        var_dump($user);die();
+
 		return view('register.delivery')->
 			with([
-				'children'=>$numChildren,'user'=>$user,
+				'children'=>$numChildren,
+                'user'=>$user,
 				'plantype'=>$plantype,
 				'dietprefs'=>$dietprefs,
 				'zip'=>$request->zip,
 				'state'=>$state->state,
 				'first_day'=>$request->first_day,
-				'glutenfree'=>$glutenfree
+				'glutenfree'=>$glutenfree,
+
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'address' => $user->billing_address,
+                'address2' => $user->billing_address_line_2,
+                'city' => $user->billing_city,
+                'phone' => $user->phone,
 			]);
 	}
-		
+
+/*
+     'id' => int 2263
+      'name' => string 'Francesca  Luciani Tymchuk' (length=26)
+      'email' => string 'francescaluciani@hotmail.com' (length=28)
+      'password' => string '$2y$10$PzDJEERlVrFIJzsX0INszOwdd.PD16umGl0vLneqShypu9I6wLxsO' (length=60)
+      'remember_token' => null
+      'photo_url' => null
+      'uses_two_factor_auth' => int 0
+      'authy_id' => null
+      'country_code' => string 'US' (length=2)
+      'phone' => null
+      'two_factor_reset_code' => null
+      'current_team_id' => null
+      'stripe_id' => null
+      'current_billing_plan' => null
+      'card_brand' => null
+      'card_last_four' => null
+      'card_country' => null
+      'billing_address' => string '837 3rd St.' (length=11)
+      'billing_address_line_2' => string '309' (length=3)
+      'billing_city' => string 'Santa Monica' (length=12)
+      'billing_state' => string 'CA' (length=2)
+      'billing_zip' => string '90403' (length=5)
+      'billing_country' => string 'US' (length=2)
+      'vat_id' => null
+      'extra_billing_information' => null
+      'trial_ends_at' => null
+      'last_read_announcements_at' => null
+      'created_at' => null
+      'updated_at' => string '2016-07-28 09:42:48' (length=19)
+      'first_name' => string 'Francesca' (length=9)
+      'last_name' => string 'Tymchuk' (length=7)
+      'status' => string 'active' (length=6)
+      'start_date' => null
+ */
 	public function RecordDeliveryPreferences (Request $request) {
 		
 		//store first and last name in User field
