@@ -15,6 +15,9 @@ Route::get('/', 'WelcomeController@show');
 
 Route::get('/home', 'HomeController@show');
 
+
+Route::get('/admin/coupons', 'CouponController@show');
+Route::post('/coupon', 'CouponController@saveCoupon');
 // Registration...
 Route::get('/register', 'NewUserController@DisplayUserForm');
 Route::post('/register', 'NewUserController@RecordNewuser');
@@ -132,7 +135,7 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/product_orders', 'OrdersController@show');
     Route::get('/admin/customers', 'CustomersController@show');
     Route::get('/admin/shipments', 'ShipmentsController@show');
-    Route::get('/admin/coupons', 'CouponsController@show');
+    Route::get('/admin/coupons', 'CouponController@show');
     Route::get('/admin/menu_information', 'MenuInformationController@show');
     Route::get('/admin/recipes', 'RecipesController@showRecipes');
 });
