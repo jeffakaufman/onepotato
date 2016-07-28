@@ -18,3 +18,27 @@ require('./whatscookings');
 require('./preferences');
 require('./delivery');
 require('./payment');
+require('./account');
+
+$(function() {
+	$('<div class="dec numButton">-</div>').insertBefore('input.number');
+	$('<div class="inc numButton">+</div>').insertAfter('input.number');
+
+	$('.numButton').click(function() {
+		
+	  	var oldValue, newVal, $button = $(this);
+	  	if ($button.hasClass('dec')) {
+	  		oldValue = $button.next().val();
+	  		if (oldValue > 0) {
+	      		newVal = parseFloat(oldValue) - 1;
+	    	} else {
+	      		newVal = 0;
+	    	}
+	  		$button.next().val(newVal);
+	  	} else {
+	  		oldValue = $button.prev().val();
+	  		newVal = parseFloat(oldValue) + 1;
+	    	$button.prev().val(newVal);
+	  	}
+	});
+});

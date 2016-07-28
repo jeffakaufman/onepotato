@@ -8,7 +8,7 @@ Vue.component('spark-navbar', {
     computed: {
 
     	usersName() {
-    		return this.user.name;
+    		return this.user.first_name;
     	}
     }
 });

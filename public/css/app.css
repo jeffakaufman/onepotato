@@ -5807,6 +5807,10 @@ button.close {
   text-transform: uppercase;
   font-size: 18px;
   font-weight: 500; }
+  .btn-primary.small, .btn-secondary.small {
+    font-size: 14px;
+    padding: 5px 10px;
+    text-transform: none; }
 
 .btn-secondary {
   background-color: #1db8bf; }
@@ -5819,12 +5823,23 @@ button.close {
   padding-right: 0; }
   .radio.nomargin, .checkbox.nomargin {
     margin: 0; }
+  .radio.nopadding, .checkbox.nopadding {
+    padding: 0; }
   .radio label, .checkbox label {
     display: block;
     cursor: pointer;
     position: relative;
     padding: 10px 0 10px 35px;
-    font-size: 13px; }
+    font-size: 15px; }
+    .radio label.inline, .checkbox label.inline {
+      display: inline-block; }
+  .radio + .radio, .checkbox + .radio {
+    margin-top: 0; }
+
+.radio + .radio, .checkbox + .checkbox {
+  margin-top: 0; }
+  .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
+    margin: 0; }
 
 .radio:first-child label {
   margin-right: 15px; }
@@ -5924,7 +5939,6 @@ select.form-control {
   height: 45px;
   -webkit-appearance: none;
   border: 1px solid #ccc;
-  color: #999;
   font-weight: 300;
   width: 100%; }
   select.form-control[name=children] {
@@ -5953,6 +5967,30 @@ label.select:after {
   height: 100%;
   pointer-events: none;
   box-sizing: border-box; }
+
+input.number {
+  display: inline-block;
+  width: 20px;
+  line-height: 1em;
+  vertical-align: top;
+  margin: 0 2px;
+  font-size: 12px;
+  position: relative;
+  text-align: center;
+  border: 1px solid #1db8bf;
+  font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
+  color: #1db8bf; }
+
+.numButton {
+  width: 18px;
+  cursor: pointer;
+  vertical-align: top;
+  line-height: 1.2em;
+  display: inline-block;
+  text-align: center;
+  background: #1db8bf;
+  color: #fff;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
 
 .field-label {
   line-height: 45px; }
@@ -6780,6 +6818,12 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
   -ms-flex-direction: column;
   flex-direction: column; }
 
+.flex-column {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row; }
+
 .flex-fill {
   -ms-flex: 1;
   flex: 1; }
@@ -6795,14 +6839,30 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 .hide {
   display: none; }
 
+.highlight {
+  color: #e91e25; }
+
 .modal-content {
   border-radius: 0; }
 
-.close {
+@media (min-width: 900px) {
+  .modal-header {
+    padding: 25px 25px 0 25px; }
+  .modal-body {
+    padding: 25px; }
+  .modal-dialog {
+    width: 700px; } }
+
+.modal-footer {
+  text-align: center; }
+
+.modal-header .close {
   color: #585858;
+  font-size: 52px;
+  font-weight: 100;
   opacity: 1;
-  content: '\e807'; }
-  .close:hover {
+  margin-top: -10px; }
+  .modal-header .close:hover {
     color: #e91e25; }
 
 #spark-terms-screen h1 {
@@ -6895,6 +6955,9 @@ body.account {
   body.account h4 {
     color: #404040;
     font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
+    body.account h4.thin {
+      font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+      letter-spacing: 0; }
 
 .font11 {
   font-size: 11px; }

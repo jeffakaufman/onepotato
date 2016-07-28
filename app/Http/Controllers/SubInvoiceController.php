@@ -99,8 +99,8 @@ class SubinvoiceController extends Controller
 				$ship_xml .= "<InternalNotes><![CDATA[]]></InternalNotes>";
 				$ship_xml .= "<Gift>false</Gift>";
 				$ship_xml .= "<CustomField1></CustomField1>";
-				$ship_xml .= "<CustomField2></CustomField2>";
-				$ship_xml .= "<CustomField3></CustomField3>";
+				$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
+				$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
 			
 			
 				//create the customer data
@@ -147,16 +147,16 @@ class SubinvoiceController extends Controller
 			
 				$ship_xml .= "<Option>";
 			
-				$ship_xml .= "<Name><![CDATA[DietaryPreferences]]></Name>";
-				$ship_xml .= "<Value><![CDATA[" . $subscriber->dietary_preferences . "]]></Value>";
+				$ship_xml .= "<Name><![CDATA[]]></Name>";
+				$ship_xml .= "<Value><![CDATA[]]></Value>";
 				$ship_xml .= "<Weight>0</Weight>";
 			
 				$ship_xml .= "</Option>";
 			
 				$ship_xml .= "<Option>";
 			
-				$ship_xml .= "<Name><![CDATA[ShippingInstructions]]></Name>";
-				$ship_xml .= "<Value><![CDATA[" . $shippingAddress->delivery_instructions . "]]></Value>";
+				$ship_xml .= "<Name><![CDATA[]]></Name>";
+				$ship_xml .= "<Value></Value>";
 				$ship_xml .= "<Weight>0</Weight>";
 			
 				$ship_xml .= "</Option>";

@@ -20,11 +20,11 @@
             <div class="collapse navbar-collapse" id="spark-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-left">
-                    <li @if ($page == 'register')class="active"@endif><span><i class="icon icon-apron"></i>1. Welcome</span></li>
-                    <li @if ($page == 'select_plan')class="active"@endif><span><i class="icon icon-silverware"></i>2. Select Plan</span></li>
-                    <li @if ($page == 'preferences')class="active"@endif><span><i class="icon icon-sliders"></i>3. Preferences</span></li>
-                    <li @if ($page == 'delivery')class="active"@endif><span><i class="icon icon-truck"></i>4. Delivery</span></li>
-                    <li @if ($page == 'payment')class="active"@endif><span><i class="icon icon-creditcard"></i>5. Payment</span></li>
+                    <li><span><i class="icon icon-apron"></i>1. Welcome</span></li>
+                    <li><span><i class="icon icon-silverware"></i>2. Select Plan</span></li>
+                    <li><span><i class="icon icon-sliders"></i>3. Preferences</span></li>
+                    <li><span><i class="icon icon-truck"></i>4. Delivery</span></li>
+                    <li><span><i class="icon icon-creditcard"></i>5. Payment</span></li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -50,7 +50,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
                         <h1>Congratulations!
-                            <div class="panel-subtitle">Your first box will arrive on May 18.</div>
+                            <div class="panel-subtitle">Your first box will arrive on {{ date('F d', strtotime($start_date)) }}.</div>
                         </h1>
                         <!-- Login Button -->
                         <button type="submit" class="btn btn-primary" onclick="location.href='/whats-cooking';">

@@ -6,12 +6,29 @@
 		&.nomargin {
 			margin: 0;
 		}
+		&.nopadding {
+			padding: 0;
+		}
 		label {
 		    display: block;
 		    cursor: pointer;
 		    position: relative;
 		    padding: 10px 0 10px 35px;
-		    font-size: 13px;
+		    font-size: 15px;
+		    
+		    &.inline {
+		    	display: inline-block;
+		    }
+		}
+		+ .radio {
+			margin-top: 0;
+		}
+	}
+	.radio + .radio, .checkbox + .checkbox {
+		margin-top: 0;
+		
+		&.nomargin {
+			margin: 0;
 		}
 	}
 	.radio:first-child label {
@@ -96,7 +113,7 @@
 		height: 45px;
 		-webkit-appearance: none;
 		border: 1px solid #ccc;
-		color: #999;
+		// color: #999;
 		font-weight: 300;
 		width: 100%;
 		
@@ -129,6 +146,30 @@
 	    height: 100%;      
 	    pointer-events: none;
 	    box-sizing: border-box;   
+	}
+	input.number {
+		display: inline-block;
+		width: 20px;
+		line-height: 1em;
+		vertical-align: top;
+		margin: 0 2px;
+		font-size: 12px;
+		position: relative;
+		text-align: center;
+		border: 1px solid $brand-primary;
+		font-family: $font-family-bold;
+		color: $brand-primary;
+	}
+	.numButton {
+		width: 18px;
+		cursor: pointer;
+		vertical-align: top;
+		line-height: 1.2em;
+		display: inline-block;
+		text-align: center;
+		background: $brand-primary;
+		color: #fff;
+		font-family: $font-family-semibold;
 	}
 	.field-label {
 		line-height: 45px;

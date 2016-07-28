@@ -28,7 +28,6 @@ $(document).ready(function() {
 		
 		console.log (ccNum);
 		
-		
 		// Validate the number:
 		if (!Stripe.card.validateCardNumber(ccNum)) {
 			error = true;
@@ -205,7 +204,7 @@ function stripeResponseHandler(status, response) {
                             </div>
                             <div class="row form-group extrapadding">
                                 <div class="col-xs-12 nosidepadding">
-                                    <input type="text" class="form-control" placeholder="Card Number" lazy>
+                                    <input type="text" class="form-control card-number" placeholder="Card Number" lazy>
 									
                                 </div>
                             </div>
