@@ -49,7 +49,7 @@
 							    </div>   
 						    </div>
 						    <div class="form-group">
-						        {!! Form::label('Ingredients', null,array('class'=>'col-sm-2 control-label')) !!}
+						        {!! Form::label('Preferences', null,array('class'=>'col-sm-2 control-label')) !!}
 						        <div class="col-sm-6">
 						        	<div class="row">
 						        		<div class="col-sm-4">
@@ -66,6 +66,26 @@
 						        		{!! Form::checkbox('hasNoGluten',1,false) !!} Gluten-Free<br />
 						        		{!! Form::checkbox('hasNuts',1,false) !!} Nuts<br />
 						        		</div>  
+						        	</div>  
+						        </div>     
+						    </div>
+						    <div class="form-group">
+						        {!! Form::label('Ingredients', null,array('class'=>'col-sm-2 control-label')) !!}
+						        <div class="col-sm-6">
+						        	<div class="row">
+						        		<div class="col-sm-4">
+						        		{!! Form::checkbox('noDairy',1,false) !!} No Dairy<br />
+						        		{!! Form::checkbox('noEgg',1,false) !!} No Egg<br />
+						        		{!! Form::checkbox('noSoy',1,false) !!} No Soy<br />
+						        		</div>
+						        		<div class="col-sm-3">
+						        			{!! Form::label('Techniques', null) !!}
+						        		</div>
+						        		<div class="col-sm-4">
+						        		{!! Form::radio('technique','oven',false) !!} Oven<br />
+						        		{!! Form::radio('technique','stovetop',false) !!} Stovetop<br />
+						        		{!! Form::radio('technique','slowcooker',false) !!} Slowcooker<br />
+						        		</div>
 						        	</div>  
 						        </div>     
 						    </div>
@@ -137,7 +157,6 @@
 							<div class="container col-md-9">
     	                	    @foreach ($whatscookings as $whatscooking)
 		                	        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
-		                	        
 								    <div class="row" style="margin-top:20px;margin-bottom:20px">
 								    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
 								    	<div class="col-md-2">{{ $whatscooking->product_type }}</div>
@@ -167,7 +186,19 @@
 											@endif
 	            	    	        		@if($menu->hasNuts)
 	            	    	        			<li>Nuts</li>
-											@endif
+											@endif	 
+	            	    	        		@if($menu->noDairy)
+	            	    	        			<li>No Dairy</li>
+											@endif	 
+	            	    	        		@if($menu->noEgg)
+	            	    	        			<li>No Eggs</li>
+											@endif	 
+	            	    	        		@if($menu->noSoy)
+	            	    	        			<li>No Soy</li>
+											@endif	 	 
+	            	    	        		@if($menu->technique)
+	            	    	        			<li>{{ $menu->technique }}</li>
+											@endif	           
 											<ul>
 										</div>
 	            	        	    	@if($menu->image)
@@ -176,7 +207,7 @@
 										<div class="col-md-2 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
 										@endif
 	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div></div>
-									</div>		                	        
+									</div>	     	        
 		                	        @if ($menu->vegetarianBackup)
 								    	<strong>Vegetarian Replacement</strong>
 								    @endif
@@ -269,7 +300,11 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #hasPork").prop( "checked", menu.hasPork );
     $("#menuEditModal #hasPoultry").prop( "checked", menu.hasPoultry );
     $("#menuEditModal #hasShellfish").prop( "checked", menu.hasShellfish );
-    $("#menuEditModal #vegetarianBackup").prop( "checked", menu.vegetarianBackup );
+    $("#menuEditModal #noDairy").prop( "checked", menu.noDairy );
+    $("#menuEditModal #noEgg").prop( "checked", menu.noEgg );
+    $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
+    $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
+    $("#menuEditModal #"+menu.technique).prop( "checked", true );
 });
 </script>
 </whatscookings>
