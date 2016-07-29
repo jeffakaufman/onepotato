@@ -149,10 +149,10 @@
 								    		<div class="row">
 									    		<div class="col-md-2">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
 									    		<div class="col-md-2">{{ $whatscooking->product_type }}</div>
-	    	        	    	        		<div class="col-md-4">{{ $menu->menu_title }}<br/><em>{{ $menu->menu_description }}</em></div>
+	    	        	    	        		<div class="col-md-8">{{ $menu->menu_title }}<br/><em>{{ $menu->menu_description }}</em></div>
 	        	    	        	    													</div>
 											<div class="row">
-												<div class="col-md-8">
+												<div class="col-md-8" style="margin-top: 10px;">
 		            		            			@if($menu->hasBeef)
 		            		            				<img src='/img/beef.png'>
 													@endif
@@ -212,7 +212,7 @@
 												@else
 												<div class="col-md-6 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
 												@endif
-	            	        		    		<div class="col-md-4 col-md-offset-1">
+	            	        		    		<div class="col-md-4 col-md-offset-2">
 	            	        		    			<div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div>
 	            	        		    		</div>
 	            	        		    </div>
