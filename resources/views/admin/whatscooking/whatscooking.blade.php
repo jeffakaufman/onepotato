@@ -7,9 +7,9 @@
         What's Cooking
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">UI</a></li>
-        <li class="active">Buttons</li>
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a>
+        <li><a href="#">UI</a>
+        <li class="active">Buttons
     </ol>
 @endsection
 @section('content')
@@ -139,87 +139,91 @@
                  	<div class="panel-heading">What's Cooking!</div>
 					<div class="panel-body">
 					<div class="container">
-                    	<div class="row">
-							<div class="container col-md-9">
-	                        	<div class="col-md-1"><strong>Week</strong></div>
-								<div class="col-md-2"><strong>Type</strong></div>
-	                        	<div class="col-md-2"><strong>Title</strong></div>
-	                        	<div class="col-md-2"><strong>Ingredients</strong></div>
-								<div class="col-md-2 text-center"><strong>Image</strong></div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-9">
-								<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;margin-top:3px;margin-bottom:0px">
-							</div>
-						</div>
 				        <div class="row">
 							<div class="container col-md-9">
     	                	    @foreach ($whatscookings as $whatscooking)
 		                	        @foreach ($whatscooking->menus()->orderBy('id','desc')->get() as $menu)
-								    <div class="row" style="margin-top:20px;margin-bottom:20px">
-								    	<div class="col-md-1">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
-								    	<div class="col-md-2">{{ $whatscooking->product_type }}</div>
-	            	    	        	<div class="col-md-2">{{ $menu->menu_title }}</div>
-	            	    	        	<div class="col-md-2">
-	            	    	        		<ul style="list-style-image: url('/img/pot.png');">
-		            		            	@if($menu->hasBeef)
-		            		            		<li>Beef</li>
-											@endif
-	        	    		            	@if($menu->hasPoultry)
-	            			            		<li>Chicken</li>
-											@endif
-	            	    		        	@if($menu->hasFish)
-	            	    	    	    		<li>Fish</li>
-											@endif
-	            	    	        		@if($menu->hasLamb)
-	            	    	        			<li>Lamb</li>
-											@endif
-		            		            	@if($menu->hasPork)
-	    	        		            		<li>Pork</li>
-											@endif
-	            			            	@if($menu->hasShellfish)
-	            			            		<li>Shellfish</li>
-											@endif
-	            	    	    	    	@if($menu->hasNoGluten)
-	            	    	        			<li>Gluten Free</li>
-											@endif
-	            	    	        		@if($menu->hasNuts)
-	            	    	        			<li>Nuts</li>
-											@endif	 
-	            	    	        		@if($menu->noDairy)
-	            	    	        			<li>No Dairy</li>
-											@endif	 
-	            	    	        		@if($menu->noEgg)
-	            	    	        			<li>No Eggs</li>
-											@endif	 
-	            	    	        		@if($menu->noSoy)
-	            	    	        			<li>No Soy</li>
-											@endif	 	 
-	            	    	        		@if($menu->oven)
-	            	    	        			<li>Oven </li>
-											@endif	   
-	            	    	        		@if($menu->stovetop)
-	            	    	        			<li>Stovetop</li>
-											@endif	   
-	            	    	        		@if($menu->slowcooker)
-	            	    	        			<li>Slowcooker</li>
-											@endif	           
-											<ul>
-										</div>
-	            	        	    	@if($menu->image)
-										<div class="col-md-2 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
-										@else
-										<div class="col-md-2 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
-										@endif
-	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div></div>
-									</div>	     	        
-		                	        @if ($menu->vegetarianBackup)
-								    	<strong>Vegetarian Replacement</strong>
-								    @endif
+								    	<div class="row" style="margin-top:0px;margin-bottom:10px">
+
+								    	<div class="col-md-7">
+								    		<div class="row">
+									    		<div class="col-md-2">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
+									    		<div class="col-md-2">{{ $whatscooking->product_type }}</div>
+	    	        	    	        		<div class="col-md-4">{{ $menu->menu_title }}<br/><em>{{ $menu->menu_description }}</em></div>
+	        	    	        	    													</div>
+											<div class="row">
+												<div class="col-md-8">
+		            		            			@if($menu->hasBeef)
+		            		            				<img src='/img/beef.png'>
+													@endif
+	        	    		            			@if($menu->hasPoultry)
+	            			            				<img src='/img/chicken.png'>
+													@endif
+	            	    		        			@if($menu->hasFish)
+	            	    	    	    				<img src='/img/fish.png'>
+													@endif
+	            	    	        				@if($menu->hasLamb)
+	            	    	        					Lamb
+													@endif
+		            		           		 		@if($menu->hasPork)
+	    	        		          			  		<img src='/img/pork.png'>
+													@endif
+	            			          			  	@if($menu->hasShellfish)
+	            			         			   		Shellfish
+													@endif
+	            	    	    	 			   	@if($menu->hasNoGluten)
+	            	    	        					<img src='/img/no_wheat.png'>
+													@endif
+	            	    	       		 			@if(!$menu->hasNuts)
+	            	    	        					<img src='/img/no_nuts.png'>
+													@endif	 
+	            	    	        				@if($menu->noDairy)
+	            	    	        					<img src='/img/no_dairy.jpg');">
+													@endif	 
+	            	    	        				@if($menu->noEgg)
+	            	    	        					<img src='/img/no_eggs.png'>
+													@endif	 
+	            	    	        				@if($menu->noSoy)
+	            	    	        					<img src='/img/no_soy.png'>
+													@endif	 	 
+	            	    	        				@if($menu->oven)
+	            	    	        					<img src='/img/oven.png'> 
+													@endif	   
+	            	    	        				@if($menu->stovetop)
+	            	    	        					<img src='/img/fry_pan.png'>
+													@endif	   
+	            	    	        				@if($menu->slowcooker)
+	            	    	        					<img src='/img/dutch_oven.png'>
+													@endif	
+			                	        @if ($menu->vegetarianBackup)
+			                	        <div class="row" style="margin-top:5px">
+											<div class="col-md-12 ">
+								    			<strong>Vegetarian Replacement</strong>
+								    		</div>
+								    	</div>
+								    	@endif  
+												</div>
+											</div>
+										</div>	
+										
+								    	<div class="col-md-4">     	        
+											@if($menu->image)
+												<div class="col-md-6 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
+												@else
+												<div class="col-md-6 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
+												@endif
+	            	        		    		<div class="col-md-4 col-md-offset-1">
+	            	        		    			<div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div>
+	            	        		    		</div>
+	            	        		    </div>
+	            	        		    </div>
+
+								    
+									
+								    
 									<div class="row">
 										<div class="col-md-12 ">
-											<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;">
+											<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;margin-top:10px;margin-bottom:10px">
 										</div>
 									</div>
 									@endforeach
