@@ -47,6 +47,35 @@ class UserController extends Controller
 			return view('admin.users.users')->with(['users'=>$users]);
     }
 
+	public function getAccount($id) {
+		
+		//get all the user objects and pass to the view
+		$user = User::find($id);
+		$states = CountryState::getStates('US');
+		$shippingAddress = Shipping_address::where('user_id',$id)->orderBy('is_current', 'desc')->first();
+	
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+
+		if ($userSubscription) {
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->first();
+		}
+
+		$referrals = Referral::where('referrer_user_id',$id)->get();
+
+		return view('account')
+					->with(['user'=>$user, 
+							'shippingAddress'=>$shippingAddress, 
+							'userSubscription'=>$userSubscription, 
+							'userProduct'=>$userProduct, 
+							'states'=>$states,
+							'referrals'=>$referrals]);
+		
+		
+	
+	}
+
+
 	/**
      * Show the application dashboard.
      *

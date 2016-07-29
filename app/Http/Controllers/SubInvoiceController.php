@@ -65,6 +65,11 @@ class SubinvoiceController extends Controller
 				$shippingAddress = Shipping_address::where('user_id',$id)->where('is_current', '1')->first();
 			}
 			
+			
+			//figure out the user's preferences - 
+			
+			//figure out this week's menus - 
+			
 			//check to see if there's a shipping address - if not, create an order exception
 			
 			if ($shippingAddress) {

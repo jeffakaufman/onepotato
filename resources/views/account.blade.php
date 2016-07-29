@@ -76,6 +76,36 @@
 
                             <h4>Meals</h4>
 
+							<?php
+							//split the sku into a string
+							$sku = str_split($userProduct->sku,2);
+							
+							if ($sku[0]=="01"){
+								$BoxType = "Vegetarian";
+								$BoxSelectVeg = "true";
+								$BoxSelectOmn = "false";
+							}
+							if ($sku[1]=="02"){
+								$BoxType = "Omnivore";
+								$BoxSelectVeg = "false";
+								$BoxSelectOmn = "true";
+							}
+							
+							if ($sku[2]=="00"){
+								$PlanType = "Adult Plan";
+								$PlanTypeSelect = "adult";
+								$FamilySize = "0 Children";
+								$ChildSelect = 0;
+							}else{
+									$PlanType = "Family";
+									$PlanTypeSelect = "family";
+									$FamilySize = (integer)$sku[2] . " Children";
+									$ChildSelect = (integer)$sku[2];
+							}
+							
+							
+							?>
+
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Plan Type</b></div>
                                 <div class="col-sm-8">Family</div>
@@ -86,15 +116,15 @@
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Box Type</b></div>
-                                <div class="col-sm-8">Omnivore</div>
+                                <div class="col-sm-8">{{$BoxType}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Delivery Day</b></div>
-                                <div class="col-sm-8">Wednesdays</div>
+                                <div class="col-sm-8"></div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Changeable By</b></div>
-                                <div class="col-sm-8">9am on July 7 (for your July 13th delivery)</div>
+                                <div class="col-sm-8"></div>
                             </div>
 
                             <div id="editPlan" class="modal fade" tabindex="-1" role="dialog">
@@ -112,23 +142,23 @@
                                                 <div class="col-sm-3" style="line-height: 47px"><b>Plan Type</b></div>
                                                 <div class="col-sm-9">
                                                     <label class="select inline">
-                                                        {!! Form::select('plan-type', array('adult' => 'Adult Plan', 'family' => 'Family Plan'), 'family', array('class' => 'form-control plan-type')) !!}
+                                                        {!! Form::select('plan-type', array('adult' => 'Adult Plan', 'family' => 'Family Plan'), $PlanTypeSelect, array('class' => 'form-control plan-type')) !!}
                                                         
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3"><b>Family Size</b></div>
-                                                <div class="col-sm-9">Number of children: &nbsp; {!! Form::text('children', '2', array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
+                                                <div class="col-sm-9">Number of children: &nbsp; {!! Form::text('children', $ChildSelect, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Box Type</b></div>
                                                 <div class="col-sm-9">
                                                     <div class="col-xs-6 col-md-4 radio nomargin nosidepadding">
-                                                        {!! Form::radio('plan_type', 'Omnivore Box', true, array('id'=>'plan_type1', '@click'=>'selectAllOmnivore', 'v-model'=>'plan_type')) !!} <label for="plan_type1">Omnivore Box</label>
+                                                        {!! Form::radio('plan_type', 'Omnivore Box', $BoxSelectOmn, array('id'=>'plan_type1', '@click'=>'selectAllOmnivore', 'v-model'=>'plan_type')) !!} <label for="plan_type1">Omnivore Box</label>
                                                     </div>
                                                     <div class="col-xs-6 col-md-4 radio nomargin nosidepadding">
-                                                        {!! Form::radio('plan_type', 'Vegetarian Box', false, array('id'=>'plan_type2', '@click'=>'selectAllVegetarian', 'v-model'=>'plan_type')) !!} <label for="plan_type2">Vegetarian Box</label>
+                                                        {!! Form::radio('plan_type', 'Vegetarian Box', $BoxSelectVeg, array('id'=>'plan_type2', '@click'=>'selectAllVegetarian', 'v-model'=>'plan_type')) !!} <label for="plan_type2">Vegetarian Box</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,31 +227,33 @@
 
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Location</b></div>
-                                <div class="col-sm-8">Home</div>
+                                <div class="col-sm-8">{{ucwords($shippingAddress->address_type)}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Name</b></div>
-                                <div class="col-sm-8">Jeff Kaufman</div>
+                                <div class="col-sm-8">{{$shippingAddress->shipping_first_name}} {{$shippingAddress->shipping_last_name}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Address</b></div>
                                 <div class="col-sm-8">
-                                    123 Fourth St<br>
-                                    address 2<br>
-                                    Los Angeles, CA 90026
+                                    {{$shippingAddress->shipping_address}}<br>
+									@if ($shippingAddress->shipping_address_2)
+                                    {{$shippingAddress->shipping_address_2}}<br>
+									@endif
+                                    {{$shippingAddress->shipping_city}}, {{$shippingAddress->shipping_state}} {{$shippingAddress->shipping_zip}}
                                 </div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Phone</b></div>
-                                <div class="col-sm-8">(123)456-7890</div>
+                                <div class="col-sm-8">{{$shippingAddress->phone1}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Delivery Instructions</b></div>
-                                <div class="col-sm-8">Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.</div>
+                                <div class="col-sm-8">{{$shippingAddress->delivery_instructions}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Child 1 Birthday</b></div>
-                                <div class="col-sm-8">April 17</div>
+                                <div class="col-sm-8"></div>
                             </div>
 
                             <div id="editDelivery" class="modal fade" role="dialog">
@@ -238,17 +270,17 @@
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Address</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('address1', '123 Fourth St', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('address1', $shippingAddress->shipping_address, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Address 2</b></div>
-                                                <div class="col-sm-9">{!! Form::text('address2', '', array('class' => 'form-control')) !!}</div>
+                                                <div class="col-sm-9">{!! Form::text('address2', $shippingAddress->shipping_address_2, array('class' => 'form-control')) !!}</div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>City</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('city', 'Los Angeles', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('city', $shippingAddress->shipping_city, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
@@ -307,27 +339,27 @@
                                                             'WV'=>'West Virginia',
                                                             'WI'=>'Wisconsin',
                                                             'WY'=>'Wyoming',
-                                                        ), 'CA', array('class' => 'form-control plan-type')) !!}
+                                                        ), $shippingAddress->shipping_state, array('class' => 'form-control plan-type')) !!}
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Zip</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('zip', '90026', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('zip', $shippingAddress->zip, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Phone</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('phone', '12345', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('phone', $shippingAddress->phone1, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3"><b>Delivery Instructions</b></div>
                                                 <div class="col-sm-9">
                                                     {!! Form::textarea('delivery_instructions', 
-                                                        'Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui.', 
+                                                        $shippingAddress->delivery_instructions, 
                                                         array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -380,15 +412,15 @@
 
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Name</b></div>
-                                <div class="col-sm-8">Jeff Kaufman</div>
+                                <div class="col-sm-8">{{$user->name}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Email</b></div>
-                                <div class="col-sm-8">user@gmail.com</div>
+                                <div class="col-sm-8">{{$user->email}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4">Password</div>
-                                <div class="col-sm-8">*</div>
+                                <div class="col-sm-8">****</div>
                             </div>
 
                             <div id="editAccount" class="modal fade" role="dialog">

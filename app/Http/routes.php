@@ -44,6 +44,9 @@ Route::get('/account', array('as' => 'account', function() {
 	return view('account');
 }));
 
+Route::get('/account/{id}', 'UserController@GetAccount');
+
+
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
         return View::make('menu-edit') 
