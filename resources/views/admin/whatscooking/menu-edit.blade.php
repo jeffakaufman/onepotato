@@ -21,14 +21,19 @@
 			            'files' => true)) !!}    
     <form method="POST" action="/whatscooking" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="PUT">
-    
         	    <input name="whatscooking_id" id="whatscooking_id" type="hidden">
         	    <input name="menu_id" id="menu_id" type="hidden">      
 <div class="form-group">
     <label for="Type" class="col-sm-2 control-label">Type</label>
-    <div class="col-sm-6">
+    <div class="col-sm-3">
    	    <input name="product_type" id="omnivore_type" type="radio" value="Omnivore"> Omnivore<br />
        	<input name="product_type" id="vegetarian_type" type="radio" value="Vegetarian"> Vegetarian
+    </div>    
+    <div class="col-sm-4 text-right" style="padding-right: 0;">
+   	    Vegetarian Replacement
+    </div>  
+    <div class="col-sm-1" style="padding-left: 5px;">
+   	    <input name="vegetarianBackup" id="vegetarianBackup" type="checkbox" value="1">
     </div>     
 </div>
 <div class="form-group">

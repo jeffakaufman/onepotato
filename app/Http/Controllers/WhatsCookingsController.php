@@ -112,8 +112,6 @@ class WhatsCookingsController extends Controller
      */
     public function updateWhatsCooking(Request $request)
     {
-		//echo(implode(",",$request->all()));
-		
 		$whatscooking = $request->all();
 			    
     	$validator = Validator::make($whatscooking, [
@@ -154,6 +152,7 @@ class WhatsCookingsController extends Controller
         $menu->hasShellfish = $request->hasShellfish ? $request->hasShellfish : 0;
         $menu->hasNoGluten = $request->hasNoGluten ? $request->hasNoGluten : 0;
         $menu->hasNuts = $request->hasNuts ? $request->hasNuts : 0;
+        $menu->vegetarianBackup = $request->vegetarianBackup;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
@@ -214,6 +213,7 @@ class WhatsCookingsController extends Controller
         $menu->hasShellfish = $request->hasShellfish ? $request->hasShellfish : 0;
         $menu->hasNoGluten = $request->hasNoGluten ? $request->hasNoGluten : 0;
         $menu->hasNuts = $request->hasNuts ? $request->hasNuts : 0;
+        $menu->vegetarianBackup = $request->vegetarianBackup;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
