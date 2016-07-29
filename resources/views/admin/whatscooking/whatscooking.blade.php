@@ -82,9 +82,9 @@
 						        			{!! Form::label('Techniques', null) !!}
 						        		</div>
 						        		<div class="col-sm-4">
-						        		{!! Form::radio('technique','oven',false) !!} Oven<br />
-						        		{!! Form::radio('technique','stovetop',false) !!} Stovetop<br />
-						        		{!! Form::radio('technique','slowcooker',false) !!} Slowcooker<br />
+						        		{!! Form::checkbox('oven',1,false) !!} No Dairy<br />
+						        		{!! Form::checkbox('stovetop',1,false) !!} No Egg<br />
+						        		{!! Form::checkbox('slowcooker',1,false) !!} No Soy<br />
 						        		</div>
 						        	</div>  
 						        </div>     
@@ -196,8 +196,14 @@
 	            	    	        		@if($menu->noSoy)
 	            	    	        			<li>No Soy</li>
 											@endif	 	 
-	            	    	        		@if($menu->technique)
-	            	    	        			<li>{{ $menu->technique }}</li>
+	            	    	        		@if($menu->oven)
+	            	    	        			<li>Oven </li>
+											@endif	   
+	            	    	        		@if($menu->stovetop)
+	            	    	        			<li>Stovetop</li>
+											@endif	   
+	            	    	        		@if($menu->slowcooker)
+	            	    	        			<li>Slowcooker</li>
 											@endif	           
 											<ul>
 										</div>
@@ -304,7 +310,9 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #noEgg").prop( "checked", menu.noEgg );
     $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
     $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
-    $("#menuEditModal #"+menu.technique).prop( "checked", true );
+    $("#menuEditModal #oven").prop( "checked", menu.oven );
+    $("#menuEditModal #stovetop").prop( "checked", menu.stovetop );
+    $("#menuEditModal #slowcooker").prop( "checked", menu.slowcooker );
 });
 </script>
 </whatscookings>

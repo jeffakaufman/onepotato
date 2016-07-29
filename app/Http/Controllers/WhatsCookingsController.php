@@ -155,7 +155,9 @@ class WhatsCookingsController extends Controller
         $menu->noDairy = $request->noDairy ? $request->noDairy : 0;
         $menu->noEgg = $request->noEgg ? $request->noEgg : 0;
         $menu->noSoy = $request->noSoy ? $request->noSoy : 0;
-        $menu->technique = $request->technique;
+        $menu->oven = $request->oven ? $request->oven : 0;
+        $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
+        $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
         $menu->vegetarianBackup = $request->vegetarianBackup;
 		
 		if ($image) {
@@ -222,7 +224,9 @@ class WhatsCookingsController extends Controller
         $menu->noDairy = $request->noDairy ? $request->noDairy : 0;
         $menu->noEgg = $request->noEgg ? $request->noEgg : 0;
         $menu->noSoy = $request->noSoy ? $request->noSoy : 0;
-        $menu->technique = $request->technique;
+        $menu->oven = $request->oven ? $request->oven : 0;
+        $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
+        $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
         $menu->vegetarianBackup = $request->vegetarianBackup ? $request->vegetarianBackup : 0;
 		
 		if ($image) {

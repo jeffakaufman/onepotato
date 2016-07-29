@@ -70,9 +70,9 @@
 						<label for="Ingredients">Techniques</label>
 					</div>
 					<div class="col-sm-4">
-			    		<input name="technique" id="oven" type="radio" value="oven"> Oven<br />
-			    		<input name="technique" id="stovetop" type="radio" value="stovetop"> Stovetop<br />
-			    		<input name="technique" id="slowcooker" type="radio" value="slowcooker"> Slowcooker<br />
+			    		<input name="oven" id="oven" type="checkbox" value="1"> Oven<br />
+			    		<input name="stovetop" id="stovetop" type="checkbox" value="1"> Stovetop<br />
+			    		<input name="slowcooker" id="slowcooker" type="checkbox" value="1"> Slowcooker<br />
 					</div>
 				</div>  
 			</div>     
