@@ -54,8 +54,8 @@ class WhatsCookingsController extends Controller
      */
     public function showWhatsCookings($id = null)
     {
-    	$startDate = date('Y-m-d H:i:s');
-    	$endDate = date('Y-m-d H:i:s', strtotime("+12 weeks"));
+    	$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
+    	$endDate = date('Y-m-d H:i:s', strtotime("+13 weeks"));
     	$upcomingDates = [];
 
     	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
@@ -112,8 +112,6 @@ class WhatsCookingsController extends Controller
      */
     public function updateWhatsCooking(Request $request)
     {
-		//echo(implode(",",$request->all()));
-		
 		$whatscooking = $request->all();
 			    
     	$validator = Validator::make($whatscooking, [
@@ -154,6 +152,13 @@ class WhatsCookingsController extends Controller
         $menu->hasShellfish = $request->hasShellfish ? $request->hasShellfish : 0;
         $menu->hasNoGluten = $request->hasNoGluten ? $request->hasNoGluten : 0;
         $menu->hasNuts = $request->hasNuts ? $request->hasNuts : 0;
+        $menu->noDairy = $request->noDairy ? $request->noDairy : 0;
+        $menu->noEgg = $request->noEgg ? $request->noEgg : 0;
+        $menu->noSoy = $request->noSoy ? $request->noSoy : 0;
+        $menu->oven = $request->oven ? $request->oven : 0;
+        $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
+        $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
+        $menu->vegetarianBackup = $request->vegetarianBackup;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
@@ -176,6 +181,8 @@ class WhatsCookingsController extends Controller
     public function saveWhatsCooking(Request $request)
     {
 	    $whatscookings = $request->all();
+	    
+	    //echo json_encode($whatscookings);
     
     	$validator = Validator::make($whatscookings, [
 	        'product_type' => 'required|max:255',
@@ -214,6 +221,13 @@ class WhatsCookingsController extends Controller
         $menu->hasShellfish = $request->hasShellfish ? $request->hasShellfish : 0;
         $menu->hasNoGluten = $request->hasNoGluten ? $request->hasNoGluten : 0;
         $menu->hasNuts = $request->hasNuts ? $request->hasNuts : 0;
+        $menu->noDairy = $request->noDairy ? $request->noDairy : 0;
+        $menu->noEgg = $request->noEgg ? $request->noEgg : 0;
+        $menu->noSoy = $request->noSoy ? $request->noSoy : 0;
+        $menu->oven = $request->oven ? $request->oven : 0;
+        $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
+        $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
+        $menu->vegetarianBackup = $request->vegetarianBackup ? $request->vegetarianBackup : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
@@ -226,5 +240,6 @@ class WhatsCookingsController extends Controller
 		$menu->whatscookings()->attach($id);
 		
 	    return redirect('/admin/whatscooking/'.$id);
+	    
     }
 }

@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Coupon;
 
 
-class CouponsController extends Controller
+class CouponController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,7 +26,9 @@ class CouponsController extends Controller
      */
     public function show()
     {
-        return view('coupons');
+		$coupons = Coupon::get();
+		
+		return view('admin.coupons.coupons')->with(['coupons'=>$coupons]);
     }
 
 	/**
@@ -53,7 +56,7 @@ class CouponsController extends Controller
 
     }
 
-	public function saveRecipe(Request $request) {
+	public function saveCoupon(Request $request) {
 		/*
 		
 		$validator = Validator::make($request->all(), [
@@ -67,15 +70,12 @@ class CouponsController extends Controller
 	            ->withErrors($validator);
 	    }
 */
-	    $recipe = new recipes;
-	    $recipe->recipe_title = $request->recipe_title;
-		$recipe->recipe_type = $request->recipe_type;
-		$recipe->photo_url = $request->photo_url;
-		$recipe->pdf_url = $request->pdf_url;
-		$recipe->video_url = $request->video_url;
-	    $recipe->save();
+	    $coupon = new Coupon;
+	    $coupon->couponCode = $request->couponCode;
+		$coupon->percentDiscount = $request->percentDiscount;
+	    $coupon->save();
 
-	    return redirect('/recipes');
+	    return redirect('/admin/coupons');
 	
 	}
 }

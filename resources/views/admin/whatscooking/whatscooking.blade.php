@@ -18,21 +18,20 @@
         <!-- Application Dashboard -->
 			<!-- Display Validation Errors -->
 			@include('errors.errors')
-		
 		<div class="row">
             <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading">Add Menu</div>
                     	<div class="panel-body">
 							<!-- New Menu Form -->
-							    {!! Form::open(
-							        array(
-							            'url' => 'whatscooking', 
-							            'class' => 'form-horizontal', 
-							            'files' => true)) !!}          
+						{!! Form::open(
+							array(
+							    'url' => 'whatscooking', 
+							    'class' => 'form-horizontal', 
+							    'files' => true)) !!}          
 						    <div class="form-group">
 						        {!! Form::label('Type', null,array('class'=>'col-sm-2 control-label')) !!}
-						        <div class="col-sm-6">
+						        <div class="col-sm-3">
 						        @if( $last)
 						        	{!! Form::hidden('last_id',$last->id); !!}  
 						    	    {!! Form::radio('product_type', 'Omnivore',$last->product_type=='Omnivore') !!} Omnivore<br />
@@ -41,10 +40,16 @@
 						       	    {!! Form::radio('product_type', 'Omnivore') !!} Omnivore<br />
 						           	{!! Form::radio('product_type', 'Vegetarian') !!} Vegetarian
 						        @endif
-						        </div>     
+						        </div>
+							    <div class="col-sm-2 text-right" style="padding-right: 0;">
+							    	Vegetarian Backup
+							    </div>   
+							    <div class="col-sm-1" style="padding-left: 5px;">
+							    	{!! Form::checkbox('vegetarianBackup',1,false) !!} 
+							    </div>   
 						    </div>
 						    <div class="form-group">
-						        {!! Form::label('Ingredients', null,array('class'=>'col-sm-2 control-label')) !!}
+						        {!! Form::label('Preferences', null,array('class'=>'col-sm-2 control-label')) !!}
 						        <div class="col-sm-6">
 						        	<div class="row">
 						        		<div class="col-sm-4">
@@ -61,6 +66,26 @@
 						        		{!! Form::checkbox('hasNoGluten',1,false) !!} Gluten-Free<br />
 						        		{!! Form::checkbox('hasNuts',1,false) !!} Nuts<br />
 						        		</div>  
+						        	</div>  
+						        </div>     
+						    </div>
+						    <div class="form-group">
+						        {!! Form::label('Ingredients', null,array('class'=>'col-sm-2 control-label')) !!}
+						        <div class="col-sm-6">
+						        	<div class="row">
+						        		<div class="col-sm-4">
+						        		{!! Form::checkbox('noDairy',1,false) !!} No Dairy<br />
+						        		{!! Form::checkbox('noEgg',1,false) !!} No Egg<br />
+						        		{!! Form::checkbox('noSoy',1,false) !!} No Soy<br />
+						        		</div>
+						        		<div class="col-sm-3">
+						        			{!! Form::label('Techniques', null) !!}
+						        		</div>
+						        		<div class="col-sm-4">
+						        		{!! Form::checkbox('oven',1,false) !!} No Dairy<br />
+						        		{!! Form::checkbox('stovetop',1,false) !!} No Egg<br />
+						        		{!! Form::checkbox('slowcooker',1,false) !!} No Soy<br />
+						        		</div>
 						        	</div>  
 						        </div>     
 						    </div>
@@ -161,7 +186,25 @@
 											@endif
 	            	    	        		@if($menu->hasNuts)
 	            	    	        			<li>Nuts</li>
-											@endif
+											@endif	 
+	            	    	        		@if($menu->noDairy)
+	            	    	        			<li>No Dairy</li>
+											@endif	 
+	            	    	        		@if($menu->noEgg)
+	            	    	        			<li>No Eggs</li>
+											@endif	 
+	            	    	        		@if($menu->noSoy)
+	            	    	        			<li>No Soy</li>
+											@endif	 	 
+	            	    	        		@if($menu->oven)
+	            	    	        			<li>Oven </li>
+											@endif	   
+	            	    	        		@if($menu->stovetop)
+	            	    	        			<li>Stovetop</li>
+											@endif	   
+	            	    	        		@if($menu->slowcooker)
+	            	    	        			<li>Slowcooker</li>
+											@endif	           
 											<ul>
 										</div>
 	            	        	    	@if($menu->image)
@@ -170,7 +213,10 @@
 										<div class="col-md-2 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
 										@endif
 	            	        	    	<div class="col-md-2 col-md-offset-1"><div class="btn btn-primary" data-toggle="modal" data-whatscooking="{{ $whatscooking }}" data-menu="{{ $menu }}" data-target="#menuEditModal">Edit</div></div>
-									</div>
+									</div>	     	        
+		                	        @if ($menu->vegetarianBackup)
+								    	<strong>Vegetarian Replacement</strong>
+								    @endif
 									<div class="row">
 										<div class="col-md-12 ">
 											<hr style="border-top: 1px solid #d3e0e9;position: relative;left: -30px;">
@@ -244,7 +290,6 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	    week_of.appendChild(option);
 	}
 	
-
     $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
     $("#menuEditModal #vegetarian_type").prop( "checked",whatscooking.product_type == 'Vegetarian' );
@@ -261,7 +306,13 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #hasPork").prop( "checked", menu.hasPork );
     $("#menuEditModal #hasPoultry").prop( "checked", menu.hasPoultry );
     $("#menuEditModal #hasShellfish").prop( "checked", menu.hasShellfish );
-   // $("#delForm").attr('action', 'put your action here with productId');//e.g. 'domainname/products/' + productId
+    $("#menuEditModal #noDairy").prop( "checked", menu.noDairy );
+    $("#menuEditModal #noEgg").prop( "checked", menu.noEgg );
+    $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
+    $("#menuEditModal #noSoy").prop( "checked", menu.noSoy );
+    $("#menuEditModal #oven").prop( "checked", menu.oven );
+    $("#menuEditModal #stovetop").prop( "checked", menu.stovetop );
+    $("#menuEditModal #slowcooker").prop( "checked", menu.slowcooker );
 });
 </script>
 </whatscookings>
