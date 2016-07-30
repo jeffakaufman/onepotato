@@ -30,7 +30,7 @@ $('#register3').addClass('active');
 			<input type="hidden" name="children" value="{{$children}}" />
 			<input type="hidden" name="user_id" value="{{ $user->id }}" />
         <div class="row">
-            <div class="col-md-5 col-md-offset-1">
+            <div class="col-sm-6 col-md-5 col-md-offset-1">
                 <div id="dietary_preferences" class="panel panel-default panel-form marginless">
                     <div class="panel-heading text-left extrapadding">dietary preferences</div>
                     <div class="panel-body font16">
@@ -79,7 +79,7 @@ $('#register3').addClass('active');
                     <span v-show="nuts"> nut</span> dishes.
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-sm-6 col-md-5">
                 <div class="panel panel-default panel-form">
                     <div class="panel-heading text-left extrapadding">DELIVERY TIMELINE</div>
 
@@ -97,15 +97,15 @@ $('#register3').addClass('active');
                         </div>
                         <div class="row">
                             <div class="col-xs-12 extrapadding">
-                                <div class="col-xs-12 col-sm-4 font11 thinpadding first">
+                                <div class="col-xs-4 font11 thinpadding first">
                                     <img src="/img/preferences_meal1.jpg" alt="">
                                     <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Sweet Balsamic Chicken with Avocado Toast and Cauliflower</div>
                                 </div>
-                                <div class="col-xs-12 col-sm-4 font11 thinpadding">
+                                <div class="col-xs-4 font11 thinpadding">
                                     <img src="/img/preferences_meal2.jpg" alt="">
                                     <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Sweet Corn Manchego Enchiladas with Corn Salsa</div>
                                 </div>
-                                <div class="col-xs-12 col-sm-4 font11 thinpadding last">
+                                <div class="col-xs-4 font11 thinpadding last">
                                     <img src="/img/preferences_meal3.jpg" alt="">
                                     <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Salmon Sheet Pan Dinner with Early Summer Vegetables  and Orzo Salad</div>
                                 </div>
