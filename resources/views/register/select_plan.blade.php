@@ -7,7 +7,7 @@ $('#register2').addClass('active');
 @endsection
 
 @section('content')
-<select_plan :user="user" inline-template>
+
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
@@ -28,7 +28,7 @@ Both plans include 3 meals per week.</div>
 				<input type="hidden" name="user_id" value="{{ $user->id }}" />
 				<input type="hidden" name="zip" value="{{ $zip }}" />
         <div class="row">
-            <div class="col-md-5 col-md-offset-1">
+            <div class="col-sm-6 col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Adult Plan
                         <div class="panel-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
@@ -67,7 +67,7 @@ Both plans include 3 meals per week.</div>
 				
 					<input type="hidden" name="user_id" value="{{ $user->id }}" />
 					<input type="hidden" name="zip" value="{{ $zip }}" />
-            <div class="col-md-5">
+            <div class="col-sm-6 col-md-5">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Family Plan
                         <div class="panel-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
@@ -116,5 +116,5 @@ Both plans include 3 meals per week.</div>
             <div class="footnote pad col-md-8 col-md-offset-2">* Based on the typical omnivore meal plan</div>
         </div><!-- .row -->
     </div>
-</select_plan>
+
 @endsection

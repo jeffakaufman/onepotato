@@ -91,17 +91,13 @@ $('#register4').addClass('active');
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{  $zip  }}" v-model="registerForm.zip" lazy>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{  $zip  }}" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" v-model="registerForm.phone" lazy value="{{ $phone }}">
-
-                                    <span class="help-block" v-show="registerForm.errors.has('phone')">
-                                        @{{ registerForm.errors.get('phone') }}
-                                    </span>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" lazy value="{{ $phone }}">
                                 </div>
                             </div>
 
