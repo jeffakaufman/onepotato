@@ -1,6 +1,98 @@
 @extends('spark::layouts.app')
 
 @section('content')
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
+<script>
+/*stripe code*/
+
+$(document).ready(function() {
+
+	// Watch for a form submission:
+	$("#payment-form").submit(function(event) {
+
+		// Flag variable:
+		//var error = false;
+
+		// disable the submit button to prevent repeated clicks:
+		$('#submitBtn').attr("disabled", "disabled");
+
+		// Get the values:
+		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
+		
+		console.log (ccNum);
+		
+		// Validate the number:
+		if (!Stripe.card.validateCardNumber(ccNum)) {
+			error = true;
+			console.log ('The credit card number appears to be invalid.');
+		}
+
+		// Validate the CVC:
+		if (!Stripe.card.validateCVC(cvcNum)) {
+			error = true;
+			console.log ('The CVC number appears to be invalid.');
+		}
+
+		// Validate the expiration:
+		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
+			error = true;
+			console.log ('The expiration date appears to be invalid.');
+		}
+
+		// Validate other form elements, if needed!
+		error = false;
+		// Check for errors:
+		if (!error) {
+
+			// Get the Stripe token:
+			Stripe.card.createToken({
+				number: ccNum,
+				cvc: cvcNum,
+				exp_month: expMonth,
+				exp_year: expYear
+			}, stripeResponseHandler);
+
+		}
+		
+		
+		// Prevent the form from submitting:
+		return false;
+
+	}); // Form submission
+
+}); // Document ready.
+
+// Function handles the Stripe response:
+function stripeResponseHandler(status, response) {
+
+	// Check for an error:
+	//if (response.error) {
+
+	//	reportError(response.error.message);
+
+	//} else { // No errors, submit the form:
+
+	  var f = $("#payment-form");
+
+	  // Token contains id, last4, and card type:
+	  var token = response['id'];
+
+	  console.log(token);
+
+	  // Insert the token into the form so it gets submitted to the server
+	  f.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
+
+	  // Submit the form:
+	  f.get(0).submit();
+
+	//}
+
+} // End of stripeResponseHandler() function.
+
+
+</script>
 <account :user="user" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
@@ -512,26 +604,32 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">CREDIT CARD</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'payment')) !!}
+                                       	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/account/') }}/{{$user->id}}">
+	
+											 {{ csrf_field() }}
+
+										<input type="hidden" name="user_id" value="{{$user->id}}" />
+										<input type="hidden" name="update_type" value="payment" />
+															
                                         <div class="modal-body">
 
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Type</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('type', '', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('', '', array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Number</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('cc_number', '', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('', '', array('class' => 'form-control card-number')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 47px"><b>Expiration</b></div>
                                                 <div class="col-sm-5">
                                                     <label class="select">
-                                                        {!! Form::select('exp_mo', array(
+                                                        {!! Form::select('', array(
                                                             '01'=>'January', 
                                                             '02'=>'February', 
                                                             '03'=>'March', 
@@ -544,24 +642,24 @@
                                                             '10'=>'October', 
                                                             '11'=>'November', 
                                                             '12'=>'December'
-                                                        ), '05', array('class'=>'form-control')) !!}
+                                                        ), '05', array('class'=>'form-control card-expiry-month')) !!}
                                                     </label>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    {!! Form::text('exp_day', '19', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('', '', array('class' => 'form-control card-expiry-year')) !!}
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>CVC</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('cvc', '', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('', '', array('class' => 'form-control card-cvc')) !!}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
-                                        {!! Form::close() !!}
+                                      </form>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->

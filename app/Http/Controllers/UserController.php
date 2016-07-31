@@ -119,6 +119,29 @@ class UserController extends Controller
 
 			}
 			
+			if ($update_type=="payment") {
+				
+				//figure out which plan the user is currently subscribed to
+				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+				// Get the credit card details submitted by the form
+				$token = $request->stripeToken;
+
+
+				//first see if there's already a record for this customer in STRIPE and update using Token
+				$customer = \Stripe\Customer::retrieve($user->stripe_id);
+				$customer->source = $token; // obtained with Stripe.js
+				$customer->email = $user->email;
+				$customer->plan = $userProduct->stripe_plan_id;
+				$customer->save();
+				
+				//update User with card_last_four and card_type
+				$user->card_last_four = $customer->sources->data[0]->last4;
+				$user->card_brand = $customer->sources->data[0]->brand;
+				$user->save();
+				
+			}
+			
 			
 			if ($update_type=="meals") {
 			/*sku decoder - 
