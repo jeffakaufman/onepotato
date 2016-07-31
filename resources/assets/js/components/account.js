@@ -39,3 +39,14 @@ Vue.component('account', {
 	  	}
 	}
 });
+
+var url = document.location.toString();
+if (url.match('#')) {
+    $('.nav-sidebar a[href="#' + url.split('#')[1] + '"]').tab('show');
+    console.log('yes');
+} 
+
+// Change hash for page-reload
+$('.nav-sidebar a').on('shown.bs.tab', function (e) {
+    window.location.hash = e.target.hash;
+});

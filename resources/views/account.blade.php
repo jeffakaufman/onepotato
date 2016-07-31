@@ -85,7 +85,7 @@
 								$BoxSelectVeg = "true";
 								$BoxSelectOmn = "false";
 							}
-							if ($sku[1]=="02"){
+							if ($sku[0]=="02"){
 								$BoxType = "Omnivore";
 								$BoxSelectVeg = "false";
 								$BoxSelectOmn = "true";
@@ -108,11 +108,11 @@
 
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Plan Type</b></div>
-                                <div class="col-sm-8">Family</div>
+                                <div class="col-sm-8">{{$PlanType}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Family Size</b></div>
-                                <div class="col-sm-8">2 Children</div>
+                                <div class="col-sm-8">{{$FamilySize}}</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Box Type</b></div>
@@ -120,7 +120,7 @@
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Delivery Day</b></div>
-                                <div class="col-sm-8"></div>
+                                <div class="col-sm-8">Wednesday</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Changeable By</b></div>
@@ -134,7 +134,13 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">MEALS</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'meals')) !!}
+                                     
+										<form method="POST" action="{{ url('account') }}/{{ $user->id }}" accept-charset="UTF-8" class="meals">
+										
+									            {{ csrf_field() }}
+									
+										<input type="hidden" name="user_id" value="{{$user->id}}" />
+										<input type="hidden" name="update_type" value="meals" />
                                         <div class="modal-body">
                                             <p>Changes will only apply to deliveries scheduled on or after Thursday, July 21st.</p>
 
@@ -142,7 +148,7 @@
                                                 <div class="col-sm-3" style="line-height: 47px"><b>Plan Type</b></div>
                                                 <div class="col-sm-9">
                                                     <label class="select inline">
-                                                        {!! Form::select('plan-type', array('adult' => 'Adult Plan', 'family' => 'Family Plan'), $PlanTypeSelect, array('class' => 'form-control plan-type')) !!}
+                                                        {!! Form::select('plan_size', array('adult' => 'Adult Plan', 'family' => 'Family Plan'), $PlanTypeSelect, array('class' => 'form-control plan-type')) !!}
                                                         
                                                     </label>
                                                 </div>
@@ -164,7 +170,7 @@
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 55px"><b>Gluten free*?</b></div>
-                                                <div class="col-sm-9"><span class="checkbox" style="margin-left: -10px"><input id="glutenfree" type="checkbox" name="prefs[]" value="9"> <label for="glutenfree" class="inline">Yes</label> <span class="footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</span></div>
+                                                <div class="col-sm-9"><span class="checkbox" style="margin-left: -10px"><input id="glutenfree" type="checkbox" name="glutenfree" value="1"> <label for="glutenfree" class="inline">Yes</label> <span class="footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</span></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-3"><b>Dietary Preferences</b></div>
@@ -208,7 +214,7 @@
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
-                                        {!! Form::close() !!}
+                                     	</form>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
@@ -263,7 +269,12 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">DELIVERY ADDRESS</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'delivery')) !!}
+                                       		<form method="POST" action="{{ url('account') }}/{{ $user->id }}#delivery_info" accept-charset="UTF-8" class="delivery_address">
+
+										            {{ csrf_field() }}
+
+											<input type="hidden" name="user_id" value="{{$user->id}}" />
+											<input type="hidden" name="update_type" value="delivery_address" />
                                         <div class="modal-body">
                                             <p>Changes will only apply to deliveries scheduled on or after Thursday, July 21st.</p>
 
@@ -393,7 +404,7 @@
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
-                                        {!! Form::close() !!}
+                                       </form>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
@@ -430,25 +441,30 @@
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title">DELIVERY ADDRESS</h4>
                                         </div>
-                                        {!! Form::open(array('url' => '/account', 'class' => 'account')) !!}
+                                       		<form method="POST" action="{{ url('account') }}/{{ $user->id }}#account" accept-charset="UTF-8" class="account">
+
+										            {{ csrf_field() }}
+
+											<input type="hidden" name="user_id" value="{{$user->id}}" />
+											<input type="hidden" name="update_type" value="account" />
                                         <div class="modal-body">
 
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 47px"><b>First Name</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('first_name', 'Jeff', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('first_name', $user->first_name, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3"><b>Last Name</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('last_name', 'Kaufman', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('last_name', $user->last_name, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Email</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::email('email', 'user@gmail.com', array('class' => 'form-control')) !!}
+                                                    {!! Form::email('email', $user->email, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
@@ -462,7 +478,7 @@
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
-                                        {!! Form::close() !!}
+                                    </form>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
@@ -481,16 +497,13 @@
 
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Type</b></div>
-                                <div class="col-sm-8">Visa</div>
+                                <div class="col-sm-8">{{$user->card_brand}}</div>
                             </div>
                             <div class="row padding">
-                                <div class="col-sm-4"><b>Number</b></div>
-                                <div class="col-sm-8">1234456544757</div>
+                                <div class="col-sm-4"><b>Number (Last Four Digits)</b></div>
+                                <div class="col-sm-8">{{$user->card_last_four}}</div>
                             </div>
-                            <div class="row padding">
-                                <div class="col-sm-4">Expiration Date</div>
-                                <div class="col-sm-8">05/21</div>
-                            </div>
+                            
 
                             <div id="editPayment" class="modal fade" role="dialog">
                                 <div class="modal-dialog" role="document">
@@ -505,7 +518,7 @@
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Type</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('type', 'Visa', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('type', '', array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
@@ -541,7 +554,7 @@
                                             <div class="row">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>CVC</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('cvc', '123', array('class' => 'form-control')) !!}
+                                                    {!! Form::text('cvc', '', array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                         </div>
