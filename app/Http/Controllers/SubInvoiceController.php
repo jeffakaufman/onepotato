@@ -214,7 +214,7 @@ class SubinvoiceController extends Controller
 		$order->ship_station_xml = $shipXML;
 		$order->save();
 		
-		
+		http_response_code(200); // PHP 5.4 or greater
 	}
 	
 	public function testShippingStatus () {
