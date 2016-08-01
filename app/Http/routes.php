@@ -112,7 +112,7 @@ Route::get('/admin/services/invoice/test', 'SubinvoiceController@testStripeInvoi
 Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
 Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateShippingStatus');
 
-
+//ship station routes
 Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
