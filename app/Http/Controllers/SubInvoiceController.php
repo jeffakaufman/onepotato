@@ -88,6 +88,10 @@ class SubinvoiceController extends Controller
 			
 				$charge_date = new DateTime($invoice->charge_date);
 				$charge_date_formatted = $charge_date->format('m/d/Y H:i');	
+				
+					$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+					$product = Product::where('id',$subscriber->product_id)->first();
+				
 				$ship_xml .= "<Order>";
 
 				$ship_xml .= "<OrderID><![CDATA[" . $order_id . "]]></OrderID>";
@@ -106,6 +110,7 @@ class SubinvoiceController extends Controller
 				$ship_xml .= "<CustomField1></CustomField1>";
 				$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
 				$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
+			
 			
 			
 				//create the customer data
@@ -134,8 +139,7 @@ class SubinvoiceController extends Controller
 			
 				$ship_xml .= "</Customer>";
 			
-				$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
-				$product = Product::where('id',$subscriber->product_id)->first();
+			
 			
 				$ship_xml .= "<Items><Item>";
 			
