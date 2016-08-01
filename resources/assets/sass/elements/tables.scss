@@ -15,3 +15,44 @@
 		padding-top: 14px;
 	}
 }
+
+table.month {
+	width: 100%;
+	border: 1px solid $brand-primary;
+	font-family: $font-family-semibold;
+	margin: 21px 0 32px 0;
+	
+	.month_name {
+		background: $brand-primary;
+		color: #fff;
+		font-size: 16px;
+		text-align: center;
+    	padding: 10px;
+	}
+	.day, .day_name {
+		font-size: 12px;
+		text-align: center;
+		padding: 5px;
+	}
+	.day {
+		min-height: 50px;
+		vertical-align: top;
+		
+		&.active {
+			font-family: $font-family-bold;
+		}
+		.fa {
+			display: block;
+			font-size: 18px;
+		}
+	}
+	.day_name {
+		color: $brand-primary;
+	}
+	tr:nth-child(2) td {
+		padding-top: 15px; 
+	}
+	tr:last-child td {
+		padding-bottom: 15px; 
+	}
+}

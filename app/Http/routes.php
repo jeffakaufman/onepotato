@@ -51,6 +51,11 @@ Route::get('/account/{id}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
 
 
+// Delivery Schedule...
+Route::get('/delivery-schedule', array('as' => 'delivery_schedule', function() {
+    return view('delivery_schedule');
+}));
+
 
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
