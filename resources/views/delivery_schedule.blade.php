@@ -48,7 +48,7 @@ Calendar.prototype.generateHTML = function(){
   var day = 1;
   // this loop is for is weeks (rows)
   var weeks = Math.ceil((monthLength + startingDay) / 7);
-  today = current_date.getDate();
+  today = current_date.getDate() + 7;
   current_month = current_date.getMonth() + 1;
   this.month = this.month + 1;
   //console.log(current_month);
@@ -74,9 +74,9 @@ Calendar.prototype.generateHTML = function(){
         } else {
             started = false;
         }
-        if (j == 3 && !blank && (day <= monthLength || j >= startingDay) && deliveryStatus[i]) {
+        if (j == 2 && !blank && (day <= monthLength || j >= startingDay) && deliveryStatus[i]) {
             html += '<div class="fa fa-check-circle" aria-hidden="true"></div>';
-        } else if (j == 3 && !blank && (day <= monthLength || j >= startingDay) && !deliveryStatus[i]) {
+        } else if (j == 2 && !blank && (day <= monthLength || j >= startingDay) && !deliveryStatus[i]) {
             html += '<div class="fa fa-times-circle" aria-hidden="true"></div>';
         }
         html += '</td>';
@@ -142,7 +142,7 @@ $(function() {
 
         <div class="col-xs-12">
             <h1>Delivery Schedule</h1>
-            <div class="font16" style="position: absolute; right: 0; top: 34px;">Your next box will be delivered {{$weeksMenus[0]->date}}, before 8pm</div>
+            <div class="font16" style="position: absolute; right: 0; top: 34px;">If scheduled, your next box will arrive on {{$weeksMenus[0]->date}}, before 8pm</div>
         </div>
 
     </div><!-- .row -->
