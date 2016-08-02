@@ -13,6 +13,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+
+        'App\Events\UserHasRegistered' => [
+            'App\Listeners\SendWelcomeEmail',
+        ],
+
+
         // User Related Events...
         'Laravel\Spark\Events\Auth\UserRegistered' => [
             'Laravel\Spark\Listeners\Subscription\CreateTrialEndingNotification',

@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'activecampaign' => [
+        'api_url' => env('ACTIVECAMPAIGN_URL', 'https://onepotato.api-us1.com'),
+        'api_key' => env('ACTIVECAMPAIGN_KEY', 'c698bb7d60da8dea31439232741a0d47d7eda27abc366b13f4c6a8482314eb9e7fd8afd9'),
+    ],
+
 ];

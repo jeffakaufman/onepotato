@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserHasRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
@@ -82,7 +83,9 @@ class NewUserController extends Controller
 		$user->email = $request->email;
 		$user->password = Hash::make($request->password);
 		$user->save();
-		
+
+        event(new UserHasRegistered($user));
+
 		return view('register.select_plan')->with(['user'=>$user,'zip'=>$request->zip]);
 	}
 	
