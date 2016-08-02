@@ -347,8 +347,8 @@ class NewUserController extends Controller
 			$user->stripe_id = $customer->id;
 			
 			//update User with card_last_four and card_type
-			$user->last_four = $customer->sources->data[0]->last4);
-			$user->card_brand = $customer->sources->data[0]->brand);
+			$user->last_four = $customer->sources->data[0]->last4;
+			$user->card_brand = $customer->sources->data[0]->brand;
 			
 			//get the subscription ID
 			$userSubscription->stripe_id = $customer->subscriptions->data[0]->id;
