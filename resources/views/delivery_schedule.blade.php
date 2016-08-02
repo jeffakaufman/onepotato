@@ -142,7 +142,7 @@ $(function() {
 
         <div class="col-xs-12">
             <h1>Delivery Schedule</h1>
-            <div class="font16" style="position: absolute; right: 0; top: 34px;">Your next box will be delivered Wednesday, Feb. 24th, before 8pm</div>
+            <div class="font16" style="position: absolute; right: 0; top: 34px;">Your next box will be delivered {{$weeksMenus[0]->date}}, before 8pm</div>
         </div>
 
     </div><!-- .row -->
@@ -173,11 +173,40 @@ $(function() {
         </div>
 
         <div class="col-sm-9 schedule">
-
+        
+        @foreach ($weeksMenus as $weeksMenu)
+            @if (count($weeksMenu->menus) > 0) 
             <div class="week">
                 <?php $status = 'shipped' ?>
-                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i> Wednesday, Aug. 3rd
-                    <span class="plan_size">2 Adults, 2 children <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
+                    <span class="plan_size">{{ $userProduct->productDetails()->FamilySize }} <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                    <div class="subtitle">
+                        @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
+                        @if ($status == 'on')
+                            <a href="#" class="change_menu" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
+                        @endif
+                        @if ($status == 'off')
+                            <button class="btn btn-primary btn-unskip" data-month="8" data-day="3" data-year="2016">UNSKIP THIS DELIVERY</button>
+                        @elseif ($status != 'shipped')
+                            <button class="btn btn-primary btn-skip" data-month="8" data-day="3" data-year="2016">SKIP THIS DELIVERY</button>
+                        @endif
+                    </div>
+                </h2>
+	                <div class="row">
+                	@foreach ($weeksMenu->menus as $menu)
+                    	<div class="col-sm-4">
+                    	    <img src="{{$menu->image}}" />
+                    	    <p class="caption">{{$menu->menu_title}}<br/>
+                    	    	<i>{{$menu->menu_description}}</i></p>
+                    	</div>
+                	@endforeach
+    	            </div>
+            </div>
+            @else
+            <div class="week">
+                <?php $status = 'on' ?>
+                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>  {{ $weeksMenu->date }}
+                    <span class="plan_size">{{ $userProduct->productDetails()->FamilySize }} <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
                     <div class="subtitle">
                         @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
                         @if ($status == 'on')
@@ -192,83 +221,21 @@ $(function() {
                 </h2>
                 <div class="row">
                     <div class="col-sm-4">
-                        <img src="/img/vegetariantaquitoshires-008.jpg" />
-                        <p class="caption">Vegetarian Taquitos with Rice and Cucumber Avocado Salsa</p>
+                        <img src="/img/foodpot.jpg"  class="center-block" />
+                        <p class="caption">Still Cooking!</p>
                     </div>
                     <div class="col-sm-4">
-                        <img src="/img/gingerbeefsatay-012.jpg" />
-                        <p class="caption">Ginger Beef Satay with Coconut Rice</p>
+                        <img src="/img/foodpot.jpg" class="center-block" />
+                        <p class="caption">Still Cooking!</p>
                     </div>
                     <div class="col-sm-4">
-                        <img src="/img/gnocchipesto-009.jpg" />
-                        <p class="caption">Gnocchi with Pesto and Zucchini Coins</p>
+                        <img src="/img/foodpot.jpg" class="center-block"  />
+                        <p class="caption">Still Cooking!</p>
                     </div>
                 </div>
             </div>
-
-            <div class="week">
-                <?php $status = 'on' ?>
-                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i> Wednesday, Aug. 10th
-                    <span class="plan_size">2 Adults, 2 children <a href="#" class="change_children sidelink" data-month="8" data-day="10" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
-                    <div class="subtitle">
-                        @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
-                        @if ($status == 'on')
-                            <a href="#" class="change_menu" data-month="8" data-day="10" data-year="2016" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
-                        @endif
-                        @if ($status == 'off')
-                            <button class="btn btn-primary btn-unskip" data-month="8" data-day="10" data-year="2016">UNSKIP THIS DELIVERY</button>
-                        @elseif ($status != 'shipped')
-                            <button class="btn btn-primary btn-skip" data-month="8" data-day="10" data-year="2016">SKIP THIS DELIVERY</button>
-                        @endif
-                    </div>
-                </h2>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <img src="/img/op_06-Salmon-Cooked_0037_f1.jpg" />
-                        <p class="caption">Salmon in Parchment with Brown Rice</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/op_08-Skewers_0044_p1.jpg" />
-                        <p class="caption">Persian Chicken Kebabs with Quinoa and Cucumber, Tomato and Avocado Salad</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/op_03-Chicken_0020_p.jpg" />
-                        <p class="caption">Roast Chicken with Mediterranean Chickpea Fries</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="week">
-                <?php $status = 'off' ?>
-                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i> Wednesday, Aug. 17th
-                    <span class="plan_size">2 Adults, 2 children <a href="#" class="change_children sidelink" data-month="8" data-day="17" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
-                    <div class="subtitle">
-                        @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
-                        @if ($status == 'on')
-                            <a href="#" class="change_menu" data-month="8" data-day="17" data-year="2016" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
-                        @endif
-                        @if ($status == 'off')
-                            <button class="btn btn-primary btn-unskip" data-month="8" data-day="17" data-year="2016">UNSKIP THIS DELIVERY</button>
-                        @elseif ($status != 'shipped')
-                            <button class="btn btn-primary btn-skip" data-month="8" data-day="17" data-year="2016">SKIP THIS DELIVERY</button>
-                        @endif
-                    </div>
-                </h2>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <img src="/img/vegetariantaquitoshires-008.jpg" />
-                        <p class="caption">Vegetarian Taquitos with Rice and Cucumber Avocado Salsa</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/gingerbeefsatay-012.jpg" />
-                        <p class="caption">Ginger Beef Satay with Coconut Rice</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/gnocchipesto-009.jpg" />
-                        <p class="caption">Gnocchi with Pesto and Zucchini Coins</p>
-                    </div>
-                </div>
-            </div>
+    	    @endif
+        @endforeach           
 
             <div id="changeMenu" class="modal fade" role="dialog">
                 <div class="modal-dialog" role="document">

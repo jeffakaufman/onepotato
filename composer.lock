@@ -1047,7 +1047,7 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "./spark/",
+                "url": "./spark",
                 "reference": "5c18934d85a19ee061c60069f49bd00e6f527de2",
                 "shasum": null
             },
