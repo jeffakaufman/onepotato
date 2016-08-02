@@ -5985,7 +5985,7 @@ input.number {
   width: 18px;
   cursor: pointer;
   vertical-align: top;
-  line-height: 1.2em;
+  line-height: 1.4em;
   display: inline-block;
   text-align: center;
   background: #1db8bf;
@@ -6304,6 +6304,8 @@ input.number {
   .nav-sidebar > li.active {
     background: #e8f9fa;
     border: #c2eef1 1px solid; }
+    .nav-sidebar > li.active a:hover {
+      color: #1db8bf; }
     @media (min-width: 768px) {
       .nav-sidebar > li.active {
         border-right: 0; } }
@@ -6441,6 +6443,36 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 
 .spark-screen td.spark-table-pad {
   padding-top: 14px; }
+
+table.month {
+  width: 100%;
+  border: 1px solid #1db8bf;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  margin: 21px 0 32px 0; }
+  table.month .month_name {
+    background: #1db8bf;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px; }
+  table.month .day, table.month .day_name {
+    font-size: 12px;
+    text-align: center;
+    padding: 5px; }
+  table.month .day {
+    min-height: 50px;
+    vertical-align: top; }
+    table.month .day.active {
+      font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
+    table.month .day .fa {
+      display: block;
+      font-size: 18px; }
+  table.month .day_name {
+    color: #1db8bf; }
+  table.month tr:nth-child(2) td {
+    padding-top: 15px; }
+  table.month tr:last-child td {
+    padding-bottom: 15px; }
 
 .spark-screen .tooltip-inner {
   max-width: 500px;
@@ -6902,6 +6934,107 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
   .modal-header .close:hover {
     color: #e91e25; }
 
+/*******************************Calendar Top Navigation*********************************/
+div.calendar {
+  margin: 0px auto;
+  padding: 0px;
+  width: 602px;
+  font-family: Helvetica, "Times New Roman", Times, serif; }
+
+div.calendar div.box {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 40px;
+  background-color: #787878; }
+
+div.calendar div.header {
+  line-height: 40px;
+  vertical-align: middle;
+  position: absolute;
+  left: 11px;
+  top: 0px;
+  width: 582px;
+  height: 40px;
+  text-align: center; }
+
+div.calendar div.header a.prev, div.calendar div.header a.next {
+  position: absolute;
+  top: 0px;
+  height: 17px;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  color: #FFF; }
+
+div.calendar div.header span.title {
+  color: #FFF;
+  font-size: 18px; }
+
+div.calendar div.header a.prev {
+  left: 0px; }
+
+div.calendar div.header a.next {
+  right: 0px; }
+
+/*******************************Calendar Content Cells*********************************/
+div.calendar div.box-content {
+  border: 1px solid #787878;
+  border-top: none; }
+
+div.calendar ul.label {
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  margin-top: 5px;
+  margin-left: 5px; }
+
+div.calendar ul.label li {
+  margin: 0px;
+  padding: 0px;
+  margin-right: 5px;
+  float: left;
+  list-style-type: none;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  text-align: center;
+  color: #000;
+  font-size: 15px;
+  background-color: transparent; }
+
+div.calendar ul.dates {
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  margin-left: 5px;
+  margin-bottom: 5px; }
+
+/** overall width = width+padding-right**/
+div.calendar ul.dates li {
+  margin: 0px;
+  padding: 0px;
+  margin-right: 5px;
+  margin-top: 5px;
+  line-height: 80px;
+  vertical-align: middle;
+  float: left;
+  list-style-type: none;
+  width: 80px;
+  height: 80px;
+  font-size: 25px;
+  background-color: #DDD;
+  color: #000;
+  text-align: center; }
+
+:focus {
+  outline: none; }
+
+div.clear {
+  clear: both; }
+
 #spark-terms-screen h1 {
   font-size: 26px;
   margin-top: 35px;
@@ -6936,13 +7069,6 @@ body {
   font-size: 14px;
   color: #404040; }
 
-h2, h3, h4, h5 {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
-  color: #1db8bf;
-  letter-spacing: 0.05em; }
-  h2 .red, h3 .red, h4 .red, h5 .red {
-    color: #e91e25; }
-
 h1 {
   font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
   color: #e91e25;
@@ -6953,6 +7079,11 @@ h1 {
   @media (min-width: 1200px) {
     h1 {
       font-size: 30px; } }
+  h1 .subtitle {
+    float: right;
+    margin-top: -2.4em;
+    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    font-size: 16px; }
 
 h2 {
   font-size: 18px;
@@ -6963,6 +7094,47 @@ h2 {
 .tab-pane h2 {
   border-bottom: #585858 1px solid;
   padding-bottom: 1em; }
+
+.schedule h2 {
+  color: #1db8bf;
+  font-size: 24px;
+  text-transform: none;
+  letter-spacing: 0.1em;
+  margin-bottom: 1em; }
+  .schedule h2 .plan_size {
+    font-size: 12px;
+    color: #404040;
+    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    letter-spacing: 0; }
+  .schedule h2 .subtitle {
+    float: right;
+    font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    color: #e91e25; }
+    .schedule h2 .subtitle a {
+      color: #e91e25; }
+      .schedule h2 .subtitle a:hover {
+        color: #1db8bf; }
+    .schedule h2 .subtitle .shipped {
+      color: #3cad49;
+      line-height: 1.2; }
+      .schedule h2 .subtitle .shipped .icon {
+        vertical-align: middle;
+        font-size: 28px; }
+    .schedule h2 .subtitle button {
+      color: #fff;
+      font-size: 16px;
+      line-height: 1em;
+      padding: 12px 12px 8px 12px;
+      margin-left: 5px;
+      margin-top: -0.2em; }
+
+h3, h4, h5 {
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  color: #1db8bf;
+  letter-spacing: 0.05em; }
+  h3 .red, h4 .red, h5 .red {
+    color: #e91e25; }
 
 .edit-link {
   float: right;
@@ -7015,6 +7187,11 @@ body.account {
     text-align: right; }
   .footnote.pad {
     margin-top: 4em; }
+
+.caption {
+  margin: 1em 0;
+  text-align: center;
+  line-height: 1.2em; }
 
 .note {
   background: #e8f9fa;
@@ -7145,6 +7322,12 @@ body.with-navbar {
 .text-success {
   color: #adce42; }
 
+.fa-times-circle {
+  color: #e91e25; }
+
+.fa-check-circle {
+  color: #3cad49; }
+
 #quote {
   background: #e91e25;
   color: #fff;
@@ -7218,6 +7401,21 @@ body.with-navbar {
 .plan-info.text-left {
   font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
   color: #1db8bf; }
+
+.not_avail {
+  background: #e91e25;
+  padding: 5px 10px;
+  color: #fff;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  position: absolute;
+  width: 90%;
+  text-align: center;
+  transform: rotate(-35deg) translate(-15%, 150%); }
+
+#changeMenu .meal {
+  cursor: pointer; }
+  #changeMenu .meal.selected img {
+    outline: 5px solid #1db8bf; }
 
 #copyright {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;

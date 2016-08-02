@@ -314,6 +314,9 @@
 			background: $bg-color-highlight;
 			border: $border-color 1px solid;
 			
+			a:hover {
+				color: $brand-primary;
+    		}
 			@media (min-width: 768px) {
 				border-right: 0;
 			}

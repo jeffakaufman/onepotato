@@ -65,6 +65,11 @@ class SubinvoiceController extends Controller
 				$shippingAddress = Shipping_address::where('user_id',$id)->where('is_current', '1')->first();
 			}
 			
+			
+			//figure out the user's preferences - 
+			
+			//figure out this week's menus - 
+			
 			//check to see if there's a shipping address - if not, create an order exception
 			
 			if ($shippingAddress) {
@@ -83,6 +88,10 @@ class SubinvoiceController extends Controller
 			
 				$charge_date = new DateTime($invoice->charge_date);
 				$charge_date_formatted = $charge_date->format('m/d/Y H:i');	
+				
+					$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+					$product = Product::where('id',$subscriber->product_id)->first();
+				
 				$ship_xml .= "<Order>";
 
 				$ship_xml .= "<OrderID><![CDATA[" . $order_id . "]]></OrderID>";
@@ -90,7 +99,7 @@ class SubinvoiceController extends Controller
 				$ship_xml .= "<OrderDate>" . $charge_date_formatted . "</OrderDate>";
 				$ship_xml .= "<OrderStatus><![CDATA[paid]]></OrderStatus>";
 				$ship_xml .= "<LastModified>" . $charge_date_formatted . "</LastModified>";
-				$ship_xml .= "<ShippingMethod><![CDATA[USPSPriorityMail]]></ShippingMethod>";
+				$ship_xml .= "<ShippingMethod><![CDATA[OnTrac]]></ShippingMethod>";
 				$ship_xml .= "<PaymentMethod><![CDATA[Credit Card]]></PaymentMethod>";
 				$ship_xml .= "<OrderTotal>" . $invoice->charge_amount / 100 . "</OrderTotal>";
 				$ship_xml .= "<TaxAmount>0.00</TaxAmount>";
@@ -101,6 +110,7 @@ class SubinvoiceController extends Controller
 				$ship_xml .= "<CustomField1></CustomField1>";
 				$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
 				$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
+			
 			
 			
 				//create the customer data
@@ -129,8 +139,7 @@ class SubinvoiceController extends Controller
 			
 				$ship_xml .= "</Customer>";
 			
-				$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
-				$product = Product::where('id',$subscriber->product_id)->first();
+			
 			
 				$ship_xml .= "<Items><Item>";
 			
@@ -190,67 +199,12 @@ class SubinvoiceController extends Controller
 	
 	public function updateShippingStatus(Request $request) {
 		
-		$shipXML = '<?xml version="1.0" encoding="utf-8"?>
-
-		<ShipNotice>
-
-		  <OrderNumber>11568</OrderNumber>
-
-		  <OrderID>11568</OrderID>
-
-		  <CustomerCode>customer@mystore.com</CustomerCode>
-
-		  <LabelCreateDate>12/8/2011 12:56 PM</LabelCreateDate>
-
-		  <ShipDate>12/8/2011</ShipDate>
-
-		  <Carrier>OnTrac</Carrier>
-
-		  <Service>Two Day</Service>
-
-		  <TrackingNumber>1Z909084330298430820</TrackingNumber>
-
-		  <ShippingCost>4.95</ShippingCost>
-
-		  <Recipient>
-
-		    <Name>The President</Name>
-
-		    <Company>US Govt</Company>
-
-		    <Address1>1600 Pennsylvania Ave</Address1>
-
-		    <Address2></Address2>
-
-		    <City>Washington</City>
-
-		    <State>DC</State>
-
-		    <PostalCode>20500</PostalCode>
-
-		    <Country>US</Country>
-
-		  </Recipient>
-
-		  <Items>
-
-		    <Item>
-
-		      <SKU>FD88821</SKU>
-
-		      <Name>My Product Name</Name>
-
-		      <Quantity>2</Quantity>
-
-		    </Item>
-
-		  </Items>
-
-		</ShipNotice>';
+		$shipXML = @file_get_contents("php://input");
+		
 		
 		$shipnotice = simplexml_load_string($shipXML);
 		
-		$order = Order::where('order_id',$shipnotice->OrderID)->firstOrFail();
+		$order = Order::where('order_id',$shipnotice->OrderID)->first();
 		
 		//convert the date
 		$order->ship_date = $shipnotice->ShipDate;
@@ -260,7 +214,7 @@ class SubinvoiceController extends Controller
 		$order->ship_station_xml = $shipXML;
 		$order->save();
 		
-		
+		http_response_code(200); // PHP 5.4 or greater
 	}
 	
 	public function testShippingStatus () {
@@ -270,7 +224,7 @@ class SubinvoiceController extends Controller
 
 		<ShipNotice>
 
-		  <OrderNumber>ABC123</OrderNumber>
+		  <OrderNumber>123456</OrderNumber>
 
 		  <OrderID>123456</OrderID>
 
@@ -280,9 +234,9 @@ class SubinvoiceController extends Controller
 
 		  <ShipDate>12/8/2011</ShipDate>
 
-		  <Carrier>USPS</Carrier>
+		  <Carrier>OnTrac</Carrier>
 
-		  <Service>Priority Mail</Service>
+		  <Service></Service>
 
 		  <TrackingNumber>1Z909084330298430820</TrackingNumber>
 

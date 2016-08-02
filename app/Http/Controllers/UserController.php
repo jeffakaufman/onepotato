@@ -11,6 +11,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use Mail;
+use Hash;
 use CountryState;
 
 class UserController extends Controller
@@ -46,6 +47,179 @@ class UserController extends Controller
         	$users = User::get();
 			return view('admin.users.users')->with(['users'=>$users]);
     }
+
+	public function getAccount($id) {
+		
+		//get all the user objects and pass to the view
+		$user = User::find($id);
+		$states = CountryState::getStates('US');
+		$shippingAddress = Shipping_address::where('user_id',$id)->orderBy('is_current', 'desc')->first();
+	
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+
+		if ($userSubscription) {
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->first();
+		}
+
+		$referrals = Referral::where('referrer_user_id',$id)->get();
+
+		return view('account')
+					->with(['user'=>$user, 
+							'shippingAddress'=>$shippingAddress, 
+							'userSubscription'=>$userSubscription, 
+							'userProduct'=>$userProduct, 
+							'states'=>$states,
+							'referrals'=>$referrals]);
+		
+		
+	
+	}
+
+	public function editAccount(Request $request) {
+		
+			//get all the user objects and pass to the view
+			$user = User::find($request->user_id);
+			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+			$states = CountryState::getStates('US');
+			$shippingAddress = Shipping_address::where('user_id',$request->user_id)->orderBy('is_current', 'desc')->first();
+			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
+			
+
+			if ($userSubscription) {
+				$productID = $userSubscription->product_id;
+				$userProduct = Product::where('id',$productID)->first();
+			}
+
+			$update_type = $request->update_type;
+			
+			if ($update_type=="delivery_address") {
+				
+				$shippingAddress->shipping_address = $request->address1;
+				$shippingAddress->shipping_address_2 = $request->address2;
+				$shippingAddress->shipping_city = $request->city;
+				$shippingAddress->shipping_state = $request->state;
+				$shippingAddress->shipping_zip = $request->zip;
+				$shippingAddress->phone1 = $request->phone;
+				$shippingAddress->delivery_instructions = $request->delivery_instructions;
+				$shippingAddress->save();
+				
+			}
+			
+			if ($update_type=="account") {
+
+				$user->name = $request->first_name . " " . $request->last_name;
+				$user->first_name = $request->first_name;
+				$user->last_name = $request->last_name;
+				$user->email = $request->email;
+				if ($request->password != "") {
+					$user->password = Hash::make($request->password);
+				}
+				$user->save();
+
+			}
+			
+			if ($update_type=="payment") {
+				
+				//figure out which plan the user is currently subscribed to
+				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+				// Get the credit card details submitted by the form
+				$token = $request->stripeToken;
+
+
+				//first see if there's already a record for this customer in STRIPE and update using Token
+				$customer = \Stripe\Customer::retrieve($user->stripe_id);
+				$customer->source = $token; // obtained with Stripe.js
+				$customer->email = $user->email;
+				$customer->plan = $userProduct->stripe_plan_id;
+				$customer->save();
+				
+				//update User with card_last_four and card_type
+				$user->card_last_four = $customer->sources->data[0]->last4;
+				$user->card_brand = $customer->sources->data[0]->brand;
+				$user->save();
+				
+			}
+			
+			
+			if ($update_type=="meals") {
+			/*sku decoder - 
+			01 veg/onmivore
+			02	num adults
+			03	num children (04= 4 children)
+			01  Gluten Free (00 is regular with Gluten)
+			00	unused
+			*/
+
+			$plan_type = $request->plan_type;
+			$plan_size = $request->plan_size;
+			$num_kids = $request->children;
+			$gluten_free = $request->gluten_free;
+			$theSKU = '';
+
+
+			if ($plan_type=='Vegetarian Box') {
+				$theSKU = "01";
+			}
+			if ($plan_type=='Omnivore Box') {
+				$theSKU = "02";
+			}
+
+			//num adults defaults to 02
+			$theSKU .= "02";
+
+			if ($plan_size=="family") {
+
+				if ($num_kids=="0") {$theSKU .= "00";}
+				if ($num_kids=="1") {$theSKU .= "01";}
+				if ($num_kids=="2") {$theSKU .= "02";}
+				if ($num_kids=="3") {$theSKU .= "03";}
+				if ($num_kids=="0") {$theSKU .= "04";}
+
+			}else{
+				$theSKU .= "00";
+			}
+			
+			if ($gluten_free == "1") {
+				$theSKU .= "0100";
+			}else{
+				$theSKU .= "0000";
+			}
+			
+			
+			
+			//look up the product ID
+			$newProduct = Product::where('sku',$theSKU)->first();
+
+			$userSubscription->product_id = $newProduct->id;
+			$userSubscription->dietary_preferences = implode(",",$request->prefs);
+			$userSubscription->save();
+
+			//update STRIPE
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id);
+			$subscription->plan = $newProduct->stripe_plan_id;
+			$subscription->save();
+
+			}
+			//end meal/plan update
+			
+ 
+			return view('account')
+						->with(['user'=>$user, 
+								'shippingAddress'=>$shippingAddress, 
+								'userSubscription'=>$userSubscription, 
+								'userProduct'=>$userProduct, 
+								'states'=>$states,
+								'referrals'=>$referrals]);
+		
+		
+		
+		
+	}
+
 
 	/**
      * Show the application dashboard.
@@ -179,7 +353,7 @@ class UserController extends Controller
 		01 veg/onmivore
 		02	num adults
 		03	num children (04= 4 children)
-		01  Gluten Free
+		01  Gluten Free (00 - regular)
 		00	unused
 		*/
 		
@@ -416,7 +590,7 @@ class UserController extends Controller
 		01 veg/onmivore
 		02	num adults
 		03	num children (04= 4 children)
-		00  unused
+		01  Gluten Free (00 is regular with Gluten)
 		00	unused
 		*/
 		

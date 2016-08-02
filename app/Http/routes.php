@@ -47,6 +47,16 @@ Route::get('/account', array('as' => 'account', function() {
 	return view('account');
 }));
 
+Route::get('/account/{id}', 'UserController@getAccount');
+Route::post('/account/{id}', 'UserController@editAccount');
+
+
+// Delivery Schedule...
+Route::get('/delivery-schedule', array('as' => 'delivery_schedule', function() {
+    return view('delivery_schedule');
+}));
+
+
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
     {
         return View::make('menu-edit') 
@@ -107,7 +117,8 @@ Route::get('/admin/services/invoice/test', 'SubinvoiceController@testStripeInvoi
 Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
 Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateShippingStatus');
 
-
+//ship station routes
+Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
