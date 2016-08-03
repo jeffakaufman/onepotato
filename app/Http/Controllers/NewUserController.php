@@ -80,8 +80,6 @@ class NewUserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 
-        event(new UserHasRegistered($user));
-
 		return view('register.select_plan')->with(['user'=>$user,'zip'=>$request->zip]);
 	}
 	
@@ -331,8 +329,11 @@ class NewUserController extends Controller
 			
 			$userSubscription->save();
 			$user->save();
-			
-			return view('register.congrats')->with(['user'=>$user,'start_date'=>$request->start_date]);
+
+
+        event(new UserHasRegistered($user));
+
+        return view('register.congrats')->with(['user'=>$user,'start_date'=>$request->start_date]);
 			
 	}
 		
