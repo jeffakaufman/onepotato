@@ -227,41 +227,7 @@ class NewUserController extends Controller
 			]);
 	}
 
-/*
-     'id' => int 2263
-      'name' => string 'Francesca  Luciani Tymchuk' (length=26)
-      'email' => string 'francescaluciani@hotmail.com' (length=28)
-      'password' => string '$2y$10$PzDJEERlVrFIJzsX0INszOwdd.PD16umGl0vLneqShypu9I6wLxsO' (length=60)
-      'remember_token' => null
-      'photo_url' => null
-      'uses_two_factor_auth' => int 0
-      'authy_id' => null
-      'country_code' => string 'US' (length=2)
-      'phone' => null
-      'two_factor_reset_code' => null
-      'current_team_id' => null
-      'stripe_id' => null
-      'current_billing_plan' => null
-      'card_brand' => null
-      'card_last_four' => null
-      'card_country' => null
-      'billing_address' => string '837 3rd St.' (length=11)
-      'billing_address_line_2' => string '309' (length=3)
-      'billing_city' => string 'Santa Monica' (length=12)
-      'billing_state' => string 'CA' (length=2)
-      'billing_zip' => string '90403' (length=5)
-      'billing_country' => string 'US' (length=2)
-      'vat_id' => null
-      'extra_billing_information' => null
-      'trial_ends_at' => null
-      'last_read_announcements_at' => null
-      'created_at' => null
-      'updated_at' => string '2016-07-28 09:42:48' (length=19)
-      'first_name' => string 'Francesca' (length=9)
-      'last_name' => string 'Tymchuk' (length=7)
-      'status' => string 'active' (length=6)
-      'start_date' => null
- */
+
 	public function RecordDeliveryPreferences (Request $request) {
 		
 		//store first and last name in User field
@@ -347,7 +313,7 @@ class NewUserController extends Controller
 			$user->stripe_id = $customer->id;
 			
 			//update User with card_last_four and card_type
-			$user->last_four = $customer->sources->data[0]->last4;
+			$user->card_last_four = $customer->sources->data[0]->last4;
 			$user->card_brand = $customer->sources->data[0]->brand;
 			
 			//get the subscription ID
