@@ -79,13 +79,13 @@ $('#register4').addClass('active');
                                 <div class="form-row col-sm-6 thinpadding first">
                                         <input type="text" class="form-control" name="city" lazy placeholder="City" value="{{ $city }}">
                                 </div>
-
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
                                     <label class="select">
                                         <select name="state" type="select" class="form-control">
-                                            <option>Select</option>
-                                            <option v-for="state in states" value="@{{ state.abbr }}">@{{ state.state }}</option>
+                                            <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
+                                            <option value="CA" @if( $state == 'CA') selected @endif>California</option>
+                                            <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
                                         </select>
                                     </label>
                                 </div>

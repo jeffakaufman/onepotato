@@ -64,10 +64,6 @@ class NewUserController extends Controller
         }
 
 
-//$validator->errors()->add('email', "Bla-Bla");
-//var_dump($validator->fails());
-//var_dump($validator->errors());
-//die();
 		if ($validator->fails()) {
 		        return redirect('/register')
 		            ->withInput()
@@ -217,7 +213,6 @@ class NewUserController extends Controller
 				'state'=>$state->state,
 				'first_day'=>$request->first_day,
 				'glutenfree'=>$glutenfree,
-
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'address' => $user->billing_address,
