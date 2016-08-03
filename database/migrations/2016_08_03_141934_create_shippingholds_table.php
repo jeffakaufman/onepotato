@@ -12,7 +12,7 @@ class CreateShippingholdsTable extends Migration
      */
     public function up()
     {
-        Schema::table('shippingholds', function (Blueprint $table) {
+        Schema::create('shippingholds', function(Blueprint $table) {
             //
 				$table->increments('id');
 				$table->integer('user_id')->nullable();
