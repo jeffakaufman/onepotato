@@ -45,7 +45,7 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per adult serving:</div>
-                            <div class="plan-info col-xs-6 text-left">$X.XX*</div>
+                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price->cost / 6, 2 ) }}*</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right"></div>
@@ -53,7 +53,7 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
-                            <div class="plan-info col-xs-6 text-left">$XX.XX</div>
+                            <div class="plan-info col-xs-6 text-left">${{ $adult_price->cost }}</div>
                         </div>
                         <div class="row action">
                             <button class="btn btn-primary">Select</button>
@@ -83,8 +83,8 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-right">Number of children:</div>
                             <div class="plan-info col-xs-6 text-left field">
                                 <label class="select inline">
-                                    <select name="children" type="select" class="form-control inline">
-                                        <option value="1">1</option>
+                                    <select name="children" v-model="children" type="select" class="form-control inline">
+                                        <option value="1" selected>1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
@@ -94,15 +94,21 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per adult serving:</div>
-                            <div class="plan-info col-xs-6 text-left">$X.XX*</div>
+                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price->cost / 6, 2 ) }}*</div>
                         </div>
+                        <?php $childCost = $family1_price->cost - $adult_price->cost ?>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per child serving:</div>
-                            <div class="plan-info col-xs-6 text-left">$X.XX*</div>
+                            <div class="plan-info col-xs-6 text-left">${{ number_format( $childCost / 3, 2 ) }}*</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
-                            <div class="plan-info col-xs-6 text-left">$XX.XX</div>
+                            <div class="plan-info col-xs-6 text-left">
+                                <span v-show="children == 1">{{ $family1_price->cost }}</span>
+                                <span v-show="children == 2">{{ $family1_price->cost + $childCost }}</span>
+                                <span v-show="children == 3">{{ $family1_price->cost + ($childCost * 2) }}</span>
+                                <span v-show="children == 4">{{ $family1_price->cost + ($childCost * 3) }}</span>
+                            </div>
                         </div>
                         <div class="row action">
                             <button class="btn btn-primary">Select</button>
