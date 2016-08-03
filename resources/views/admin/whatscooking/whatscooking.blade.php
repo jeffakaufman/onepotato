@@ -82,9 +82,9 @@
 						        			{!! Form::label('Techniques', null) !!}
 						        		</div>
 						        		<div class="col-sm-4">
-						        		{!! Form::checkbox('oven',1,false) !!} No Dairy<br />
-						        		{!! Form::checkbox('stovetop',1,false) !!} No Egg<br />
-						        		{!! Form::checkbox('slowcooker',1,false) !!} No Soy<br />
+						        		{!! Form::checkbox('oven',1,false) !!} Oven<br />
+						        		{!! Form::checkbox('stovetop',1,false) !!} Stovetop<br />
+						        		{!! Form::checkbox('slowcooker',1,false) !!} Slowcooker<br />
 						        		</div>
 						        	</div>  
 						        </div>     

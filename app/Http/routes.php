@@ -43,13 +43,18 @@ Route::get('/register/congrats', array('as' => 'register_congrats', function() {
 }));
 
 // Account...
-Route::get('/account', array('as' => 'account', function() {
+/*Route::get('/account', array('as' => 'account', function() {
 	return view('account');
-}));
+}));*/
+// Account...
 
-Route::get('/account/{id}', 'UserController@getAccount');
+
+Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
 
+
+// Delivery Schedule...
+Route::get('/delivery-schedule','UserController@showDeliverySchedule' );
 
 
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 

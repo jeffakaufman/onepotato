@@ -19,12 +19,7 @@
 
         <div class="collapse navbar-collapse" id="spark-navbar-collapse">
             <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav navbar-left">
-                <li><a href="#">Delivery Schedule</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">What's Cooking?</a></li>
-                <li><a href="#">Marketplace</a></li>
-            </ul>
+            @includeIf('spark::nav.user-left')
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">

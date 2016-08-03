@@ -12,7 +12,11 @@ use App\Product;
 use App\Referral;
 use Mail;
 use Hash;
+use Auth;
 use CountryState;
+use App\WhatsCookings;
+use App\Menus;
+use stdClass;
 
 class UserController extends Controller
 {
@@ -48,11 +52,16 @@ class UserController extends Controller
 			return view('admin.users.users')->with(['users'=>$users]);
     }
 
+
 	//get data for the accounts page - current
-	public function getAccount($id) {
+
+	public function getAccount($id = null) {
 		
+		$id = !isset($id) ? Auth::id() : $id;
+				
 		//get all the user objects and pass to the view
 		$user = User::find($id);
+
 		$states = CountryState::getStates('US');
 		$shippingAddress = Shipping_address::where('user_id',$id)->orderBy('is_current', 'desc')->first();
 	
@@ -62,6 +71,8 @@ class UserController extends Controller
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
 		}
+
+
 
 		$referrals = Referral::where('referrer_user_id',$id)->get();
 
@@ -852,14 +863,6 @@ class UserController extends Controller
 					$user->save();
 				
 			}
-			
-		
-			
-			
-			
-		
-			
-			//return "test";
 			return view('admin/users/payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
 			
 			//NOTE: When a user changes their plan, need to ALSO update that in STRIPE
@@ -875,6 +878,40 @@ class UserController extends Controller
 			    $message->to('mattkirkpatrick@gmail.com', 'Matt Kirkpatrick')->subject('Welcome!');
 			});
 			return "test";
+	}
+	
+	public function showDeliverySchedule () {
+		
+		$id =  Auth::id();
+		$user = User::find($id);
+		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
+		$productID = $userSubscription->product_id;
+		$userProduct = Product::where('id',$productID)->firstOrFail();
+		
+		$product_type = $userProduct->product_type == 2 ? "Omnivore" : "Vegetarian";
+		
+		$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
+    	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
+    	$noWeekMenu = [];
+
+    	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
+			if (date('N', $i) == 2) {//Tuesday == 2
+    			$deliverySchedule = new stdClass;
+				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))
+								->where('product_type',$product_type)
+								->first();
+    			$deliverySchedule->date = date('l, M jS', $i);
+				
+				if (isset($whatscooking)) {
+    				$deliverySchedule->menus = $whatscooking->menus()->get();
+				} else {
+    				$deliverySchedule->menus = [];
+				}
+				$weeksMenus[] = $deliverySchedule;
+			}   
+    	}
+   	return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct]);
+
 	}
 	
 	
