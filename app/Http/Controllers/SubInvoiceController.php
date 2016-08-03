@@ -13,6 +13,7 @@ use App\Product;
 use App\Referral;
 use App\Order;
 use DateTime;
+use App\Shippingholds;
 
 class SubinvoiceController extends Controller
 {
@@ -472,6 +473,222 @@ class SubinvoiceController extends Controller
 			
 		}
 		
+		
+	}
+	
+	public function CheckHolds () {
+		
+		//this function/route should run on xx day at xx time
+		
+		//check Holds table
+		
+		//if there is a hold for the next week, then 
+			// 1. Cancel Subscription in Stripe (add hold note)
+			// 2. If there is a customer who is coming off of a hold, reactive their susbcription 
+		
+	}
+	
+	public function CancelSubscription ($id) {
+		
+		//permanently deactive an account
+		//mark record as cancelled in Users, Subscriptions tables
+		$user = User::where('id', $id)->first();
+		$user->status="inactive";
+		
+		//retrieve stripe ID from subscriptions table
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		$userSubscription->status = "cancelled";
+		
+		$stripe_sub_id = $userSubscription->stripe_id;
+		
+		// Set your secret key: remember to change this to your live secret key in production
+		// See your keys here https://dashboard.stripe.com/account/apikeys
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+				
+		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+		$subscription->cancel();
+		
+		$user->save();
+		$userSubscription->save();	
+		
+		http_response_code(200);
+		
+	}
+	
+	public function RestartSubscription ($id) {
+		
+		//create a new subscription in Stripe
+		
+		//update subscriber ID in Users, Subscriptions
+		
+		//update statuses in Users, Subscriptions table
+		
+		$user = User::where('id', $id)->first();
+		$user->status="active";
+		$customer_stripe_id = $user->stripe_id;
+
+		//retrieve stripe ID from subscriptions table
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		$userSubscription->status = "active";
+		$plan_id = $userSubscription->product_id;
+		
+		$product = Product::where('id', $plan_id)->first();
+		$stripe_plan_id = $product->stripe_plan_id;
+		
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+		
+		$subscription = \Stripe\Subscription::create(array(
+		  "customer" => $customer_stripe_id,
+		  "plan" => $stripe_plan_id
+		));
+		
+		$userSubscription->stripe_id = $subscription->id;
+		$userSubscription->save();
+		$user->save();
+		
+		http_response_code(200);
+		
+	}
+	
+	public function CheckForHold ($id, $holddate) {
+		//remove hold from holds table
+		$hold = Shippingholds::where('user_id', $id)
+					->where('date_to_hold', $holddate)
+					->where('hold_status', 'hold')
+					->first();
+
+		//if there is a hold
+		if ($hold) {
+			$returnJSON = '{"id":"' . $id . '","holddate": "' .  $holddate . '","holdstatus":"hold"}';
+			return ($returnJSON);
+
+		}else{
+			$returnJSON = '{"id":"' . $id . '","holddate": "' .  $holddate . '","holdstatus":"notheld"}';
+			return ($returnJSON);
+		}
+		
+		
+		
+	}
+	
+	public function UnHoldSubscription ($id, $holddate) {
+		
+			
+			//remove hold from holds table
+			$hold = Shippingholds::where('user_id', $id)
+						->where('date_to_hold', $holddate)
+						->where('hold_status', 'hold')
+						->first();
+
+			//if there is a hold
+			if ($hold) {
+				$hold->hold_status = "released";
+				$hold->save();
+
+				$userSubscription->stripe_id = $subscription->id;
+				$userSubscription->save();
+				$user->save();
+
+			}
+
+			http_response_code(200);
+		
+		
+	}
+	
+	
+	//NOTE - This function is probably not necessary, since after a subscription has been cancelled for the week, it can no longer be undone
+	//INSTEAD, use the RestartSubscription function
+	public function CommitUnHoldSubscription ($id, $holddate) {
+		
+		$user = User::where('id', $id)->first();
+		$user->status="active";
+		$customer_stripe_id = $user->stripe_id;
+
+		//retrieve stripe ID from subscriptions table
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		$plan_id = $userSubscription->product_id;
+		
+		$product = Product::where('id', $plan_id)->first();
+		$stripe_plan_id = $product->stripe_plan_id;
+		
+		//remove hold from holds table
+		$hold = Shippingholds::where('user_id', $id)
+					->where('date_to_hold', $holddate)
+					->where('hold_status', 'hold')
+					->first();
+		
+		//if there is a hold
+		if ($hold) {
+			$hold->hold_status = "released";
+			$hold->save();
+		
+		
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+		
+			$subscription = \Stripe\Subscription::create(array(
+		  	"customer" => $customer_stripe_id,
+		  	"plan" => $stripe_plan_id
+			));
+		
+			$userSubscription->stripe_id = $subscription->id;
+			$userSubscription->save();
+			$user->save();
+		
+		}
+		
+		http_response_code(200);
+		
+		
+	}
+	
+	public function HoldSubscription ($id,$holddate) {
+		
+		//Record a Hold in the Database
+		
+		$hold = new Shippingholds;
+		$hold->user_id = $id;
+		$hold->date_to_hold = $holddate;
+		$hold->hold_status = "hold";
+		$hold->save();
+	
+		//if not, create one
+		
+	}
+	
+	
+	public function CommitHoldSubscription ($id,$holddate) {
+		
+		//update status of Users, Subscription, Stripe
+	
+		$user = User::where('id', $id)->first();
+		//user status stays "active" - only their susbcription changes
+
+		//retrieve stripe ID from subscriptions table
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+		$userSubscription->status = "hold";
+
+		$stripe_sub_id = $userSubscription->stripe_id;
+
+		// Set your secret key: remember to change this to your live secret key in production
+		// See your keys here https://dashboard.stripe.com/account/apikeys
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+		$subscription->cancel();
+
+		$user->save();
+		$userSubscription->save();
+		
+		//add a record to the holds table
+		//check to see if a hold exists for this week
+		$hold = new Shippingholds;
+		$hold->user_id = $id;
+		$hold->date_to_hold = $holddate;
+		$hold->hold_status = "hold";
+		$hold->save();
+	
+		//if not, create one
 		
 	}
 	

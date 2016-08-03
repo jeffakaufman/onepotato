@@ -669,6 +669,25 @@ function stripeResponseHandler(status, response) {
                     </div>
 
                     <!-- Referrals -->
+					<?php
+					
+					//loop over referrals to get count
+					$outstanding_count = 0;
+					$new_sub_count = 0;
+					foreach ($referrals as $ref) {
+					
+						if ($ref->did_subscribe==1) {
+							$new_sub_count++;
+						}else{
+							$outstanding_count++;
+						}
+						
+					}
+					
+					
+					?>
+
+
                     <div role="tabpanel" class="tab-pane fade" id="referrals">
 
                         <h2>Customer Referrals</h2>
@@ -676,46 +695,56 @@ function stripeResponseHandler(status, response) {
                         <div v-if="user">
 
                             <div class="row">
-                                <div class="col-sm-8"><h4 class="thin">You have <span class="highlight">2</span> outstanding referrals:</h4></div>
+                                <div class="col-sm-8"><h4 class="thin">You have <span class="highlight">{{$outstanding_count}}</span> outstanding referrals:</h4></div>
                                 <div class="col-sm-4"><button type="submit" class="btn btn-primary small">resend all</button></div>
                             </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Jason Stick</b></div>
-                                <div class="col-sm-4">jason@yahoo.com</div>
-                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
-                            </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Molly Ringwald</b></div>
-                                <div class="col-sm-4">molly@ringwald.com</div>
-                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
-                            </div>
+							<?php
+                           	foreach ($referrals as $outstanding) {
+	
+								if ($outstanding->did_subscribe!=1) {
+							?>
+							 <div class="row padding">
+	                                <div class="col-sm-4"><b>{{$outstanding->friend_name}}</b></div>
+	                                <div class="col-sm-4">{{$outstanding->referral_email}}</div>
+	                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
+	                            </div>
+							
+							
+							<?php
+								}
+							}
+							?>
+                           
+                            <h4 class="thin">You have referred <span class="highlight">{{$new_sub_count}}</span> new customers so far. Refer two more and receive another free box!</h4>
 
-                            <h4 class="thin">You have referred <span class="highlight">4</span> new customers so far. Refer two more and receive another free box!</h4>
+								<?php
+	                           	foreach ($referrals as $outstanding) {
 
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Jason Stick</b></div>
-                                <div class="col-sm-4">jason@yahoo.com</div>
-                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
-                            </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Molly Ringwald</b></div>
-                                <div class="col-sm-4">molly@ringwald.com</div>
-                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
-                            </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Name</b></div>
-                                <div class="col-sm-4">name@domain.com</div>
-                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
-                            </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Name</b></div>
-                                <div class="col-sm-4">name@domain.com</div>
-                                <div class="col-sm-4 footnote text-left">redeemed on 12/15/15</div>
-                            </div>
+									if ($outstanding->did_subscribe==1) {
+								?>
+								 <div class="row padding">
+		                                <div class="col-sm-4"><b>{{$outstanding->friend_name}}</b></div>
+		                                <div class="col-sm-4">{{$outstanding->referral_email}}</div>
+		                            
+										<div class="col-sm-4 footnote text-left">redeemed on {{$outstanding->redeemed_on}}</div>
+		                            </div>
+
+
+								<?php
+									}
+								}
+								?>
+
+
 
                             <h4>SEND A NEW REFERRAL TO:</h4>
 
-                            {!! Form::open(array('url' => '/account', 'class' => 'referrals')) !!}
+                            	<form method="POST" action="{{ url('account') }}/{{ $user->id }}" accept-charset="UTF-8" class="meals">
+								
+							            {{ csrf_field() }}
+							
+								<input type="hidden" name="user_id" value="{{$user->id}}" />
+								<input type="hidden" name="update_type" value="referrals" />
 
                                 <div class="row padding">
                                     <div class="col-sm-3" style="line-height: 42px"><b>Name</b></div>
@@ -743,7 +772,7 @@ function stripeResponseHandler(status, response) {
                                     </div>
                                 </div>
 
-                            {!! Form::close() !!}
+                          </form>
 
                         </div>
                     </div>

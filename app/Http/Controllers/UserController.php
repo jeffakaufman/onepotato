@@ -48,6 +48,7 @@ class UserController extends Controller
 			return view('admin.users.users')->with(['users'=>$users]);
     }
 
+	//get data for the accounts page - current
 	public function getAccount($id) {
 		
 		//get all the user objects and pass to the view
@@ -76,6 +77,8 @@ class UserController extends Controller
 	
 	}
 
+	//handles all the /account/ functionality - current
+	
 	public function editAccount(Request $request) {
 		
 			//get all the user objects and pass to the view
@@ -83,7 +86,6 @@ class UserController extends Controller
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 			$states = CountryState::getStates('US');
 			$shippingAddress = Shipping_address::where('user_id',$request->user_id)->orderBy('is_current', 'desc')->first();
-			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
 			
 
 			if ($userSubscription) {
@@ -92,6 +94,56 @@ class UserController extends Controller
 			}
 
 			$update_type = $request->update_type;
+			
+			if ($update_type=="referrals") {
+				
+					$user = User::find($request->user_id);
+
+					//validate form
+					/*
+					$validator = Validator::make($request->all(), [
+				        'send_email' => 'required|max:255|email'
+				    ]);
+
+				    if ($validator->fails()) {
+				        return redirect('/user/referrals/' . $id)
+				            ->withInput()
+				            ->withErrors($validator);
+				    }
+					*/
+
+					//send email
+					$to_send = $request->email;
+					$custom_message = $request->message;
+					$friendname = $request->name;
+
+					//record a new referral in the referral table
+					$referral = new Referral;
+					$referral->friend_name = $friendname;
+					$referral->referral_email = $to_send;
+					$referral->did_subscribe = 0;
+					$referral->referrer_user_id = $request->user_id;
+
+
+					$referral->save();
+
+
+					$data = [
+					           'friendname' => $user->name,
+					           'custommessage' => $custom_message,
+							   'to_send' => $to_send,
+							   'friendid' => $request->user_id,
+							   'referralid' => $referral->id
+					];
+
+					Mail::send('emailtest', $data , function($message) use ($to_send)
+					{
+						    $message->from('mattkirkpatrick@gmail.com');
+						    $message->to($to_send, '')->subject('A Message from a Friend at One Potato!');
+					});
+				
+				
+			}
 			
 			if ($update_type=="delivery_address") {
 				
@@ -205,6 +257,8 @@ class UserController extends Controller
 
 			}
 			//end meal/plan update
+			
+			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
 			
  
 			return view('account')

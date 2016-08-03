@@ -349,6 +349,7 @@ class NewUserController extends Controller
 			
 			//get the subscription ID
 			$userSubscription->stripe_id = $customer->subscriptions->data[0]->id;
+			$userSubscription->status= "active";
 			
 			//update statuses to "active"
 			//return errors if CC didn't go through

@@ -117,6 +117,14 @@ Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
+//cancellation, reactivation, hold routes
+Route::get('/cancel/{id}', 'SubinvoiceController@CancelSubscription');
+Route::get('/cancel/restart/{id}', 'SubinvoiceController@RestartSubscription');
+Route::get('/hold/{id}/{holddate}', 'SubinvoiceController@HoldSubscription');
+Route::get('/hold/restart/{id}/{holddate}', 'SubinvoiceController@UnHoldSubscription');
+Route::get('/hold/check/{id}/{holddate}', 'SubinvoiceController@CheckForHold');
+
+
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
