@@ -115,7 +115,6 @@ class WhatsCookingsController extends Controller
 		$whatscooking = $request->all();
 			    
     	$validator = Validator::make($whatscooking, [
-	        'product_type' => 'required|max:255',
 	        'menu_title' => 'required|max:255',
 		    'menu_description' => 'required|max:1000',
 	    ]);
@@ -128,7 +127,6 @@ class WhatsCookingsController extends Controller
 	    
 
      	$test = WhatsCookings::where('week_of', $request->week_of)
-     			->where('product_type', $request->product_type)
      			->first();
      			
      	$id = isset($test) ? $test->id : WhatsCookings::Create($whatscooking)->id;			
@@ -136,7 +134,7 @@ class WhatsCookingsController extends Controller
     	if (array_key_exists('image', $whatscooking)) {
     		$image = $request->file('image');
     	}   
-    	
+    	//echo $id;
     	
     	$image = $request->file('image');
     	$datestamp = date("FY");
@@ -159,6 +157,8 @@ class WhatsCookingsController extends Controller
         $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
         $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
         $menu->vegetarianBackup = $request->vegetarianBackup;
+        $menu->isVegetarian = $request->isVegetarian ? $request->isVegetarian : 0;
+        $menu->isOmnivore = $request->isOmnivore ? $request->isOmnivore : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
@@ -182,10 +182,9 @@ class WhatsCookingsController extends Controller
     {
 	    $whatscookings = $request->all();
 	    
-	    //echo json_encode($whatscookings);
+//	    echo json_encode($whatscookings);
     
     	$validator = Validator::make($whatscookings, [
-	        'product_type' => 'required|max:255',
 	        'menu_title' => 'required|max:255',
 		    'menu_description' => 'required|max:1000',
 	    ]);
@@ -197,7 +196,6 @@ class WhatsCookingsController extends Controller
 	    }
 
      	$test = WhatsCookings::where('week_of', $whatscookings['week_of'])
-     			->where('product_type', $request->product_type)
      			->first();
      	
      	$id = isset($test) ? $test->id : WhatsCookings::Create($whatscookings)->id;
@@ -228,6 +226,8 @@ class WhatsCookingsController extends Controller
         $menu->stovetop = $request->stovetop ? $request->stovetop : 0;
         $menu->slowcooker = $request->slowcooker ? $request->slowcooker : 0;
         $menu->vegetarianBackup = $request->vegetarianBackup ? $request->vegetarianBackup : 0;
+        $menu->isVegetarian = $request->isVegetarian ? $request->isVegetarian : 0;
+        $menu->isOmnivore = $request->isOmnivore ? $request->isOmnivore : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();

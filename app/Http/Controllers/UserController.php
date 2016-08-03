@@ -271,7 +271,6 @@ class UserController extends Controller
 			
 			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
 			
- 
 			return view('account')
 						->with(['user'=>$user, 
 								'shippingAddress'=>$shippingAddress, 
@@ -279,12 +278,7 @@ class UserController extends Controller
 								'userProduct'=>$userProduct, 
 								'states'=>$states,
 								'referrals'=>$referrals]);
-		
-		
-		
-		
 	}
-
 
 	/**
      * Show the application dashboard.

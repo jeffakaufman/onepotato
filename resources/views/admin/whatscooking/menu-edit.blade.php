@@ -26,8 +26,8 @@
 		<div class="form-group">
 	    	<label for="Type" class="col-sm-2 control-label">Type</label>
 	    	<div class="col-sm-3">
-	   	    	<input name="product_type" id="omnivore_type" type="radio" value="Omnivore"> Omnivore<br />
-	       		<input name="product_type" id="vegetarian_type" type="radio" value="Vegetarian"> Vegetarian
+	   	    	<input name="isOmnivore" id="isOmnivore" type="checkbox" value="1"> Omnivore<br />
+	       		<input name="isVegetarian" id="isVegetarian" type="checkbox" value="1"> Vegetarian
 	    	</div>    
 	    	<div class="col-sm-4 text-right" style="padding-right: 0;">
 	   	    	Vegetarian Replacement
