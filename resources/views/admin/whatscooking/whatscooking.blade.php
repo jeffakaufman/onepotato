@@ -215,7 +215,7 @@
 										</div>	
 										
 								    	<div class="col-md-4">     	        
-											@if($menu->image)
+												@if($menu->image)
 												<div class="col-md-6 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
 												@else
 												<div class="col-md-6 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
