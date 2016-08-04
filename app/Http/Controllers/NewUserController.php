@@ -299,6 +299,13 @@ class NewUserController extends Controller
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
 		
+			//figure out date logic for trial period- 
+			// - mist be UNIX timestamp
+			//	-- if today is Wednesday, is it before 9:00 AM PST?
+			//			If yes, then set the trial period to end at 9:00 AM same day
+			//	-- if no, then set the date to the NEXT wednesday at 9:00 AM
+			//			
+			
 			
 			//figure out which plan the user is currently subscribed to
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
