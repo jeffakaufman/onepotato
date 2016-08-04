@@ -290,6 +290,7 @@ class NewUserController extends Controller
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
+		
 			
 			//figure out which plan the user is currently subscribed to
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
