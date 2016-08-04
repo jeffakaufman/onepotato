@@ -33,12 +33,12 @@
 						        {!! Form::label('Type', null,array('class'=>'col-sm-2 control-label')) !!}
 						        <div class="col-sm-3">
 						        @if( $last)
-						        	{!! Form::hidden('last_id',$last->id); !!}  
-						    	    {!! Form::radio('product_type', 'Omnivore',$last->product_type=='Omnivore') !!} Omnivore<br />
-						           	{!! Form::radio('product_type', 'Vegetarian',$last->product_type=='Vegetarian') !!} Vegetarian
+						        	{!! Form::hidden('last_id',$last->id); !!}
+						       	    {!! Form::checkbox('isOmnivore') !!} Omnivore<br />
+						           	{!! Form::checkbox('isVegetarian') !!} Vegetarian
 						        @else
-						       	    {!! Form::radio('product_type', 'Omnivore') !!} Omnivore<br />
-						           	{!! Form::radio('product_type', 'Vegetarian') !!} Vegetarian
+						       	    {!! Form::checkbox('isOmnivore',1,true) !!} Omnivore<br />
+						           	{!! Form::checkbox('isVegetarian') !!} Vegetarian
 						        @endif
 						        </div>
 							    <div class="col-sm-2 text-right" style="padding-right: 0;">
@@ -148,7 +148,15 @@
 								    	<div class="col-md-7">
 								    		<div class="row">
 									    		<div class="col-md-2">{{ date('m/d/y',strtotime($whatscooking->week_of)) }}</div>
-									    		<div class="col-md-2">{{ $whatscooking->product_type }}</div>
+									    		<div class="col-md-2">
+									    		@if ( $menu->isOmnivore && !$menu->isVegetarian )
+									    			Omnivore
+									    		@elseif ( !$menu->isOmnivore && $menu->isVegetarian )
+									    			Vegetarian
+									    		@else
+									    			Both
+									    		@endif
+									    		</div>
 	    	        	    	        		<div class="col-md-8">{{ $menu->menu_title }}<br/><em>{{ $menu->menu_description }}</em></div>
 	        	    	        	    													</div>
 											<div class="row">
@@ -207,7 +215,7 @@
 										</div>	
 										
 								    	<div class="col-md-4">     	        
-											@if($menu->image)
+												@if($menu->image)
 												<div class="col-md-6 text-center"><img height="100px" src="{{ $menu->image }}"/></div>
 												@else
 												<div class="col-md-6 text-center"><img height="100px" src="/img/foodpot.jpg"/></div>
@@ -296,8 +304,6 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	
     $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
-    $("#menuEditModal #vegetarian_type").prop( "checked",whatscooking.product_type == 'Vegetarian' );
-    $("#menuEditModal #omnivore_type").prop( "checked",whatscooking.product_type == 'Omnivore' );
     $("#menuEditModal #menu_title").val( menu.menu_title );
     $("#menuEditModal #menu_id").val( menu.id );
     if (menu.image) {$("#menuEditModal #image").attr("src", menu.image ); }
@@ -317,6 +323,8 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #oven").prop( "checked", menu.oven );
     $("#menuEditModal #stovetop").prop( "checked", menu.stovetop );
     $("#menuEditModal #slowcooker").prop( "checked", menu.slowcooker );
+    $("#menuEditModal #isVegetarian").prop( "checked", menu.isVegetarian );
+    $("#menuEditModal #isOmnivore").prop( "checked", menu.isOmnivore );
 });
 </script>
 </whatscookings>

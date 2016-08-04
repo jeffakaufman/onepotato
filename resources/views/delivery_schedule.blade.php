@@ -195,7 +195,11 @@ $(function() {
 	                <div class="row">
                 	@foreach ($weeksMenu->menus as $menu)
                     	<div class="col-sm-4">
+                    		@if($menu->image)
                     	    <img src="{{$menu->image}}" />
+                    	    @else
+                    	    <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+							@endif
                     	    <p class="caption">{{$menu->menu_title}}<br/>
                     	    	<i>{{$menu->menu_description}}</i></p>
                     	</div>

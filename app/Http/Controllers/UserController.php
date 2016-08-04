@@ -271,7 +271,6 @@ class UserController extends Controller
 			
 			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
 			
- 
 			return view('account')
 						->with(['user'=>$user, 
 								'shippingAddress'=>$shippingAddress, 
@@ -279,12 +278,7 @@ class UserController extends Controller
 								'userProduct'=>$userProduct, 
 								'states'=>$states,
 								'referrals'=>$referrals]);
-		
-		
-		
-		
 	}
-
 
 	/**
      * Show the application dashboard.
@@ -887,9 +881,7 @@ class UserController extends Controller
 		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
 		$productID = $userSubscription->product_id;
 		$userProduct = Product::where('id',$productID)->firstOrFail();
-		
-		$product_type = $userProduct->product_type == 2 ? "Omnivore" : "Vegetarian";
-		
+		$product_type = $userProduct->product_type == 1 ? "isOmnivore" : "isVegetarian";
 		$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
     	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
     	$noWeekMenu = [];
@@ -898,12 +890,11 @@ class UserController extends Controller
 			if (date('N', $i) == 2) {//Tuesday == 2
     			$deliverySchedule = new stdClass;
 				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))
-								->where('product_type',$product_type)
 								->first();
     			$deliverySchedule->date = date('l, M jS', $i);
 				
 				if (isset($whatscooking)) {
-    				$deliverySchedule->menus = $whatscooking->menus()->get();
+    				$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();
 				} else {
     				$deliverySchedule->menus = [];
 				}

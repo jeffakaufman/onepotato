@@ -80,7 +80,15 @@ class NewUserController extends Controller
 		$user->password = Hash::make($request->password);
 		$user->save();
 
-		return view('register.select_plan')->with(['user'=>$user,'zip'=>$request->zip]);
+		$productAdult = Product::where('sku','0202000000')->first();
+		$productFamily1 = Product::where('sku','0202010000')->first();
+
+		return view('register.select_plan')->with([
+			'user'=>$user,
+			'zip'=>$request->zip,
+			'adult_price'=>$productAdult,
+			'family1_price'=>$productFamily1
+		]);
 	}
 	
 	public function RecordPlan (Request $request) {
