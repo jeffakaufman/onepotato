@@ -38,7 +38,7 @@ Route::get('/register/delivery', array('as' => 'register.delivery', function() {
 Route::get('/register/payment', array('as' => 'register.payment', function() {
 	return view('register.payment');
 }));
-Route::get('/register/congrats', array('as' => 'register.congrats', function() {
+Route::get('/congrats', array('as' => 'register.congrats', function() {
 	return view('register.congrats');
 }));
 
