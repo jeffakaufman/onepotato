@@ -264,7 +264,7 @@ class WhatsCookingsController extends Controller
 		
 		$menu->whatscookings()->attach($id);
 		
-	    return redirect('/admin/whatscooking/'.$id);*/
+	    return redirect('/admin/whatscooking/'.$id);
 	    
     }
 }
