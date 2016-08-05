@@ -38,4 +38,11 @@ class Product extends Model {
 		}
 		return $productInformation;
 	}
+	
+	public function subscriptions()
+    {
+        return $this->hasMany('App\UserSubscription');
+    }
+	
+	
 }
