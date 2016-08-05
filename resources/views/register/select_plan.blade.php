@@ -7,7 +7,13 @@ $('#register2').addClass('active');
 @endsection
 
 @section('content')
-
+<?php 
+    if (Session::has('children')) $children = Session::get('children');
+    if (Session::has('zip')) $zip = Session::get('zip');
+    if (Session::has('user_id')) $user_id = Session::get('user_id');
+    if (Session::has('adult_price')) $adult_price = Session::get('adult_price');
+    if (Session::has('family1_price')) $family1_price = Session::get('family1_price');
+?>
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
@@ -24,9 +30,10 @@ Both plans include 3 meals per week.</div>
         </div><!-- .row -->
 			<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/select_plan') }}">
 				 {{ csrf_field() }}
-				<input type="hidden" name="children" value="0" />
-				<input type="hidden" name="user_id" value="{{ $user->id }}" />
+				<input type="hidden" name="children" value="{{ isset($children) ? $children : 0 }}" />
+				<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
 				<input type="hidden" name="zip" value="{{ $zip }}" />
+
         <div class="row">
             <div class="col-sm-6 col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form text-center">
@@ -45,7 +52,7 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per adult serving:</div>
-                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price->cost / 6, 2 ) }}*</div>
+                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price / 6, 2 ) }}*</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right"></div>
@@ -53,7 +60,7 @@ Both plans include 3 meals per week.</div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
-                            <div class="plan-info col-xs-6 text-left">${{ $adult_price->cost }}</div>
+                            <div class="plan-info col-xs-6 text-left">${{ $adult_price }}</div>
                         </div>
                         <div class="row action">
                             <button class="btn btn-primary">Select</button>
@@ -65,8 +72,9 @@ Both plans include 3 meals per week.</div>
 			<form class="form-horizontal" action="{{ url('/register/select_plan') }}" role="form" method="post">
 					 {{ csrf_field() }}
 				
-					<input type="hidden" name="user_id" value="{{ $user->id }}" />
+					<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
 					<input type="hidden" name="zip" value="{{ $zip }}" />
+
             <div class="col-sm-6 col-md-5">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Family Plan
@@ -84,19 +92,19 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-left field">
                                 <label class="select inline">
                                     <select name="children" v-model="children" type="select" class="form-control inline">
-                                        <option value="1" selected>1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
+                                        <option value="1" @if (isset($children) && $children == 1) selected @elseif (!isset($children)) selected @endif>1</option>
+                                        <option value="2" @if (isset($children) && $children == 2) selected @endif>2</option>
+                                        <option value="3" @if (isset($children) && $children == 3) selected @endif>3</option>
+                                        <option value="4" @if (isset($children) && $children == 4) selected @endif>4</option>
                                     </select>
                                 </label>
                             </div>
                         </div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per adult serving:</div>
-                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price->cost / 6, 2 ) }}*</div>
+                            <div class="plan-info col-xs-6 text-left">${{ number_format( $adult_price / 6, 2 ) }}*</div>
                         </div>
-                        <?php $childCost = $family1_price->cost - $adult_price->cost ?>
+                        <?php $childCost = $family1_price - $adult_price ?>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Price per child serving:</div>
                             <div class="plan-info col-xs-6 text-left">${{ number_format( $childCost / 3, 2 ) }}*</div>
@@ -104,10 +112,10 @@ Both plans include 3 meals per week.</div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
                             <div class="plan-info col-xs-6 text-left">
-                                <span v-show="children == 1">{{ $family1_price->cost }}</span>
-                                <span v-show="children == 2">{{ $family1_price->cost + $childCost }}</span>
-                                <span v-show="children == 3">{{ $family1_price->cost + ($childCost * 2) }}</span>
-                                <span v-show="children == 4">{{ $family1_price->cost + ($childCost * 3) }}</span>
+                                <span v-show="children == 1">{{ $family1_price }}</span>
+                                <span v-show="children == 2">{{ $family1_price + $childCost }}</span>
+                                <span v-show="children == 3">{{ $family1_price + ($childCost * 2) }}</span>
+                                <span v-show="children == 4">{{ $family1_price + ($childCost * 3) }}</span>
                             </div>
                         </div>
                         <div class="row action">
