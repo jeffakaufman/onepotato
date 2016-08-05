@@ -167,7 +167,7 @@ class WhatsCookingsController extends Controller
     public function saveWhatsCooking(Request $request)
     {
 	    $whatscookings = $request->all();
-    /*
+    
     	$validator = Validator::make($whatscookings, [
 	        'menu_title' => 'required|max:255',
 		    'menu_description' => 'required|max:1000',
@@ -178,7 +178,7 @@ class WhatsCookingsController extends Controller
 	            ->withInput()
 	            ->withErrors($validator);
 	    }
-*/
+
      	$test = WhatsCookings::where('week_of', $whatscookings['week_of'])
      			->first();
      	
@@ -220,10 +220,9 @@ class WhatsCookingsController extends Controller
 			$menu->image = $imagename;
 		}   
 	   
-	   $mainIngredientNumber =  "%".$menu->getDietaryPreferencesNumber()."%";
+		$mainIngredientNumber =  "%".$menu->getDietaryPreferencesNumber()."%";
 
-	    $menu->save();
-	   
+		$menu->save();
 	    
 	    //add new menu to subscribers
 	    $deliveryDate = "'".$request->week_of."' as delivery_date";
@@ -235,10 +234,10 @@ class WhatsCookingsController extends Controller
 	    		->where('product_type',2)
 	    		->join('subscriptions','products.id','=','subscriptions.product_id')
                 ->whereNull('subscriptions.dietary_preferences')
-	    		->orWhere('subscriptions.dietary_preferences','not like',$mainIngredientNumber)
+	    		->orWhere('subscriptions.dietary_preferences','like',$mainIngredientNumber)
 	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
 			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-				   echo count($subs)."<br><br>";
+			
 	    	DB::table('menus_users')->insert($subs);
 	    }
 	    elseif ( !$request->isOmnivore && $request->isVegetarian ){
@@ -247,7 +246,6 @@ class WhatsCookingsController extends Controller
 	    		->join('subscriptions','products.id','=','subscriptions.product_id')
 	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
 			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-				   echo count($subs)."<br><br>";
 	    	DB::table('menus_users')->insert($subs);
 	    
 	    }
@@ -258,13 +256,75 @@ class WhatsCookingsController extends Controller
 	    		->orWhere('subscriptions.dietary_preferences','not like',$mainIngredientNumber)
 	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
 			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-				   echo count($subs)."<br><br>";
 	    	DB::table('menus_users')->insert($subs);
-	    }		
+	    }
+	    
+	  
 		
 		$menu->whatscookings()->attach($id);
-		
-	    return redirect('/admin/whatscooking/'.$id);
-	    
+		$weeksMenuCount = WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()->get()->count();
+
+  		if ( $weeksMenuCount >= 5 ) {//assign all unassigned meals if this week has 5 meals
+			//assign vegetarian replacement
+			
+			//get the vegetarian backup for the week
+			$vegetarianBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
+									->where('vegetarianBackup','1')
+									->first();
+
+			//find the omnivore subscribers that are are missing at least one meal
+			$subs = DB::table('menus_users')
+					->select('users_id', DB::raw('count(*) as total'))
+					->where('delivery_date', $whatscookings['week_of'])
+                	->having('total', '<', 3)
+					->groupBy('users_id')
+					->get();
+			echo json_encode($subs);
+			//remove the total element from the objects because all life is pain
+			if ($subs) {
+				foreach($subs as $sub) {
+					$scrubbedSubs[] = array(
+						"users_id" => $sub->users_id,
+						"delivery_date" => $request->week_of,
+						"menus_id" => $vegetarianBackup->id
+						); 
+				}
+				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
+				
+				//add the replacement meal to the subscriber
+	    		DB::table('menus_users')->insert($scrubbedSubs);
+	    		}
+	    		
+	    		$vegetarianBackupBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
+					->where('isOmnivore','0')
+					->where('isVegetarian','1')
+					->where('vegetarianBackup','0')
+									->first();
+					
+	    		//find the omnivore subscribers that are missing only one meal
+				$scrubbedSubs = [];
+				$subs = DB::table('menus_users')
+					->select('users_id', DB::raw('count(*) as total'))
+					->where('delivery_date', $whatscookings['week_of'])
+                	->having('total', '=', 2)
+					->groupBy('users_id')
+					->get();
+			
+				//remove the total element from the objects because all life is pain
+				if ($subs) {
+					foreach($subs as $sub) {
+						$scrubbedSubs[] = array(
+							"users_id" => $sub->users_id,
+							"delivery_date" => $request->week_of,
+							"menus_id" => $vegetarianBackupBackup->id
+							); 
+				}
+				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
+				
+				//add the final replacement meal to the subscriber
+	    		DB::table('menus_users')->insert($scrubbedSubs);
+	    	}
+		}
+		return redirect('/admin/whatscooking/'.$id);
     }
 }
