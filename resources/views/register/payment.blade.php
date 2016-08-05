@@ -7,6 +7,20 @@ $('#register5').addClass('active');
 @endsection
 
 @section('content')
+<?php
+    if (Session::has('children')) $children = Session::get('children');
+    if (Session::has('plantype')) $plantype = Session::get('plantype');
+    if (Session::has('dietprefs')) $dietprefs = Session::get('dietprefs');
+    if (Session::has('glutenfree')) $glutenfree = Session::get('glutenfree');
+    if (Session::has('firstname')) $firstname = Session::get('firstname');
+    if (Session::has('lastname')) $lastname = Session::get('lastname');
+    if (Session::has('address')) $address = Session::get('address');
+    if (Session::has('address2')) $address2 = Session::get('address2');
+    if (Session::has('city')) $city = Session::get('city');
+    if (Session::has('state')) $state = Session::get('state');
+    if (Session::has('zip')) $zip = Session::get('zip');
+    if (Session::has('phone')) $phone = Session::get('phone');
+?>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
 <script>
@@ -129,7 +143,7 @@ function stripeResponseHandler(status, response) {
                         <div class="panel-heading text-left extrapadding">Billing Information</div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" onclick="popAddress()" name="same_as_delivery" value="Same as Delivery"> <label for="same_as_delivery">Same as Delivery</label></div>
+                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery" checked> <label for="same_as_delivery">Same as Delivery</label></div>
                             </div>
                         </div>
 
@@ -140,29 +154,29 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" autofocus>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $firstname }}" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" autofocus>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $lastname }}">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" name="address" class="form-control" lazy placeholder="Address">
+                                    <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{ $address }}">
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2">
+                                    <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2" value="{{ $address2 }}">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" name="city" class="form-control" lazy placeholder="City">
+                                    <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{ $city }}">
                                 </div>
 
                                 <!-- State & ZIP Code -->
@@ -179,13 +193,13 @@ function stripeResponseHandler(status, response) {
 
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" name="zip" class="form-control" placeholder="Zip" lazy>
+                                    <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{ $zip }}" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" lazy>
+                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $phone }}" lazy>
                                 </div>
                             </div>
 
@@ -266,29 +280,29 @@ function stripeResponseHandler(status, response) {
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>PLAN TYPE</h5>
-                                @if ($children == 0) Two Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-3);" class="sidelink">(change)</a>
+                                @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ route('register.select_plan') }}" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <!-- <h5>DELIVERY DAY</h5>
-                                Wednesday <a href="{{ URL::route('register_preferences') }}" class="sidelink">(change)</a> -->
+                                Wednesday <a href="{{ URL::route('register.preferences') }}" class="sidelink">(change)</a> -->
                             </div>
                         </div>
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>DIETARY PROFILE</h5>
                                 {{ $plantype }} <br>
-                                {{ $dietprefs }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
+                                {{ $dietprefs }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                {{ date('F d', strtotime($first_day)) }} <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
+                                {{ date('F d', strtotime($first_day)) }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
                             <div class="col-sm-12">
                                 <h5>DELIVER TO YOUR HOME:</h5>
                                 <span id="addy1" class="hide">{{ $firstname }}</span><span id="addy2" class="hide">{{ $lastname }}</span>
-                                <span id="addy3">{{ $address1 }}</span>, @if ($address2) <span id="addy4">{{ $address2 }}</span>, @endif <span id="addy5">{{ $city }}</span>, <span id="addy6">{{ $state }}</span> <span id="addy7">{{ $zip }}</span> <a href="javascript:history.back();" class="sidelink">(change)</a><span id="addy8" class="hide">{{ $phone }}</span>
+                                <span id="addy3">{{ $address }}</span>, @if ($address2) <span id="addy4">{{ $address2 }}</span>, @endif <span id="addy5">{{ $city }}</span>, <span id="addy6">{{ $state }}</span> <span id="addy7">{{ $zip }}</span> <a href="{{ route('register.delivery') }}" class="sidelink">(change)</a><span id="addy8" class="hide">{{ $phone }}</span>
                             </div>
                         </div>
                         
@@ -298,13 +312,13 @@ function stripeResponseHandler(status, response) {
                             <div class="panel-heading text-left">order TOTAL FOR {{ date('F d', strtotime($first_day)) }}</div>
                             <div class="panel-body">
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
-                                    <div class="col-xs-7 nosidepadding">{{ $product->product_description }} </div>
-                                    <div class="col-xs-5 text-right nosidepadding"> ${{ $product->cost }}</div>
+                                    <div class="col-xs-7 nosidepadding eh">{{ $product->product_description }} </div>
+                                    <div class="col-xs-5 text-right nosidepadding eh bottom"> ${{ $product->cost }}</div>
                                 </div>
-                                @if ($glutenfree == 'yes')
+                                @if ($glutenfree == 'checked')
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Gluten free</div>
-                                    <div class="col-xs-5 nosidepadding text-right">$1.50</div>
+                                    <div class="col-xs-5 nosidepadding text-right">$3.00</div>
                                 </div>
                                 @endif
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
@@ -338,16 +352,22 @@ function stripeResponseHandler(status, response) {
         </div>
     </div>
     <script>
-    function popAddress() {
-        $('input[name=firstname]').val($('#addy1').text());
-        $('input[name=lastname]').val($('#addy2').text());
-        $('input[name=address]').val($('#addy3').text());
-        $('input[name=address_2]').val($('#addy4').text());
-        $('input[name=city]').val($('#addy5').text());
-        $('select[name=state]').val($('#addy6').text());
-        $('input[name=zip]').val($('#addy7').text());
-        $('input[name=phone]').val($('#addy8').text());
-    }
+    $(function() {
+        $('.checkbox').on('click', '#same_as_delivery', function() {
+            if ($(this).prop("checked") == true) {
+                $('input[name=firstname]').val($('#addy1').text());
+                $('input[name=lastname]').val($('#addy2').text());
+                $('input[name=address]').val($('#addy3').text());
+                $('input[name=address_2]').val($('#addy4').text());
+                $('input[name=city]').val($('#addy5').text());
+                $('select[name=state]').val($('#addy6').text());
+                $('input[name=zip]').val($('#addy7').text());
+                $('input[name=phone]').val($('#addy8').text());
+            } else {
+                $('input[name=firstname], input[name=lastname], input[name=address], input[name=address_2], input[name=city], select[name=state], input[name=zip], input[name=phone]').val('');
+            }
+        });
+    });
     </script>
 </payment>
 @endsection
