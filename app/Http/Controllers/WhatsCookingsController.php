@@ -84,6 +84,9 @@ class WhatsCookingsController extends Controller
 		foreach ($whatscookings as $whatscooking) {
     		$menus = $whatscooking->menus()->get();
 		}
+    		foreach ($menus as $menu) {
+    			$menu->dietaryPreferenceNumber = $menu->getDietaryPreferencesNumber();
+    		}
 		return $menus->toJson();
     }
 
