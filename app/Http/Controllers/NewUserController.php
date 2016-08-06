@@ -14,6 +14,8 @@ use App\Referral;
 use App\ZipcodeStates;
 use Hash;
 use Mail;
+use DateTime;
+use DateTimeZone;
 
 class NewUserController extends Controller
 {
@@ -299,13 +301,15 @@ class NewUserController extends Controller
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
 		
-			//figure out date logic for trial period- 
+			//figure out date logic for trial period - 
 			// - mist be UNIX timestamp
-			//	-- if today is Wednesday, is it before 9:00 AM PST?
-			//			If yes, then set the trial period to end at 9:00 AM same day
-			//	-- if no, then set the date to the NEXT wednesday at 9:00 AM
-			//			
 			
+			//get today's date
+			$todaysDate = new DateTime();
+			
+		
+			//get the trial_ends date
+			$trial_ends_timestamp = $this->GetTrialEndsDate();
 			
 			//figure out which plan the user is currently subscribed to
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -316,7 +320,9 @@ class NewUserController extends Controller
 			$customer = \Stripe\Customer::create(array(
 					"source" => $token,
 					"plan" => $userProduct->stripe_plan_id,
-					"email" => $user->email)
+					"email" => $user->email,
+					"trial_end" => $trial_ends_timestamp
+				)
 			);
 						
 			$user->stripe_id = $customer->id;
@@ -354,6 +360,76 @@ class NewUserController extends Controller
 			
 	}
 		
+		
+	public function GetTrialEndsDate() {
+		
+			//figure out date logic for trial period - 
+			// - mist be UNIX timestamp
+			
+			$trial_ends = "";
+			
+			//time of day cutoff for orders
+			$cutOffTime = "23:00:00";
+			$cutOffDay = "Friday";
+			
+			//change dates to WEDNESDAY
+			//cutoff date is the last date to change or to signup for THIS week
+			$cutOffDate = new DateTime();
+			$cutOffDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			$cutOffDate->modify('this ' . $cutOffDay . ' ' . $cutOffTime);
+		
+			//get today's date
+			$todaysDate = new DateTime();
+			$todaysDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			$currentDay = date_format($todaysDate, "l");
+			$currentTime = date_format($todaysDate, "H:is");
+			
+			//echo "Today is " . $currentDay . "<br />";
+			
+			//echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
+			//echo "Current time: " . $todaysDate->format('Y-m-d H:i:s') . "<br />";
+			
+			//check to see if today is the same day as the cutoff day
+			if ($currentDay==$cutOffDay) {
+				
+				//check to see if it's BEFORE the cutoff tine. If so, then this is a special case
+				if ($currentTime < $cutOffTime) {
+
+					//ok, so it's the day of the cutoff, but before time has expired
+					//SET the trial_ends date to $cutOffDate - no problem
+					//echo "You have JUST beat the cutoff period <br /> Setting the trial_ends to today"; 
+					$trial_ends = $cutOffDate;
+
+				}else{
+
+					//the cutoff tiem has just ended
+					//now, set the date to NEXT $cutOffDate
+					$trial_ends = new DateTime();
+					$trial_ends->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+					$trial_ends->modify('next ' . $cutOffDay . ' ' . $cutOffTime);
+					//echo "You have missed the cutoff period <br /> Setting the trial_ends to next week"; 
+					
+
+				}
+			
+			}else{
+				
+				//today is not the same as the trial ends date, so simply set the date to the next cutoff 
+				$trial_ends = $cutOffDate;
+				
+			}
+		
+			return ($trial_ends->getTimestamp());
+		
+			//echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
+			
+			//echo "UNIX version of timestamp: " . $trial_ends->getTimestamp() . "<br />";
+		
+			$TestDate = new DateTime('@1470463200');
+			$TestDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			//echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
+			
+	}
 
 
 

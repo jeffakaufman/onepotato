@@ -128,6 +128,7 @@ Route::get('/cancel/restart/{id}', 'SubinvoiceController@RestartSubscription');
 Route::get('/hold/{id}/{holddate}', 'SubinvoiceController@HoldSubscription');
 Route::get('/hold/restart/{id}/{holddate}', 'SubinvoiceController@UnHoldSubscription');
 Route::get('/hold/check/{id}/{holddate}', 'SubinvoiceController@CheckForHold');
+Route::get("/test/date/", 'SubinvoiceController@TestDate');
 
 
 $router->group(['middleware' => 'admin'], function($router) {

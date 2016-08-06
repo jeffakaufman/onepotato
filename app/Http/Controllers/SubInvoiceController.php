@@ -14,6 +14,7 @@ use App\Referral;
 use App\Order;
 use DateTime;
 use App\Shippingholds;
+use DateTimeZone;
 
 class SubinvoiceController extends Controller
 {
@@ -36,6 +37,75 @@ class SubinvoiceController extends Controller
     {
         
     }
+
+
+	public function TestDate() {
+		
+			//figure out date logic for trial period - 
+			// - mist be UNIX timestamp
+			
+			$trial_ends = "";
+			
+			//time of day cutoff for orders
+			$cutOffTime = "23:00:00";
+			$cutOffDay = "Friday";
+			
+			//change dates to WEDNESDAY
+			//cutoff date is the last date to change or to signup for THIS week
+			$cutOffDate = new DateTime();
+			$cutOffDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			$cutOffDate->modify('this ' . $cutOffDay . ' ' . $cutOffTime);
+		
+			//get today's date
+			$todaysDate = new DateTime();
+			$todaysDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			$currentDay = date_format($todaysDate, "l");
+			$currentTime = date_format($todaysDate, "H:is");
+			
+			echo "Today is " . $currentDay . "<br />";
+			
+			echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
+			echo "Current time: " . $todaysDate->format('Y-m-d H:i:s') . "<br />";
+			
+			//check to see if today is the same day as the cutoff day
+			if ($currentDay==$cutOffDay) {
+				
+				//check to see if it's BEFORE the cutoff tine. If so, then this is a special case
+				if ($currentTime < $cutOffTime) {
+
+					//ok, so it's the day of the cutoff, but before time has expired
+					//SET the trial_ends date to $cutOffDate - no problem
+					echo "You have JUST beat the cutoff period <br /> Setting the trial_ends to today"; 
+					$trial_ends = $cutOffDate;
+
+				}else{
+
+					//the cutoff tiem has just ended
+					//now, set the date to NEXT $cutOffDate
+					$trial_ends = new DateTime();
+					$trial_ends->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+					$trial_ends->modify('next ' . $cutOffDay . ' ' . $cutOffTime);
+					echo "You have missed the cutoff period <br /> Setting the trial_ends to next week"; 
+					
+
+				}
+			
+			}else{
+				
+				//today is not the same as the trial ends date, so simply set the date to the next cutoff 
+				$trial_ends = $cutOffDate;
+				
+			}
+		
+			echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
+			
+			echo "UNIX version of timestamp: " . $trial_ends->getTimestamp() . "<br />";
+		
+			$TestDate = new DateTime('@1470463200');
+			$TestDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
+			
+	}
 
 	public function getOrderXML() {
 		
