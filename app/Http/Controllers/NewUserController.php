@@ -16,6 +16,7 @@ use Hash;
 use Mail;
 use DateTime;
 use DateTimeZone;
+use Session;
 
 class NewUserController extends Controller
 {
@@ -61,7 +62,7 @@ class NewUserController extends Controller
 		//validation
 
 		//make sure zipcode is on the approved list
-		if (!ZipcodeStates::where('zipcode',$request->zip)->first()) {
+		if ($request->zip != '' && !ZipcodeStates::where('zipcode',$request->zip)->first()) {
 			return view('register.badzip');
         }
 
@@ -84,12 +85,16 @@ class NewUserController extends Controller
 
 		$productAdult = Product::where('sku','0202000000')->first();
 		$productFamily1 = Product::where('sku','0202010000')->first();
+//$request->session()->flush();
+		$request->session()->put('step1', true);
+		$request->session()->put('user_id', $user->id);
+		$request->session()->put('zip', $request->zip);
+		$request->session()->put('adult_price', $productAdult->cost);
+		$request->session()->put('family1_price', $productFamily1->cost);
 
 		return view('register.select_plan')->with([
 			'user'=>$user,
-			'zip'=>$request->zip,
-			'adult_price'=>$productAdult,
-			'family1_price'=>$productFamily1
+			'zip'=>$request->zip
 		]);
 	}
 	
@@ -119,8 +124,16 @@ class NewUserController extends Controller
 				$upcomingDates[date('m/d/y', $i)] = date('F d, Y', strtotime(date('m/d/y', $i)));
 			}   
     	}
+    	$request->session()->put('step2', true);
+    	$request->session()->put('children', $numChildren);
+    	$request->session()->put('upcoming_dates', $upcomingDates);
 
-		return view('register.preferences')->with(['children'=>$numChildren,'user'=>$user,'zip'=>$request->zip,'upcomingDates'=>$upcomingDates]);
+		return view('register.preferences')->with([
+			'children'=>$numChildren,
+			'user'=>$user,
+			'zip'=>$request->zip,
+			'upcomingDates'=>$upcomingDates
+		]);
 		
 	}
 	
@@ -141,10 +154,14 @@ class NewUserController extends Controller
 		if ($plan_type=='Vegetarian Box') {
 			$theSKU = "01";
 			$plantype = 'Vegetarian';
+			$request->session()->put('veg', 'checked');
+			$request->session()->put('omni', '');
 		}
 		if ($plan_type=='Omnivore Box') {
 			$theSKU = "02";
 			$plantype = 'Omnivore';
+			$request->session()->put('omni', 'checked');
+			$request->session()->put('veg', '');
 		}
 		
 		
@@ -182,15 +199,55 @@ class NewUserController extends Controller
 		$userSubscription->save();
 
 		$prefs = array();
-		if (in_array('9', $request->prefs)) array_push($prefs, 'gluten free');
-		if (in_array('1', $request->prefs)) array_push($prefs, 'red meat');
-		if (in_array('2', $request->prefs)) array_push($prefs, 'poultry');
-		if (in_array('3', $request->prefs)) array_push($prefs, 'fish');
-		if (in_array('4', $request->prefs)) array_push($prefs, 'lamb');
-		if (in_array('5', $request->prefs)) array_push($prefs, 'pork');
-		if (in_array('6', $request->prefs)) array_push($prefs, 'shellfish');
-		if (in_array('7', $request->prefs)) array_push($prefs, 'nuts');
-		else array_push($prefs, 'no nuts');
+		if (in_array('9', $request->prefs)) {
+			array_push($prefs, 'gluten free');
+			$request->session()->put('glutenfree', 'checked');
+		} else {
+			$request->session()->put('glutenfree', '');
+		}
+		if (in_array('1', $request->prefs)) {
+			array_push($prefs, 'red meat');
+			$request->session()->put('redmeat', 'checked');
+		} else {
+			$request->session()->put('redmeat', '');
+		}
+		if (in_array('2', $request->prefs)) {
+			array_push($prefs, 'poultry');
+			$request->session()->put('poultry', 'checked');
+		} else {
+			$request->session()->put('poultry', '');
+		}
+		if (in_array('3', $request->prefs)) {
+			array_push($prefs, 'fish');
+			$request->session()->put('fish', 'checked');
+		} else {
+			$request->session()->put('fish', '');
+		}
+		if (in_array('4', $request->prefs)) {
+			array_push($prefs, 'lamb');
+			$request->session()->put('lamb', 'checked');
+		} else {
+			$request->session()->put('lamb', '');
+		}
+		if (in_array('5', $request->prefs)) {
+			array_push($prefs, 'pork');
+			$request->session()->put('pork', 'checked');
+		} else {
+			$request->session()->put('pork', '');
+		}
+		if (in_array('6', $request->prefs)) {
+			array_push($prefs, 'shellfish');
+			$request->session()->put('shellfish', 'checked');
+		} else {
+			$request->session()->put('shellfish', 'checked');
+		}
+		if (in_array('7', $request->prefs)) {
+			array_push($prefs, 'nuts');
+			$request->session()->put('nuts', 'checked');
+		} else {
+			array_push($prefs, 'no nuts');
+			$request->session()->put('nuts', '');
+		}
 
 		$dietprefs = implode(", ",$prefs);
 		
@@ -207,26 +264,18 @@ class NewUserController extends Controller
 		
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
-		
+
+		$request->session()->put('step3', true);
+		$request->session()->put('plantype', $plan_type);
+		$request->session()->put('first_day', $request->first_day);
+		$request->session()->put('dietprefs', $dietprefs);
+		$request->session()->put('state', $state->state);
 
 //        var_dump($user);die();
 
 		return view('register.delivery')->
 			with([
-				'children'=>$numChildren,
                 'user'=>$user,
-				'plantype'=>$plantype,
-				'dietprefs'=>$dietprefs,
-				'zip'=>$request->zip,
-				'state'=>$state->state,
-				'first_day'=>$request->first_day,
-				'glutenfree'=>$glutenfree,
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'address' => $user->billing_address,
-                'address2' => $user->billing_address_line_2,
-                'city' => $user->billing_city,
-                'phone' => $user->phone,
 			]);
 	}
 
@@ -254,10 +303,9 @@ class NewUserController extends Controller
 		$shippingAddress->phone1 = $request->phone;
 		$shippingAddress->shipping_country = "US";
 		$shippingAddress->is_current = 1;
+		$shippingAddress->address_type = $request->delivery_loc;
 		
-		if ($request->delivery_loc=="Home") {$shippingAddress->address_type="home";}
-		if ($request->delivery_loc=="Business") {$shippingAddress->address_type="business";}
-		
+
 		$user->name = $request->firstname . " " . $request->lastname;
 		
 		//add - home/business
@@ -265,28 +313,28 @@ class NewUserController extends Controller
 
 		$shippingAddress->save();
 		$user->save();
-		$numChildren = $request->children;
+		//$numChildren = $request->children;
 		
 		//store children's birthdays
 		//add - children's birthdays
 		
 		//take them to the next step!
+
+		$request->session()->put('step4', true);
+		$request->session()->put('delivery_loc', $request->delivery_loc);
+		$request->session()->put('firstname', $request->firstname);
+		$request->session()->put('lastname', $request->lastname);
+		$request->session()->put('address', $request->address);
+		$request->session()->put('address2', $request->address_line_2);
+		$request->session()->put('state', $request->state);
+		$request->session()->put('zip', $request->zip);
+		$request->session()->put('city', $request->city);
+		$request->session()->put('phone', $request->phone);
+		$request->session()->put('instructions', $request->delivery_instructions);
 		
 		return view('register.payment')->
 			with([
-				'children'=>$numChildren,
 				'user'=>$user,
-				'plantype'=>$request->plantype,
-				'dietprefs'=>$request->dietprefs,
-				'glutenfree'=>$request->glutenfree,
-				'firstname'=>$shippingAddress->shipping_first_name,
-				'lastname'=>$shippingAddress->shipping_last_name,
-				'address1'=>$shippingAddress->shipping_address,
-				'address2'=>$shippingAddress->shipping_address_2,
-				'city'=>$shippingAddress->shipping_city,
-				'state'=>$shippingAddress->shipping_state,
-				'zip'=>$shippingAddress->shipping_zip,
-				'phone'=>$shippingAddress->phone1,
 				'first_day'=>$request->first_day,
 				'product'=>$product
 				]);
@@ -353,6 +401,7 @@ class NewUserController extends Controller
 			$userSubscription->save();
 			$user->save();
 
+		$request->session()->flush();
 
         event(new UserHasRegistered($user));
 

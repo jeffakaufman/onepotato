@@ -31,6 +31,9 @@
 		margin-bottom: 15px;
 	}
 }
+.fs {
+    height: 100vh;
+}
 .nowrap {
 	white-space: nowrap;
 }
@@ -81,6 +84,9 @@
 		padding-left: 30px;
 		padding-right: 30px;
 	}
+}
+.bottom {
+	vertical-align: bottom;
 }
 .full-height {
     min-height: 100%;

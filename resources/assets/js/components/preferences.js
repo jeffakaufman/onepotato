@@ -6,14 +6,14 @@ Vue.component('preferences', {
     },
     data: function () {
 	    return {
-	    	plan_type: 'Omnivore Box',
-	    	redmeat: true,
-	    	poultry: true,
-	    	fish: true,
-	    	lamb: true,
-	    	pork: true,
-	    	shellfish: true,
-	    	nuts: true
+	    	plan_type: '',
+	    	redmeat: '',
+	    	poultry: '',
+	    	fish: '',
+	    	lamb: '',
+	    	pork: '',
+	    	shellfish: '',
+	    	nuts: ''
 	    }
     },
     methods: {
@@ -40,3 +40,5 @@ Vue.component('preferences', {
 	  	}
 	}
 });
+
+

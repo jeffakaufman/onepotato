@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -77,31 +78,16 @@ class WhatsCookingsController extends Controller
     {
 		//Look, I know there is a better way but this was just easier. Make an object for each product type, put them in an array
 		//json encode, hope it works for Beverly
-		$weeksMenus = [];
 		$menus  = [];
-		$omnivoreMenus = new stdClass;
-		$vegetarianMenus = new stdClass;
 		
-		$whatscookings = WhatsCookings::where('week_of',$week_of)->where('product_type','Omnivore')->get();
+		$whatscookings = WhatsCookings::where('week_of',$week_of)->get();
 		foreach ($whatscookings as $whatscooking) {
-    		$menus[] = $whatscooking->menus()->get();
+    		$menus = $whatscooking->menus()->get();
 		}
-		$omnivoreMenus -> product_type = "Omnivore";
-		$omnivoreMenus -> menus = $menus;
-		$weeksMenus[]  = $omnivoreMenus;
-
-
-		$whatscookings = WhatsCookings::where('week_of',$week_of)->where('product_type','Vegetarian')->get();
-		$menus  = [];
-		foreach ($whatscookings as $whatscooking) {
-    		$menus[] = $whatscooking->menus()->first();
-		}
-		$vegetarianMenus -> product_type = "Vegetarian";
-		$vegetarianMenus -> menus = $menus;
-		$weeksMenus[]  = $vegetarianMenus;
-		
-		$weeksMenus =  json_encode($weeksMenus);		
-		return $weeksMenus;
+    		foreach ($menus as $menu) {
+    			$menu->dietaryPreferenceNumber = $menu->getDietaryPreferencesNumber();
+    		}
+		return $menus->toJson();
     }
 
 
@@ -181,8 +167,6 @@ class WhatsCookingsController extends Controller
     public function saveWhatsCooking(Request $request)
     {
 	    $whatscookings = $request->all();
-	    
-//	    echo json_encode($whatscookings);
     
     	$validator = Validator::make($whatscookings, [
 	        'menu_title' => 'required|max:255',
@@ -234,12 +218,113 @@ class WhatsCookingsController extends Controller
    		 	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
     		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
 			$menu->image = $imagename;
-		}
+		}   
+	   
+		$mainIngredientNumber =  "%".$menu->getDietaryPreferencesNumber()."%";
+
+		$menu->save();
 	    
-	    $menu->save();
-		$menu->whatscookings()->attach($id);
+	    //add new menu to subscribers
+	    $deliveryDate = "'".$request->week_of."' as delivery_date";
+	    $menusID = "'".$menu->id."' as menus_id";
+	    
+	    //find proper subscribers
+	    if ( $request->isOmnivore && !$request->isVegetarian ) {
+	    	$subs = DB::table('products')
+	    		->where('product_type',2)
+	    		->join('subscriptions','products.id','=','subscriptions.product_id')
+                ->whereNull('subscriptions.dietary_preferences')
+	    		->orWhere('subscriptions.dietary_preferences','like',$mainIngredientNumber)
+	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
+			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
+			
+	    	DB::table('menus_users')->insert($subs);
+	    }
+	    elseif ( !$request->isOmnivore && $request->isVegetarian ){
+	       	$subs = DB::table('products')
+	    		->where('product_type',1)
+	    		->join('subscriptions','products.id','=','subscriptions.product_id')
+	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
+			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
+	    	DB::table('menus_users')->insert($subs);
+	    
+	    }
+	    elseif($request->isOmnivore && $request->isVegetarian){
+	    	$subs = DB::table('products')
+	    		->join('subscriptions','products.id','=','subscriptions.product_id')
+                ->whereNull('subscriptions.dietary_preferences')
+	    		->orWhere('subscriptions.dietary_preferences','not like',$mainIngredientNumber)
+	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
+			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
+	    	DB::table('menus_users')->insert($subs);
+	    }
+	    
+	  
 		
-	    return redirect('/admin/whatscooking/'.$id);
-	    
+		$menu->whatscookings()->attach($id);
+		$weeksMenuCount = WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()->get()->count();
+
+  		if ( $weeksMenuCount >= 5 ) {//assign all unassigned meals if this week has 5 meals
+			//assign vegetarian replacement
+			
+			//get the vegetarian backup for the week
+			$vegetarianBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
+									->where('vegetarianBackup','1')
+									->first();
+
+			//find the omnivore subscribers that are are missing at least one meal
+			$subs = DB::table('menus_users')
+					->select('users_id', DB::raw('count(*) as total'))
+					->where('delivery_date', $whatscookings['week_of'])
+                	->having('total', '<', 3)
+					->groupBy('users_id')
+					->get();
+			echo json_encode($subs);
+			//remove the total element from the objects because all life is pain
+			if ($subs) {
+				foreach($subs as $sub) {
+					$scrubbedSubs[] = array(
+						"users_id" => $sub->users_id,
+						"delivery_date" => $request->week_of,
+						"menus_id" => $vegetarianBackup->id
+						); 
+				}
+				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
+				
+				//add the replacement meal to the subscriber
+	    		DB::table('menus_users')->insert($scrubbedSubs);
+	    		}
+	    		
+	    		$vegetarianBackupBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
+					->where('isOmnivore','0')
+					->where('isVegetarian','1')
+					->where('vegetarianBackup','0')
+									->first();
+					
+	    		//find the omnivore subscribers that are missing only one meal
+				$scrubbedSubs = [];
+				$subs = DB::table('menus_users')
+					->select('users_id', DB::raw('count(*) as total'))
+					->where('delivery_date', $whatscookings['week_of'])
+                	->having('total', '=', 2)
+					->groupBy('users_id')
+					->get();
+			
+				//remove the total element from the objects because all life is pain
+				if ($subs) {
+					foreach($subs as $sub) {
+						$scrubbedSubs[] = array(
+							"users_id" => $sub->users_id,
+							"delivery_date" => $request->week_of,
+							"menus_id" => $vegetarianBackupBackup->id
+							); 
+				}
+				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
+				
+				//add the final replacement meal to the subscriber
+	    		DB::table('menus_users')->insert($scrubbedSubs);
+	    	}
+		}
+		return redirect('/admin/whatscooking/'.$id);
     }
 }

@@ -7,9 +7,26 @@ $('#register4').addClass('active');
 @endsection
 
 @section('content')
+<?php 
+    if (Session::has('user_id')) $user_id = Session::get('user_id');
+    if (Session::has('children')) $children = Session::get('children');
+    if (Session::has('plantype')) $plantype = Session::get('plantype');
+    if (Session::has('dietprefs')) $dietprefs = Session::get('dietprefs');
+    if (Session::has('first_day')) $first_day = Session::get('first_day');
+    if (Session::has('delivery_loc')) $loc = Session::get('delivery_loc');
+    if (Session::has('firstname')) $firstname = Session::get('firstname');
+    if (Session::has('lastname')) $lastname = Session::get('lastname');
+    if (Session::has('address')) $address = Session::get('address');
+    if (Session::has('address2')) $address2 = Session::get('address2');
+    if (Session::has('city')) $city = Session::get('city');
+    if (Session::has('state')) $state = Session::get('state');
+    if (Session::has('zip')) $zip = Session::get('zip');
+    if (Session::has('phone')) $phone = Session::get('phone');
+    if (Session::has('instructions')) $instructions = Session::get('instructions');
+?>
 <delivery :user="user" inline-template>
     <div id="planType">
-        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="javascript:history.go(-2);" class="sidelink">(change)</a>
+        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ route('register.select_plan') }}" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->
@@ -29,22 +46,19 @@ $('#register4').addClass('active');
 					 {{ csrf_field() }}
 
 					<input type="hidden" name="first_day" value="{{ $first_day }}" />
-					<input type="hidden" name="user_id" value="{{ $user->id }}" />
-                    <input type="hidden" name="children" value="{{ $children }}" />
-                    <input type="hidden" name="plantype" value="{{ $plantype }}" />
-                    <input type="hidden" name="dietprefs" value="{{ $dietprefs }}" />
-                    <input type="hidden" name="glutenfree" value="{{ $glutenfree }}" />
+					<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
+                    <!-- <input type="hidden" name="children" value="{{ $children }}" /> -->
+                    <!-- <input type="hidden" name="plantype" value="{{ $plantype }}" /> -->
+
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default panel-form">
 
-                  	
-
                         <div class="panel-heading text-left extrapadding">Delivery Location<a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" v-model="delivery_loc" value="Home" checked> <label for="delivery_home">Home</label></div>
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" v-model="delivery_loc" value="Business"> <label for="delivery_busines">Business</label></div>
+                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="home" @if (isset($loc) && $loc == 'home') checked @else checked @endif> <label for="delivery_home">Home</label></div>
+                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" value="business" @if (isset($loc) && $loc == 'business') checked @endif> <label for="delivery_busines">Business</label></div>
                             </div>
                         </div>
 
@@ -55,29 +69,29 @@ $('#register4').addClass('active');
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $first_name }}" autofocus>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="@if (isset($firstname)){{ $firstname }}@endif" autofocus>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $last_name }}" autofocus>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="@if (isset($lastname)){{ $lastname }}@endif" autofocus>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="{{ $address }}">
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="@if (isset($address)){{ $address }}@endif">
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2" value="{{ $address2 }}">
+                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2" value="@if (isset($address2)){{ $address2 }}@endif">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="city" lazy placeholder="City" value="{{ $city }}">
+                                        <input type="text" class="form-control" name="city" lazy placeholder="City" value="@if (isset($city)){{ $city }}@endif">
                                 </div>
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
@@ -91,13 +105,13 @@ $('#register4').addClass('active');
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{  $zip  }}" lazy>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{ $zip }}" lazy>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" lazy value="{{ $phone }}">
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" lazy value="@if (isset($phone)){{ $phone }}@endif">
                                 </div>
                             </div>
 
@@ -106,7 +120,7 @@ $('#register4').addClass('active');
                         <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a data-toggle="tooltip" data-title="Please be as specific as possible. Instructions such as “leave at door” should indicate the type of door (e.g. exterior or interior door) and include any other helpful context, such as a code to enter the building." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row extrapadding">
-                                <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control"></textarea></div>
+                                <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
                             </div>
                         </div>
 
@@ -135,7 +149,7 @@ $('#register4').addClass('active');
                                                 <select name="child_bday{{$i}}_day" type="select" class="form-control">
                                                     <option>Day</option>
                                                     @for($x=1;$x<=31;$x++)
-                                                        <option value={{ $x }}>{{ $x }}</option>;
+                                                        <option value="{{ $x }}">{{ $x }}</option>;
                                                     @endfor
                                                 </select>
                                             </label>
