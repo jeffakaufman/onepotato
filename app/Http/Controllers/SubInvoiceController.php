@@ -215,7 +215,7 @@ class SubinvoiceController extends Controller
 				$menu_titles = $this->getMenuTitles($id);
 			
 				
-				$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles. "]]></CustomField1>";
+				$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles . "]]></CustomField1>";
 				$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
 				$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
 			
