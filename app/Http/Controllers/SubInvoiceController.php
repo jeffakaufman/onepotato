@@ -213,7 +213,7 @@ class SubinvoiceController extends Controller
 				
 				
 				//GET menu titles for this user
-				$menu_titles = $this->getMenuTitles($id);
+				$menu_titles = "";
 			
 				
 				$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles . "]]></CustomField1>";
