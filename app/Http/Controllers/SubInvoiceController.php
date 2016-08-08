@@ -15,6 +15,7 @@ use App\Order;
 use DateTime;
 use App\Shippingholds;
 use DateTimeZone;
+use DB;
 
 class SubinvoiceController extends Controller
 {
@@ -48,8 +49,8 @@ class SubinvoiceController extends Controller
 			$trial_ends = "";
 			
 			//time of day cutoff for orders
-			$cutOffTime = "11:00:00";
-			$cutOffDay = "Friday";
+			$cutOffTime = "15:00:00";
+			$cutOffDay = "Wednesday";
 			
 			//change dates to WEDNESDAY
 			//cutoff date is the last date to change or to signup for THIS week
@@ -106,6 +107,35 @@ class SubinvoiceController extends Controller
 			$TestDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 			echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
 			
+	}
+	
+	public function getMenuTitles ($user_id) {
+		
+		$DeliveryDay = "Tuesday";
+		$Menu_string = "";
+
+			//change dates to WEDNESDAY
+			//cutoff date is the last date to change or to signup for THIS week
+			$DeliveryDate = new DateTime();
+			$DeliveryDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+			$DeliveryDate->modify('this ' . $DeliveryDay);
+
+			$DeliveryDate_string = $DeliveryDate->format('Y-m-d');
+
+			$MenuUsers = DB::table('menus_users')
+					->where('users_id', $user_id)
+					->where('delivery_date',$DeliveryDate_string)
+					->get();
+
+			foreach ($MenuUsers as $MenuUser) {
+
+			//	echo ($MenuUser->menus_id . "<br />");
+				$Menu = DB::table('menus')->where('id', $MenuUser->menus_id)->first();
+				$Menu_string .= $Menu->menu_title . ", ";
+
+			}
+			return ($Menu_string);
+		
 	}
 
 	public function getOrderXML() {
@@ -179,7 +209,13 @@ class SubinvoiceController extends Controller
 				$ship_xml .= "<CustomerNotes><![CDATA[Add Note from User field!]]></CustomerNotes>";
 				$ship_xml .= "<InternalNotes><![CDATA[]]></InternalNotes>";
 				$ship_xml .= "<Gift>false</Gift>";
-				$ship_xml .= "<CustomField1></CustomField1>";
+				
+				
+				//GET menu titles for this user
+				$menu_titles = getMenuTitles($id);
+			
+				
+				$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles. "]]></CustomField1>";
 				$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
 				$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
 			
@@ -268,6 +304,38 @@ class SubinvoiceController extends Controller
 		return $ship_xml;
 		
 		
+	}
+	
+	public function testMenus() {
+		
+		//user 
+		
+		//use "this Tuesday" since we'll always be looking ahead
+		
+		$DeliveryDay = "Tuesday";
+		$Menu_string = "";
+			
+		//change dates to WEDNESDAY
+		//cutoff date is the last date to change or to signup for THIS week
+		$DeliveryDate = new DateTime();
+		$DeliveryDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+		$DeliveryDate->modify('this ' . $DeliveryDay);
+		
+		$DeliveryDate_string = $DeliveryDate->format('Y-m-d');
+		
+		$MenuUsers = DB::table('menus_users')
+				->where('users_id', '2279')
+				->where('delivery_date',$DeliveryDate_string)
+				->get();
+		
+		foreach ($MenuUsers as $MenuUser) {
+		
+		//	echo ($MenuUser->menus_id . "<br />");
+			$Menu = DB::table('menus')->where('id', $MenuUser->menus_id)->first();
+			$Menu_string .= $Menu->menu_title . ", ";
+		
+		}
+		echo ($Menu_string);
 	}
 	
 	public function updateShippingStatus(Request $request) {
