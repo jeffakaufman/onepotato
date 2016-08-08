@@ -114,26 +114,7 @@ class SubinvoiceController extends Controller
 		$DeliveryDay = "Tuesday";
 		$Menu_string = "";
 
-			//change dates to WEDNESDAY
-			//cutoff date is the last date to change or to signup for THIS week
-			$DeliveryDate = new DateTime();
-			$DeliveryDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
-			$DeliveryDate->modify('this ' . $DeliveryDay);
-
-			$DeliveryDate_string = $DeliveryDate->format('Y-m-d');
-
-			$MenuUsers = DB::table('menus_users')
-					->where('users_id', $user_id)
-					->where('delivery_date',$DeliveryDate_string)
-					->get();
-
-			foreach ($MenuUsers as $MenuUser) {
-
-			//	echo ($MenuUser->menus_id . "<br />");
-				$Menu = DB::table('menus')->where('id', $MenuUser->menus_id)->first();
-				$Menu_string .= $Menu->menu_title . ", ";
-
-			}
+		
 			return ($Menu_string);
 		
 	}
