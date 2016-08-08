@@ -193,6 +193,8 @@ class SubinvoiceController extends Controller
 				$charge_date_formatted = $charge_date->format('m/d/Y H:i');	
 				
 				$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+				
+				if ($subscriber) {
 				$product = Product::where('id',$subscriber->product_id)->first();
 				
 				$ship_xml .= "<Order>";
@@ -288,7 +290,7 @@ class SubinvoiceController extends Controller
 			
 			
 				$ship_xml .= "</Order>";
-			
+				}
 			}
 		}
 		
