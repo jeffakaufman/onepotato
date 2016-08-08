@@ -39,6 +39,7 @@ class SubinvoiceController extends Controller
     }
 
 
+
 	public function TestDate() {
 		
 			//figure out date logic for trial period - 
@@ -245,7 +246,8 @@ class SubinvoiceController extends Controller
 		
 				$ship_xml .= "</Item></Items>";
 			
-			//$invoice->invoice_status = "sent_to_ship";
+				$invoice->invoice_status = "sent_to_ship";
+				$invoice->order_id = $order_id;
 				$invoice->save();
 			
 			
@@ -274,8 +276,9 @@ class SubinvoiceController extends Controller
 		
 		
 		$shipnotice = simplexml_load_string($shipXML);
+		$order_id = $shipnotice->OrderID;
 		
-		$order = Order::where('order_id',$shipnotice->OrderID)->first();
+		$order = Order::where('order_id',$order_id)->first();
 		
 		//convert the date
 		$order->ship_date = $shipnotice->ShipDate;
@@ -284,6 +287,12 @@ class SubinvoiceController extends Controller
 		$order->tracking_number = $shipnotice->TrackingNumber;
 		$order->ship_station_xml = $shipXML;
 		$order->save();
+		
+		//mark subinvoice as "shipped"
+		$invoice = Subinvoice::where('order_id',$order_id)->first();
+		$invoice->invoice_status = "shipped";
+		$invoice->save();
+		
 		
 		http_response_code(200); // PHP 5.4 or greater
 	}
@@ -546,15 +555,46 @@ class SubinvoiceController extends Controller
 		
 	}
 	
+	
 	public function CheckHolds () {
 		
 		//this function/route should run on xx day at xx time
 		
 		//check Holds table
 		
-		//if there is a hold for the next week, then 
-			// 1. Cancel Subscription in Stripe (add hold note)
-			// 2. If there is a customer who is coming off of a hold, reactive their susbcription 
+		//first get the date for the "week of" - assuming this is going to run on Wednesday, it's always the previous Monday
+
+		$WeekOfDate = new DateTime();
+		$WeekOfDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+		$WeekOfDate->modify('Monday this week');
+		
+		echo $WeekOfDate->format('Y-m-d') . "<br />";
+		$WeekOfDate_string = $WeekOfDate->format('Y-m-d');
+		
+		//query for all holds with $WeekOfDate_string in them
+		$holds = Shippingholds::where('date_to_hold', $WeekOfDate_string)
+								->where('hold_status', 'hold')
+								->get();
+								
+		foreach ($holds as $hold) {
+
+				//if there is a hold for the next week, then 
+					// 1. Cancel Subscription in Stripe (add hold note)
+					// 2. If there is a customer who is coming off of a hold, reactive their susbcription
+
+				echo $hold->user_id;
+				
+				//cancel this user temporarily
+				$this->CancelSubscription($hold->user_id);
+				
+				//only do this once! -- mark as "held" so this process will only run once
+				$hold->hold_status='held';
+				$hold->save();
+				
+		}
+		
+		//check for previous week holds and restore those users IF they don't have a hold for THIS week
+		
 		
 	}
 	

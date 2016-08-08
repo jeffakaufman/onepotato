@@ -129,7 +129,7 @@ Route::get('/hold/{id}/{holddate}', 'SubinvoiceController@HoldSubscription');
 Route::get('/hold/restart/{id}/{holddate}', 'SubinvoiceController@UnHoldSubscription');
 Route::get('/hold/check/{id}/{holddate}', 'SubinvoiceController@CheckForHold');
 Route::get("/test/date/", 'SubinvoiceController@TestDate');
-
+Route::get('/hold/checkall/', 'SubinvoiceController@CheckHolds');
 
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
