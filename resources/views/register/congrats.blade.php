@@ -56,10 +56,6 @@
                         <h1>Congratulations!
                             <div class="panel-subtitle">Your first box will arrive on {{ date('F d', strtotime($start_date)) }}.</div>
                         </h1>
-                        <!-- Login Button -->
-                        <!-- <button type="submit" class="btn btn-primary" onclick="location.href='/whats-cooking';">
-                            See What's Cooking
-                        </button> -->
                     </div>
                 </div>
             </div>
@@ -73,9 +69,10 @@
                         <div class="panel-subtitle"></div>
                     </div>
                     <div class="panel-body font16 extrapadding text-center">
-                        
+                        {{ $first_delivery }}
 
-                        <div class="col-xs-4 font11 thinpadding first">
+
+                        <!-- <div class="col-xs-4 font11 thinpadding first">
                             <img src="/img/preferences_meal1.jpg" alt="">
                             <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Sweet Balsamic Chicken with Avocado Toast and Cauliflower</div>
                         </div>
@@ -86,8 +83,13 @@
                         <div class="col-xs-4 font11 thinpadding last">
                             <img src="/img/preferences_meal3.jpg" alt="">
                             <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Salmon Sheet Pan Dinner with Early Summer Vegetables  and Orzo Salad</div>
-                        </div>
+                        </div> -->
 
+                    </div>
+                    <div class="panel-footer font16 extrapadding text-center">
+                        Please use your email address to log into our site to manage
+your account. You will also need to create a password.
+                        <p><button type="submit" class="btn btn-primary" onclick="location.href='/login';">Login</button></p>
                     </div>
 
                 </div>
