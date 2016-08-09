@@ -462,6 +462,8 @@ class SubinvoiceController extends Controller
 		//record the RAW JSON to the log (need to create)
 		
 		//record the parsed JSON to the database
+
+		//date function here is pesky
 		$subinvoice = new Subinvoice;
 		
 		$subinvoice->stripe_event_id = $event_json->id;
