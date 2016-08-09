@@ -325,6 +325,7 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #slowcooker").prop( "checked", menu.slowcooker );
     $("#menuEditModal #isVegetarian").prop( "checked", menu.isVegetarian );
     $("#menuEditModal #isOmnivore").prop( "checked", menu.isOmnivore );
+    $("#menuEditModal #vegetarianBackup").prop( "checked", menu.vegetarianBackup );
 });
 </script>
 </whatscookings>

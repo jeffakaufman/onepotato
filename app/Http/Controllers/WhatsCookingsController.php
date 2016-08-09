@@ -252,8 +252,6 @@ class WhatsCookingsController extends Controller
 	    elseif($request->isOmnivore && $request->isVegetarian){
 	    	$subs = DB::table('products')
 	    		->join('subscriptions','products.id','=','subscriptions.product_id')
-                ->whereNull('subscriptions.dietary_preferences')
-	    		->orWhere('subscriptions.dietary_preferences','not like',$mainIngredientNumber)
 	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
 			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
 	    	DB::table('menus_users')->insert($subs);

@@ -177,13 +177,13 @@ $(function() {
         @foreach ($weeksMenus as $weeksMenu)
             @if (count($weeksMenu->menus) > 0) 
             <div class="week">
-                <?php $status = 'shipped' ?>
+                <?php $status = 'on' ?>
                 <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
                     <span class="plan_size">{{ $userProduct->productDetails()->FamilySize }} <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
                     <div class="subtitle">
                         @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
                         @if ($status == 'on')
-                            <a href="#" class="change_menu" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
+                            <a href="#" class="change_menu" data-month="8" data-day="3" data-year="2016" data-whatscooking="{{ $weeksMenu->all }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
                         @endif
                         @if ($status == 'off')
                             <button class="btn btn-primary btn-unskip" data-month="8" data-day="3" data-year="2016">UNSKIP THIS DELIVERY</button>
@@ -195,13 +195,13 @@ $(function() {
 	                <div class="row">
                 	@foreach ($weeksMenu->menus as $menu)
                     	<div class="col-sm-4">
-                    		@if($menu->image)
-                    	    <img src="{{$menu->image}}" />
+                    		@if($menu->menu()->first()->image)
+                    	    <img src="{{$menu->menu()->first()->image}}" />
                     	    @else
                     	    <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
 							@endif
-                    	    <p class="caption">{{$menu->menu_title}}<br/>
-                    	    	<i>{{$menu->menu_description}}</i></p>
+                    	    <p class="caption">{{$menu->menu()->first()->menu_title}}<br/>
+                    	    	<i>{{$menu->menu()->first()->menu_description}}</i></p>
                     	</div>
                 	@endforeach
     	            </div>
@@ -280,7 +280,7 @@ $(function() {
                                 </div>
                             </div>
 
-                            
+                            <div id="test">test</div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -329,4 +329,11 @@ $(function() {
     </div><!-- .row -->
 
 </div>
+<script>
+$('#changeMenu').on('show.bs.modal', function(e) {
+    
+    $("#changeMenu #test").text( $(e.relatedTarget).data('whatscooking'); );
+</script>
 @endsection
+
+

@@ -16,6 +16,7 @@ use Auth;
 use CountryState;
 use App\WhatsCookings;
 use App\Menus;
+use App\MenusUsers;
 use stdClass;
 
 class UserController extends Controller
@@ -882,7 +883,8 @@ class UserController extends Controller
 		$productID = $userSubscription->product_id;
 		$userProduct = Product::where('id',$productID)->firstOrFail();
 		$product_type = $userProduct->product_type == 1 ? "isOmnivore" : "isVegetarian";
-		$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
+		$startDate = date('Y-m-d H:i:s');
+		//$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
     	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
     	$noWeekMenu = [];
 
@@ -894,13 +896,20 @@ class UserController extends Controller
     			$deliverySchedule->date = date('l, M jS', $i);
 				
 				if (isset($whatscooking)) {
-    				$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();
+    				//$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();
+    				
+    				$deliverySchedule->menus = MenusUsers::where('users_id',$id)
+    											->where('delivery_date',date('Y-m-d', $i))
+    											->get();
+    				$deliverySchedule->all = $whatscooking->menus()->get();
 				} else {
     				$deliverySchedule->menus = [];
 				}
 				$weeksMenus[] = $deliverySchedule;
 			}   
     	}
+   	//echo json_encode($weeksMenus[0]);
+   	//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
    	return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct]);
 
 	}

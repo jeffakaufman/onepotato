@@ -32,6 +32,10 @@ class Menus extends Model
 	}
 
 	
+    public function menus_users()
+    {
+        return $this->hasMany('App\MenusUsers');
+    }
 	
 	
 	public function whatscookings()
