@@ -13,10 +13,10 @@ var MenuComponent = Vue.extend({
     },
     methods: {
     	fetchMenu: function() {
-    		console.log('fetching');
+    		
     		var date, year, month, day;
     		
-	        date = new Date( $('#firstDay').val() );
+	        date = new Date( $('#startDate').val() );
 	        year = date.getFullYear();
 	        month = ('0' + (date.getMonth()+1)).slice(-2);
 	        day = ('0' + date.getDate()).slice(-2);
@@ -75,7 +75,7 @@ var MenuComponent = Vue.extend({
 Vue.component('menu', MenuComponent);
 
 if (document.getElementById('preferences')) {
-	var vm = new Vue({
+	new Vue({
 		el: '#preferences',
 		ready: function() {
 
@@ -123,7 +123,3 @@ if (document.getElementById('preferences')) {
 	});
 }
 
-// vm.$watch('dateSelected', function (val) {
-// 	console.log('changed');
-//   	MenuComponent.fetchMenu();
-// });
