@@ -191,7 +191,7 @@ class SubinvoiceController extends Controller
 				//add a batch ID so that we can easily get all the orders sent to ship station
 			
 				$charge_date = new DateTime($invoice->charge_date);
-				$charge_date_formatted = $charge_date->format('m/d/Y H:i');	
+				$charge_date_formatted = $charge_date->format('m/d/Y H:i:s');	
 				
 				$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
 				
@@ -472,7 +472,8 @@ class SubinvoiceController extends Controller
 		//dtae is no longer in API?
 		//$charge_date = new DateTime($event_json->data->object->date);
 		$charge_date = new DateTime();
-		$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");	
+		//$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");	
+		$charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");	
 		
 		
 		$subinvoice->charge_date = $charge_date_formatted;
