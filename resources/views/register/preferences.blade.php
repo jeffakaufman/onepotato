@@ -25,7 +25,7 @@ $('#register3').addClass('active');
     if (Session::has('shellfish')) $shellfish = Session::get('shellfish');
     if (Session::has('nuts')) $nuts = Session::get('nuts');
     if (Session::has('upcoming_dates')) $upcoming_dates = Session::get('upcoming_dates');
-    if (Session::has('first_day')) $first_day = Session::get('first_day'); else $first_day = '';
+    if (Session::has('start_date')) $start_date = Session::get('start_date'); else $start_date = '';
 ?>
 <div id="preferences">
     <div id="planType">
@@ -113,7 +113,7 @@ $('#register3').addClass('active');
                                 <div class="col-xs-12 padbottom extrapadding">
                                     My first box will arrive on
                                     <label class="select inline">
-                                        {!! Form::select('first_day', isset($upcoming_dates) ? $upcoming_dates : $upcomingDates,$first_day,array('id'=>'firstDay', 'class'=>'form-control', 'v-on:change'=>'fetchNewMenu', 'required')); !!}
+                                        {!! Form::select('start_date', isset($upcoming_dates) ? $upcoming_dates : $upcomingDates,$start_date,array('id'=>'startDate', 'class'=>'form-control', 'v-on:change'=>'fetchNewMenu', 'required')); !!}
                                     </label>
                                 </div>
                                 <div class="col-xs-12 padding extrapadding">
@@ -122,7 +122,7 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 
-                                <menu :prefs="prefs" track-by="id"></menu>
+                                <menu :prefs="prefs"></menu>
     
                             </div>
     
@@ -131,11 +131,26 @@ $('#register3').addClass('active');
                                 <div id="menu" class="col-xs-12 extrapadding">
     
                                     <div class="meal col-xs-4 font11 thinpadding" v-for="meal in filteredMenu" track-by="id">
-                                        <img :src="meal.image" alt="">
+                                        <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}"><img :src="meal.image" alt="" class="meal_image"></a>
                                         <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }}</div>
+
+                                        <div id="imagemodal-@{{ meal.id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">@{{ meal.menu_title }}</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                <img :src="meal.image" id="imagepreview">
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                     </div>
                                     
                                 </div>
+                                
                             </template>
                         </div>
                     </div>
@@ -152,13 +167,18 @@ $('#register3').addClass('active');
         </form>
     </div>
 </div>
-
 <script>
-$(function(){
-    // var MenuComponent = this;
-    // $(document.body).on('change', '#firstDay', function () {
-    //     MenuComponent.$children[0].fetchMenu();
-    // });
+$(function() {
+
+    $('#menu img').each(function() {
+        $(this).click(function() {
+            console.log('complete');
+            console.log($(this).attr('src'));
+            $('#imagepreview').attr('src', $(this).attr('src') );
+            $('.modal-title').text( $(this).parents('a').next().text() );
+        });
+    });
+
 });
 </script>
 @endsection

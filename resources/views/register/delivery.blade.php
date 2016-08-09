@@ -12,7 +12,7 @@ $('#register4').addClass('active');
     if (Session::has('children')) $children = Session::get('children');
     if (Session::has('plantype')) $plantype = Session::get('plantype');
     if (Session::has('dietprefs')) $dietprefs = Session::get('dietprefs');
-    if (Session::has('first_day')) $first_day = Session::get('first_day');
+    if (Session::has('start_date')) $start_date = Session::get('start_date');
     if (Session::has('delivery_loc')) $loc = Session::get('delivery_loc');
     if (Session::has('firstname')) $firstname = Session::get('firstname');
     if (Session::has('lastname')) $lastname = Session::get('lastname');
@@ -45,7 +45,7 @@ $('#register4').addClass('active');
 <form class="form-horizontal" role="form" method="post"  action="{{ url('/register/delivery') }}">
 					 {{ csrf_field() }}
 
-					<input type="hidden" name="first_day" value="{{ $first_day }}" />
+					<input type="hidden" name="start_date" value="{{ $start_date }}" />
 					<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
                     <!-- <input type="hidden" name="children" value="{{ $children }}" /> -->
                     <!-- <input type="hidden" name="plantype" value="{{ $plantype }}" /> -->

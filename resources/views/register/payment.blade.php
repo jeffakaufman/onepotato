@@ -119,7 +119,7 @@ function stripeResponseHandler(status, response) {
 
        	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
 							 {{ csrf_field() }}
-							<input type="hidden" name="start_date" value="{{ $first_day }}" />
+							<input type="hidden" name="start_date" value="{{ $start_date }}" />
 							<input type="hidden" name="user_id" value="{{ $user->id }}" />
 
         <div class="row">
@@ -295,7 +295,7 @@ function stripeResponseHandler(status, response) {
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                {{ date('F d', strtotime($first_day)) }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
+                                {{ date('F d', strtotime($start_date)) }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
@@ -309,7 +309,7 @@ function stripeResponseHandler(status, response) {
                         <p>&nbsp;</p>
 
                         <div class="row padtop font16">
-                            <div class="panel-heading text-left">order TOTAL FOR {{ date('F d', strtotime($first_day)) }}</div>
+                            <div class="panel-heading text-left">order TOTAL FOR {{ date('F d', strtotime($start_date)) }}</div>
                             <div class="panel-body">
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding eh">{{ $product->product_description }} </div>
