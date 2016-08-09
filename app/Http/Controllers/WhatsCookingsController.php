@@ -233,8 +233,7 @@ class WhatsCookingsController extends Controller
 	    	$subs = DB::table('products')
 	    		->where('product_type',2)
 	    		->join('subscriptions','products.id','=','subscriptions.product_id')
-                ->whereNull('subscriptions.dietary_preferences')
-	    		->orWhere('subscriptions.dietary_preferences','like',$mainIngredientNumber)
+	    		->where('subscriptions.dietary_preferences','like',$mainIngredientNumber)
 	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
 			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
 			
