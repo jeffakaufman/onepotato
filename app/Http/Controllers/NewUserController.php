@@ -418,8 +418,8 @@ class NewUserController extends Controller
 			$trial_ends = "";
 			
 			//time of day cutoff for orders
-			$cutOffTime = "11:00:00";
-			$cutOffDay = "Friday";
+			$cutOffTime = "16:00:00";
+			$cutOffDay = "Wednesday";
 			
 			//change dates to WEDNESDAY
 			//cutoff date is the last date to change or to signup for THIS week
