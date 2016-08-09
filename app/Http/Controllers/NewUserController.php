@@ -85,7 +85,7 @@ class NewUserController extends Controller
 
 		$productAdult = Product::where('sku','0202000000')->first();
 		$productFamily1 = Product::where('sku','0202010000')->first();
-//$request->session()->flush();
+
 		$request->session()->put('step1', true);
 		$request->session()->put('user_id', $user->id);
 		$request->session()->put('zip', $request->zip);
@@ -267,7 +267,7 @@ class NewUserController extends Controller
 
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
-		$request->session()->put('first_day', $request->first_day);
+		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $dietprefs);
 		$request->session()->put('state', $state->state);
 
@@ -335,7 +335,7 @@ class NewUserController extends Controller
 		return view('register.payment')->
 			with([
 				'user'=>$user,
-				'first_day'=>$request->first_day,
+				'start_date'=>$request->start_date,
 				'product'=>$product
 				]);
 		
@@ -348,7 +348,7 @@ class NewUserController extends Controller
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 			$productID = $userSubscription->product_id;
 			$userProduct = Product::where('id',$productID)->first();
-		
+
 			//figure out date logic for trial period - 
 			// - mist be UNIX timestamp
 			
@@ -401,11 +401,19 @@ class NewUserController extends Controller
 			$userSubscription->save();
 			$user->save();
 
+			$firstDelivery = MenusUsers::where('users_id',$id)
+				->where('delivery_date',date('Y-m-d', $request->start_date))
+				->get();
+
 		$request->session()->flush();
 
         event(new UserHasRegistered($user));
 
-        return view('register.congrats')->with(['user'=>$user,'start_date'=>$request->start_date]);
+        return view('register.congrats')->with([
+        	'user'=>$user,
+        	'start_date'=>$request->start_date,
+        	'first_delivery'=>$firstDelivery
+        ]);
 			
 	}
 		
