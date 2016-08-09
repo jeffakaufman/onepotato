@@ -73,10 +73,9 @@
                         <div class="panel-subtitle"></div>
                     </div>
                     <div class="panel-body font16 extrapadding text-center">
-                        {{ $first_delivery }}
-
                         
-                        <!-- <div class="col-xs-4 font11 thinpadding first">
+
+                        <div class="col-xs-4 font11 thinpadding first">
                             <img src="/img/preferences_meal1.jpg" alt="">
                             <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Sweet Balsamic Chicken with Avocado Toast and Cauliflower</div>
                         </div>
@@ -87,7 +86,7 @@
                         <div class="col-xs-4 font11 thinpadding last">
                             <img src="/img/preferences_meal3.jpg" alt="">
                             <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">Salmon Sheet Pan Dinner with Early Summer Vegetables  and Orzo Salad</div>
-                        </div> -->
+                        </div>
 
                     </div>
 
