@@ -12,6 +12,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use App\ZipcodeStates;
+use App\MenusUsers;
 use Hash;
 use Mail;
 use DateTime;
