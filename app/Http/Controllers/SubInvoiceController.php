@@ -465,7 +465,7 @@ class SubinvoiceController extends Controller
 		$subinvoice = new Subinvoice;
 		
 		$subinvoice->stripe_event_id = $event_json->id;
-		$subinvoice->charge_date = date("Y-m-d H:i:s", $event_json->data->object->date);
+		$subinvoice->charge_date = date_format("Y-m-d H:i:s", $event_json->data->object->date);
 		$subinvoice->stripe_customer_id = $event_json->data->object->customer;
 		$subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
 		$stripe_id = $event_json->data->object->lines->data[0]->id;
