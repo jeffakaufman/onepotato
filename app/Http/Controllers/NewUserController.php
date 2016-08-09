@@ -12,7 +12,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use App\ZipcodeStates;
-use App\MenusUsers;
+//use App\MenusUsers;
 use Hash;
 use Mail;
 use DateTime;
@@ -402,9 +402,9 @@ class NewUserController extends Controller
 			$userSubscription->save();
 			$user->save();
 
-			$firstDelivery = MenusUsers::where('users_id',$id)
-				->where('delivery_date',date('Y-m-d', $request->start_date))
-				->get();
+			// $firstDelivery = MenusUsers::where('users_id',$id)
+			// 	->where('delivery_date',date('Y-m-d', $request->start_date))
+			// 	->get();
 
 		$request->session()->flush();
 
@@ -412,8 +412,7 @@ class NewUserController extends Controller
 
         return view('register.congrats')->with([
         	'user'=>$user,
-        	'start_date'=>$request->start_date,
-        	'first_delivery'=>$firstDelivery
+        	'start_date'=>$request->start_date
         ]);
 			
 	}
