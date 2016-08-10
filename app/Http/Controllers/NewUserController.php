@@ -266,6 +266,8 @@ class NewUserController extends Controller
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 
+		MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->delete();
+		
 		foreach ($request->menus_id as $menu_id) {
 			$firstMenu = new MenusUsers;
 			$firstMenu->users_id = $request->user_id;
@@ -273,19 +275,21 @@ class NewUserController extends Controller
 			$firstMenu->delivery_date = date('Y-m-d', strtotime($request->start_date));
 			$firstMenu->save();
 		}
+		$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
 
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
 		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $dietprefs);
 		$request->session()->put('state', $state->state);
+		$request->session()->put('meal1', $firstDelivery[0]->menus_id);
+		$request->session()->put('meal2', $firstDelivery[1]->menus_id);
+		$request->session()->put('meal3', $firstDelivery[2]->menus_id);
 
 //        var_dump($user);die();
 
 		return view('register.delivery')->
-			with([
-                'user'=>$user,
-			]);
+			with(['user'=>$user]);
 	}
 
 

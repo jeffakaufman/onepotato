@@ -33888,6 +33888,54 @@ Vue.component('delivery', {
 	}
 });
 
+if (document.getElementById('congrats')) {
+	new Vue({
+		el: '#congrats',
+
+		ready: function ready() {
+			this.fetchMeals();
+		},
+		data: function data() {
+			return {
+				list: []
+			};
+		},
+		methods: {
+			fetchMeals: function fetchMeals() {
+
+				var date, year, month, day;
+
+				date = new Date($('#congrats').data('start-date'));
+				year = date.getFullYear();
+				month = ('0' + (date.getMonth() + 1)).slice(-2);
+				day = ('0' + date.getDate()).slice(-2);
+
+				this.$http.get('/whatscooking/' + year + '-' + month + '-' + day, function (menu) {
+					this.list = menu;
+				}.bind(this));
+			}
+		},
+		computed: {
+			firstMenu: function firstMenu(meal) {
+				var firstDelivery = [];
+				for (var i = 0; i < this.list.length; i++) {
+
+					if (this.list[i].id == $('#congrats').data('meal1')) {
+						firstDelivery.push(this.list[i]);
+					}
+					if (this.list[i].id == $('#congrats').data('meal2')) {
+						firstDelivery.push(this.list[i]);
+					}
+					if (this.list[i].id == $('#congrats').data('meal3')) {
+						firstDelivery.push(this.list[i]);
+					}
+				}
+				return firstDelivery;
+			}
+		}
+	});
+}
+
 },{}],57:[function(require,module,exports){
 'use strict';
 
