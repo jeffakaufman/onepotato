@@ -402,9 +402,7 @@ class NewUserController extends Controller
 			$userSubscription->save();
 			$user->save();
 
-			$firstDelivery = MenusUsers::where('users_id',$request->user_id)
-				->where('delivery_date',date('Y-m-d', $request->start_date))
-				->get();
+			$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
 
 		$request->session()->flush();
 
