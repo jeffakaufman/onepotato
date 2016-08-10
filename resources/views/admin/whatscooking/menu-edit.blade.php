@@ -30,11 +30,9 @@
 	       		<input name="isVegetarian" id="isVegetarian" type="checkbox" value="1"> Vegetarian
 	    	</div>    
 	    	<div class="col-sm-4 text-right" style="padding-right: 0;">
-	   	    	Vegetarian Replacement
-	    	</div>  
-	    	<div class="col-sm-1" style="padding-left: 5px;">
-	   	    	<input name="vegetarianBackup" id="vegetarianBackup" type="checkbox" value="1">
-	    	</div>     
+	   	    	<input name="vegetarianBackup" id="vegetarianBackup" type="checkbox" value="1"> Vegetarian Replacement<br />
+	       		<input name="isNotAvailable" id="isNotAvailable" type="checkbox" value="1"> <strong>NOT AVAILABLE ONLINE</strong>
+	    	</div>      
 		</div>
 		<div class="form-group">
 	    	<label for="Preferences" class="col-sm-2 control-label">Preferences</label>

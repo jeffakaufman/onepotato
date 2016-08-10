@@ -31,7 +31,7 @@
 							    'files' => true)) !!}          
 						    <div class="form-group">
 						        {!! Form::label('Type', null,array('class'=>'col-sm-2 control-label')) !!}
-						        <div class="col-sm-3">
+						        <div class="col-sm-2">
 						        @if( $last)
 						        	{!! Form::hidden('last_id',$last->id); !!}
 						       	    {!! Form::checkbox('isOmnivore') !!} Omnivore<br />
@@ -41,11 +41,9 @@
 						           	{!! Form::checkbox('isVegetarian') !!} Vegetarian
 						        @endif
 						        </div>
-							    <div class="col-sm-2 text-right" style="padding-right: 0;">
-							    	Vegetarian Backup
-							    </div>   
-							    <div class="col-sm-1" style="padding-left: 5px;">
-							    	{!! Form::checkbox('vegetarianBackup',1,false) !!} 
+							    <div class="col-sm-5" style="padding-left: 5px;">
+							    	{!! Form::checkbox('vegetarianBackup',1,false) !!}  Vegetarian Backup<br />
+						           	{!! Form::checkbox('isNotAvailable') !!} <strong>NOT AVAILABLE ONLINE</strong>
 							    </div>   
 						    </div>
 						    <div class="form-group">
@@ -209,6 +207,13 @@
 								    			<strong>Vegetarian Replacement</strong>
 								    		</div>
 								    	</div>
+								    	@endif 
+			                	        @if ($menu->isNotAvailable)
+			                	        <div class="row" style="margin-top:5px">
+											<div class="col-md-12 ">
+								    			<strong>NOT AVAILABLE ONLINE</strong>
+								    		</div>
+								    	</div>
 								    	@endif  
 												</div>
 											</div>
@@ -325,6 +330,7 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #slowcooker").prop( "checked", menu.slowcooker );
     $("#menuEditModal #isVegetarian").prop( "checked", menu.isVegetarian );
     $("#menuEditModal #isOmnivore").prop( "checked", menu.isOmnivore );
+    $("#menuEditModal #isNotAvailable").prop( "checked", menu.isNotAvailable );
     $("#menuEditModal #vegetarianBackup").prop( "checked", menu.vegetarianBackup );
 });
 </script>

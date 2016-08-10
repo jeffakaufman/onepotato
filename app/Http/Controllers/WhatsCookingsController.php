@@ -145,6 +145,7 @@ class WhatsCookingsController extends Controller
         $menu->vegetarianBackup = $request->vegetarianBackup;
         $menu->isVegetarian = $request->isVegetarian ? $request->isVegetarian : 0;
         $menu->isOmnivore = $request->isOmnivore ? $request->isOmnivore : 0;
+        $menu->isNotAvailable = $request->isNotAvailable ? $request->isNotAvailable : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
@@ -212,6 +213,7 @@ class WhatsCookingsController extends Controller
         $menu->vegetarianBackup = $request->vegetarianBackup ? $request->vegetarianBackup : 0;
         $menu->isVegetarian = $request->isVegetarian ? $request->isVegetarian : 0;
         $menu->isOmnivore = $request->isOmnivore ? $request->isOmnivore : 0;
+        $menu->isNotAvailable = $request->isNotAvailable ? $request->isNotAvailable : 0;
 		
 		if ($image) {
 	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
