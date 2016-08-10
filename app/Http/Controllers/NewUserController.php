@@ -282,14 +282,10 @@ class NewUserController extends Controller
 		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $dietprefs);
 		$request->session()->put('state', $state->state);
-		$request->session()->put('meal1', $firstDelivery[0]->menus_id);
-		$request->session()->put('meal2', $firstDelivery[1]->menus_id);
-		$request->session()->put('meal3', $firstDelivery[2]->menus_id);
 
 //        var_dump($user);die();
 
-		return view('register.delivery')->
-			with(['user'=>$user]);
+		return view('register.delivery')->with(['user'=>$user]);
 	}
 
 
@@ -415,6 +411,9 @@ class NewUserController extends Controller
 			$user->save();
 
 			$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
+			$meal1 = $firstDelivery[0]->menus_id;
+			$meal2 = $firstDelivery[1]->menus_id;
+			$meal3 = $firstDelivery[2]->menus_id;
 
 		$request->session()->flush();
 
@@ -423,7 +422,9 @@ class NewUserController extends Controller
         return view('register.congrats')->with([
         	'user'=>$user,
         	'start_date'=>$request->start_date,
-        	'first_delivery'=>$firstDelivery
+        	'meal1'=>$meal1,
+        	'meal2'=>$meal2,
+        	'meal3'=>$meal3,
         ]);
 			
 	}

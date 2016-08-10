@@ -1,19 +1,6 @@
 @extends('spark::layouts.app')
 
 @section('register-nav')
-<?php 
-    if (Session::has('redmeat')) $redmeat = Session::get('redmeat');
-    if (Session::has('poultry')) $poultry = Session::get('poultry');
-    if (Session::has('redmeat')) $redmeat = Session::get('redmeat');
-    if (Session::has('fish')) $fish = Session::get('fish');
-    if (Session::has('lamb')) $lamb = Session::get('lamb');
-    if (Session::has('pork')) $pork = Session::get('pork');
-    if (Session::has('shellfish')) $shellfish = Session::get('shellfish');
-    if (Session::has('nuts')) $nuts = Session::get('nuts');
-    if (Session::has('meal1')) $meal1 = Session::get('meal1');
-    if (Session::has('meal2')) $meal2 = Session::get('meal2');
-    if (Session::has('meal3')) $meal3 = Session::get('meal3');
-?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
