@@ -134,6 +134,8 @@ $('#register3').addClass('active');
                                         <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}"><img :src="meal.image" alt="" class="meal_image"></a>
                                         <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }}</div>
 
+                                        <input type="hidden" name="menus_id[]" value="@{{ meal.id }}" />
+                                        
                                         <div id="imagemodal-@{{ meal.id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
                                             <div class="modal-content">
@@ -167,18 +169,4 @@ $('#register3').addClass('active');
         </form>
     </div>
 </div>
-<script>
-$(function() {
-
-    $('#menu img').each(function() {
-        $(this).click(function() {
-            console.log('complete');
-            console.log($(this).attr('src'));
-            $('#imagepreview').attr('src', $(this).attr('src') );
-            $('.modal-title').text( $(this).parents('a').next().text() );
-        });
-    });
-
-});
-</script>
 @endsection

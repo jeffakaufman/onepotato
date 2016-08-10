@@ -266,6 +266,13 @@ class NewUserController extends Controller
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 
+		foreach ($request->menus_id as $menu_id) {
+			$firstMenu = new MenusUsers;
+			$firstMenu->users_id = $request->user_id;
+			$firstMenu->menus_id = $menu_id;
+			$firstMenu->save();
+		}
+
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
 		$request->session()->put('start_date', $request->start_date);
