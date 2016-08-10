@@ -10,12 +10,15 @@ class UserHasRegistered extends Event
 {
     use SerializesModels;
 
+    /**
+     * @var User
+     */
     public $user;
 
     /**
      * Create a new event instance.
      *
-     * @param \App\User $user
+     * @param User $user
      * @return void
      */
     public function __construct(User $user)
