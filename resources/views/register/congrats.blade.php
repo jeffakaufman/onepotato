@@ -86,14 +86,21 @@
                         </div> -->
 
                     </div>
-                    <div class="panel-footer font16 extrapadding text-center">
-                        Please use your email address to log into our site to manage
-your account. You will also need to create a password.
-                        <p><button type="submit" class="btn btn-primary" onclick="location.href='/login';">Login</button></p>
-                    </div>
 
                 </div>
 
+                <div class="panel panel-default">
+
+                    <div class="panel-heading text-left extrapadding">Log in
+                        <div class="panel-subtitle">Please use your email address to log into our site to manage
+your account. You will also need to create a password.</div>
+                    </div>
+                    <div class="panel-body font16 extrapadding text-center">
+                    
+                        <button type="submit" class="btn btn-primary" onclick="location.href='/login';">Log in</button>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
