@@ -270,6 +270,7 @@ class NewUserController extends Controller
 			$firstMenu = new MenusUsers;
 			$firstMenu->users_id = $request->user_id;
 			$firstMenu->menus_id = $menu_id;
+			$firstMenu->delivery_date = date('Y-m-d', strtotime($request->start_date));
 			$firstMenu->save();
 		}
 
