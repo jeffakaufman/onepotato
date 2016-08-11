@@ -469,8 +469,10 @@ class SubinvoiceController extends Controller
 		
 		$subinvoice->stripe_event_id = $event_json->id;
 		
-		//dtae is no longer in API?
-		$charge_date = new DateTime($event_json->data->object->date);
+		$timeStamp = $event_json->data->object->date;
+		$dtStr = date("c", $timeStamp);
+		$charge_date = new DateTime($dtStr);
+		
 		//$charge_date = new DateTime();
 		//$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");	
 		$charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");	
