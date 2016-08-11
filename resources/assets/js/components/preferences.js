@@ -18,6 +18,7 @@ var MenuComponent = Vue.extend({
     		
 	        date = new Date( $('#startDate').val() );
 	        year = date.getFullYear();
+	        if (year <= 1999) year = year + 100;
 	        month = ('0' + (date.getMonth()+1)).slice(-2);
 	        day = ('0' + date.getDate()).slice(-2);
 
