@@ -76,6 +76,16 @@ class NewUserController extends Controller
 
 		if($existingUser) {
             $user = $existingUser;
+
+            $request->session()->put('firstname', $user->first_name);
+            $request->session()->put('lastname', $user->last_name);
+            $request->session()->put('address', $user->billing_address);
+            $request->session()->put('address2', $user->billing_address_line_2);
+            $request->session()->put('state', $user->billing_state);
+            $request->session()->put('zip', $request->zip);
+            $request->session()->put('city', $user->billing_city);
+            $request->session()->put('phone', $user->phone);
+
         } else {
             $user = new User;
         }
