@@ -5803,14 +5803,18 @@ button.close {
   background-color: #e91e25;
   border: none;
   border-radius: 0;
-  padding: 10px 20px;
+  padding: 5px 10px 2px 10px;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 500; }
   .btn-primary.small, .btn-secondary.small {
     font-size: 14px;
     padding: 5px 10px;
     text-transform: none; }
+  @media only screen and (min-width: 992px) {
+    .btn-primary, .btn-secondary {
+      font-size: 18px;
+      padding: 10px 20px; } }
 
 .btn-secondary {
   background-color: #1db8bf; }
@@ -6458,10 +6462,12 @@ table.month {
   table.month .day, table.month .day_name {
     font-size: 12px;
     text-align: center;
-    padding: 5px; }
+    padding: 5px;
+    height: 45px; }
   table.month .day {
     min-height: 50px;
-    vertical-align: top; }
+    vertical-align: top;
+    height: 45px; }
     table.month .day.active {
       font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
     table.month .day .fa {
@@ -6469,8 +6475,6 @@ table.month {
       font-size: 18px; }
   table.month .day_name {
     color: #1db8bf; }
-  table.month tr:nth-child(2) td {
-    padding-top: 15px; }
   table.month tr:last-child td {
     padding-bottom: 15px; }
 
@@ -7090,6 +7094,11 @@ h1 {
     margin-top: -2.4em;
     font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
     font-size: 16px; }
+    h1 .subtitle.alt {
+      color: #404040;
+      margin-top: 0;
+      letter-spacing: 0;
+      line-height: 1.2em; }
 
 h2 {
   font-size: 18px;
@@ -7112,11 +7121,22 @@ h2 {
     color: #404040;
     font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
     letter-spacing: 0; }
+    @media only screen and (max-width: 549px) {
+      .schedule h2 .plan_size {
+        text-align: right;
+        margin-top: 0.5em;
+        display: block; } }
   .schedule h2 .subtitle {
-    float: right;
     font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    color: #e91e25; }
+    font-size: 13px;
+    color: #e91e25;
+    margin-top: 15px;
+    text-align: right; }
+    @media only screen and (min-width: 992px) {
+      .schedule h2 .subtitle {
+        float: right;
+        font-size: 15px;
+        margin-top: -7px; } }
     .schedule h2 .subtitle a {
       color: #e91e25; }
       .schedule h2 .subtitle a:hover {
@@ -7127,6 +7147,8 @@ h2 {
       .schedule h2 .subtitle .shipped .icon {
         vertical-align: middle;
         font-size: 28px; }
+    .schedule h2 .subtitle form {
+      display: inline; }
     .schedule h2 .subtitle button {
       color: #fff;
       font-size: 16px;
@@ -7134,6 +7156,13 @@ h2 {
       padding: 12px 12px 8px 12px;
       margin-left: 5px;
       margin-top: -0.2em; }
+
+.schedule .week {
+  position: relative; }
+  .schedule .week .unskip-btn {
+    position: absolute;
+    top: -7px;
+    right: 0; }
 
 h3, h4, h5 {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
@@ -7198,6 +7227,9 @@ body.account {
   margin: 1em 0;
   text-align: center;
   line-height: 1.2em; }
+  @media only screen and (max-width: 549px) {
+    .caption {
+      font-size: 0.8em; } }
 
 .note {
   background: #e8f9fa;

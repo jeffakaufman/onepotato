@@ -8,6 +8,7 @@ use App\User;
 use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
+use App\Dietary_preference;
 use App\Product;
 use App\Referral;
 use Mail;
@@ -880,6 +881,7 @@ class UserController extends Controller
 		$id =  Auth::id();
 		$user = User::find($id);
 		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
+		$sub = Dietary_preference::where('user_id',$id)->firstOrFail();
 		$productID = $userSubscription->product_id;
 		$userProduct = Product::where('id',$productID)->firstOrFail();
 		$product_type = $userProduct->product_type == 1 ? "isOmnivore" : "isVegetarian";
@@ -894,7 +896,8 @@ class UserController extends Controller
 				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))
 								->first();
     			$deliverySchedule->date = date('l, M jS', $i);
-				
+    			$deliverySchedule->date2 = date('Y-m-d', $i);
+				$deliverySchedule->all = [];
 				if (isset($whatscooking)) {
     				//$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();
     				
@@ -910,10 +913,38 @@ class UserController extends Controller
     	}
    	//echo json_encode($weeksMenus[0]);
    	//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   	return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct]);
+   	return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	
-	
-	
+	public function changeDelivery (Request $request) {
+		
+		$id =  Auth::id();
+		$user = User::find($id);
+
+		if ($request->date_to_skip) MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_skip)->delete();
+
+		else if ($request->date_to_unskip) {
+			foreach ($request->menu_id as $menu_id) {
+				$addMenu = new MenusUsers;
+				$addMenu->users_id = $id;
+				$addMenu->menus_id = $menu_id;
+				$addMenu->delivery_date = date('Y-m-d', strtotime($request->date_to_unskip));
+				$addMenu->save();
+			}
+		}
+
+		else if ($request->date_to_change) {
+			MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_change)->delete();
+			foreach ($request->menu_id as $menu_id) {
+				$addMenu = new MenusUsers;
+				$addMenu->users_id = $id;
+				$addMenu->menus_id = $menu_id;
+				$addMenu->delivery_date = $request->date_to_change;
+				$addMenu->save();
+			}
+		}
+
+		return redirect('/delivery-schedule'); 
+	}
 }

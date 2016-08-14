@@ -33,10 +33,12 @@ table.month {
 		font-size: 12px;
 		text-align: center;
 		padding: 5px;
+		height: 45px;
 	}
 	.day {
 		min-height: 50px;
 		vertical-align: top;
+		height: 45px;
 		
 		&.active {
 			font-family: $font-family-bold;
@@ -48,9 +50,6 @@ table.month {
 	}
 	.day_name {
 		color: $brand-primary;
-	}
-	tr:nth-child(2) td {
-		padding-top: 15px; 
 	}
 	tr:last-child td {
 		padding-bottom: 15px; 

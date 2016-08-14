@@ -50,6 +50,13 @@ h1 {
 		margin-top: -2.4em;
 		font-family: $font-family-sans-serif;
 		font-size: 16px;
+		
+		&.alt {
+			color: $text-color;
+			margin-top: 0;
+			letter-spacing: 0;
+			line-height: 1.2em;
+		}
 	}
 }
 h2 {
@@ -74,13 +81,26 @@ h2 {
 		color: $text-color;
 		font-family: $font-family-sans-serif;
 		letter-spacing: 0;
+		
+		@media only screen and (max-width: 549px) {
+			text-align: right;
+			margin-top: 0.5em;
+			display: block;
+		}
 	}
 	.subtitle {
-		float: right;
 		font-family: $font-family-semibold;
-		font-size: 15px;
+		font-size: 13px;
 		color: $brand-secondary;
+		margin-top: 15px;
+		text-align: right;
 		
+		@media only screen and (min-width: 992px) {
+			float: right;
+			font-size: 15px;
+			margin-top: -7px;
+		}
+
 		a {
 			color: $brand-secondary;
 			
@@ -97,6 +117,9 @@ h2 {
 				font-size: 28px;
 			}
 		}
+		form {
+			display: inline;
+		}
 		button {
 			color: #fff;
 			font-size: 16px;
@@ -104,6 +127,17 @@ h2 {
 			padding: 12px 12px 8px 12px;
 			margin-left: 5px;
 			margin-top: -0.2em;
+		}
+	}
+}
+.schedule {
+	.week {
+		position: relative;
+
+		.unskip-btn {
+			position: absolute;
+			top: -7px;
+			right: 0;
 		}
 	}
 }
@@ -181,6 +215,9 @@ body.account {
 	margin: 1em 0;
 	text-align: center;
 	line-height: 1.2em;
+	@media only screen and (max-width: 549px) {
+		font-size: 0.8em;
+	}
 }
 .note {
 	background: $bg-color-highlight;

@@ -19,6 +19,7 @@ require('./preferences');
 require('./delivery');
 require('./payment');
 require('./account');
+require('./delivery_schedule');
 
 $(function() {
 	$('<div class="dec numButton">-</div>').insertBefore('input.number');

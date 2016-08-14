@@ -1,291 +1,242 @@
 @extends('spark::layouts.app')
 
 @section('scripts')
-<script>
-    // these are labels for the days of the week
-days_labels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-// these are human-readable month name labels, in order
-monthNames = ['January', 'February', 'March', 'April',
-                     'May', 'June', 'July', 'August', 'September',
-                     'October', 'November', 'December'];
-deliveryStatus = [true, true, false, true, true, true, false, true, true];
-
-function Calendar(month, year) {
-  this.month = month;
-  this.year  = year;
-  this.html = '';
-}
-
-Calendar.prototype.generateHTML = function(){
-
-  // get first day of month
-  var firstDay = new Date(this.year, this.month, 1);
-  var startingDay = firstDay.getDay();
-
-  // find number of days in month
-  var dd = new Date(this.year, this.month+1, 0);
-  var monthLength = dd.getDate();
-//console.log(this.month);
-  
-  // do the header
-  var monthName = monthNames[this.month];
-  var html = '<table class="month">';
-  html += '<tr><th class="month_name" colspan="7">';
-  html +=  monthName;
-  html += '</th></tr>';
-  html += '<tr>';
-  for(var i = 0; i <= 6; i++ ){
-    html += '<td class="day_name">';
-    html += days_labels[i];
-    html += '</td>';
-  }
-  html += '</tr><tr class="week week1" data-week="1">';
-
-  var started = false;
-  var blank = true;
-  // fill in the days
-  var day = 1;
-  // this loop is for is weeks (rows)
-  var weeks = Math.ceil((monthLength + startingDay) / 7);
-  today = current_date.getDate() + 7;
-  current_month = current_date.getMonth() + 1;
-  this.month = this.month + 1;
-  //console.log(current_month);
-  //console.log(current_month);
-  for (var i = 0; i < weeks; i++) {
-    // this loop is for weekdays (cells)
-    //html += '<tr class="week week'+i+'">';
-    for (var j = 0; j <= 6; j++) { 
-
-        if (day <= monthLength && (i > 0 || j >= startingDay)) blank = false;
-
-        if (day == today && current_month == this.month && !blank)
-            html += '<td class="day day'+day+' active" data-date="'+this.month+'-'+day+'">';
-        else if ( (day == 1 && !blank) || (day <= monthLength && started) )
-            html += '<td class="day day'+day+'" data-date="'+this.month+'-'+day+'">';
-        else if (!started || day > monthLength)
-            html += '<td>';
-
-        if (day <= monthLength && (i > 0 || j >= startingDay)) {
-            started = true;
-            html += day;
-            day++;
-        } else {
-            started = false;
-        }
-        if (j == 2 && !blank && (day <= monthLength || j >= startingDay) && deliveryStatus[i]) {
-            html += '<div class="fa fa-check-circle" aria-hidden="true"></div>';
-        } else if (j == 2 && !blank && (day <= monthLength || j >= startingDay) && !deliveryStatus[i]) {
-            html += '<div class="fa fa-times-circle" aria-hidden="true"></div>';
-        }
-        html += '</td>';
-    }
-    var x = i + 2;
-    if (x > weeks) html += '</tr>';
-    else html += '</tr><tr class="week week'+x+'" data-week="'+x+'">';
-    //html += '</tr><tr>';
-  }
-  html += '</table>';
-
-  this.html = html;
-}
-
-Calendar.prototype.getHTML = function() {
-  return this.html;
-}
-
-$(function() {
-    $('.change_menu, .change_children').click(function () {
-        var deliveryMonth = $(this).data('month') - 1;
-        var deliveryDay = $(this).data('day');
-        var deliveryYear = $(this).data('year');
-        $('.delivery_date').text( monthNames[deliveryMonth] + ' ' + deliveryDay + ', ' + deliveryYear );
-    });
-    $('.subtitle').on('click', '.btn-skip', function(){
-        var deliveryMonth = $(this).data('month');
-        var deliveryDay = $(this).data('day');
-        var skipDay = deliveryMonth + '-' + deliveryDay;
-        $('table.month .day[data-date='+skipDay+']').find('.fa').removeClass('fa-check-circle').addClass('fa-times-circle');
-        $(this).parents('.week').find('h2 .fa').removeClass('fa-check-circle').addClass('fa-times-circle');
-        $(this).text('UNSKIP THIS DELIVERY').removeClass('btn-skip').addClass('btn-unskip');
-        $('.change_menu').hide();
-        return true;
-    });
-    $('.subtitle').on('click', '.btn-unskip', function(){
-        var deliveryMonth = $(this).data('month');
-        var deliveryDay = $(this).data('day');
-        var deliveryYear = $(this).data('year');
-        var unskipDay = deliveryMonth + '-' + deliveryDay;
-        $('table.month .day[data-date='+unskipDay+']').find('.fa').removeClass('fa-times-circle').addClass('fa-check-circle');
-        $(this).parents('.week').find('h2 .fa').removeClass('fa-times-circle').addClass('fa-check-circle');
-        $(this).text('SKIP THIS DELIVERY').removeClass('btn-unskip').addClass('btn-skip');
-        $('<a href="#" class="change_menu" data-month="'+deliveryMonth+'" data-day="'+deliveryDay+'" data-year="'+deliveryYear+'" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>').insertBefore( $(this) );
-        return true;
-    });
-    $('#changeMenu .meal').each(function() {
-        if ($(this).hasClass('select')) {
-            $(this).click(function() {
-                $('#changeMenu .meal').removeClass('selected');
-                $(this).removeClass('select').addClass('selected');
-            });
-        }
-    });
-});
-</script>
 @endsection
 
 @section('content')
-<div class="container">
+<?php
+
+function build_calendar($month,$year,$deliveryDates,$skipDates) {
+
+     $daysOfWeek = array('S','M','T','W','T','F','S');
+
+     $firstDayOfMonth = mktime(0,0,0,$month,1,$year);
+
+     // How many days does this month contain?
+     $numberDays = date('t',$firstDayOfMonth);
+     $dateComponents = getdate($firstDayOfMonth);
+
+     $monthName = $dateComponents['month'];
+     $dayOfWeek = $dateComponents['wday'];
+
+     $calendar = '<table class="month">';
+     $calendar .= '<caption class="month_name">'.$monthName . '</caption>';
+     $calendar .= '<tr>';
+
+     // Create the calendar headers
+
+     foreach($daysOfWeek as $day) {
+          $calendar .= '<td class="day_name">'.$day.'</td>';
+     } 
+
+     $currentDay = 1;
+
+     $calendar .= "</tr><tr>";
+
+     if ($dayOfWeek > 0) { 
+          $calendar .= '<td colspan="'.$dayOfWeek.'">&nbsp;</td>'; 
+     }
+     
+     $month = str_pad($month, 2, '0', STR_PAD_LEFT);
+
+     $today = date('Y-m-d');
+     $active = '';
+  
+     while ($currentDay <= $numberDays) {
+
+        if ($dayOfWeek == 7) {
+
+            $dayOfWeek = 0;
+            $calendar .= '</tr><tr>';
+
+        }
+
+        $currentDayRel = str_pad($currentDay, 2, '0', STR_PAD_LEFT);
+          
+        $date = $year.'-'.$month.'-'.$currentDayRel;
+
+        if ($date == $today) $active = 'active';
+        else  $active = '';
+
+        $marker = '';
+        if (in_array($date,$deliveryDates) && in_array($date,$skipDates)) $marker = '<div class="fa fa-times-circle" aria-hidden="true"></div>';
+        else if (in_array($date,$deliveryDates)) $marker = '<div class="fa fa-check-circle" aria-hidden="true"></div>';
+        
+        if (in_array($date,$deliveryDates))
+            $calendar .= '<td class="day delivery '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
+        else 
+            $calendar .= '<td class="day '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
+ 
+        $currentDay++;
+        $dayOfWeek++;
+
+     }
+
+     if ($dayOfWeek != 7) { 
+          $remainingDays = 7 - $dayOfWeek;
+          $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>"; 
+     }
+     $calendar .= "</tr>";
+     $calendar .= "</table>";
+
+     return $calendar;
+
+}
+
+?> 
+<div id="delivery_schedule" class="container">
     
     <div class="row">
 
         <div class="col-xs-12">
-            <h1>Delivery Schedule</h1>
-            <div class="font16" style="position: absolute; right: 0; top: 34px;">If scheduled, your next box will arrive on {{$weeksMenus[0]->date}}, before 8pm</div>
+            <h1>Delivery Schedule
+                <div class="subtitle alt">If scheduled, your next box will arrive on {{$weeksMenus[0]->date}}, before 8pm</div>
+            </h1>
         </div>
 
     </div><!-- .row -->
 
     <div class="row">
 
-        <div class="col-sm-3">
-            <script type="text/javascript">
-                var thisMonth, nextMonth, thisYear, nextYear;
-                current_date = new Date(); 
-                thisMonth = current_date.getMonth();
-                thisYear = current_date.getFullYear();
-                
-                if (thisMonth == 12) {
-                    nextMonth = 1;
-                    nextYear = nextYear + 1;
-                } else {
-                    nextMonth = thisMonth + 1;
-                    nextYear = thisYear;
+        <div class="col-sm-3 hidden-xs">
+            <?php
+
+                $dateComponents = getdate();
+                $deliveryDates = [];
+                $skipDates = [];
+                foreach ($weeksMenus as $weeksMenu) {
+                    array_push($deliveryDates, $weeksMenu->date2);
+                    if (count($weeksMenu->menus) == 0) array_push($skipDates, $weeksMenu->date2);
                 }
-                var cal = new Calendar(thisMonth,thisYear);
-                var cal2 = new Calendar(nextMonth,nextYear);
-                cal.generateHTML();
-                cal2.generateHTML();
-                document.write(cal.getHTML());
-                document.write(cal2.getHTML());
-            </script>
+                //var_dump($skipDates);
+                $month = $dateComponents['mon'];                
+                $year = $dateComponents['year'];
+                $month2 = $dateComponents['mon'] + 1;    
+                if ($month == 12)            
+                    $year2 = $dateComponents['year'] + 1;
+                else $year2 = $year;
+
+                echo build_calendar($month,$year,$deliveryDates,$skipDates);
+                echo build_calendar($month2,$year2,$deliveryDates,$skipDates);
+
+            ?>
         </div>
 
-        <div class="col-sm-9 schedule">
+        <div class="col-xs-12 col-sm-9 schedule">
         
         @foreach ($weeksMenus as $weeksMenu)
-            @if (count($weeksMenu->menus) > 0) 
+            <?php $toolate = false; 
+                $ddate = new DateTime($weeksMenu->date2.' 09:00:00'); 
+                $today = new DateTime();
+                $today->sub(new DateInterval('PT7H0M'));
+                $ddate->sub(new DateInterval('P7D'));
+                if ($ddate < $today) $toolate = true; ?>
             <div class="week">
-                <?php $status = 'on' ?>
-                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
-                    <span class="plan_size">{{ $userProduct->productDetails()->FamilySize }} <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                <h2><i class="fa @if (count($weeksMenu->menus)) fa-check-circle @else fa-times-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
+                    <span class="plan_size">2 Adults
+                        @if ($userProduct->productDetails()->ChildSelect), {{ $userProduct->productDetails()->ChildSelect }} Children @endif
+                        <a href="#" class="change_children sidelink" data-date="{{ $weeksMenu->date }}" data-children="{{ $userProduct->productDetails()->ChildSelect }}" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+
                     <div class="subtitle">
-                        @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
-                        @if ($status == 'on')
-                            <a href="#" class="change_menu" data-month="8" data-day="3" data-year="2016" data-whatscooking="{{ $weeksMenu->all }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
-                        @endif
-                        @if ($status == 'off')
-                            <button class="btn btn-primary btn-unskip" data-month="8" data-day="3" data-year="2016">UNSKIP THIS DELIVERY</button>
-                        @elseif ($status != 'shipped')
-                            <button class="btn btn-primary btn-skip" data-month="8" data-day="3" data-year="2016">SKIP THIS DELIVERY</button>
-                        @endif
-                    </div>
-                </h2>
-	                <div class="row">
-                	@foreach ($weeksMenu->menus as $menu)
-                    	<div class="col-sm-4">
-                    		@if($menu->menu()->first()->image)
-                    	    <img src="{{$menu->menu()->first()->image}}" />
-                    	    @else
-                    	    <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
-							@endif
-                    	    <p class="caption">{{$menu->menu()->first()->menu_title}}<br/>
-                    	    	<i>{{$menu->menu()->first()->menu_description}}</i></p>
-                    	</div>
-                	@endforeach
-    	            </div>
-            </div>
-            @else
-            <div class="week">
-                <?php $status = 'on' ?>
-                <h2><i class="fa @if ($status == 'off') fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>  {{ $weeksMenu->date }}
-                    <span class="plan_size">{{ $userProduct->productDetails()->FamilySize }} <a href="#" class="change_children sidelink" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
-                    <div class="subtitle">
-                        @if ($status == 'shipped')<div class="shipped"><i class="icon icon-truck"></i> Shipped</div>@endif
-                        @if ($status == 'on')
-                            <a href="#" class="change_menu" data-month="8" data-day="3" data-year="2016" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
-                        @endif
-                        @if ($status == 'off')
-                            <button class="btn btn-primary btn-unskip" data-month="8" data-day="3" data-year="2016">UNSKIP THIS DELIVERY</button>
-                        @elseif ($status != 'shipped')
-                            <button class="btn btn-primary btn-skip" data-month="8" data-day="3" data-year="2016">SKIP THIS DELIVERY</button>
+                        @if (count($weeksMenu->menus) > 0 && !$toolate) 
+                            <a href="#" class="change_menu" @click="fetchWeekMenu('{{ $weeksMenu->date2 }}')" data-date="{{ $weeksMenu->date2 }}" data-dmenu="{{ $weeksMenu->menus }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
+                            {!! Form::open(array('url' => '/delivery-schedule')) !!}
+                                {!! Form::hidden('date_to_skip', $weeksMenu->date2) !!}
+                                {!! Form::submit('SKIP THIS DELIVERY', array('class' => 'btn btn-primary btn-skip')) !!}
+                            {!! Form::close() !!}
                         @endif
                     </div>
                 </h2>
                 <div class="row">
-                    <div class="col-sm-4">
-                        <img src="/img/foodpot.jpg"  class="center-block" />
-                        <p class="caption">Still Cooking!</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/foodpot.jpg" class="center-block" />
-                        <p class="caption">Still Cooking!</p>
-                    </div>
-                    <div class="col-sm-4">
-                        <img src="/img/foodpot.jpg" class="center-block"  />
-                        <p class="caption">Still Cooking!</p>
-                    </div>
+                    @if (count($weeksMenu->menus) > 0) 
+
+                        @foreach ($weeksMenu->menus as $menu)
+                            <div class="col-xs-4">
+                                @if($menu->menu()->first()->image)
+                                <img src="{{$menu->menu()->first()->image}}" />
+                                @else
+                                <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+                                @endif
+                                <p class="caption">{{$menu->menu()->first()->menu_title}}<br/>
+                                    <em>{{$menu->menu()->first()->menu_description}}</em>
+                                </p>
+                            </div>
+                        @endforeach
+
+                    @elseif (count($weeksMenu->all) > 0)
+
+                        <delivery prefs="{{ $prefs }}" delivery="{{ $weeksMenu->date2 }}"></delivery>
+                        
+                        <template id="delivery-template">
+                            <form method="POST" action="/delivery-schedule" role="form" accept-charset="UTF-8" class="unskip-btn">
+                                {{ csrf_field() }}
+                                <input name="date_to_unskip" type="hidden" value="{{ $weeksMenu->date2 }}">
+                                <input name="menu_id[]" type="hidden" v-for="meal in filteredMenu" value="@{{ meal.id }}">
+                                <button class="btn btn-primary btn-unskip" type="submit" :disabled="form.busy">
+                                    <span v-if="form.busy">
+                                        <i class="fa fa-btn fa-spinner fa-spin"></i>UNSKIP THIS DELIVERY
+                                    </span>
+                                    <span v-else>
+                                        UNSKIP THIS DELIVERY
+                                    </span>
+                                </button>
+                            </form>
+                            
+                            <div class="menu" class="col-xs-12" data-date="{{ $weeksMenu->date2 }}">
+                                <div class="col-sm-4 text-center" v-for="meal in filteredMenu" data-menu="@{{ meal.id }}">
+
+                                    <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
+                                    <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
+                                    
+                                    <p class="caption">@{{ meal.menu_title }}<br>
+                                        <em>@{{ meal.menu_description }}</em>
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                    @endif
+                        <?php //var_dump($weeksMenu) ?>
                 </div>
             </div>
-    	    @endif
-        @endforeach           
+        @endforeach
 
             <div id="changeMenu" class="modal fade" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">SELECT MEALS</h4>
-                        </div>
-                        <div class="modal-body">
-                            
-                            <h5 class="delivery_date padbottom"></h5>
-                            <div class="row">
-                                <div class="col-sm-4 meal select">
-                                    <img src="/img/op_06-Salmon-Cooked_0037_f1.jpg" />
-                                    <p class="caption">Salmon in Parchment with Brown Rice</p>
-                                </div>
-                                <div class="col-sm-4 meal"><div class="not_avail">No longer available</div>
-                                    <img src="/img/op_08-Skewers_0044_p1.jpg" />
-                                    <p class="caption">Persian Chicken Kebabs with Quinoa and Cucumber, Tomato and Avocado Salad</p>
-                                </div>
-                                <div class="col-sm-4 meal selected">
-                                    <img src="/img/op_03-Chicken_0020_p.jpg" />
-                                    <p class="caption">Roast Chicken with Mediterranean Chickpea Fries</p>
-                                </div>
+                        <form method="POST" action="/delivery-schedule" role="form" accept-charset="UTF-8">
+                                {{ csrf_field() }}
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">SELECT MEALS</h4>
                             </div>
-                            <div class="row">
-                                <div class="col-sm-4 meal select">
-                                    <img src="/img/vegetariantaquitoshires-008.jpg" />
-                                    <p class="caption">Vegetarian Taquitos with Rice and Cucumber Avocado Salsa</p>
-                                </div>
-                                <div class="col-sm-4 meal select">
-                                    <img src="/img/gingerbeefsatay-012.jpg" />
-                                    <p class="caption">Ginger Beef Satay with Coconut Rice</p>
-                                </div>
-                                <div class="col-sm-4 meal select">
-                                    <img src="/img/gnocchipesto-009.jpg" />
-                                    <p class="caption">Gnocchi with Pesto and Zucchini Coins</p>
-                                </div>
-                            </div>
+                            <div class="modal-body">
+                                
+                                <change-menu :fulllist="fulllist" delivery="test"></change-menu>
 
-                            <div id="test">test</div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
+                                <template id="change-template">
+                                    <h5 class="delivery_date padbottom"></h5>
+                                    <div class="row">
+                                        <div class="col-sm-4 meal text-center" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
+                                            <div v-if="meal.isNotAvailable == 1" class="not_avail">No longer available</div>
+                                            <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
+                                            <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
+                                            <p class="caption">@{{ meal.menu_title }}<br>
+                                                <em>@{{ meal.menu_description }}</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <input name="date_to_change" type="hidden" value="">
+                                    <input name="menu_id[]" class="menu_id menu_id-0" type="hidden" value="">
+                                    <input name="menu_id[]" class="menu_id menu_id-1" type="hidden" value="">
+                                    <input name="menu_id[]" class="menu_id menu_id-2" type="hidden" value="">
+                                </template>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
@@ -312,7 +263,7 @@ $(function() {
                             </div>
                             <div class="row padbottom">
                                 <div class="col-sm-3"><b>Number of children</b></div>
-                                <div class="col-sm-9">{!! Form::text('children', '2', array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
+                                <div class="col-sm-9">{!! Form::text('children', $userProduct->productDetails()->ChildSelect, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
                             </div>
                             
                         </div>
@@ -330,9 +281,46 @@ $(function() {
 
 </div>
 <script>
-$('#changeMenu').on('show.bs.modal', function(e) {
-    
-    $("#changeMenu #test").text( $(e.relatedTarget).data('whatscooking'); );
+$(function() {
+    $('.change_menu').click(function () {
+        var deliveryDate = $(this).data('date');
+        $('.delivery_date').text( deliveryDate );
+        $('change-menu').attr('delivery', deliveryDate);
+        $('#changeMenu input[name="date_to_change"]').val(deliveryDate);
+        var menus = $(this).data('dmenu');
+        for (i=0; i<menus.length; i++) {
+            $('#changeMenu input.menu_id-'+i).val(menus[i].menus_id);
+        }
+    });
+    $('.change_children').click(function () {
+        var deliveryDate = $(this).data('date');
+        $('.delivery_date').text( deliveryDate );
+    });
+    // $('.subtitle').on('click', '.btn-skip', function(){
+    //     var deliveryMonth = $(this).data('month');
+    //     var deliveryDay = $(this).data('day');
+    //     var skipDay = deliveryMonth + '-' + deliveryDay;
+    //     $('table.month .day[data-date='+skipDay+']').find('.fa').removeClass('fa-check-circle').addClass('fa-times-circle');
+    //     $(this).parents('.week').find('h2 .fa').removeClass('fa-check-circle').addClass('fa-times-circle');
+    //     $(this).text('UNSKIP THIS DELIVERY').removeClass('btn-skip').addClass('btn-unskip');
+    //     $('.change_menu').hide();
+    //     return true;
+    // });
+    // $('.subtitle').on('click', '.btn-unskip', function(){
+    //     var deliveryMonth = $(this).data('month');
+    //     var deliveryDay = $(this).data('day');
+    //     var deliveryYear = $(this).data('year');
+    //     var unskipDay = deliveryMonth + '-' + deliveryDay;
+    //     $('table.month .day[data-date='+unskipDay+']').find('.fa').removeClass('fa-times-circle').addClass('fa-check-circle');
+    //     $(this).parents('.week').find('h2 .fa').removeClass('fa-times-circle').addClass('fa-check-circle');
+    //     $(this).text('SKIP THIS DELIVERY').removeClass('btn-unskip').addClass('btn-skip');
+    //     $('<a href="#" class="change_menu" data-month="'+deliveryMonth+'" data-day="'+deliveryDay+'" data-year="'+deliveryYear+'" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>').insertBefore( $(this) );
+    //     return true;
+    // });
+    // $('#changeMenu').on('show.bs.modal', function(e) {
+    //     $("#changeMenu #test").text( $(e.relatedTarget).data('whatscooking') ); 
+    // });
+});
 </script>
 @endsection
 

@@ -24,7 +24,7 @@ var MenuComponent = Vue.extend({
 
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
 	    		this.list = menu;
-	    		//console.log(this.list);
+	    		console.log(this.list);
 	    	}.bind(this));
 	  	}
 	},

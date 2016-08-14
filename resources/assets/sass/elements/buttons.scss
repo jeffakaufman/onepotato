@@ -49,15 +49,19 @@
 	    background-color: $brand-secondary;
 	    border: none;
 	    border-radius: 0;
-	    padding: 10px 20px;
+	    padding: 5px 10px 2px 10px;
 	    text-transform: uppercase;
-	    font-size: 18px;
+	    font-size: 15px;
 	    font-weight: 500;
 	    
 	    &.small {
 	    	font-size: 14px;
 	    	padding: 5px 10px;
 	    	text-transform: none;
+	    }
+	    @media only screen and (min-width: 992px) {
+			font-size: 18px;
+			padding: 10px 20px;
 	    }
 	}
 	.btn-secondary {
