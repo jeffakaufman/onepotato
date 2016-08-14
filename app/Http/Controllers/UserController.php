@@ -885,6 +885,13 @@ class UserController extends Controller
 		$productID = $userSubscription->product_id;
 		$userProduct = Product::where('id',$productID)->firstOrFail();
 		$product_type = $userProduct->product_type == 1 ? "isOmnivore" : "isVegetarian";
+		//$sku = str_split($this->attributes['sku'],2);
+
+		
+		// if ($sku[2]!="00"){
+		// 	$numChildren = (integer)$sku[2];
+		// }
+
 		$startDate = date('Y-m-d H:i:s');
 		//$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
     	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
@@ -893,10 +900,11 @@ class UserController extends Controller
     	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
 			if (date('N', $i) == 2) {//Tuesday == 2
     			$deliverySchedule = new stdClass;
-				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))
-								->first();
+				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))->first();
+
     			$deliverySchedule->date = date('l, M jS', $i);
     			$deliverySchedule->date2 = date('Y-m-d', $i);
+    			$deliverySchedule->date3 = date('F d, Y', $i);
 				$deliverySchedule->all = [];
 				if (isset($whatscooking)) {
     				//$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();

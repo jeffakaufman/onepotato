@@ -140,7 +140,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
                     <div class="subtitle">
                         @if (count($weeksMenu->menus) > 0 && !$toolate) 
-                            <a href="#" class="change_menu" @click="fetchWeekMenu('{{ $weeksMenu->date2 }}')" data-date="{{ $weeksMenu->date2 }}" data-dmenu="{{ $weeksMenu->menus }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
+                            <a href="#" class="change_menu" @click="fetchWeekMenu('{{ $weeksMenu->date2 }}')" data-date="{{ $weeksMenu->date2 }}" data-date2="{{ $weeksMenu->date3 }}" data-dmenu="{{ $weeksMenu->menus }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
                             {!! Form::open(array('url' => '/delivery-schedule')) !!}
                                 {!! Form::hidden('date_to_skip', $weeksMenu->date2) !!}
                                 {!! Form::submit('SKIP THIS DELIVERY', array('class' => 'btn btn-primary btn-skip')) !!}
@@ -212,7 +212,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             </div>
                             <div class="modal-body">
                                 
-                                <change-menu :fulllist="fulllist" delivery="test"></change-menu>
+                                <change-menu :fulllist="fulllist"></change-menu>
 
                                 <template id="change-template">
                                     <h5 class="delivery_date padbottom"></h5>
@@ -284,8 +284,9 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 $(function() {
     $('.change_menu').click(function () {
         var deliveryDate = $(this).data('date');
-        $('.delivery_date').text( deliveryDate );
-        $('change-menu').attr('delivery', deliveryDate);
+        var deliveryDate2 = $(this).data('date2');
+        
+        $('.delivery_date').text( deliveryDate2);
         $('#changeMenu input[name="date_to_change"]').val(deliveryDate);
         var menus = $(this).data('dmenu');
         for (i=0; i<menus.length; i++) {
@@ -294,7 +295,7 @@ $(function() {
     });
     $('.change_children').click(function () {
         var deliveryDate = $(this).data('date');
-        $('.delivery_date').text( deliveryDate );
+        $('.delivery_date').text( deliveryDate2 );
     });
 });
 </script>
