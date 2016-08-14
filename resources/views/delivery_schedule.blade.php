@@ -296,30 +296,6 @@ $(function() {
         var deliveryDate = $(this).data('date');
         $('.delivery_date').text( deliveryDate );
     });
-    // $('.subtitle').on('click', '.btn-skip', function(){
-    //     var deliveryMonth = $(this).data('month');
-    //     var deliveryDay = $(this).data('day');
-    //     var skipDay = deliveryMonth + '-' + deliveryDay;
-    //     $('table.month .day[data-date='+skipDay+']').find('.fa').removeClass('fa-check-circle').addClass('fa-times-circle');
-    //     $(this).parents('.week').find('h2 .fa').removeClass('fa-check-circle').addClass('fa-times-circle');
-    //     $(this).text('UNSKIP THIS DELIVERY').removeClass('btn-skip').addClass('btn-unskip');
-    //     $('.change_menu').hide();
-    //     return true;
-    // });
-    // $('.subtitle').on('click', '.btn-unskip', function(){
-    //     var deliveryMonth = $(this).data('month');
-    //     var deliveryDay = $(this).data('day');
-    //     var deliveryYear = $(this).data('year');
-    //     var unskipDay = deliveryMonth + '-' + deliveryDay;
-    //     $('table.month .day[data-date='+unskipDay+']').find('.fa').removeClass('fa-times-circle').addClass('fa-check-circle');
-    //     $(this).parents('.week').find('h2 .fa').removeClass('fa-times-circle').addClass('fa-check-circle');
-    //     $(this).text('SKIP THIS DELIVERY').removeClass('btn-unskip').addClass('btn-skip');
-    //     $('<a href="#" class="change_menu" data-month="'+deliveryMonth+'" data-day="'+deliveryDay+'" data-year="'+deliveryYear+'" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>').insertBefore( $(this) );
-    //     return true;
-    // });
-    // $('#changeMenu').on('show.bs.modal', function(e) {
-    //     $("#changeMenu #test").text( $(e.relatedTarget).data('whatscooking') ); 
-    // });
 });
 </script>
 @endsection

@@ -540,6 +540,7 @@ body.with-navbar {
 }
 #changeMenu .meal {
 	cursor: pointer;
+	min-height: 210px;
 	
 	&.selected img {
 		outline: 5px solid $brand-primary;

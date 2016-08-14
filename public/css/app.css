@@ -7457,7 +7457,8 @@ body.with-navbar {
   transform: rotate(-35deg) translate(-15%, 150%); }
 
 #changeMenu .meal {
-  cursor: pointer; }
+  cursor: pointer;
+  min-height: 210px; }
   #changeMenu .meal.selected img {
     outline: 5px solid #1db8bf; }
 
