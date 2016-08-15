@@ -85,6 +85,7 @@ if (document.getElementById('congrats')) {
 	    		
 		        date = new Date( $('#congrats').data('start-date') );
 		        year = date.getFullYear();
+		        if (year <= 1999) year = year + 100;
 		        month = ('0' + (date.getMonth()+1)).slice(-2);
 		        day = ('0' + date.getDate()).slice(-2);
 
