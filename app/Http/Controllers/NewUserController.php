@@ -18,6 +18,7 @@ use Mail;
 use DateTime;
 use DateTimeZone;
 use Session;
+use Auth;
 
 class NewUserController extends Controller
 {
@@ -428,7 +429,7 @@ class NewUserController extends Controller
 		$request->session()->flush();
 
         event(new UserHasRegistered($user));
-        Auth::login($user);
+        Auth::login($user, true);
 
         return view('register.congrats')->with([
         	'user'=>$user,
