@@ -33759,6 +33759,7 @@ var app = new Vue({
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
 });
 
 },{"./components/bootstrap":55,"spark":174,"spark-bootstrap":173}],54:[function(require,module,exports){
@@ -33907,6 +33908,7 @@ if (document.getElementById('congrats')) {
 
 				date = new Date($('#congrats').data('start-date'));
 				year = date.getFullYear();
+				if (year <= 1999) year = year + 100;
 				month = ('0' + (date.getMonth() + 1)).slice(-2);
 				day = ('0' + date.getDate()).slice(-2);
 
@@ -33969,7 +33971,7 @@ var DeliveryComponent = Vue.extend({
 
 			for (var i = 0; i < this.list.length; i++) {
 				var noNuts = false;
-				if (this.prefs.indexOf(7) == -1 && this.list[i].hasNuts) noNuts = true;
+				if (this.prefs.indexOf(7) > -1 && this.list[i].hasNuts) noNuts = true;
 
 				if (this.prefs.indexOf(1) > -1 && this.list[i].hasBeef && this.list[i].isNotAvailable == 0 && !noNuts) {
 					userMenu.push(this.list[i]);
@@ -34091,35 +34093,35 @@ if (document.getElementById('delivery_schedule')) {
 'use strict';
 
 Vue.component('payment', {
-	props: ['user'],
+    ready: function ready() {
+        //
+    },
 
-	ready: function ready() {
-		//
-	},
+    data: function data() {
+        return {
+            cards: ['Visa', 'Mastercard', 'Discover', 'American Express'],
+            expiry_month: 'Expiration Month',
+            expiry_year: 'Expiration Year',
+            bad_expiry: false
+        };
+    },
+    methods: {
+        checkDate: function checkDate() {
+            var today = new Date();
+            var this_month = today.getMonth() + 1;
+            var this_year = today.getFullYear();
+            if (this.expiry_month != 'Expiration Month' && this.expiry_year != 'Expiration Year') {
 
-	data: function data() {
-		return {
-			cards: ['Visa', 'Mastercard', 'Discover', 'American Express'],
-			// months: [
-			// 	{ num: '01', name: 'January'},
-			// 	{ num: '02', name: 'February'},
-			// 	{ num: '03', name: 'March'},
-			// 	{ num: '04': 'April'},
-			// 	{ num: '05': 'May'},
-			// 	{ num: '06': 'June'},
-			// 	{ num: '07': 'July'},
-			// 	{ num: '08': 'August'},
-			// 	{ num: '09': 'September'},
-			// 	{ num: '10': 'October'},
-			// 	{ num: '11': 'November'},
-			// 	{ num: '12': 'December'}
-			// ],
-			// years: [
-			// 	'2016', '2017', '2018', '2019', '2020'
-			// ],
-			states: [{ abbr: 'AL', state: 'Alabama' }, { abbr: 'AK', state: 'Alaska' }, { abbr: 'AZ', state: 'Arizona' }, { abbr: 'AR', state: 'Arkansas' }, { abbr: 'CA', state: 'California' }, { abbr: 'CO', state: 'Colorado' }, { abbr: 'CT', state: 'Connecticut' }, { abbr: 'DE', state: 'Delaware' }, { abbr: 'DC', state: 'District of Columbia' }, { abbr: 'FL', state: 'Florida' }, { abbr: 'GA', state: 'Georgia' }, { abbr: 'HI', state: 'Hawaii' }, { abbr: 'ID', state: 'Idaho' }, { abbr: 'IL', state: 'Illinois' }, { abbr: 'IN', state: 'Indiana' }, { abbr: 'IA', state: 'Iowa' }, { abbr: 'KS', state: 'Kansas' }, { abbr: 'KY', state: 'Kentucky' }, { abbr: 'LA', state: 'Louisiana' }, { abbr: 'ME', state: 'Maine' }, { abbr: 'MD', state: 'Maryland' }, { abbr: 'MA', state: 'Massachusetts' }, { abbr: 'MI', state: 'Michigan' }, { abbr: 'MN', state: 'Minnesota' }, { abbr: 'MS', state: 'Mississippi' }, { abbr: 'MO', state: 'Missouri' }, { abbr: 'MT', state: 'Montana' }, { abbr: 'NE', state: 'Nebraska' }, { abbr: 'NV', state: 'Nevada' }, { abbr: 'NH', state: 'New Hampshire' }, { abbr: 'NJ', state: 'New Jersey' }, { abbr: 'NM', state: 'New Mexico' }, { abbr: 'NY', state: 'New York' }, { abbr: 'NC', state: 'North Carolina' }, { abbr: 'ND', state: 'North Dakota' }, { abbr: 'OH', state: 'Ohio' }, { abbr: 'OK', state: 'Oklahoma' }, { abbr: 'OR', state: 'Oregon' }, { abbr: 'PA', state: 'Pennsylvania' }, { abbr: 'RI', state: 'Rhode Island' }, { abbr: 'SC', state: 'South Carolina' }, { abbr: 'SD', state: 'South Dakota' }, { abbr: 'TN', state: 'Tennessee' }, { abbr: 'TX', state: 'Texas' }, { abbr: 'UT', state: 'Utah' }, { abbr: 'VT', state: 'Vermont' }, { abbr: 'VA', state: 'Virginia' }, { abbr: 'WA', state: 'Washington' }, { abbr: 'WV', state: 'West Virginia' }, { abbr: 'WI', state: 'Wisconsin' }, { abbr: 'WY', state: 'Wyoming' }]
-		};
-	}
+                var month = parseInt(this.expiry_month);
+                var year = parseInt(20 + this.expiry_year);
+                if (month < this_month && year == this_year) {
+                    this.bad_expiry = true;
+                } else {
+                    this.bad_expiry = false;
+                }
+            }
+        }
+    }
 });
 
 },{}],59:[function(require,module,exports){
@@ -34161,7 +34163,7 @@ var MenuComponent = Vue.extend({
 			var meatDone = false;
 			for (var i = 0; i < this.list.length; i++) {
 				var noNuts = false;
-				if (!this.prefs.nuts && this.list[i].hasNuts) noNuts = true;
+				if (this.prefs.nutfree && this.list[i].hasNuts) noNuts = true;
 
 				if (this.prefs.redmeat && this.list[i].hasBeef && !noNuts) {
 					userMenu.push(this.list[i]);
@@ -34224,7 +34226,6 @@ if (document.getElementById('preferences')) {
 				Object.keys(this.prefs).forEach(function (name) {
 					if (this.prefs[name] == true) {
 						if (name == 'redmeat') name = 'red meat';
-						if (name == 'nuts') name = 'nut';
 						userPrefs.push(name);
 					}
 				}.bind(this));
@@ -34237,10 +34238,10 @@ if (document.getElementById('preferences')) {
 			},
 			selectAllOmnivore: function selectAllOmnivore() {
 				this.prefs.redmeat = true;
-				this.prefs.poultry = true, this.prefs.fish = true, this.prefs.lamb = true, this.prefs.pork = true, this.prefs.shellfish = true, this.prefs.nuts = true;
+				this.prefs.poultry = true, this.prefs.fish = true, this.prefs.lamb = true, this.prefs.pork = true, this.prefs.shellfish = true;
 			},
 			selectAllVegetarian: function selectAllVegetarian() {
-				this.prefs.redmeat = false, this.prefs.poultry = false, this.prefs.fish = false, this.prefs.lamb = false, this.prefs.pork = false, this.prefs.shellfish = false, this.prefs.nuts = true;
+				this.prefs.redmeat = false, this.prefs.poultry = false, this.prefs.fish = false, this.prefs.lamb = false, this.prefs.pork = false, this.prefs.shellfish = false;
 			},
 			selectOmni: function selectOmni() {
 				this.plan_type = 'Omnivore Box';

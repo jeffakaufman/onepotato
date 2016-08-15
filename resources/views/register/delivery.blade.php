@@ -24,7 +24,7 @@ $('#register4').addClass('active');
     if (Session::has('phone')) $phone = Session::get('phone');
     if (Session::has('instructions')) $instructions = Session::get('instructions');
 ?>
-<delivery :user="user" inline-template>
+<delivery inline-template>
     <div id="planType">
         PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ route('register.select_plan') }}" class="sidelink">(change)</a>
     </div>
@@ -52,9 +52,10 @@ $('#register4').addClass('active');
 
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
+                <a href="{{ route('register.preferences') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
                 <div class="panel panel-default panel-form">
-
-                        <div class="panel-heading text-left extrapadding">Delivery Location <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">more details</a></div>
+        
+                        <div class="panel-heading text-left extrapadding">Delivery Location <a data-toggle="tooltip" data-placement="right" data-title="Shipping is free and convenient. Meals are carefully packaged in an insulated, recyclable box so food stays fresh even if you’re not home when we deliver." class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
                                 <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="home" @if (isset($loc) && $loc == 'home') checked @else checked @endif> <label for="delivery_home">Home</label></div>
@@ -123,7 +124,7 @@ $('#register4').addClass('active');
                                 <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
                             </div>
                         </div>
-
+<?php /*
                         @if ($children > 0)
                             <div class="panel-heading text-left extrapadding">Family Information <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">what's this?</a>
                                 <div class="panel-subtitle">We love celebrations! Share your child’s birthday and we will send a little surprise in time for their big day.</div>
@@ -159,7 +160,7 @@ $('#register4').addClass('active');
 
                             </div>
                         @endif
-                 
+*/?>                        
 
                 </div>
 

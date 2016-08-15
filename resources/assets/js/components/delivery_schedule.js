@@ -28,7 +28,7 @@ var DeliveryComponent = Vue.extend({
 
 	  		for (var i = 0; i < this.list.length; i++) {
 	  			var noNuts = false;
-	  			if(this.prefs.indexOf(7) == -1 && this.list[i].hasNuts) noNuts = true;
+	  			if(this.prefs.indexOf(7) > -1 && this.list[i].hasNuts) noNuts = true;
 	  			
 		        if (this.prefs.indexOf(1) > -1 && this.list[i].hasBeef && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);

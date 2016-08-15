@@ -38,7 +38,7 @@ Both plans include 3 meals per week.</div>
             <div class="col-sm-6 col-md-5 col-md-offset-1">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Adult Plan
-                        <div class="panel-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                        <div class="panel-subtitle">3 dinners a week for 2 adults.</div>
                     </div>
                     <div class="panel-body">
                         <div class="row image">
@@ -78,7 +78,7 @@ Both plans include 3 meals per week.</div>
             <div class="col-sm-6 col-md-5">
                 <div class="panel panel-default panel-form text-center">
                     <div class="panel-heading with-subtitle">Family Plan
-                        <div class="panel-subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                        <div class="panel-subtitle">3 dinners a week. Customize your family size.</div>
                     </div>
 
                     <div class="panel-body">

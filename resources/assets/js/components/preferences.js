@@ -34,7 +34,7 @@ var MenuComponent = Vue.extend({
 			var meatDone = false;
 	  		for (var i = 0; i < this.list.length; i++) {
 	  			var noNuts = false;
-	  			if(!this.prefs.nuts && this.list[i].hasNuts) noNuts = true;
+	  			if(this.prefs.nutfree && this.list[i].hasNuts) noNuts = true;
 	  			
 		        if (this.prefs.redmeat && this.list[i].hasBeef && !noNuts) {
 		          	userMenu.push(this.list[i]);
@@ -99,7 +99,6 @@ if (document.getElementById('preferences')) {
 	   			Object.keys(this.prefs).forEach(function(name) {
 	   				if (this.prefs[name] == true) {
 	   					if (name == 'redmeat') name = 'red meat';
-	   					if (name == 'nuts') name = 'nut';
 	   					userPrefs.push(name);
 	   				}
 	   			}.bind(this));
@@ -116,8 +115,7 @@ if (document.getElementById('preferences')) {
 		    	this.prefs.fish = true,
 		    	this.prefs.lamb = true,
 		    	this.prefs.pork = true,
-		    	this.prefs.shellfish = true,
-		    	this.prefs.nuts = true;
+		    	this.prefs.shellfish = true
 		  	},
 		  	selectAllVegetarian: function () {
 		  		this.prefs.redmeat = false,
@@ -125,8 +123,7 @@ if (document.getElementById('preferences')) {
 		    	this.prefs.fish = false,
 		    	this.prefs.lamb = false,
 		    	this.prefs.pork = false,
-		    	this.prefs.shellfish = false,
-		  		this.prefs.nuts = true;
+		    	this.prefs.shellfish = false
 		  	},
 		  	selectOmni: function () {
 		  		this.plan_type = 'Omnivore Box';

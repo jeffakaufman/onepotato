@@ -114,7 +114,7 @@ function stripeResponseHandler(status, response) {
 </script>
 
 
-<payment :user="user" inline-template>
+<payment inline-template>
     <div class="container">
 
        	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
@@ -136,138 +136,150 @@ function stripeResponseHandler(status, response) {
         </div>
         <div class="row">
             <div class="col-md-6">
+                <a href="{{ route('register.delivery') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
                 <div class="panel panel-default panel-form">
+            
+                    <div class="panel-heading text-left extrapadding">Billing Information</div>
+                    <div class="panel-body font16 nopadding">
+                        <div class="row nowrap extrapadding">
+                            <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery" checked> <label for="same_as_delivery">Same as Delivery</label></div>
+                        </div>
+                    </div>
 
-                    <form role="form">
+                    <div class="panel-heading text-left extrapadding">Address</div>
+                    <div class="panel-body font16">
+                    
+                        <div class="row extrapadding">
 
-                        <div class="panel-heading text-left extrapadding">Billing Information</div>
-                        <div class="panel-body font16 nopadding">
-                            <div class="row nowrap extrapadding">
-                                <div class="checkbox nosidepadding nomargin"><input id="same_as_delivery" type="checkbox" name="same_as_delivery" value="Same as Delivery" checked> <label for="same_as_delivery">Same as Delivery</label></div>
+                            <!-- First Name -->
+                            <div class="form-row col-sm-6 thinpadding first">
+                                <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $firstname }}" autofocus>
+                            </div>
+
+                            <!-- Last Name -->
+                            <div class="form-row col-sm-6 thinpadding last">
+                                <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $lastname }}">
+                            </div>
+                        </div>
+                        <div class="row extrapadding">
+                            <!-- Address -->
+                            <div class="form-row col-sm-6 thinpadding first">
+                                <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{ $address }}">
+                            </div>
+
+                            <!-- Address Line 2 -->
+                            <div class="form-row col-sm-6 thinpadding last">
+                                <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2" value="{{ $address2 }}">
+                            </div>
+                        </div>
+                        <div class="row extrapadding">
+                            <!-- City -->
+                            <div class="form-row col-sm-6 thinpadding first">
+                                <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{ $city }}">
+                            </div>
+
+                            <!-- State & ZIP Code -->
+                            <div class="form-row col-sm-4 thinpadding">
+
+                                <label class="select">
+                                    <select name="state" type="select" class="form-control">
+                                        <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
+                                        <option value="CA" @if( $state == 'CA') selected @endif>California</option>
+                                        <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
+                                    </select>
+                                </label>
+                            </div>
+
+                            <!-- Zip Code -->
+                            <div class="form-row col-sm-2 thinpadding last">
+                                <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{ $zip }}" lazy>
+                            </div>
+                        </div>
+                        <div class="row extrapadding">
+                            <!-- Phone -->
+                            <div class="form-row col-sm-12 nosidepadding">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $phone }}" lazy>
                             </div>
                         </div>
 
-                        <div class="panel-heading text-left extrapadding">Address</div>
-                        <div class="panel-body font16">
-                        
-                            <div class="row extrapadding">
+                    </div>
 
-                                <!-- First Name -->
-                                <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $firstname }}" autofocus>
-                                </div>
-
-                                <!-- Last Name -->
-                                <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $lastname }}">
-                                </div>
-                            </div>
-                            <div class="row extrapadding">
-                                <!-- Address -->
-                                <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{ $address }}">
-                                </div>
-
-                                <!-- Address Line 2 -->
-                                <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2" value="{{ $address2 }}">
-                                </div>
-                            </div>
-                            <div class="row extrapadding">
-                                <!-- City -->
-                                <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{ $city }}">
-                                </div>
-
-                                <!-- State & ZIP Code -->
-                                <div class="form-row col-sm-4 thinpadding">
-
-                                    <label class="select">
-                                        <select name="state" type="select" class="form-control">
-                                            <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
-                                            <option value="CA" @if( $state == 'CA') selected @endif>California</option>
-                                            <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
-                                        </select>
-                                    </label>
-                                </div>
-
-                                <!-- Zip Code -->
-                                <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{ $zip }}" lazy>
-                                </div>
-                            </div>
-                            <div class="row extrapadding">
-                                <!-- Phone -->
-                                <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $phone }}" lazy>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="panel-heading text-left extrapadding">Payment Information</div>
-                        <div id="payment_info" class="panel-body font16">
-                            <div class="row form-group extrapadding">
-                                <div class="col-xs-6 nosidepadding">
-                                    <label class="select">
-                                        <select type="select" class="form-control">
-                                            <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row form-group extrapadding">
-                                <div class="col-xs-12 nosidepadding">
-                                    <input type="text" class="form-control card-number" placeholder="Card Number" lazy>
-									
-                                </div>
-                            </div>
-                            <div class="row form-group extrapadding">
-                                <div class="col-xs-6 thinpadding first">
-                                    <label class="select">
-                                        <select type="select" class="form-control card-expiry-month">
-                                            <option>Expiration Month</option>
-                                            <option value="01">January</option>
-                                            <option value="02">February</option>
-                                            <option value="03">March</option>
-                                            <option value="04">April</option>
-                                            <option value="05">May</option>
-                                            <option value="06">June</option>
-                                            <option value="07">July</option>
-                                            <option value="08">August</option>
-                                            <option value="09">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <div class="col-xs-4 thinpadding">
-                                    <label class="select">
-                                        <select type="select" class="form-control card-expiry-year">
-                                            <option>Expiration Year</option>
-                                            <option value="16">2016</option>
-                                            <option value="17">2017</option>
-                                            <option value="18">2018</option>
-                                            <option value="19">2019</option>
-                                            <option value="20">2020</option>
-                                        </select>
-                                    </label>
-                                </div>
-
-                                <!-- <div class="col-xs-6 thinpadding first">
-									<input type="text" class="form-control card-expiry-month" value="">
-                                </div>
-                                <div class="col-xs-4 thinpadding">
-                                    <input type="text" class="form-control card-expiry-year" value="">
-                                </div>-->
-                                <div class="col-xs-2 thinpadding last">
-                                    <input type="text" class="form-control card-cvc" placeholder="CVC" lazy>
-                                </div> 
+                    <div class="panel-heading text-left extrapadding">Payment Information</div>
+                    <div id="payment_info" class="panel-body font16">
+                        <div class="row form-group extrapadding">
+                            <div class="col-xs-6 nosidepadding">
+                                <label class="select">
+                                    <select type="select" class="form-control">
+                                        <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
+                                    </select>
+                                </label>
                             </div>
                         </div>
-
-                    </form>
+                        <div class="row form-group extrapadding">
+                            <div class="col-xs-12 nosidepadding">
+                                <input type="text" class="form-control card-number" placeholder="Card Number" lazy>
+								
+                            </div>
+                        </div>
+                        <div class="row form-group extrapadding">
+                            <div class="col-xs-6 thinpadding first">
+                                <label class="select">
+                                    <select type="select" name="expiry_month" v-model="expiry_month" @change="checkDate" class="form-control card-expiry-month">
+                                        <option>Expiration Month</option>
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col-xs-4 thinpadding">
+                                <label class="select">
+                                    <select type="select" name="expiry_year" v-model="expiry_year" @change="checkDate" class="form-control card-expiry-year">
+                                        <option>Expiration Year</option>
+                                        <option value="16">2016</option>
+                                        <option value="17">2017</option>
+                                        <option value="18">2018</option>
+                                        <option value="19">2019</option>
+                                        <option value="20">2020</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col-xs-2 thinpadding last">
+                                <input type="text" class="form-control card-cvc" placeholder="CVC" lazy>
+                            </div> 
+                        </div>
+                        <div class="row form-group extrapadding" v-show="bad_expiry">
+                            <div class="col-xs-12 help-block nosidepadding">
+                                Expiration date should not be in the past.
+                            </div>
+                        </div>
+                        <div class="row form-group extrapadding">
+                            <div class="col-xs-6 thinpadding first">
+                                <label class="select">
+                                    <select type="select" class="form-control">
+                                        <option value="referral">Referral code</option>
+                                        <option value="giftcard">Gift card number</option>
+                                        <option value="coupon">Coupon</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col-xs-6 col-sm-4 thinpadding">
+                                <input type="text" class="form-control" placeholder="" lazy>
+                            </div> 
+                            <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
+                                <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 
@@ -347,9 +359,9 @@ function stripeResponseHandler(status, response) {
                     </div>
                     
                 </div>
-</form>
             </div>
         </div>
+        </form>
     </div>
     <script>
     $(function() {

@@ -6018,6 +6018,9 @@ input.number {
   .disclaimer.text-left {
     text-align: left; }
 
+.help-block {
+  color: #e91e25; }
+
 .reg-field {
   float: left;
   padding: 0 2px;
@@ -6490,6 +6493,30 @@ table.month {
 .spark-screen .tooltip-inner li {
   font-size: 14px;
   line-height: 25px;
+  text-align: left; }
+
+.tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
+.tooltip-arrow, .sidelink + .tooltip.right > .tooltip-arrow,
+.tooltip-rrow, .sidelink + .tooltip.left > .tooltip-arrow,
+.sidelink + .tooltip > .tooltip-inner,
+.tooltip.top .tooltip-inner,
+.tooltip.top .tooltip-arrow,
+.tooltip.top .tooltip-arrow,
+.tooltip.right .tooltip-inner,
+.tooltip.right .tooltip-arrow,
+.tooltip.right .tooltip-arrow,
+.tooltip.left .tooltip-inner,
+.tooltip.left .tooltip-arrow,
+.tooltip.left .tooltip-arrow {
+  background-color: #eefeff;
+  border-top-color: #eefeff;
+  border-right-color: #eefeff;
+  border-left-color: #eefeff;
+  color: #000; }
+
+.sidelink + .tooltip > .tooltip-inner {
+  color: #404040;
+  padding: 15px;
   text-align: left; }
 
 /**
@@ -7343,16 +7370,6 @@ body.with-navbar {
   letter-spacing: 0; }
   .sidelink:hover {
     color: #1db8bf; }
-
-.tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
-.sidelink + .tooltip > .tooltip-inner, .tooltip.top .tooltip-inner, .tooltip.top .tooltip-arrow {
-  background-color: #eefeff;
-  border-top-color: #eefeff; }
-
-.sidelink + .tooltip > .tooltip-inner {
-  color: #404040;
-  padding: 15px;
-  text-align: left; }
 
 .total {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }

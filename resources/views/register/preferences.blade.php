@@ -23,7 +23,7 @@ $('#register3').addClass('active');
     if (Session::has('lamb')) $lamb = Session::get('lamb');
     if (Session::has('pork')) $pork = Session::get('pork');
     if (Session::has('shellfish')) $shellfish = Session::get('shellfish');
-    if (Session::has('nuts')) $nuts = Session::get('nuts');
+    if (Session::has('nuts')) $nutfree = Session::get('nuts');
     if (Session::has('upcoming_dates')) $upcoming_dates = Session::get('upcoming_dates');
     if (Session::has('start_date')) $start_date = Session::get('start_date'); else $start_date = '';
 ?>
@@ -53,38 +53,37 @@ $('#register3').addClass('active');
             <input type="hidden" name="family1_price" value="{{ $family1_price }}" />
             <div class="row">
                 <div class="col-sm-6 col-md-5 col-md-offset-1">
+                    <a href="{{ route('register.select_plan') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
                     <div class="panel panel-default panel-form marginless">
-                        <div class="panel-heading text-left extrapadding">dietary preferences</div>
+                        <div class="panel-heading text-left extrapadding">dietary preferences <a data-toggle="tooltip" data-placement="right" data-title="We create 5 menus to suit a variety of dietary preferences. Every week, we’ll use your preferences to select which of our menus best fit what you eat. You can change your preferences at any time from your account settings." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row">
-                                <div class="col-xs-12 extrapadding">Choose your box: <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">what's this?</a></div>
+                                <div class="col-xs-12 extrapadding">Choose your box:</div>
                             </div>
                             <div class="row nowrap extrapadding">
                                 <div class="col-xs-6 radio nosidepadding"><input id="plan_type1" type="radio" v-model="plan_type" @click="selectAllOmnivore" name="plan_type" value="Omnivore Box"  @if(isset($omni)) {{ $omni }} @else checked @endif> <label for="plan_type1">Omnivore Box</label></div>
                                 <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" v-model="plan_type" @click="selectAllVegetarian" name="plan_type" value="Vegetarian Box" @if(isset($veg)) {{ $veg }} @endif> <label for="plan_type2">Vegetarian Box</label></div>
                             </div>
                             <div class="row extrapadding">
-                                <div class="col-xs-12 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="prefs[]" value="9" @if (isset($glutenfree)) {{ $glutenfree }} @endif> <label for="glutenfree">Gluten free*</label></div>
+                                <div class="col-xs-6 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="prefs[]" value="9" @if (isset($glutenfree)) {{ $glutenfree }} @endif> <label for="glutenfree">Gluten free*</label></div>
+                                <div class="col-xs-6 checkbox nosidepadding"><input id="nutfree" name="prefs[]" type="checkbox" value="7" class="form-control" @if(isset($nutfree)) {{ $nutfree }} @endif /> <label for="nutfree" data-toggle="tooltip" style="display: inline-block;" data-placement="right" data-title="Our facility is not nut-free.">Nut free</label></div>
                                 <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</div>
                             </div>
                             <div class="row padtop">
                                 <div class="col-xs-12 extrapadding">We'd like to receive the following foods:</div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-3 checkbox">
+                                <div class="col-xs-4 checkbox">
                                     <input id="redmeat" v-model="prefs.redmeat" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" @if(isset($redmeat)) {{ $redmeat }} @else checked @endif /> <label for="redmeat">Red Meat</label>
                                     <input id="poultry" v-model="prefs.poultry" @click="selectOmni" name="prefs[]" type="checkbox" value="2" class="form-control" @if(isset($poultry)) {{ $poultry }} @else checked @endif /> <label for="poultry">Poultry</label>
                                 </div>
-                                <div class="col-xs-3 checkbox">
+                                <div class="col-xs-4 checkbox">
                                     <input id="fish" v-model="prefs.fish" @click="selectOmni" name="prefs[]" type="checkbox" value="3" class="form-control" @if(isset($fish)) {{ $fish }} @else checked @endif /> <label for="fish">Fish</label>
                                     <input id="lamb" v-model="prefs.lamb" @click="selectOmni" name="prefs[]" type="checkbox" value="4" class="form-control" @if(isset($lamb)) {{ $lamb }} @else checked @endif /> <label for="lamb">Lamb</label>
                                 </div>
-                                <div class="col-xs-3 checkbox">
+                                <div class="col-xs-4 checkbox">
                                     <input id="pork" v-model="prefs.pork" @click="selectOmni" name="prefs[]" type="checkbox" value="5" class="form-control" @if(isset($pork)) {{ $pork }} @else checked @endif /> <label for="pork">Pork</label>
                                     <input id="shellfish" v-model="prefs.shellfish" @click="selectOmni" name="prefs[]" type="checkbox" value="6" class="form-control" @if(isset($shellfish)) {{ $shellfish }} @else checked @endif /> <label for="shellfish">Shellfish</label>
-                                </div>
-                                <div class="col-xs-3 checkbox">
-                                    <input id="nuts" v-model="prefs.nuts" name="prefs[]" type="checkbox" value="7" class="form-control" @if(isset($nuts)) {{ $nuts }} @else checked @endif /> <label for="nuts">Nuts</label>
                                 </div>
                                 <!-- <div class="col-xs-3 checkbox" v-for="pref in prefs">
                                     <input id="@{{ pref.key }}" name="prefs[]" type="checkbox" v-model="$data[pref.key]" value="@{{ pref.id }}" class="form-control"  /> <label for="@{{ pref.key }}">@{{ pref.name | capitalize }}</label>
@@ -94,7 +93,7 @@ $('#register3').addClass('active');
                     </div>
                     <div class="note text-center">
                         <h4>Your Dietary Profile</h4>
-                        You will receive a mixture of: @{{ concatPrefs }} dishes.
+                        You will receive a mixture of @{{ concatPrefs }} <span v-if="plan_type == 'Omnivore Box'">and</span> vegetarian dishes.
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5">
