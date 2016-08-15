@@ -428,6 +428,7 @@ class NewUserController extends Controller
 		$request->session()->flush();
 
         event(new UserHasRegistered($user));
+        Auth::login($user);
 
         return view('register.congrats')->with([
         	'user'=>$user,
