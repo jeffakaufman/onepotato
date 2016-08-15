@@ -38,7 +38,7 @@
         @if (Auth::check())
             @include('spark::nav.user')
         @else
-            @if (Request::is('register*'))
+            @if (Request::is('register*') && !Route::is('register.congrats'))
                 @include('spark::nav.register')
                 @yield('register_nav')
             @else

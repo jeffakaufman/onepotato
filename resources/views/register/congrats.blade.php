@@ -65,7 +65,7 @@
 
                         <div class="meal col-xs-4 font11 thinpadding" v-for="meal in firstMenu" track-by="id">
                             <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}"><img :src="meal.image" alt="" class="meal_image"></a>
-                            <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }}</div>
+                            <div class="text-center">@{{ meal.menu_title }}</div>
                             
                             <div id="imagemodal-@{{ meal.id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                               <div class="modal-dialog">

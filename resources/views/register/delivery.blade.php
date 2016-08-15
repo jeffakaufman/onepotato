@@ -54,7 +54,7 @@ $('#register4').addClass('active');
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default panel-form">
 
-                        <div class="panel-heading text-left extrapadding">Delivery Location<a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">more details</a></div>
+                        <div class="panel-heading text-left extrapadding">Delivery Location <a data-toggle="tooltip" data-title="Lorem ipsum dolor" class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
                                 <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="home" @if (isset($loc) && $loc == 'home') checked @else checked @endif> <label for="delivery_home">Home</label></div>
