@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use DB;
+use App\Menus;
+use App\MenusUsers;
+use App\User;
+use App\Shippingholds;
 
 
 class DashboardController extends Controller
@@ -25,7 +30,34 @@ class DashboardController extends Controller
      */
     public function show()
     {
-        return view('admin.dashboard');
+  
+    	$menus = DB::table('menus_users')
+				->select('delivery_date','menu_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish', DB::raw('count(*) as total'))
+	    		->join('menus','menus_users.menus_id','=','menus.id')
+				->groupBy('delivery_date','menus_id')
+				->orderBy('delivery_date')
+				->get();
+        
+        $meat = DB::table('menus_users')
+				->select(DB::raw('sum(hasBeef) as beef')
+						,DB::raw('sum(hasPoultry) as poultry')
+						,DB::raw('sum(hasFish) as fish')
+						,DB::raw('sum(hasLamb) as lamb')
+						,DB::raw('sum(hasPork) as pork')
+						,DB::raw('sum(hasShellfish) as shellfish')
+						)
+	    		->join('menus','menus_users.menus_id','=','menus.id')
+				->first();
+        
+        $newSubs = DB::table('users')
+				->select('start_date', DB::raw('count(*) as total'))
+				->groupBy('start_date')
+				->orderBy('start_date')
+				->where('start_date', ">",date('Y-m-d H:i:s'))
+				->get();
+       
+        //echo json_encode($subs);
+        return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','meat'=>$meat,'newSubs'=>$newSubs]);
     }
 
 	/**
