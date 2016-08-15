@@ -94,14 +94,7 @@ $('#register3').addClass('active');
                     </div>
                     <div class="note text-center">
                         <h4>Your Dietary Profile</h4>
-                        You will receive a mixture of:
-                        <span v-show="prefs.redmeat"> red meat</span> 
-                        <span v-show="prefs.fish"> fish</span> 
-                        <span v-show="prefs.pork"> pork</span> 
-                        <span v-show="prefs.poultry"> poultry</span> 
-                        <span v-show="prefs.lamb"> lamb</span> 
-                        <span v-show="prefs.shellfish"> shellfish</span> 
-                        <span v-show="prefs.nuts"> nut</span> dishes.
+                        You will receive a mixture of: @{{ concatPrefs }} dishes.
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5">

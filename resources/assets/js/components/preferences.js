@@ -24,12 +24,9 @@ var MenuComponent = Vue.extend({
 
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
 	    		this.list = menu;
-	    		console.log(this.list);
+	    		//console.log(this.list);
 	    	}.bind(this));
 	  	}
-	},
-	filters: {
-	   	
 	},
 	computed: {
 		filteredMenu: function(meal) {
@@ -79,7 +76,7 @@ if (document.getElementById('preferences')) {
 	new Vue({
 		el: '#preferences',
 		ready: function() {
-
+			
 		},
 	    data: function () {
 		    return {
@@ -92,9 +89,23 @@ if (document.getElementById('preferences')) {
 			    	pork: '',
 			    	shellfish: '',
 			    	nuts: ''
-			    }
+			    },
+			    filter: ''
 			}
 	    },
+	    computed: {
+	   		concatPrefs: function() {
+	   			var userPrefs = [];
+	   			Object.keys(this.prefs).forEach(function(name) {
+	   				if (this.prefs[name] == true) {
+	   					if (name == 'redmeat') name = 'red meat';
+	   					if (name == 'nuts') name = 'nut';
+	   					userPrefs.push(name);
+	   				}
+	   			}.bind(this));
+	   			return userPrefs.join(', ');
+	   		}
+		},
 	    methods: {
 	    	fetchNewMenu: function() {
 	    		this.$children[0].fetchMenu();
@@ -118,7 +129,7 @@ if (document.getElementById('preferences')) {
 		  		this.prefs.nuts = true;
 		  	},
 		  	selectOmni: function () {
-		  		this.plan_type = 'Omnivore Box'
+		  		this.plan_type = 'Omnivore Box';
 		  	}
 		}
 	});

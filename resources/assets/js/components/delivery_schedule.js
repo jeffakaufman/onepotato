@@ -24,7 +24,6 @@ var DeliveryComponent = Vue.extend({
 	computed: {
 		filteredMenu: function(meal) {
 	  		var userMenu = [];
-	  		// var weekMenu = [];
 			var meatDone = false;
 
 	  		for (var i = 0; i < this.list.length; i++) {
@@ -33,31 +32,24 @@ var DeliveryComponent = Vue.extend({
 	  			
 		        if (this.prefs.indexOf(1) > -1 && this.list[i].hasBeef && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.prefs.indexOf(3) > -1 && this.list[i].hasFish && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.prefs.indexOf(5) > -1 && this.list[i].hasPork && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.prefs.indexOf(2) > -1 && this.list[i].hasPoultry && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.prefs.indexOf(4) > -1 && this.list[i].hasLamb && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.prefs.indexOf(6) > -1 && this.list[i].hasShellfish && this.list[i].isNotAvailable == 0 && !noNuts) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        }
 		        if (this.list[i].vegetarianBackup && this.list[i].isNotAvailable == 0) {
 		          	userMenu.push(this.list[i]);
-		          	// weekMenu.push(this.list[i].id);
 		        } 
 		        meatDone = true;
 		    }
@@ -65,11 +57,9 @@ var DeliveryComponent = Vue.extend({
 	        	for (var i = 0; i < this.list.length; i++) {
 			        if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup && this.list[i].isNotAvailable == 0) {
 			          	userMenu.push(this.list[i]);
-			          	// weekMenu.push(this.list[i].id);
 			        }
 			    }
 	        } 
-	        // var menuList = weekMenu.join();
 		   	return userMenu.slice(0, 3);
         }
 	}
@@ -148,23 +138,11 @@ if (document.getElementById('delivery_schedule')) {
 	    data: function () {
 		    return {
 		    	fulllist: []
-		    	// prefs: {
-		    	// 	redmeat: '',
-			    // 	poultry: '',
-			    // 	fish: '',
-			    // 	lamb: '',
-			    // 	pork: '',
-			    // 	shellfish: '',
-			    // 	nuts: ''
-			    // }
 			}
 	    },
 	    methods: {
 		  	fetchWeekMenu: function(date) {
-	    		// $(document).on('click', 'change_menu', function(){
-	      //           this.fulllist = $('this').data('whatscooking');
-	      //           console.log('clicked');
-	      //       }.bind(this));
+
 				this.$http.get('/whatscooking/'+ date, function(menu){
 		    		this.fulllist = menu;
 		    		//console.log(this.list);
@@ -172,47 +150,6 @@ if (document.getElementById('delivery_schedule')) {
 		    	//console.log(this.fulllist);
 	    	
 	  		}
-		},
-		computed: {
-			// filteredMenu: function(meal) {
-		 //  		var thisDelivery = [];
-			// 	var meatDone = false;
-		 //  		for (var i = 0; i < this.list.length; i++) {
-		 //  			var noNuts = false;
-		 //  			if(!this.prefs.nuts && this.list[i].hasNuts) noNuts = true;
-		  			
-			//         if (this.prefs.redmeat && this.list[i].hasBeef && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.prefs.fish && this.list[i].hasFish && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.prefs.pork && this.list[i].hasPork && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.prefs.poultry && this.list[i].hasPoultry && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.prefs.lamb && this.list[i].hasLamb && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.prefs.shellfish && this.list[i].hasShellfish && !noNuts) {
-			//           	thisDelivery.push(this.list[i]);
-			//         }
-			//         if (this.list[i].vegetarianBackup) {
-			//           	thisDelivery.push(this.list[i]);
-			//         } 
-			//         meatDone = true;
-			//     }
-		 //        if (meatDone) {
-		 //        	for (var i = 0; i < this.list.length; i++) {
-			// 	        if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup) {
-			// 	          	thisDelivery.push(this.list[i]);
-			// 	        }
-			// 	    }
-		 //        } 
-			//    	return thisDelivery.slice(0, 3);
-	  //       }
 		}
 	});
 }
