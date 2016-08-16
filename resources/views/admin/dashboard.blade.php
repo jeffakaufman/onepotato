@@ -26,7 +26,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Upcoming Meals</strong></div>
                     <div class="panel-body">
-                    @foreach ($menus as $key=>$menu)
+                    
+                    
+                    
+                    @foreach ($menus as $menu)
                     	@if ( ($oldDate !=  $menu->delivery_date))
                     	@if ($menu != reset($menus)) <br /> @endif
                     	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
@@ -36,6 +39,7 @@
                     	</div>
                     	@endif
                     	@if ( ($oldMenu !=  $menu->menu_title))
+                    	<?php $i = 0; ?>
                     	<div class="row" style="border-bottom: black;border-width: 1px;border-style: solid;border-right: white;border-left: white;">
                     		<div class="col-sm-10">
                     			<strong>{{ $menu->menu_title }}                 			
@@ -61,7 +65,7 @@
                     </div>
                     		</div>
                     	@endif
-                    	<div class="row" @if  (((($key) % 5)%2) == 0) style="background-color:lightblue" @endif   >
+                    	<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
                     		<div class="col-sm-10"> 
                     		{{ $menu->product_title }} 
                     		</div> 
@@ -71,6 +75,7 @@
                     	</div>                 	
                          			              	
                     	<?php 
+                    		$i++;
                     		$oldDate = $menu->delivery_date;
                     		$oldMenu = $menu->menu_title;
                     	?>
@@ -142,15 +147,16 @@
                 	<?php 
                     		$oldDate = "";
                     ?>
-        			@foreach ($newSubs as $key=>$newSub)
+        			@foreach ($newSubs as $newSub)
         				@if ( ($oldDate !=  $newSub->start_date))
+        				<?php $i = 0; ?>
                     	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
                     		<div class="col-sm-5"> 
                     			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
                     		</div>
                     	</div>
                     	@endif
-	    				<div class="row" @if  ($key%2 != 0) style="background-color:lightblue" @endif   >
+	    				<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
             				<div class="col-sm-10">
                 				{{ $newSub->product_description }}
                 			</div>
@@ -158,7 +164,8 @@
                 				{{$newSub->total}}
                 			</div>
             			</div>	
-            			<?php 
+            			<?php
+            				$i++; 
                     		$oldDate =$newSub->start_date;
                     	?>
             			@endforeach
