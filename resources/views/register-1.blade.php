@@ -25,8 +25,8 @@ $('#register1').addClass('active');
 	            <div class="panel-body nopadding">
 
 	                <!-- Registration Form -->
-					<form class="form-horizontal" role="form" method="post">
-						 {{ csrf_field() }}
+	                {!! Form::open(['url' => '/register', 'role' => 'form', 'class' => 'form-horizontal']) !!}
+					
 					    <!-- Team Name -->
 					    @if (Spark::usesTeams())
 					        <div class="field" :class="{'has-error': registerForm.errors.has('team')}" v-if=" ! invitation">
@@ -88,7 +88,7 @@ $('#register1').addClass('active');
 				            </button>
 				            <div class="disclaimer" style="margin: 10px 0;">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank">Terms of Use and Privacy Policy</a>.</div>
 					    </div>
-					</form>
+					{!! Form::close() !!}
 
 	            </div>
 	        </div>
