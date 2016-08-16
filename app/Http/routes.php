@@ -132,6 +132,9 @@ Route::get("/test/date/", 'SubinvoiceController@TestDate');
 Route::get('/hold/checkall/', 'SubinvoiceController@CheckHolds');
 Route::get('/test/menucontent/', 'SubinvoiceController@testMenus');
 
+//coupon checker
+Route::get('/coupon/getamount/{price}/{couponcode}', 'NewUserController@CheckCoupon');
+
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 

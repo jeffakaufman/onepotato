@@ -497,6 +497,55 @@ class NewUserController extends Controller
         ]);
 		
 	}
+	
+	//checks validity of a coupon and returns the new price and the discount amount
+	public function CheckCoupon ($price, $coupon_code) {
+		
+		
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+		
+		try {
+		  //try for the coupon
+			$coupon_obj = \Stripe\Coupon::retrieve($coupon_code);
+			$valid_coupon = 1;
+			
+			if ($coupon_obj->amount_off ) {
+				
+					$amount_off = $coupon_obj->amount_off/100;
+					$new_price = $price - $amount_off;
+					$returnJSON = '{"status":"valid","discount": "' .  $amount_off . '","newprice":"' . $new_price . '"}';
+					
+			}
+			
+			if ($coupon_obj->percent_off ) {
+				
+					$percent_off = $coupon_obj->percent_off/100;
+					$amount_off = round($price * $percent_off,2);
+					$new_price = $price - $amount_off;
+					
+					$returnJSON = '{"status":"valid","discount": "' .  $amount_off . '","newprice":"' . $new_price . '"}';
+				
+				
+			}
+			
+			
+		
+		}
+		catch (\Stripe\Error\InvalidRequest $e) {
+			// Invalid parameters were supplied to Stripe's API
+			// coupon is no good
+			$valid_coupon = 0;
+			$returnJSON = '{"status":"invalid","discount": "0","newprice":"' . $price . '"}';
+			
+			
+		} catch (Exception $e) {
+		  
+		}
+		
+		//return either the discounted price OR "invalid coupon"
+		return $returnJSON;
+		
+	}
 		
 		
 	public function GetTrialEndsDate() {
