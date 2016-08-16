@@ -62,9 +62,17 @@ class DashboardController extends Controller
 				->orderBy('start_date','products.product_description')
 				->where('start_date', ">",date('Y-m-d H:i:s'))
 				->get();
+        
+        $totalSubs = DB::table('users')
+				->select('products.product_description', DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.user_id','=','users.id')
+	    		->join('products','subscriptions.product_id','=','products.id')
+				->groupBy('products.product_description')
+				->orderBy('products.product_description')
+				->get();
        
         //echo json_encode($subs);
-        return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','meat'=>$meat,'newSubs'=>$newSubs]);
+        return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','meat'=>$meat,'newSubs'=>$newSubs,'totalSubs'=>$totalSubs]);
     }
 
 	/**

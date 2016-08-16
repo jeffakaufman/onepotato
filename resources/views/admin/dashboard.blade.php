@@ -141,46 +141,69 @@
            		</div>
            	</div>
       		<div class="col-sm-4"> 
-        		<div class="panel panel-default">
-            		<div class="panel-heading"><strong>New Users</strong></div>
-                	<div class="panel-body">
-                	<?php 
-                    		$oldDate = "";
-                    ?>
-        			@foreach ($newSubs as $newSub)
-        				@if ( ($oldDate !=  $newSub->start_date))
-        				<?php $i = 0; ?>
-                    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
-                    		<div class="col-sm-5"> 
-                    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
-                    		</div>
-                    	</div>
-                    	@endif
-	    				<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
-            				<div class="col-sm-10">
-                				{{ $newSub->product_description }}
-                			</div>
-               				<div class="col-sm-1">
-                				{{$newSub->total}}
-                			</div>
-            			</div>	
-            			<?php
-            				$i++; 
-                    		$oldDate =$newSub->start_date;
-                    	?>
-            			@endforeach
-					</div>
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>Current Users</strong></div>
+                		<div class="panel-body">
+                		<?php 
+                	    		$i = 0;
+                	    ?>
+        				@foreach ($totalSubs as $totalSub)
+	    					<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
+            					<div class="col-sm-10">
+                					{{ $totalSub->product_description }}
+                				</div>
+               					<div class="col-sm-1">
+                					{{$totalSub->total}}
+                				</div>
+            				</div>	
+            				<?php
+            					$i++; 
+                    		?>
+            				@endforeach
+						</div>
+      				</div>  
+      			</div>
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>New Users</strong></div>
+                		<div class="panel-body">
+                		<?php 
+                	    		$oldDate = "";
+                	    ?>
+        				@foreach ($newSubs as $newSub)
+        					@if ( ($oldDate !=  $newSub->start_date))
+        					<?php $i = 0; ?>
+                	    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
+                	    		<div class="col-sm-5"> 
+                	    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
+                	    		</div>
+                	    	</div>
+                	    	@endif
+	    					<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
+            					<div class="col-sm-10">
+                					{{ $newSub->product_description }}
+                				</div>
+               					<div class="col-sm-1">
+                					{{$newSub->total}}
+                				</div>
+            				</div>	
+            				<?php
+            					$i++; 
+                    			$oldDate =$newSub->start_date;
+                    		?>
+            				@endforeach
+						</div>
+      				</div>  
       			</div>  
+      			
+      			
+      			
+      			
 			</div>  
-           	</div>
-			
-			
-			
-			
-			
-			  
-		</div>    
-	</div>               		
+		</div>
+	</div>    
+</div>               		
 
 </home>
 @endsection
