@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class WelcomeController extends Controller
 {
@@ -13,6 +14,12 @@ class WelcomeController extends Controller
      */
     public function show()
     {
-        return view('welcome');
+        //return view('welcome');
+        if (Auth::check()) {
+        	//$id = Auth::user()->id;
+        	return redirect('/delivery-schedule'); 
+        } else {
+        	return view('register-1');
+        }
     }
 }
