@@ -265,7 +265,7 @@ function stripeResponseHandler(status, response) {
                         <div class="row form-group extrapadding">
                             <div class="col-xs-6 thinpadding first">
                                 <label class="select">
-                                    <select type="select" class="form-control" name="promotype" v-model="promotype">
+                                    <select type="select" class="form-control" name="promotype" @change="validatePromo" v-model="promotype">
                                         <!-- <option value="" selected>Code type</option>-->
                                         <!-- <option v-for="code in promos" :value="code.key">@{{ code.label }}</option> -->
                                         <option value="coupon">Coupon</option>
