@@ -68,7 +68,7 @@ class DashboardController extends Controller
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->groupBy('products.product_description')
-				->orderBy('products.product_description')
+				->orderBy('products.id')
 				->get();
        
         //echo json_encode($subs);
