@@ -40,7 +40,7 @@ class DashboardController extends Controller
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
 				->orderBy('menus_id')
-				->orderBy('product_description')
+				->orderBy('products.id')
 				->get();
         
         $meat = DB::table('menus_users')
