@@ -12,7 +12,12 @@
     </ol>
 @endsection
 
+
+
+
+
 @section('content')
+
 <home :recipes="recipes" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
@@ -21,18 +26,19 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Upcoming Meals</strong></div>
                     <div class="panel-body">
-                    @foreach ($menus as $menu)
+                    @foreach ($menus as $key=>$menu)
                     	@if ( ($oldDate !=  $menu->delivery_date))
                     	@if ($menu != reset($menus)) <br /> @endif
-                    	<div class="row">
+                    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
                     		<div class="col-sm-5"> 
                     			<strong>{{ $menu->delivery_date }}</strong>
                     		</div>
                     	</div>
                     	@endif
-                    	<div class="row">
+                    	@if ( ($oldMenu !=  $menu->menu_title))
+                    	<div class="row" style="border-bottom: black;border-width: 1px;border-style: solid;border-right: white;border-left: white;">
                     		<div class="col-sm-10">
-                    			{{ $menu->menu_title }}
+                    			<strong>{{ $menu->menu_title }}                 			
 		            		@if($menu->hasBeef)
 		            			(Beef)
 							@endif
@@ -51,20 +57,29 @@
 	            			@if($menu->hasShellfish)
 	            				(Shellfish)
 							@endif
+							</strong>  
+                    </div>
                     		</div>
+                    	@endif
+                    	<div class="row" @if  (((($key) % 5)%2) == 0) style="background-color:lightblue" @endif   >
+                    		<div class="col-sm-10"> 
+                    		{{ $menu->product_title }} 
+                    		</div> 
                     		<div class="col-sm-2 text-right">
                     			{{ $menu->total }}
                     		</div>
-                    	</div>                  	
-                    	
+                    	</div>                 	
+                         			              	
                     	<?php 
                     		$oldDate = $menu->delivery_date;
+                    		$oldMenu = $menu->menu_title;
                     	?>
                     @endforeach
-                    </div>
                 </div>
             </div>
-               <div class="row">  
+            </div>
+
+
             <div class="col-sm-2"> 
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Omnivore Meals</strong></div>
@@ -120,24 +135,33 @@
                    	</div>
            		</div>
            	</div>
-           	</div>
-           	
-           	
-           	<div class="row">
-      		<div class="col-sm-2"> 
+      		<div class="col-sm-4"> 
         		<div class="panel panel-default">
             		<div class="panel-heading"><strong>New Users</strong></div>
                 	<div class="panel-body">
-        			@foreach ($newSubs as $newSub)
-	    				<div class="row">
-            				<div class="col-sm-9">
-                				{{ date('F dS', strtotime($newSub->start_date)) }}
+                	<?php 
+                    		$oldDate = "";
+                    ?>
+        			@foreach ($newSubs as $key=>$newSub)
+        				@if ( ($oldDate !=  $newSub->start_date))
+                    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
+                    		<div class="col-sm-5"> 
+                    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
+                    		</div>
+                    	</div>
+                    	@endif
+	    				<div class="row" @if  ($key%2 != 0) style="background-color:lightblue" @endif   >
+            				<div class="col-sm-10">
+                				{{ $newSub->product_description }}
                 			</div>
                				<div class="col-sm-1">
                 				{{$newSub->total}}
                 			</div>
             			</div>	
-    				@endforeach
+            			<?php 
+                    		$oldDate =$newSub->start_date;
+                    	?>
+            			@endforeach
 					</div>
       			</div>  
 			</div>  
