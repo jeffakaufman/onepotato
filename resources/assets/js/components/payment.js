@@ -25,8 +25,7 @@ new Vue({
             this.$http.get('/coupon/getamount/'+ this.product_cost + '/' + this.promocode, function(data){
                 
                 this.coupon = data;
-                var origCost = $('#totalcost').text();
-                console.log(origCost);
+
                 if (this.promotype== 'coupon' && this.coupon.status == 'valid') {
                     var discount = parseFloat(this.coupon.discount).toFixed(2);
                     var newprice = parseFloat(this.coupon.newprice).toFixed(2);
@@ -35,7 +34,7 @@ new Vue({
                     $('#totalcost').html('$'+newprice);
                 } else {
                     $('#discount').html('-$XX.XX');
-                    $('#totalcost').html(origCost);
+                    $('#totalcost').html(this.product_cost);
                 }
                 //console.log(this.coupon);
                 
