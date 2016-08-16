@@ -265,7 +265,7 @@ function stripeResponseHandler(status, response) {
                         <div class="row form-group extrapadding">
                             <div class="col-xs-6 thinpadding first">
                                 <label class="select">
-                                    <select type="select" class="form-control">
+                                    <select type="select" class="form-control" name="promotype">
                                         <option value="referral">Referral code</option>
                                         <option value="giftcard">Gift card number</option>
                                         <option value="coupon">Coupon</option>
@@ -273,7 +273,7 @@ function stripeResponseHandler(status, response) {
                                 </label>
                             </div>
                             <div class="col-xs-6 col-sm-4 thinpadding">
-                                <input type="text" class="form-control" placeholder="" lazy>
+                                <input type="text" name="promocode" class="form-control" placeholder="" lazy>
                             </div> 
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>

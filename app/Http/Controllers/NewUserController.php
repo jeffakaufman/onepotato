@@ -362,7 +362,11 @@ class NewUserController extends Controller
 	}
 		
 	public function RecordPayment (Request $request) {
-			//validation errors
+		
+			//engage STRIPE
+				
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			
 		
 			$user = User::find($request->user_id);
 			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
@@ -379,12 +383,48 @@ class NewUserController extends Controller
 			//get the trial_ends date
 			$trial_ends_timestamp = $this->GetTrialEndsDate();
 			
-			//figure out which plan the user is currently subscribed to
-			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			//check to see if there's a coupon
+			$promo_type = $request->promotype;
+			$promo_code = $request->promocode;
+			$valid_coupon = 0;
+			
+			if ($promo_type == 'coupon') {
+				
+				//sweet, user has entered a coupon!
+				if ($promo_code != '') {
+					
+					try {
+					  //try for the coupon
+						$coupon_obj = \Stripe\Coupon::retrieve($promo_code);
+						$valid_coupon = 1;
+						
+					}
+					catch (\Stripe\Error\InvalidRequest $e) {
+						// Invalid parameters were supplied to Stripe's API
+						// coupon is no good
+						$valid_coupon = 0;
+					
+						
+					} catch (Exception $e) {
+					  
+					}
+					
+					
+					
+				}
+				
+			}
+			
+			//if there is, see if it's a valid coupon
+			
+			//if it's valid, then apply it
+			
 			
 			// Get the credit card details submitted by the form
 			$token = $request->stripeToken;
-				
+			
+			//user does not have a oupon
+			if ($valid_coupon==0) {
 			$customer = \Stripe\Customer::create(array(
 					"source" => $token,
 					"plan" => $userProduct->stripe_plan_id,
@@ -392,6 +432,23 @@ class NewUserController extends Controller
 					"trial_end" => $trial_ends_timestamp
 				)
 			);
+			
+			}
+			
+			//user has a valid coupon
+			if ($valid_coupon==1) {
+				$customer = \Stripe\Customer::create(array(
+						"source" => $token,
+						"plan" => $userProduct->stripe_plan_id,
+						"email" => $user->email,
+						"trial_end" => $trial_ends_timestamp,
+						"coupon" => $promo_code
+					)
+				);
+
+			}
+			
+			
 						
 			$user->stripe_id = $customer->id;
 			
@@ -417,7 +474,6 @@ class NewUserController extends Controller
 			$user->phone =  $request->phone;
 			
 			
-			
 			$userSubscription->save();
 			$user->save();
 
@@ -431,6 +487,7 @@ class NewUserController extends Controller
         event(new UserHasRegistered($user));
         Auth::login($user, true);
 
+		
         return view('register.congrats')->with([
         	'user'=>$user,
         	'start_date'=>$request->start_date,
@@ -438,7 +495,7 @@ class NewUserController extends Controller
         	'meal2'=>$meal2,
         	'meal3'=>$meal3,
         ]);
-			
+		
 	}
 		
 		
