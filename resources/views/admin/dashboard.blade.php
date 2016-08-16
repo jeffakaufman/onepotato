@@ -140,7 +140,7 @@
                    	</div>
            		</div>
            	</div>
-      		<div class="col-sm-4"> 
+      		<div class="col-sm-5"> 
       			<div class="row">
         			<div class="panel panel-default">
             			<div class="panel-heading"><strong>Current Users</strong></div>
