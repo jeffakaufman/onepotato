@@ -321,6 +321,9 @@
 				border-right: 0;
 			}
 		}
+		> a {
+			color: #585858;
+		}
 		> a:focus, > a:hover {
 			background: none;
 		}

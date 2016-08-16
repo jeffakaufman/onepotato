@@ -114,7 +114,7 @@ function stripeResponseHandler(status, response) {
 </script>
 
 
-<payment inline-template>
+<div id="payment">
     <div class="container">
 
        	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
@@ -265,15 +265,18 @@ function stripeResponseHandler(status, response) {
                         <div class="row form-group extrapadding">
                             <div class="col-xs-6 thinpadding first">
                                 <label class="select">
-                                    <select type="select" class="form-control" name="promotype">
+                                    <select type="select" class="form-control" name="promotype" v-model="promotype">
+                                        <!-- <option value="" selected>Code type</option>-->
+                                        <!-- <option v-for="code in promos" :value="code.key">@{{ code.label }}</option> -->
+                                        <option value="coupon">Coupon</option>
                                         <option value="referral">Referral code</option>
                                         <option value="giftcard">Gift card number</option>
-                                        <option value="coupon">Coupon</option>
                                     </select>
                                 </label>
                             </div>
                             <div class="col-xs-6 col-sm-4 thinpadding">
-                                <input type="text" name="promocode" class="form-control" placeholder="" lazy>
+                                <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
+                                <input type="text" name="promocode" class="form-control" @change="validatePromo" v-model="promocode" lazy>
                             </div> 
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
@@ -335,11 +338,11 @@ function stripeResponseHandler(status, response) {
                                 @endif
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding">Referral code</div>
-                                    <div class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
+                                    <div id="discount" class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
                                 </div>
                                 <div class="col-xs-12 col-sm-8 nosidepadding total">
                                     <div class="col-xs-7 nosidepadding">TOTAL</div>
-                                    <div class="col-xs-5 nosidepadding text-right">${{ $product->cost }}</div>
+                                    <div id="totalcost" class="col-xs-5 nosidepadding text-right">${{ $product->cost }}</div>
                                 </div>
                             </div>
                         </div>
@@ -363,23 +366,23 @@ function stripeResponseHandler(status, response) {
         </div>
         </form>
     </div>
-    <script>
-    $(function() {
-        $('.checkbox').on('click', '#same_as_delivery', function() {
-            if ($(this).prop("checked") == true) {
-                $('input[name=firstname]').val($('#addy1').text());
-                $('input[name=lastname]').val($('#addy2').text());
-                $('input[name=address]').val($('#addy3').text());
-                $('input[name=address_2]').val($('#addy4').text());
-                $('input[name=city]').val($('#addy5').text());
-                $('select[name=state]').val($('#addy6').text());
-                $('input[name=zip]').val($('#addy7').text());
-                $('input[name=phone]').val($('#addy8').text());
-            } else {
-                $('input[name=firstname], input[name=lastname], input[name=address], input[name=address_2], input[name=city], select[name=state], input[name=zip], input[name=phone]').val('');
-            }
-        });
+</div>
+<script>
+$(function() {
+    $('.checkbox').on('click', '#same_as_delivery', function() {
+        if ($(this).prop("checked") == true) {
+            $('input[name=firstname]').val($('#addy1').text());
+            $('input[name=lastname]').val($('#addy2').text());
+            $('input[name=address]').val($('#addy3').text());
+            $('input[name=address_2]').val($('#addy4').text());
+            $('input[name=city]').val($('#addy5').text());
+            $('select[name=state]').val($('#addy6').text());
+            $('input[name=zip]').val($('#addy7').text());
+            $('input[name=phone]').val($('#addy8').text());
+        } else {
+            $('input[name=firstname], input[name=lastname], input[name=address], input[name=address_2], input[name=city], select[name=state], input[name=zip], input[name=phone]').val('');
+        }
     });
-    </script>
-</payment>
+});
+</script>
 @endsection

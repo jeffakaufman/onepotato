@@ -34092,37 +34092,61 @@ if (document.getElementById('delivery_schedule')) {
 },{}],58:[function(require,module,exports){
 'use strict';
 
-Vue.component('payment', {
-    ready: function ready() {
-        //
-    },
+if (document.getElementById('payment')) {
+    new Vue({
+        el: '#payment',
+        created: function created() {
+            window.addEventListener('keyup', this.validatePromo);
+        },
+        data: function data() {
+            return {
+                cards: ['Visa', 'Mastercard', 'Discover', 'American Express'],
+                promotype: 'coupon',
+                promocode: '',
+                product_cost: '',
+                coupon: [],
+                expiry_month: 'Expiration Month',
+                expiry_year: 'Expiration Year',
+                bad_expiry: false
+            };
+        },
+        methods: {
+            validatePromo: function validatePromo() {
+                // /coupon/getamount/85.90/SaveThreeBucks9109
+                this.promocode = $('input[name=promocode]').val();
 
-    data: function data() {
-        return {
-            cards: ['Visa', 'Mastercard', 'Discover', 'American Express'],
-            expiry_month: 'Expiration Month',
-            expiry_year: 'Expiration Year',
-            bad_expiry: false
-        };
-    },
-    methods: {
-        checkDate: function checkDate() {
-            var today = new Date();
-            var this_month = today.getMonth() + 1;
-            var this_year = today.getFullYear();
-            if (this.expiry_month != 'Expiration Month' && this.expiry_year != 'Expiration Year') {
+                this.$http.get('/coupon/getamount/' + this.product_cost + '/' + this.promocode, function (data) {
 
-                var month = parseInt(this.expiry_month);
-                var year = parseInt(20 + this.expiry_year);
-                if (month < this_month && year == this_year) {
-                    this.bad_expiry = true;
-                } else {
-                    this.bad_expiry = false;
+                    this.coupon = data;
+
+                    if (this.coupon.status == 'valid') {
+                        var discount = parseFloat(this.coupon.discount).toFixed(2);
+                        var newprice = parseFloat(this.coupon.newprice).toFixed(2);
+
+                        $('#discount').html('-$' + discount);
+                        $('#totalcost').html('$' + newprice);
+                    }
+                    //console.log(this.coupon);
+                }.bind(this));
+            },
+            checkDate: function checkDate() {
+                var today = new Date();
+                var this_month = today.getMonth() + 1;
+                var this_year = today.getFullYear();
+                if (this.expiry_month != 'Expiration Month' && this.expiry_year != 'Expiration Year') {
+
+                    var month = parseInt(this.expiry_month);
+                    var year = parseInt(20 + this.expiry_year);
+                    if (month < this_month && year == this_year) {
+                        this.bad_expiry = true;
+                    } else {
+                        this.bad_expiry = false;
+                    }
                 }
             }
         }
-    }
-});
+    });
+}
 
 },{}],59:[function(require,module,exports){
 'use strict';

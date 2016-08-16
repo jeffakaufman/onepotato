@@ -1,19 +1,43 @@
-Vue.component('payment', {
-
-    ready() {
-        //
+if (document.getElementById('payment')) {
+new Vue({
+    el: '#payment',
+    created: function () {
+        window.addEventListener('keyup', this.validatePromo)
     },
     data: function () {
 	    return {
 			cards: [
 				'Visa', 'Mastercard', 'Discover', 'American Express'
 			],
+			promotype: 'coupon',
+            promocode: '',
+			product_cost: '',
+			coupon: [],
 			expiry_month: 'Expiration Month',
 			expiry_year: 'Expiration Year',
 			bad_expiry: false
 		}
 	},
     methods: {
+    	validatePromo: function() { // /coupon/getamount/85.90/SaveThreeBucks9109
+    		this.promocode = $('input[name=promocode]').val();
+
+            this.$http.get('/coupon/getamount/'+ this.product_cost + '/' + this.promocode, function(data){
+                
+                this.coupon = data;
+                
+                if (this.coupon.status == 'valid') {
+                    var discount = parseFloat(this.coupon.discount).toFixed(2);
+                    var newprice = parseFloat(this.coupon.newprice).toFixed(2);
+                    
+                    $('#discount').html('-$'+discount);
+                    $('#totalcost').html('$'+newprice);
+                }
+                //console.log(this.coupon);
+                
+	    	}.bind(this));
+		    
+    	},
         checkDate: function () {
             var today = new Date();
             var this_month = today.getMonth() + 1;
@@ -32,3 +56,4 @@ Vue.component('payment', {
         }
     }
 });
+}

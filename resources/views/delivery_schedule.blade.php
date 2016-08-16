@@ -1,12 +1,18 @@
 @extends('spark::layouts.app')
 
 @section('scripts')
-
+<script>
+var tz = '';
+try {
+    tz = moment.tz.guess();
+} catch (e) {}
+// use tz and pass it to php via ajax or in a hidden field
+// index.php?tz=America/Toronto
+</script>
 @endsection
 
 @section('content')
 <?php
-
 function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
      $daysOfWeek = array('S','M','T','W','T','F','S');
@@ -40,7 +46,8 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
      
      $month = str_pad($month, 2, '0', STR_PAD_LEFT);
 
-     $today = date('Y-m-d');
+     //$today = date('Y-m-d');
+
      $active = '';
   
      while ($currentDay <= $numberDays) {
@@ -56,7 +63,12 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
           
         $date = $year.'-'.$month.'-'.$currentDayRel;
 
-        if ($date == $today) $active = 'active';
+        $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
+
+        $now = new DateTime();
+        $now->setTimezone(new DateTimeZone($tz));
+        
+        if ($date == $now->format('Y-m-d')) $active = 'active';
         else  $active = '';
 
         $marker = '';
@@ -128,10 +140,13 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         @foreach ($weeksMenus as $weeksMenu)
             <?php $toolate = false; 
                 $ddate = new DateTime($weeksMenu->date2.' 09:00:00'); 
-                $today = new DateTime();
-                $today->sub(new DateInterval('PT7H0M'));
+                $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
+                
+                $now = new DateTime();
+                $now->setTimezone(new DateTimeZone($tz));
+                
                 $ddate->sub(new DateInterval('P7D'));
-                if ($ddate < $today) $toolate = true; ?>
+                if ($ddate < $now) $toolate = true; ?>
             <div class="week">
                 <h2><i class="fa @if (count($weeksMenu->menus)) fa-check-circle @else fa-times-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
                     <span class="plan_size">2 Adults

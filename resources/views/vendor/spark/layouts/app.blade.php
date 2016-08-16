@@ -13,13 +13,12 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
-    <link href="/css/sweetalert.css" rel="stylesheet">
-    <link href="/css/fontello.css" rel="stylesheet">
-    <link href="/css/fontello-embedded.css" rel="stylesheet">
+    <link href="/css/vendor.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/vendor_header.js"></script>
+	<!--<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>-->
 	
 
     <!-- Scripts -->
@@ -59,6 +58,7 @@
         @endif
 
         <!-- JavaScript -->
+        <script src="/js/vendor_footer.js"></script>
         <script src="/js/app.js"></script>
         <script src="/js/sweetalert.min.js"></script>
     </div>

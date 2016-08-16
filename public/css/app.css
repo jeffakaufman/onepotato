@@ -6316,6 +6316,8 @@ input.number {
     @media (min-width: 768px) {
       .nav-sidebar > li.active {
         border-right: 0; } }
+  .nav-sidebar > li > a {
+    color: #585858; }
   .nav-sidebar > li > a:focus, .nav-sidebar > li > a:hover {
     background: none; }
 

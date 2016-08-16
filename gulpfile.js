@@ -13,7 +13,20 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss')
-       .browserify('app.js', null, null, { paths: 'vendor/laravel/spark/resources/assets/js' })
-       .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'public/js/sweetalert.min.js')
-       .copy('node_modules/sweetalert/dist/sweetalert.css', 'public/css/sweetalert.css');
+    	.copy('node_modules/sweetalert/dist/sweetalert.css', 'resources/assets/css/sweetalert.css')
+    	.styles([
+	       	'fontello.css',
+	       	'fontello-embedded.css',
+	       	'sweetalert.css',
+	       	'animate.css'
+	    ], 'public/css/vendor.css')
+	    .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'resources/assets/js/sweetalert.min.js')
+	    .scripts([
+	    	'moment.min.js', 
+	    	'moment-timezone-with-data-2010-2020.min.js',
+	    ], 'public/js/vendor_header.js')
+	    .scripts([
+	    	'sweetalert.min.js'
+	    ], 'public/js/vendor_footer.js')
+       	.browserify('app.js', null, null, { paths: 'vendor/laravel/spark/resources/assets/js' });
 });
