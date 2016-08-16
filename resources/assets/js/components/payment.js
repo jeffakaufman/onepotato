@@ -25,13 +25,16 @@ new Vue({
             this.$http.get('/coupon/getamount/'+ this.product_cost + '/' + this.promocode, function(data){
                 
                 this.coupon = data;
-                
-                if (this.coupon.status == 'valid') {
+                var origCost = $('#totalcost').text();
+                if (this.coupon.promotype== 'coupon' && this.coupon.status == 'valid') {
                     var discount = parseFloat(this.coupon.discount).toFixed(2);
                     var newprice = parseFloat(this.coupon.newprice).toFixed(2);
                     
                     $('#discount').html('-$'+discount);
                     $('#totalcost').html('$'+newprice);
+                } else {
+                    $('#discount').html('-$XX.XX');
+                    $('#totalcost').html(origCost);
                 }
                 //console.log(this.coupon);
                 
