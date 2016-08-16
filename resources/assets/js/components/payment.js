@@ -26,6 +26,7 @@ new Vue({
                 
                 this.coupon = data;
                 var origCost = $('#totalcost').text();
+                console.log(origCost);
                 if (this.promotype== 'coupon' && this.coupon.status == 'valid') {
                     var discount = parseFloat(this.coupon.discount).toFixed(2);
                     var newprice = parseFloat(this.coupon.newprice).toFixed(2);
