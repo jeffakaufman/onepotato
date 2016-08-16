@@ -153,7 +153,7 @@
             					<div class="col-sm-10">
                 					{{ $totalSub->product_description }}
                 				</div>
-               					<div class="col-sm-1 text-right">
+               					<div class="col-sm-2 text-right">
                 					{{$totalSub->total}}
                 				</div>
             				</div>	
@@ -184,7 +184,7 @@
             					<div class="col-sm-10">
                 					{{ $newSub->product_description }}
                 				</div>
-               					<div class="col-sm-1 text-right">
+               					<div class="col-sm-2 text-right">
                 					{{$newSub->total}}
                 				</div>
             				</div>	
