@@ -60,7 +60,6 @@
         <!-- JavaScript -->
         <script src="/js/vendor_footer.js"></script>
         <script src="/js/app.js"></script>
-        <script src="/js/sweetalert.min.js"></script>
     </div>
 </body>
 </html>
