@@ -151,9 +151,9 @@ var_dump($contact_sync);die();
         $arr['PERSONALIZED_GIFT_CARD_LINK'] = ''; //Personalized Gift Card Link	Text Input	%PERSONALIZED_GIFT_CARD_LINK%	Added 7/28/16
 
 //Standard AC Fields
-        $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
-        $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
-        $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
+//        $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
+//        $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
+//        $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
         $arr['PHONE'] = $user->phone; //Phone	Text Input	%PHONE%
         $arr['ZIP_CODE'] = $user->billing_zip; //Zip Code	Text Input	%ZIP_CODE%
         $arr['LATITUDE'] = ''; //Latitude	Text Input	%LATITUDE%
