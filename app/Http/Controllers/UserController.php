@@ -94,8 +94,6 @@ class UserController extends Controller
 			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
 			$shipments[] = $deliveryHistory;
 		}
-		
-		arsort($shipments);
 
 		return view('account')
 					->with(['user'=>$user, 
