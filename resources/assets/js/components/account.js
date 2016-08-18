@@ -6,36 +6,53 @@ Vue.component('account', {
     },
     data: function () {
 	    return {
-	    	redmeat: '',
-	    	poultry: '',
-	    	fish: '',
-	    	lamb: '',
-	    	pork: '',
-	    	shellfish: '',
-	    	nuts: ''
+	    	plan_type: '',
+	    	prefs: {
+	    		redmeat: '',
+		    	poultry: '',
+		    	fish: '',
+		    	lamb: '',
+		    	pork: '',
+		    	shellfish: ''
+		    }
 	    }
     },
+    computed: {
+   		concatPrefs: function() {
+   			var userPrefs = [];
+   			Object.keys(this.prefs).forEach(function(name) {
+   				if (this.prefs[name] == true) {
+   					if (name == 'redmeat') name = 'red meat';
+   					userPrefs.push(name);
+   				}
+   			}.bind(this));
+   			return userPrefs.join(', ');
+   		}
+	},
     methods: {
 	  	selectAllOmnivore: function () {
-	  		this.redmeat = true,
-	    	this.poultry = true,
-	    	this.fish = true,
-	    	this.lamb = true,
-	    	this.pork = true,
-	    	this.shellfish = true,
-	    	this.nuts = true;
+	  		this.prefs.redmeat = true,
+	    	this.prefs.poultry = true,
+	    	this.prefs.fish = true,
+	    	this.prefs.lamb = true,
+	    	this.prefs.pork = true,
+	    	this.prefs.shellfish = true
 	  	},
 	  	selectAllVegetarian: function () {
-	  		this.redmeat = false,
-	    	this.poultry = false,
-	    	this.fish = false,
-	    	this.lamb = false,
-	    	this.pork = false,
-	    	this.shellfish = false,
-	  		this.nuts = true;
+	  		this.prefs.redmeat = false,
+	    	this.prefs.poultry = false,
+	    	this.prefs.fish = false,
+	    	this.prefs.lamb = false,
+	    	this.prefs.pork = false,
+	    	this.prefs.shellfish = false
 	  	},
 	  	selectOmni: function () {
-	  		this.plan_type = 'Omnivore Box'
+	  		var isOmni = false;
+		  		$('input.pref').each(function() {
+		  			if ($(this).is(':checked') ) isOmni = true;
+		  		});
+		  		if (isOmni) this.plan_type = 'Omnivore Box';
+		  			else this.plan_type = 'Vegetarian Box';
 	  	}
 	}
 });

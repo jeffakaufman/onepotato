@@ -35,7 +35,7 @@ $('#register4').addClass('active');
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
-                        <h1>Next, tell us where you would like your package to be delivered. 
+                        <h1>Where shall we deliver your meals?
                             <div class="panel-subtitle">You can change the address and family information at any time in Account Management.</div>
                         </h1>
                     </div>

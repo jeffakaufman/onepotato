@@ -264,7 +264,7 @@ function stripeResponseHandler(status, response) {
                             </div>
                         </div>
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-6 thinpadding first">
+                            <div class="col-xs-5 col-sm-4 thinpadding first">
                                 <label class="select">
                                     <select type="select" class="form-control" name="promotype" @change="validatePromo" v-model="promotype">
                                         <!-- <option value="" selected>Code type</option>-->
@@ -275,10 +275,13 @@ function stripeResponseHandler(status, response) {
                                     </select>
                                 </label>
                             </div>
-                            <div class="col-xs-6 col-sm-4 thinpadding">
+                            <div class="col-xs-5 col-sm-4 thinpadding">
                                 <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
-                                <input type="text" name="promocode" class="form-control" @change="validatePromo" v-model="promocode" lazy>
+                                <input type="text" name="promocode" class="form-control" v-model="promocode" lazy>
                             </div> 
+                            <div class="col-xs-2 thinpadding last" style="line-height: 42px">
+                                <div @click="validatePromo" class="link">Apply</div>
+                            </div>
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
                             </div>
@@ -354,8 +357,7 @@ function stripeResponseHandler(status, response) {
                                     <button class="btn btn-primary">
                                         Place Order
                                     </button>
-                                    <div class="disclaimer text-left padtop">By clicking “Place Order” you agree you are purchasing a continuous subscription, and that you will receive deliveries and be billed to your designated payment method weekly unless you a skip a delivery through your Delivery Schedule page or cancel your subscription, by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ. 
-        </div>
+                                    <div class="disclaimer text-left padtop">By clicking “Place Order” you agree to purchasing a continuous subscription, receiving deliveries and being billed to your designated payment method weekly, unless you a skip a delivery through your Delivery Schedule page or cancel your subscription.  You may cancel your subscription by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ.</div>
                                 </div>
                             </div>
                         </div>

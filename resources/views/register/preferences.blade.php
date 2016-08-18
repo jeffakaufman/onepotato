@@ -37,7 +37,7 @@ $('#register3').addClass('active');
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
-                        <h1>Tell us your preferences.
+                        <h1>Tell us your preferences
                             <div class="panel-subtitle">You can update your preferences at any time from your account.</div>
                         </h1>
                     </div>
@@ -74,16 +74,16 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 <div class="col-xs-4 checkbox">
-                                    <input id="redmeat" v-model="prefs.redmeat" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control" @if(isset($redmeat)) {{ $redmeat }} @else checked @endif /> <label for="redmeat">Red Meat</label>
-                                    <input id="poultry" v-model="prefs.poultry" @click="selectOmni" name="prefs[]" type="checkbox" value="2" class="form-control" @if(isset($poultry)) {{ $poultry }} @else checked @endif /> <label for="poultry">Poultry</label>
+                                    <input id="redmeat" v-model="prefs.redmeat" @click="selectOmni" name="prefs[]" type="checkbox" value="1" class="form-control pref" @if(isset($redmeat)) {{ $redmeat }} @else checked @endif /> <label for="redmeat">Red Meat</label>
+                                    <input id="poultry" v-model="prefs.poultry" @click="selectOmni" name="prefs[]" type="checkbox" value="2" class="form-control pref" @if(isset($poultry)) {{ $poultry }} @else checked @endif /> <label for="poultry">Poultry</label>
                                 </div>
                                 <div class="col-xs-4 checkbox">
-                                    <input id="fish" v-model="prefs.fish" @click="selectOmni" name="prefs[]" type="checkbox" value="3" class="form-control" @if(isset($fish)) {{ $fish }} @else checked @endif /> <label for="fish">Fish</label>
-                                    <input id="lamb" v-model="prefs.lamb" @click="selectOmni" name="prefs[]" type="checkbox" value="4" class="form-control" @if(isset($lamb)) {{ $lamb }} @else checked @endif /> <label for="lamb">Lamb</label>
+                                    <input id="fish" v-model="prefs.fish" @click="selectOmni" name="prefs[]" type="checkbox" value="3" class="form-control pref" @if(isset($fish)) {{ $fish }} @else checked @endif /> <label for="fish">Fish</label>
+                                    <input id="lamb" v-model="prefs.lamb" @click="selectOmni" name="prefs[]" type="checkbox" value="4" class="form-control pref" @if(isset($lamb)) {{ $lamb }} @else checked @endif /> <label for="lamb">Lamb</label>
                                 </div>
                                 <div class="col-xs-4 checkbox">
-                                    <input id="pork" v-model="prefs.pork" @click="selectOmni" name="prefs[]" type="checkbox" value="5" class="form-control" @if(isset($pork)) {{ $pork }} @else checked @endif /> <label for="pork">Pork</label>
-                                    <input id="shellfish" v-model="prefs.shellfish" @click="selectOmni" name="prefs[]" type="checkbox" value="6" class="form-control" @if(isset($shellfish)) {{ $shellfish }} @else checked @endif /> <label for="shellfish">Shellfish</label>
+                                    <input id="pork" v-model="prefs.pork" @click="selectOmni" name="prefs[]" type="checkbox" value="5" class="form-control pref" @if(isset($pork)) {{ $pork }} @else checked @endif /> <label for="pork">Pork</label>
+                                    <input id="shellfish" v-model="prefs.shellfish" @click="selectOmni" name="prefs[]" type="checkbox" value="6" class="form-control pref" @if(isset($shellfish)) {{ $shellfish }} @else checked @endif /> <label for="shellfish">Shellfish</label>
                                 </div>
                                 <!-- <div class="col-xs-3 checkbox" v-for="pref in prefs">
                                     <input id="@{{ pref.key }}" name="prefs[]" type="checkbox" v-model="$data[pref.key]" value="@{{ pref.id }}" class="form-control"  /> <label for="@{{ pref.key }}">@{{ pref.name | capitalize }}</label>
@@ -93,7 +93,7 @@ $('#register3').addClass('active');
                     </div>
                     <div class="note text-center">
                         <h4>Your Dietary Profile</h4>
-                        You will receive a mixture of @{{ concatPrefs }} <span v-if="plan_type == 'Omnivore Box'">and</span> vegetarian dishes.
+                        You will receive <span v-if="plan_type == 'Omnivore Box'">a mixture of</span> @{{ concatPrefs }} <span v-if="plan_type == 'Omnivore Box'">and</span> vegetarian dishes.
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5">
@@ -114,7 +114,7 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 
-                                <menu :prefs="prefs"></menu>
+                                <menu :prefs="prefs" :loaded.sync="loaded"></menu>
     
                             </div>
     
@@ -123,7 +123,8 @@ $('#register3').addClass('active');
                                 <div id="menu" class="col-xs-12 extrapadding">
     
                                     <div class="meal col-xs-4 font11 thinpadding" v-for="meal in filteredMenu" track-by="id">
-                                        <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
+                                        <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
+                                        <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
                                         <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }}</div>
 
                                         <input type="hidden" name="menus_id[]" value="@{{ meal.id }}" />
@@ -150,7 +151,7 @@ $('#register3').addClass('active');
                     </div>
                     <div class="row">
                         <div class="col-xs-12 text-right">
-                            <button class="btn btn-primary">continue to delivery information</button>
+                            <button class="btn btn-primary" :disabled="loaded">continue to delivery information</button>
                         </div>
                         <div class="col-xs-12 text-right disclaimer padding">
                             No Commitment. Skip, cancel or change your family size any time. 

@@ -20,7 +20,7 @@ $('#register2').addClass('active');
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
-                        <h1>Pick the plan that’s best for your family.
+                        <h1>Pick the plan that’s best for your family
                             <div class="panel-subtitle">No Commitment. Skip, cancel or change your family size any time.<br>
 Both plans include 3 meals per week.</div>
                         </h1>
@@ -59,7 +59,7 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-left"></div>
                         </div>
                         <div class="row nowrap">
-                            <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
+                            <div class="plan-info col-xs-6 text-right">Minimum weekly cost:</div>
                             <div class="plan-info col-xs-6 text-left">${{ $adult_price }}</div>
                         </div>
                         <div class="row action">
@@ -110,7 +110,7 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-left">${{ number_format( $childCost / 3, 2 ) }}*</div>
                         </div>
                         <div class="row nowrap">
-                            <div class="plan-info col-xs-6 text-right">Weekly cost from:</div>
+                            <div class="plan-info col-xs-6 text-right">Minimum weekly cost:</div>
                             <div class="plan-info col-xs-6 text-left">
                                 <span v-show="children == 1">{{ $family1_price }}</span>
                                 <span v-show="children == 2">{{ $family1_price + $childCost }}</span>

@@ -95,7 +95,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="#">
+                                <a href="/account#delivery_history">
                                     Delivery History
                                 </a>
                             </li>
