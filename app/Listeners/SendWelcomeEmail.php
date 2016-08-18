@@ -141,7 +141,7 @@ var_dump($contact_sync);die();
         $arr['REFERENCE_ID'] = $userSubscription->stripe_id; //        Reference ID	Text Input	%REFERENCE_ID%
         $arr['DELIVERY_SKIP_DATE'] = ''; //        Delivery Skip Date	Text Input	%DELIVERY_SKIP_DATE%	This should update to blank if they did not skip that week
         $arr['PAYMENT_FAIL_COUNT'] = ''; //Payment Fail Count	Text Input	%PAYMENT_FAIL_COUNT%	This should update to blank if they make a payment
-        $arr['GIFT_CARD_ISSUED'] = ''; //Gift Card Issued	Text Input	%GIFT_CARD_ISSUED%	Removed on 7/28/16 per conversation this is not good enough for data.
+//        $arr['GIFT_CARD_ISSUED'] = ''; //Gift Card Issued	Text Input	%GIFT_CARD_ISSUED%	Removed on 7/28/16 per conversation this is not good enough for data.
         $arr['REFERRAL_NAME'] = ''; //Referral Name	Text Input	%REFERRAL_NAME%	Added 7/28/16
         $arr['REFERRAL_EMAIL'] = ''; //Referral Email	Text Input	%REFERRAL_EMAIL%	Added 7/28/16
         $arr['GIFT_CARD_AMOUNT'] = ''; //Gift Card Amount	Text Input	%GIFT_CARD_AMOUNT%	Added 7/28/16
