@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
+use App\Subinvoice;
 use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
 use App\Dietary_preference;
+use App\Order;
 use App\Product;
 use App\Referral;
 use Mail;
@@ -74,9 +76,23 @@ class UserController extends Controller
 			$userProduct = Product::where('id',$productID)->first();
 		}
 
-
-
 		$referrals = Referral::where('referrer_user_id',$id)->get();
+
+		$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','shipped')->get();
+
+		for ($i = 0; $i < count($invoices); $i++) {
+			$deliveryHistory = new stdClass;
+
+			$deliveryHistory->order_id = $invoices[$i]->order_id;
+
+			$order = Order::where('order_id',$invoices[$i]->order_id)->get();
+			$deliveryHistory->ship_date = date('F j, Y', strtotime($order[0]->ship_date));
+			$deliveryHistory->cost = $invoices[$i]->charge_amount;
+			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
+			$shipments[] = $deliveryHistory;
+		}
+		
+		arsort($shipments);
 
 		return view('account')
 					->with(['user'=>$user, 
@@ -84,7 +100,8 @@ class UserController extends Controller
 							'userSubscription'=>$userSubscription, 
 							'userProduct'=>$userProduct, 
 							'states'=>$states,
-							'referrals'=>$referrals]);
+							'referrals'=>$referrals,
+							'shipments'=>$shipments]);
 		
 		
 	
@@ -919,9 +936,9 @@ class UserController extends Controller
 				$weeksMenus[] = $deliverySchedule;
 			}   
     	}
-   	//echo json_encode($weeksMenus[0]);
-   	//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   	return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
+   		//echo json_encode($weeksMenus[0]);
+   		//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
+   		return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	
@@ -955,4 +972,7 @@ class UserController extends Controller
 
 		return redirect('/delivery-schedule'); 
 	}
+
 }
+
+

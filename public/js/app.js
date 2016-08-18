@@ -33774,24 +33774,42 @@ Vue.component('account', {
 
 				data: function data() {
 								return {
-												redmeat: '',
-												poultry: '',
-												fish: '',
-												lamb: '',
-												pork: '',
-												shellfish: '',
-												nuts: ''
+												plan_type: '',
+												prefs: {
+																redmeat: '',
+																poultry: '',
+																fish: '',
+																lamb: '',
+																pork: '',
+																shellfish: ''
+												}
 								};
+				},
+				computed: {
+								concatPrefs: function concatPrefs() {
+												var userPrefs = [];
+												Object.keys(this.prefs).forEach(function (name) {
+																if (this.prefs[name] == true) {
+																				if (name == 'redmeat') name = 'red meat';
+																				userPrefs.push(name);
+																}
+												}.bind(this));
+												return userPrefs.join(', ');
+								}
 				},
 				methods: {
 								selectAllOmnivore: function selectAllOmnivore() {
-												this.redmeat = true, this.poultry = true, this.fish = true, this.lamb = true, this.pork = true, this.shellfish = true, this.nuts = true;
+												this.prefs.redmeat = true, this.prefs.poultry = true, this.prefs.fish = true, this.prefs.lamb = true, this.prefs.pork = true, this.prefs.shellfish = true;
 								},
 								selectAllVegetarian: function selectAllVegetarian() {
-												this.redmeat = false, this.poultry = false, this.fish = false, this.lamb = false, this.pork = false, this.shellfish = false, this.nuts = true;
+												this.prefs.redmeat = false, this.prefs.poultry = false, this.prefs.fish = false, this.prefs.lamb = false, this.prefs.pork = false, this.prefs.shellfish = false;
 								},
 								selectOmni: function selectOmni() {
-												this.plan_type = 'Omnivore Box';
+												var isOmni = false;
+												$('input.pref').each(function () {
+																if ($(this).is(':checked')) isOmni = true;
+												});
+												if (isOmni) this.plan_type = 'Omnivore Box';else this.plan_type = 'Vegetarian Box';
 								}
 				}
 });
@@ -34160,18 +34178,20 @@ var MenuComponent = Vue.extend({
 		this.fetchMenu();
 		//alert(this['pref']);
 	},
-	props: ['prefs'],
+	props: ['prefs', 'loaded'],
 
 	data: function data() {
 		return {
-			list: []
+			list: [],
+			altlist: [{ "id": 1, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 2, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 3, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }],
+			clickable: true
 		};
 	},
 	methods: {
 		fetchMenu: function fetchMenu() {
 
 			var date, year, month, day;
-
+			this.loaded = true;
 			date = new Date($('#startDate').val());
 			year = date.getFullYear();
 			if (year <= 1999) year = year + 100;
@@ -34180,8 +34200,13 @@ var MenuComponent = Vue.extend({
 
 			this.$http.get('/whatscooking/' + year + '-' + month + '-' + day, function (menu) {
 				this.list = menu;
+				this.loaded = false;
 				//console.log(this.list);
-			}.bind(this));
+			}.bind(this)).error(function (error) {
+				this.list = this.altlist;
+				this.loaded = false;
+				this.clickable = false;
+			});
 		}
 	},
 	computed: {
@@ -34244,7 +34269,7 @@ if (document.getElementById('preferences')) {
 					shellfish: '',
 					nuts: ''
 				},
-				filter: ''
+				loaded: ''
 			};
 		},
 		computed: {
@@ -34271,7 +34296,12 @@ if (document.getElementById('preferences')) {
 				this.prefs.redmeat = false, this.prefs.poultry = false, this.prefs.fish = false, this.prefs.lamb = false, this.prefs.pork = false, this.prefs.shellfish = false;
 			},
 			selectOmni: function selectOmni() {
-				this.plan_type = 'Omnivore Box';
+
+				var isOmni = false;
+				$('input.pref').each(function () {
+					if ($(this).is(':checked')) isOmni = true;
+				});
+				if (isOmni) this.plan_type = 'Omnivore Box';else this.plan_type = 'Vegetarian Box';
 			}
 		}
 	});

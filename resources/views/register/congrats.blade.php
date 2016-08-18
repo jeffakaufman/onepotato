@@ -43,7 +43,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading with-subtitle">
                     <h1>Congratulations!
-                        <div class="panel-subtitle">Your first box will arrive on {{ date('F d', strtotime($start_date)) }}.</div>
+                        <div class="panel-subtitle">Your first box will arrive on {{ date('F d', strtotime($start_date)) }}.<br>
+                        Get ready to start cooking!</div>
                     </h1>
                 </div>
             </div>

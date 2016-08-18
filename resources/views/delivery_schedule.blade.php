@@ -138,6 +138,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         <div class="col-xs-12 col-sm-9 schedule">
         
         @foreach ($weeksMenus as $weeksMenu)
+        <?php //var_dump($weeksMenu) ?>
             <?php $toolate = false; 
                 $ddate = new DateTime($weeksMenu->date2.' 09:00:00'); 
                 $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
@@ -145,13 +146,13 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                 $now = new DateTime();
                 $now->setTimezone(new DateTimeZone($tz));
                 
-                $ddate->sub(new DateInterval('P7D'));
+                $ddate->sub(new DateInterval('P6D'));
                 if ($ddate < $now) $toolate = true; ?>
             <div class="week">
                 <h2><i class="fa @if (count($weeksMenu->menus)) fa-check-circle @else fa-times-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
                     <span class="plan_size">2 Adults
                         @if ($userProduct->productDetails()->ChildSelect), {{ $userProduct->productDetails()->ChildSelect }} Children @endif
-                        <a href="#" class="change_children sidelink" data-date="{{ $weeksMenu->date }}" data-children="{{ $userProduct->productDetails()->ChildSelect }}" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                        <a href="#" class="change_children sidelink" data-date="{{ $weeksMenu->date }}" data-date2="{{ $weeksMenu->date3 }}" data-children="{{ $userProduct->productDetails()->ChildSelect }}" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
 
                     <div class="subtitle">
                         @if (count($weeksMenu->menus) > 0 && !$toolate) 
@@ -309,8 +310,8 @@ $(function() {
         }
     });
     $('.change_children').click(function () {
-        var deliveryDate = $(this).data('date');
-        $('.delivery_date').text( deliveryDate2 );
+        var deliveryDate = $(this).data('date2');
+        $('.delivery_date').text( deliveryDate );
     });
 });
 </script>

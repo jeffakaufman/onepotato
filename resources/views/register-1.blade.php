@@ -97,14 +97,14 @@ $('#register1').addClass('active');
 
 	<div class="row">
 	    <div class="col-sm-6 col-md-4 col-md-offset-2">
-	        <h5>NO COMMITMENT</h5>
-	        <p>Skip weeks, change your family size, or cancel anytime. </p>
+	        <h5>COMMITMENT-FREE</h5>
+	        <p>Skip deliveries, change your family size, or cancel anytime.</p>
 
-	        <h5>CUSTOMIZED TO YOUR FAMILY</h5>
-	        <p>Customize to your family’s size and take advantage of special kid’s pricing. We’ll personalize your menus based on your dietary preferences.</p> 
+	        <h5>CUSTOMIZED</h5>
+	        <p>Customize your box based on family size, dietary preferences and allergies.  Take advantage of special kid’s pricing. </p> 
 
 	        <h5>CONVENIENT DELIVERY</h5>
-	        <p>Meals arrive in a recyclable insulated box so food stays fresh until you open it.</p>
+	        <p>Receive meals in a recyclable insulated box so food stays fresh.</p>
 	    </div>
 	    <div class="col-sm-6 col-md-4 text-right">
 	        <div style="position: absolute; top: -5px; right: 0;"><img src="/img/badge_free_shipping.png"></div>

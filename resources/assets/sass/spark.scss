@@ -141,6 +141,34 @@ h2 {
 		}
 	}
 }
+#delivery_history h4 {
+	
+	.subtitle {
+		font-family: $font-family-semibold;
+		font-size: 13px;
+		color: $text-color;
+		margin-top: 15px;
+		text-align: right;
+		letter-spacing: 0;
+		
+		@media only screen and (min-width: 992px) {
+			float: right;
+			font-size: 15px;
+			margin-top: 2px;
+		}
+		.promo_note {
+			color: $brand-secondary;
+			font-style: italic;
+		}
+		a {
+			color: $brand-secondary;
+			
+			&:hover {
+				color: $brand-primary;
+			}
+		}
+	}
+}
 h3, h4, h5 {
 	font-family: $font-family-semibold;
 	color: $brand-primary;
@@ -176,6 +204,11 @@ body.account {
 	
 	h2 {
 		margin-bottom: 1.5em;
+		
+		.edit-link {
+			text-transform: none;
+			font-family: $font-family-semibold;
+		}
 	}
 	h4 {
 		color: $text-color;
@@ -218,6 +251,12 @@ body.account {
 	@media only screen and (max-width: 549px) {
 		font-size: 0.8em;
 	}
+}
+body.account .caption {
+	font-size: 0.8em;
+}
+.modal-title .delivery_date {
+	text-transform: uppercase;
 }
 .note {
 	background: $bg-color-highlight;
@@ -387,8 +426,18 @@ body.with-navbar {
 	&:hover {
 		color: $brand-primary;
 	}
+	&.alt {
+		color: $brand-primary;
+	}
 }
-
+h1 .sidelink {
+	color: $brand-primary;
+	font-size: 13px;
+	
+	&:hover {
+		color: $brand-secondary;
+	}
+}
 .total {
 	font-family: $font-family-semibold;
 }

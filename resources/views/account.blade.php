@@ -1,98 +1,99 @@
 @extends('spark::layouts.app')
 
-@section('content')
-
+@section('scripts')
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
 <script>
 /*stripe code*/
-
 $(document).ready(function() {
 
-	// Watch for a form submission:
-	$("#payment-form").submit(function(event) {
+    // Watch for a form submission:
+    $("#payment-form").submit(function(event) {
 
-		// Flag variable:
-		//var error = false;
+        // Flag variable:
+        //var error = false;
 
-		// disable the submit button to prevent repeated clicks:
-		$('#submitBtn').attr("disabled", "disabled");
+        // disable the submit button to prevent repeated clicks:
+        $('#submitBtn').attr("disabled", "disabled");
 
-		// Get the values:
-		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
-		
-		console.log (ccNum);
-		
-		// Validate the number:
-		if (!Stripe.card.validateCardNumber(ccNum)) {
-			error = true;
-			console.log ('The credit card number appears to be invalid.');
-		}
+        // Get the values:
+        var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
+        
+        console.log (ccNum);
+        
+        // Validate the number:
+        if (!Stripe.card.validateCardNumber(ccNum)) {
+            error = true;
+            console.log ('The credit card number appears to be invalid.');
+        }
 
-		// Validate the CVC:
-		if (!Stripe.card.validateCVC(cvcNum)) {
-			error = true;
-			console.log ('The CVC number appears to be invalid.');
-		}
+        // Validate the CVC:
+        if (!Stripe.card.validateCVC(cvcNum)) {
+            error = true;
+            console.log ('The CVC number appears to be invalid.');
+        }
 
-		// Validate the expiration:
-		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
-			error = true;
-			console.log ('The expiration date appears to be invalid.');
-		}
+        // Validate the expiration:
+        if (!Stripe.card.validateExpiry(expMonth, expYear)) {
+            error = true;
+            console.log ('The expiration date appears to be invalid.');
+        }
 
-		// Validate other form elements, if needed!
-		error = false;
-		// Check for errors:
-		if (!error) {
+        // Validate other form elements, if needed!
+        error = false;
+        // Check for errors:
+        if (!error) {
 
-			// Get the Stripe token:
-			Stripe.card.createToken({
-				number: ccNum,
-				cvc: cvcNum,
-				exp_month: expMonth,
-				exp_year: expYear
-			}, stripeResponseHandler);
+            // Get the Stripe token:
+            Stripe.card.createToken({
+                number: ccNum,
+                cvc: cvcNum,
+                exp_month: expMonth,
+                exp_year: expYear
+            }, stripeResponseHandler);
 
-		}
-		
-		
-		// Prevent the form from submitting:
-		return false;
+        }
+        
+        
+        // Prevent the form from submitting:
+        return false;
 
-	}); // Form submission
+    }); // Form submission
 
 }); // Document ready.
 
 // Function handles the Stripe response:
 function stripeResponseHandler(status, response) {
 
-	// Check for an error:
-	//if (response.error) {
+    // Check for an error:
+    //if (response.error) {
 
-	//	reportError(response.error.message);
+    //  reportError(response.error.message);
 
-	//} else { // No errors, submit the form:
+    //} else { // No errors, submit the form:
 
-	  var f = $("#payment-form");
+      var f = $("#payment-form");
 
-	  // Token contains id, last4, and card type:
-	  var token = response['id'];
+      // Token contains id, last4, and card type:
+      var token = response['id'];
 
-	  console.log(token);
+      console.log(token);
 
-	  // Insert the token into the form so it gets submitted to the server
-	  f.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
+      // Insert the token into the form so it gets submitted to the server
+      f.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
 
-	  // Submit the form:
-	  f.get(0).submit();
+      // Submit the form:
+      f.get(0).submit();
 
-	//}
+    //}
 
 } // End of stripeResponseHandler() function.
 
 
 </script>
+@endsection
+
+@section('content')
 <account :user="user" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
@@ -105,43 +106,38 @@ function stripeResponseHandler(status, response) {
         <!-- .row -->
         <div class="row">
             <!-- Tabs -->
-            <div class="sidebar col-md-4">
+            <div class="sidebar col-sm-4 col-md-3" style="padding-right: 0">
 
                 <div class="panel panel-default panel-flush">
                     <div class="panel-body">
 
                         <ul class="nav nav-sidebar spark-settings-stacked-tabs" role="tablist">
                                 
-                            <!-- Plan Details Link -->
                             <li role="presentation" class="active">
                                 <a href="#plan_details" aria-controls="plan_details" role="tab" data-toggle="tab">
                                     <i class="icon icon-silverware"></i>Plan Details
                                 </a>
                             </li>
-
-                            <!-- Delivery Information Link -->
                             <li role="presentation">
                                 <a href="#delivery_info" aria-controls="delivery_info" role="tab" data-toggle="tab">
                                     <i class="icon icon-truck"></i>Delivery Information
                                 </a>
                             </li>
-                            
-
-                            <!-- Account Information Link -->
+                            <li role="presentation">
+                                <a href="#delivery_history" aria-controls="delivery_history" role="tab" data-toggle="tab">
+                                    <i class="icon icon-truck"></i>Delivery History
+                                </a>
+                            </li>
                             <li role="presentation">
                                 <a href="#account_info" aria-controls="account_info" role="tab" data-toggle="tab">
                                     <i class="icon icon-user"></i>Account Information
                                 </a>
                             </li>
-
-                            <!-- Payment Method Link -->
                             <li role="presentation">
                                 <a href="#payment_info" aria-controls="payment_info" role="tab" data-toggle="tab">
                                     <i class="icon icon-creditcard"></i>Payment Information
                                 </a>
                             </li>
-
-                            <!-- Referrals Link -->
                             <li role="presentation">
                                 <a href="#referrals" aria-controls="referrals" role="tab" data-toggle="tab">
                                     <i class="icon icon-talkbubble"></i>Referrals
@@ -156,7 +152,7 @@ function stripeResponseHandler(status, response) {
             </div>
 
             <!-- Tab Panels -->
-            <div class="main col-md-8">
+            <div class="main col-sm-8 col-md-9">
                 <div class="tab-content">
 
                     <!-- Plan Details -->
@@ -169,18 +165,18 @@ function stripeResponseHandler(status, response) {
                             <h4>Meals</h4>
 
 							<?php
-							//split the sku into a string
+							//split the sku into a string 0202030000
 							$sku = str_split($userProduct->sku,2);
 							
 							if ($sku[0]=="01"){
 								$BoxType = "Vegetarian";
-								$BoxSelectVeg = "true";
-								$BoxSelectOmn = "false";
+								$BoxSelectVeg = true;
+								$BoxSelectOmn = false;
 							}
 							if ($sku[0]=="02"){
 								$BoxType = "Omnivore";
-								$BoxSelectVeg = "false";
-								$BoxSelectOmn = "true";
+								$BoxSelectVeg = false;
+								$BoxSelectOmn = true;
 							}
 							
 							if ($sku[2]=="00"){
@@ -194,8 +190,16 @@ function stripeResponseHandler(status, response) {
 									$FamilySize = (integer)$sku[2] . " Children";
 									$ChildSelect = (integer)$sku[2];
 							}
-							
-							
+							$prefs = $userSubscription->dietary_preferences;
+                            
+							if (strpos($prefs, 'Red meat') !== false) $redmeat = true; else $redmeat = false;
+                            if (strpos($prefs, 'Poultry') !== false) $poultry = true; else $poultry = false;
+                            if (strpos($prefs, 'Fish') !== false) $fish = true; else $fish = false;
+                            if (strpos($prefs, 'Lamb') !== false) $lamb = true; else $lamb = false;
+                            if (strpos($prefs, 'Pork') !== false) $pork = true; else $pork = false;
+                            if (strpos($prefs, 'Shellfish') !== false) $shellfish = true; else $shellfish = false;
+                            if (strpos($prefs, 'Nut Free') !== false) $nutfree = true; else $nutfree = false;
+                            if (strpos($prefs, 'Gluten Free') !== false) $glutenfree = true; else $glutenfree = false;
 							?>
 
                             <div class="row padding">
@@ -212,11 +216,21 @@ function stripeResponseHandler(status, response) {
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Delivery Day</b></div>
-                                <div class="col-sm-8">Wednesday</div>
+                                <div class="col-sm-8">Tuesday</div>
                             </div>
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Changeable By</b></div>
-                                <div class="col-sm-8"></div>
+                                <div class="col-sm-8">
+                                    <?php 
+                                    $deliveryDate = date('M jS',strtotime('next tuesday'));
+                                    $deliveryDate2 = date('Y-m-d',strtotime('next tuesday'));
+
+                                    //$ddate = DateTime::createFromFormat('Y-m-d', $deliveryDate2);
+                                    $ddate = date_create($deliveryDate2);
+                                    date_sub($ddate, date_interval_create_from_date_string('6 days')); ?>
+
+                                    9am on <?php echo date_format($ddate, 'M jS'); ?> (for your <?php echo $deliveryDate; ?> delivery) 
+                                </div>
                             </div>
 
                             <div id="editPlan" class="modal fade" tabindex="-1" role="dialog">
@@ -260,47 +274,42 @@ function stripeResponseHandler(status, response) {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row padbottom">
+                                            <div class="row">
                                                 <div class="col-sm-3" style="line-height: 55px"><b>Gluten free*?</b></div>
-                                                <div class="col-sm-9"><span class="checkbox" style="margin-left: -10px"><input id="glutenfree" type="checkbox" name="glutenfree" value="1"> <label for="glutenfree" class="inline">Yes</label> <span class="footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</span></div>
+                                                <div class="col-sm-9"><span class="checkbox" style="margin-left: -10px">{!! Form::checkbox('prefs[]', '9', $glutenfree, array('id'=>'glutenfree', 'class'=>'form-control')) !!} <label for="glutenfree" class="inline">Yes</label> <span class="footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</span></div>
+                                            </div>
+                                            <div class="row padbottom">
+                                                <div class="col-sm-3" style="line-height: 42px"><b>Nut free?</b></div>
+                                                <div class="col-sm-9">
+                                                    <span class="checkbox nomargin" style="margin-left: -10px">{!! Form::checkbox('prefs[]', '7', $nutfree, array('id'=>'nutfree', 'class'=>'form-control')) !!} <label for="nutfree" class="inline">Yes</label></div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-3"><b>Dietary Preferences</b></div>
                                                 <div class="col-sm-9">
                                                     <div>Uncheck the foods you don’t eat below:</div>
-                                                    <div class="col-xs-3 checkbox nopadding" style="margin-left: -10px">
-                                                        {!! Form::checkbox('prefs[]', '1', false, array('id'=>'redmeat', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'redmeat')) !!} <label for="redmeat">Red Meat</label>
-                                                        {!! Form::checkbox('prefs[]', '2', true, array('id'=>'poultry', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'poultry')) !!} <label for="poultry">Poultry</label>
+                                                    <div class="col-xs-4 checkbox nopadding" style="margin-left: -10px">
+                                                        {!! Form::checkbox('prefs[]', '1', $redmeat, array('id'=>'redmeat', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.redmeat')) !!} <label for="redmeat">Red Meat</label>
+                                                        {!! Form::checkbox('prefs[]', '2', $poultry, array('id'=>'poultry', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.poultry')) !!} <label for="poultry">Poultry</label>
                                                     </div>
-                                                    <div class="col-xs-3 checkbox nopadding">
-                                                        {!! Form::checkbox('prefs[]', '3', true, array('id'=>'fish', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'fish')) !!} <label for="fish">Fish</label>
-                                                        {!! Form::checkbox('prefs[]', '4', false, array('id'=>'lamb', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'lamb')) !!} <label for="lamb">Lamb</label>
+                                                    <div class="col-xs-4 checkbox nopadding">
+                                                        {!! Form::checkbox('prefs[]', '3', $fish, array('id'=>'fish', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.fish')) !!} <label for="fish">Fish</label>
+                                                        {!! Form::checkbox('prefs[]', '4', $lamb, array('id'=>'lamb', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.lamb')) !!} <label for="lamb">Lamb</label>
                                                     </div>
-                                                    <div class="col-xs-3 checkbox nopadding">
-                                                        {!! Form::checkbox('prefs[]', '5', true, array('id'=>'pork', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'pork')) !!} <label for="pork">Pork</label>
-                                                        {!! Form::checkbox('prefs[]', '6', true, array('id'=>'shellfish', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'shellfish')) !!} <label for="shellfish">Shellfish</label>
-                                                    </div>
-                                                    <div class="col-xs-3 checkbox nopadding">
-                                                        {!! Form::checkbox('prefs[]', '7', true, array('id'=>'nuts', 'class'=>'form-control', '@click'=>'selectOmni', 'v-model'=>'nuts')) !!} <label for="nuts">Nuts</label>
+                                                    <div class="col-xs-4 checkbox nopadding">
+                                                        {!! Form::checkbox('prefs[]', '5', $pork, array('id'=>'pork', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.pork')) !!} <label for="pork">Pork</label>
+                                                        {!! Form::checkbox('prefs[]', '6', $shellfish, array('id'=>'shellfish', 'class'=>'form-control pref', '@click'=>'selectOmni', 'v-model'=>'prefs.shellfish')) !!} <label for="shellfish">Shellfish</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3"></div>
                                                 <div class="col-sm-9">
-                                                    You will receive a mixture of:
-                                                    <span v-show="redmeat"> red meat</span> 
-                                                    <span v-show="fish"> fish</span> 
-                                                    <span v-show="pork"> pork</span> 
-                                                    <span v-show="poultry"> poultry</span> 
-                                                    <span v-show="lamb"> lamb</span> 
-                                                    <span v-show="shellfish"> shellfish</span> 
-                                                    <span v-show="nuts"> nut</span> dishes.
+                                                    You will receive a mixture of: @{{ concatPrefs }} <span v-if="plan_type == 'Omnivore Box'">and</span> vegetarian dishes.
                                                 </div>
                                             </div>
                                             <div class="row padbottom" style="line-height: 42px">
                                                 <div class="col-sm-3"><b>Delivery Day</b></div>
-                                                <div class="col-sm-9">Boxes are delivered on Wednesdays.</div>
+                                                <div class="col-sm-9">Boxes are delivered on Tuesdays.</div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -348,10 +357,6 @@ function stripeResponseHandler(status, response) {
                             <div class="row padding">
                                 <div class="col-sm-4"><b>Delivery Instructions</b></div>
                                 <div class="col-sm-8">{{$shippingAddress->delivery_instructions}}</div>
-                            </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Child 1 Birthday</b></div>
-                                <div class="col-sm-8"></div>
                             </div>
 
                             <div id="editDelivery" class="modal fade" role="dialog">
@@ -466,32 +471,6 @@ function stripeResponseHandler(status, response) {
                                                         array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
-                                            <div class="row padbottom">
-                                                <div class="col-sm-3"><b>Child 1 Birthday</b></div>
-                                                <div class="col-sm-9">
-                                                    <div class="col-xs-6 thinpadding first">
-                                                        <label class="select">
-                                                            {!! Form::select('child_bday1_month', array(
-                                                                'January', 
-                                                                'February', 
-                                                                'March', 
-                                                                'April', 
-                                                                'May', 
-                                                                'June', 
-                                                                'July', 
-                                                                'August', 
-                                                                'September', 
-                                                                'October', 
-                                                                'November', 
-                                                                'December'
-                                                            ), 'April', array('class'=>'form-control')) !!}
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-xs-4 thinpadding last">
-                                                        {!! Form::text('child_bday1_day', '17', array('class' => 'form-control')) !!}
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -502,6 +481,58 @@ function stripeResponseHandler(status, response) {
                             </div><!-- /.modal -->
                             
                         </div>
+                    </div>
+                    
+                    <!-- Delivery History -->
+                    <div role="tabpanel" class="tab-pane fade" id="delivery_history">
+
+                        <h2>Delivery History <a href="/delivery-schedule" class="sidelink alt">see upcoming delivery schedule</a></h2>
+                        
+                        <div v-if="user">
+
+                            <?php function cmp($a, $b){
+                                return strcmp($a->ship_date, $b->ship_date);
+                            }
+                            usort($shipments, "cmp");
+                            //var_dump($shipments); ?>
+                        
+                            @foreach ($shipments as $shipment)
+
+                                @if (count($shipment) > 0) 
+                                
+                                    <div class="week">
+                                        <h4>{{ $shipment->ship_date }}
+                                            
+                                            <div class="subtitle">
+                                                @if ($shipment->cost != 0) Order Total: ${{ number_format( $shipment->cost, 2 ) }} @endif
+                                                <span class="promo_note">Paid with Referral Credit</span>
+                                            </div>
+                                        </h4>
+                                        <div class="row">
+                                            
+                                            @foreach ($shipment->menus as $menu)
+                                            <div class="col-xs-4">
+                                                @if($menu->menu()->first()->image)
+                                                <img src="{{$menu->menu()->first()->image}}" />
+                                                @else
+                                                <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+                                                @endif
+                                                <p class="caption">{{$menu->menu()->first()->menu_title}}<br/>
+                                                    <em>{{$menu->menu()->first()->menu_description}}</em>
+                                                </p>
+                                            </div>
+                                            @endforeach
+
+                                        
+                                        </div>
+                                    </div>
+                                    
+
+                                @endif
+
+                            @endforeach
+                        </div>
+
                     </div>
 
                     <!-- Account Information -->

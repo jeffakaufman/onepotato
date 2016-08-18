@@ -315,7 +315,7 @@
 			border: $border-color 1px solid;
 			
 			a:hover {
-				color: $brand-primary;
+				color: $text-color2;
     		}
 			@media (min-width: 768px) {
 				border-right: 0;
@@ -326,6 +326,7 @@
 		}
 		> a:focus, > a:hover {
 			background: none;
+			color: $brand-primary;
 		}
 	}
 }

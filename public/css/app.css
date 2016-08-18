@@ -5837,13 +5837,9 @@ button.close {
     font-size: 15px; }
     .radio label.inline, .checkbox label.inline {
       display: inline-block; }
-  .radio + .radio, .checkbox + .radio {
-    margin-top: 0; }
 
-.radio + .radio, .checkbox + .checkbox {
-  margin-top: 0; }
-  .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
-    margin: 0; }
+.radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
+  margin: 0; }
 
 .radio:first-child label {
   margin-right: 15px; }
@@ -5989,7 +5985,7 @@ input.number {
   width: 18px;
   cursor: pointer;
   vertical-align: top;
-  line-height: 1.4em;
+  line-height: 19px;
   display: inline-block;
   text-align: center;
   background: #1db8bf;
@@ -6312,14 +6308,15 @@ input.number {
     background: #e8f9fa;
     border: #c2eef1 1px solid; }
     .nav-sidebar > li.active a:hover {
-      color: #1db8bf; }
+      color: #585858; }
     @media (min-width: 768px) {
       .nav-sidebar > li.active {
         border-right: 0; } }
   .nav-sidebar > li > a {
     color: #585858; }
   .nav-sidebar > li > a:focus, .nav-sidebar > li > a:hover {
-    background: none; }
+    background: none;
+    color: #1db8bf; }
 
 .navbar-fixed-top .container .navbar-brand,
 .navbar-fixed-top .container .hamburger {
@@ -6854,6 +6851,11 @@ table.month {
 .nowrap {
   white-space: nowrap; }
 
+.link {
+  cursor: pointer; }
+  .link:hover {
+    color: #1db8bf; }
+
 .row.image {
   padding-bottom: 1em; }
 
@@ -6871,11 +6873,6 @@ table.month {
     padding-left: 0; }
   .thinpadding.last {
     padding-right: 0; }
-
-@media only screen and (max-width: 767px) {
-  .col-sm-6.thinpadding, .col-sm-4.thinpadding, .col-sm-2.thinpadding {
-    padding-left: 0;
-    padding-right: 0; } }
 
 .padding {
   padding-top: 1em;
@@ -6972,101 +6969,6 @@ table.month {
   margin-top: -10px; }
   .modal-header .close:hover {
     color: #e91e25; }
-
-/*******************************Calendar Top Navigation*********************************/
-div.calendar {
-  margin: 0px auto;
-  padding: 0px;
-  width: 602px;
-  font-family: Helvetica, "Times New Roman", Times, serif; }
-
-div.calendar div.box {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 40px;
-  background-color: #787878; }
-
-div.calendar div.header {
-  line-height: 40px;
-  vertical-align: middle;
-  position: absolute;
-  left: 11px;
-  top: 0px;
-  width: 582px;
-  height: 40px;
-  text-align: center; }
-
-div.calendar div.header a.prev, div.calendar div.header a.next {
-  position: absolute;
-  top: 0px;
-  height: 17px;
-  display: block;
-  cursor: pointer;
-  text-decoration: none;
-  color: #FFF; }
-
-div.calendar div.header span.title {
-  color: #FFF;
-  font-size: 18px; }
-
-div.calendar div.header a.prev {
-  left: 0px; }
-
-div.calendar div.header a.next {
-  right: 0px; }
-
-/*******************************Calendar Content Cells*********************************/
-div.calendar div.box-content {
-  border: 1px solid #787878;
-  border-top: none; }
-
-div.calendar ul.label {
-  float: left;
-  margin: 0px;
-  padding: 0px;
-  margin-top: 5px;
-  margin-left: 5px; }
-
-div.calendar ul.label li {
-  margin: 0px;
-  padding: 0px;
-  margin-right: 5px;
-  float: left;
-  list-style-type: none;
-  width: 80px;
-  height: 40px;
-  line-height: 40px;
-  vertical-align: middle;
-  text-align: center;
-  color: #000;
-  font-size: 15px;
-  background-color: transparent; }
-
-div.calendar ul.dates {
-  float: left;
-  margin: 0px;
-  padding: 0px;
-  margin-left: 5px;
-  margin-bottom: 5px; }
-
-/** overall width = width+padding-right**/
-div.calendar ul.dates li {
-  margin: 0px;
-  padding: 0px;
-  margin-right: 5px;
-  margin-top: 5px;
-  line-height: 80px;
-  vertical-align: middle;
-  float: left;
-  list-style-type: none;
-  width: 80px;
-  height: 80px;
-  font-size: 25px;
-  background-color: #DDD;
-  color: #000;
-  text-align: center; }
 
 :focus {
   outline: none; }
@@ -7193,6 +7095,26 @@ h2 {
     top: -7px;
     right: 0; }
 
+#delivery_history h4 .subtitle {
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #404040;
+  margin-top: 15px;
+  text-align: right;
+  letter-spacing: 0; }
+  @media only screen and (min-width: 992px) {
+    #delivery_history h4 .subtitle {
+      float: right;
+      font-size: 15px;
+      margin-top: 2px; } }
+  #delivery_history h4 .subtitle .promo_note {
+    color: #e91e25;
+    font-style: italic; }
+  #delivery_history h4 .subtitle a {
+    color: #e91e25; }
+    #delivery_history h4 .subtitle a:hover {
+      color: #1db8bf; }
+
 h3, h4, h5 {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
   color: #1db8bf;
@@ -7225,6 +7147,9 @@ body.account {
   font-size: 16px; }
   body.account h2 {
     margin-bottom: 1.5em; }
+    body.account h2 .edit-link {
+      text-transform: none;
+      font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
   body.account h4 {
     color: #404040;
     font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
@@ -7259,6 +7184,12 @@ body.account {
   @media only screen and (max-width: 549px) {
     .caption {
       font-size: 0.8em; } }
+
+body.account .caption {
+  font-size: 0.8em; }
+
+.modal-title .delivery_date {
+  text-transform: uppercase; }
 
 .note {
   background: #e8f9fa;
@@ -7372,6 +7303,14 @@ body.with-navbar {
   letter-spacing: 0; }
   .sidelink:hover {
     color: #1db8bf; }
+  .sidelink.alt {
+    color: #1db8bf; }
+
+h1 .sidelink {
+  color: #1db8bf;
+  font-size: 13px; }
+  h1 .sidelink:hover {
+    color: #e91e25; }
 
 .total {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
