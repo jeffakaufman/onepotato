@@ -10,6 +10,10 @@ use \ActiveCampaign;
 use Mockery\CountValidator\Exception;
 
 use \App\User;
+use \App\UserSubscription;
+use \App\MenusUsers;
+use \App\Menu;
+use \App\Product;
 
 class SendWelcomeEmail
 {
@@ -105,21 +109,36 @@ class SendWelcomeEmail
         $firstName = $firstName ?: $_firstName;
         $lastName = $lastName ?: $_lastName;
 
+        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+
+        $product = Product::find($userSubscription->product_id);
+
+        $deliveryDate = date('Y-m-d', strtotime($user->start_date));
+
+        $firstDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$deliveryDate)->get();
+        $meal1 = $firstDelivery[0]->menus_id;
+        $meal2 = $firstDelivery[1]->menus_id;
+        $meal3 = $firstDelivery[2]->menus_id;
+
+        $menu1 = Menu::find($meal1);
+        $menu2 = Menu::find($meal2);
+        $menu3 = Menu::find($meal3);
+
         $arr = array();
-        $arr['NEXT_DELIVERY_DATE'] = ''; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
-        $arr['YOUR_MEAL_IMAGE'] = ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
-        $arr['YOUR_MEAL_IMAGE_2'] = ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
-        $arr['YOUR_MEAL_IMAGE_3'] = ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
-        $arr['YOUR_MEAL_NAME'] = ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
-        $arr['YOUR_MEAL_NAME_2'] = ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
-        $arr['YOUR_MEAL_NAME_3'] = ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
-        $arr['PRODUCT'] = ''; //        Product	Text Input	%PRODUCT%	ex: One Potato Box, 2 Adults, 2 Children
+        $arr['NEXT_DELIVERY_DATE'] = $deliveryDate; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
+        $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+        $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+        $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+        $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
+        $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
+        $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+        $arr['PRODUCT'] = $product ? $product->product_description : ''; //        Product	Text Input	%PRODUCT%	ex: One Potato Box, 2 Adults, 2 Children
         $arr['BOX_TYPE'] = ''; //Box Type	Text Input	%BOX_TYPE%
-        $arr['DELIVERY_DAY'] = ''; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
+        $arr['DELIVERY_DAY'] = $deliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
         $arr['TERM'] = ''; //Term	Text Input	%TERM%
         $arr['PRICE'] = ''; //        Price	Text Input	%PRICE%
-        $arr['STATUS'] = ''; //        Status	Text Input	%STATUS%
-        $arr['REFERENCE_ID'] = ''; //        Reference ID	Text Input	%REFERENCE_ID%
+        $arr['STATUS'] = $user->status; //        Status	Text Input	%STATUS%
+        $arr['REFERENCE_ID'] = $userSubscription->stripe_id; //        Reference ID	Text Input	%REFERENCE_ID%
         $arr['DELIVERY_SKIP_DATE'] = ''; //        Delivery Skip Date	Text Input	%DELIVERY_SKIP_DATE%	This should update to blank if they did not skip that week
         $arr['PAYMENT_FAIL_COUNT'] = ''; //Payment Fail Count	Text Input	%PAYMENT_FAIL_COUNT%	This should update to blank if they make a payment
         $arr['GIFT_CARD_ISSUED'] = ''; //Gift Card Issued	Text Input	%GIFT_CARD_ISSUED%	Removed on 7/28/16 per conversation this is not good enough for data.
@@ -154,7 +173,7 @@ class SendWelcomeEmail
         $arr['OPTINIP'] = ''; //OPTIN_IP	Text Input	%OPTINIP%
         $arr['OPTINTIME'] = ''; //OPTIN_TIME	Text Input	%OPTINTIME%
         $arr['CONFIRMIP'] = ''; //Confirm_IP	Text Input	%CONFIRMIP%
-        $arr['SUBSCRIPTION_STATUS'] = ''; //Subscription Status	Text Input	%SUBSCRIPTION_STATUS%
+        $arr['SUBSCRIPTION_STATUS'] = $userSubscription->status; //Subscription Status	Text Input	%SUBSCRIPTION_STATUS%
         $arr['CANCELLATION_DATE'] = ''; //Cancellation Date	Text Input	%CANCELLATION_DATE%
 
 
