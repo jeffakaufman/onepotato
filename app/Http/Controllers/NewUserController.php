@@ -618,7 +618,7 @@ class NewUserController extends Controller
 			
 	}
 	
-	public function ChangeRatePlan ($id, $num_children) {
+	public function ChangeRatePlan ($id, $num_children, $weekof) {
 		
 			//look up the product ID
 
