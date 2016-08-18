@@ -87,11 +87,12 @@ $(document).ready(function() {
 function stripeResponseHandler(status, response) {
 
 	// Check for an error:
-	//if (response.error) {
+	if (response.error) {
 
-	//	reportError(response.error.message);
+		//	reportError(response.error.message);
 
-	//} else { // No errors, submit the form:
+	} else { 
+		// No errors, submit the form:
 
 	  var f = $("#payment-form");
 
@@ -106,7 +107,7 @@ function stripeResponseHandler(status, response) {
 	  // Submit the form:
 	  f.get(0).submit();
 
-	//}
+	}
 
 } // End of stripeResponseHandler() function.
 

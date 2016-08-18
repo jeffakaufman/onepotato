@@ -135,6 +135,9 @@ Route::get('/test/menucontent/', 'SubinvoiceController@testMenus');
 //coupon checker
 Route::get('/coupon/getamount/{price}/{couponcode}', 'NewUserController@CheckCoupon');
 
+//change plan
+Route::get('/plan/childchange/{id}/{numchildren}', 'NewUserController@ChangeRatePlan');
+
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 

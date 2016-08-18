@@ -617,6 +617,48 @@ class NewUserController extends Controller
 			//echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
 			
 	}
+	
+	public function ChangeRatePlan ($id, $num_children) {
+		
+			//look up the product ID
+
+			$userSubscription = UserSubscription::where('user_id',$id)->first();
+			$current_product_id = $userSubscription->product_id;
+			
+			//lookup the SKU
+			
+			$currentProduct = Product::where('id', $current_product_id)->first();
+			$current_sku = $currentProduct->sku;
+			
+			//update the sku - 
+			$sku_array = str_split($current_sku, 2);
+			
+			//update the third position (2) to new number of children
+			$sku_array[2] = "0" . $num_children;
+			
+			$new_sku = implode ("",$sku_array);
+			
+			
+			//now get the product ID for the new SKU
+			$newProduct = Product::where('sku', $new_sku)->first();
+			
+			//update the user subscription
+			$userSubscription->product_id = $newProduct->id;
+			$userSubscription->save();
+
+
+			//update STRIPE
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id );
+			$subscription->plan = $newProduct->stripe_plan_id;
+			$subscription->prorate = "false";
+			$subscription->save();
+
+			//return success code
+			http_response_code(200);
+			
+	}
 
 
 
