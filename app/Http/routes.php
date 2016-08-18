@@ -138,6 +138,9 @@ Route::get('/coupon/getamount/{price}/{couponcode}', 'NewUserController@CheckCou
 //change plan
 Route::get('/plan/childchange/{id}/{numchildren}/{weekof}', 'NewUserController@ChangeRatePlan');
 
+//chron job
+Route::get ('/run/scheduled/tasks/', 'CronTasksController@RunTasks');
+
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 

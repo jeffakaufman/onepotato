@@ -13,6 +13,7 @@ use App\Product;
 use App\Referral;
 use App\ZipcodeStates;
 use App\MenusUsers;
+use App\Plan_change;
 use Hash;
 use Mail;
 use DateTime;
@@ -620,41 +621,36 @@ class NewUserController extends Controller
 	
 	public function ChangeRatePlan ($id, $num_children, $weekof) {
 		
+			//record $id, $num_children, $weekof in the plan_changes table with status "to_change"
+			$plan_change = new Plan_change;
+			$plan_change->user_id = $id;
+			$plan_change->date_to_change = $weekof;
+			$plan_change->status = "to_change";
+			
 			//look up the product ID
 
 			$userSubscription = UserSubscription::where('user_id',$id)->first();
 			$current_product_id = $userSubscription->product_id;
-			
+
 			//lookup the SKU
-			
+
 			$currentProduct = Product::where('id', $current_product_id)->first();
 			$current_sku = $currentProduct->sku;
 			
+			$plan_change->old_sku = $current_sku;
+
 			//update the sku - 
 			$sku_array = str_split($current_sku, 2);
-			
+
 			//update the third position (2) to new number of children
 			$sku_array[2] = "0" . $num_children;
-			
+
 			$new_sku = implode ("",$sku_array);
 			
+			$plan_change->sku_to_change = $new_sku;
 			
-			//now get the product ID for the new SKU
-			$newProduct = Product::where('sku', $new_sku)->first();
-			
-			//update the user subscription
-			$userSubscription->product_id = $newProduct->id;
-			$userSubscription->save();
-
-
-			//update STRIPE
-			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id );
-			$subscription->plan = $newProduct->stripe_plan_id;
-			$subscription->prorate = "false";
-			$subscription->save();
-
+			$plan_change->save();
+					
 			//return success code
 			http_response_code(200);
 			
