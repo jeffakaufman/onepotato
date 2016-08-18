@@ -79,7 +79,7 @@ class SendWelcomeEmail
         $contact = array_merge($contact, $this->_getCustomFields($user));
 
         $contact_sync = $ac->api("contact/sync", $contact);
-
+var_dump($contact_sync);die();
         if ((int)$contact_sync->success) {
             // successful request
             $contact_id = (int)$contact_sync->subscriber_id;
@@ -112,7 +112,7 @@ class SendWelcomeEmail
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
         $product = Product::find($userSubscription->product_id);
-
+//        $product->
         $deliveryDate = date('Y-m-d', strtotime($user->start_date));
 
         $firstDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$deliveryDate)->get();
