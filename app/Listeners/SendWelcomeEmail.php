@@ -49,7 +49,7 @@ class SendWelcomeEmail
 
         $user = $event->user;
 
-        $listId = 2;
+        $listId = 3;
 
 
         /*
@@ -60,7 +60,7 @@ class SendWelcomeEmail
         $lastName = $user->last_name;
 
         try {
-            @list($_firstName, $_lastName) = explode(' ', $user->name, 3);
+            @list($_firstName, $_lastName) = explode(' ', $user->name, 2);
         } catch (Exception $e) {
             $_firstName = '';
             $_lastName = '';
@@ -72,6 +72,8 @@ class SendWelcomeEmail
             "email" => $user->email,
             "first_name" => $firstName,
             "last_name" => $lastName,
+            'phone' => $user->phone,
+
             "p[{$listId}]" => $listId,
             "status[{$listId}]" => 1, // "Active" status
         );
@@ -124,6 +126,8 @@ class SendWelcomeEmail
         $menu2 = Menu::find($meal2);
         $menu3 = Menu::find($meal3);
 
+        $productInfo = $product ? $product->productDetails() : new stdClass();
+
         $arr = array();
         $arr['NEXT_DELIVERY_DATE'] = $deliveryDate; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
         $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
@@ -133,10 +137,10 @@ class SendWelcomeEmail
         $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
         $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
         $arr['PRODUCT'] = $product ? $product->product_description : ''; //        Product	Text Input	%PRODUCT%	ex: One Potato Box, 2 Adults, 2 Children
-        $arr['BOX_TYPE'] = ''; //Box Type	Text Input	%BOX_TYPE%
+        $arr['BOX_TYPE'] = $productInfo->BoxType; //Box Type	Text Input	%BOX_TYPE%
         $arr['DELIVERY_DAY'] = $deliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
         $arr['TERM'] = ''; //Term	Text Input	%TERM%
-        $arr['PRICE'] = ''; //        Price	Text Input	%PRICE%
+        $arr['PRICE'] = $product ? $product->cost : ''; //        Price	Text Input	%PRICE%
         $arr['STATUS'] = $user->status; //        Status	Text Input	%STATUS%
         $arr['REFERENCE_ID'] = $userSubscription->stripe_id; //        Reference ID	Text Input	%REFERENCE_ID%
         $arr['DELIVERY_SKIP_DATE'] = ''; //        Delivery Skip Date	Text Input	%DELIVERY_SKIP_DATE%	This should update to blank if they did not skip that week
@@ -151,11 +155,11 @@ class SendWelcomeEmail
         $arr['PERSONALIZED_GIFT_CARD_LINK'] = ''; //Personalized Gift Card Link	Text Input	%PERSONALIZED_GIFT_CARD_LINK%	Added 7/28/16
 
 //Standard AC Fields
-/*
-        $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
-        $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
-        $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
-        $arr['PHONE'] = $user->phone; //Phone	Text Input	%PHONE%
+
+//        $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
+//        $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
+//        $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
+//        $arr['PHONE'] = $user->phone; //Phone	Text Input	%PHONE%
         $arr['ZIP_CODE'] = $user->billing_zip; //Zip Code	Text Input	%ZIP_CODE%
         $arr['LATITUDE'] = ''; //Latitude	Text Input	%LATITUDE%
         $arr['LONGITUDE'] = ''; //Longitude	Text Input	%LONGITUDE%
@@ -176,11 +180,11 @@ class SendWelcomeEmail
         $arr['CONFIRMIP'] = ''; //Confirm_IP	Text Input	%CONFIRMIP%
         $arr['SUBSCRIPTION_STATUS'] = $userSubscription->status; //Subscription Status	Text Input	%SUBSCRIPTION_STATUS%
         $arr['CANCELLATION_DATE'] = ''; //Cancellation Date	Text Input	%CANCELLATION_DATE%
-*/
+
 
         $list = array();
         foreach($arr as $key => $value) {
-            $list["field[%{$key}%,0]"] = $value;
+            $list[urlencode("field[%{$key}%,0]")] = urlencode($value);
         }
         return $list;
     }

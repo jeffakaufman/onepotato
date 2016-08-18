@@ -165,6 +165,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/coupons', 'CouponController@show');
     Route::get('/admin/menu_information', 'MenuInformationController@show');
     Route::get('/admin/recipes', 'RecipesController@showRecipes');
+
+    Route::get('/admin/test', 'UserController@adminTest');
 });
 
 
