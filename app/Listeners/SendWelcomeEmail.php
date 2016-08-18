@@ -60,7 +60,7 @@ class SendWelcomeEmail
         $lastName = $user->last_name;
 
         try {
-            @list($_firstName, $_lastName) = explode(' ', $user->name, 2);
+            @list($_firstName, $_lastName) = explode(' ', $user->name, 3);
         } catch (Exception $e) {
             $_firstName = '';
             $_lastName = '';
