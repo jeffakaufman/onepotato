@@ -34114,7 +34114,7 @@ if (document.getElementById('payment')) {
     new Vue({
         el: '#payment',
         created: function created() {
-            window.addEventListener('keyup', this.validatePromo);
+            //window.addEventListener('keyup', this.validatePromo)
         },
         data: function data() {
             return {

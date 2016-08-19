@@ -95,7 +95,7 @@ function stripeResponseHandler(status, response) {
 
 @section('content')
 <account :user="user" inline-template>
-    <div class="container">
+    <div id="account" class="container">
         <!-- Application Dashboard -->
         <div class="row">
             <div class="col-xs-12">
@@ -553,7 +553,7 @@ function stripeResponseHandler(status, response) {
                                 <div class="col-sm-8">{{$user->email}}</div>
                             </div>
                             <div class="row padding">
-                                <div class="col-sm-4">Password</div>
+                                <div class="col-sm-4"><b>Password</b></div>
                                 <div class="col-sm-8">****</div>
                             </div>
 
@@ -724,87 +724,68 @@ function stripeResponseHandler(status, response) {
                         <h2>Customer Referrals</h2>
                         
                         <div v-if="user">
+                            <h6 class="alt">Refer-A-Friend Tracker</h6>
+                            Get Your Next Box Free! Refer 3 friends and your next box is on us.
 
-                            <div class="row">
-                                <div class="col-sm-8"><h4 class="thin">You have <span class="highlight">{{$outstanding_count}}</span> outstanding referrals:</h4></div>
-                                <div class="col-sm-4"><button type="submit" class="btn btn-primary small">resend all</button></div>
+                            <div class="referrals_status row">
+                                <div class="col-xs-4 nosidepadding item @if ($new_sub_count > 0) on @endif"><span><i class="icon icon-pot"></i><p>1</p></span></div>
+                                <div class="col-xs-4 nosidepadding item @if ($new_sub_count > 1) on @endif"><span><i class="icon icon-pot"></i><p>2</p></span></div>
+                                <div class="col-xs-4 nosidepadding item last @if ($new_sub_count > 2) on @endif"><span><i class="icon icon-pot"></i><p>3</p></span></div>
                             </div>
-							<?php
-                           	foreach ($referrals as $outstanding) {
-	
-								if ($outstanding->did_subscribe!=1) {
-							?>
-							 <div class="row padding">
-	                                <div class="col-sm-4"><b>{{$outstanding->friend_name}}</b></div>
-	                                <div class="col-sm-4">{{$outstanding->referral_email}}</div>
-	                                <div class="col-sm-4"><a href="#" class="sidelink">resend</a></div>
-	                            </div>
-							
-							
-							<?php
-								}
-							}
-							?>
-                           
-                            <h4 class="thin">You have referred <span class="highlight">{{$new_sub_count}}</span> new customers so far. Refer two more and receive another free box!</h4>
+                            
+                            <div class="row">
 
-								<?php
-	                           	foreach ($referrals as $outstanding) {
+                                <div class="col-md-4">
+                                    
+                                    <div class="sidebar">
+                                        <h6>SEND A NEW REFERRAL TO:</h6>
 
-									if ($outstanding->did_subscribe==1) {
-								?>
-								 <div class="row padding">
-		                                <div class="col-sm-4"><b>{{$outstanding->friend_name}}</b></div>
-		                                <div class="col-sm-4">{{$outstanding->referral_email}}</div>
-		                            
-										<div class="col-sm-4 footnote text-left">redeemed on {{$outstanding->redeemed_on}}</div>
-		                            </div>
+                                        <form method="POST" action="{{ url('account') }}/{{ $user->id }}" accept-charset="UTF-8" class="meals">
+                                            
+                                                    {{ csrf_field() }}
+                                        
+                                            <input type="hidden" name="user_id" value="{{$user->id}}" />
+                                            <input type="hidden" name="update_type" value="referrals" />
 
+                                            <div class="padding">
+                                                {!! Form::text('name', '', array('class' => 'form-control', 'placeholder' => 'NAME')) !!}
+                                            </div>
+                                            <div class="padbottom">
+                                                {!! Form::email('email', '', array('class' => 'form-control', 'placeholder' => 'EMAIL')) !!}
+                                            </div>
+                                            <div class="padbottom">
+                                                {!! Form::textarea('message', 'I thought you\'d love One Potato, a meal delivery service for busy families. Lorem ipsum dolor sit amet...', array('class' => 'form-control')) !!}
+                                            </div>
+                                            
+                                            <div class="padbottom">
+                                                <button type="submit" class="btn btn-primary">Send Message</button>
+                                            </div>
 
-								<?php
-									}
-								}
-								?>
-
-
-
-                            <h4>SEND A NEW REFERRAL TO:</h4>
-
-                            	<form method="POST" action="{{ url('account') }}/{{ $user->id }}" accept-charset="UTF-8" class="meals">
-								
-							            {{ csrf_field() }}
-							
-								<input type="hidden" name="user_id" value="{{$user->id}}" />
-								<input type="hidden" name="update_type" value="referrals" />
-
-                                <div class="row padding">
-                                    <div class="col-sm-3" style="line-height: 42px"><b>Name</b></div>
-                                    <div class="col-sm-9">
-                                        {!! Form::text('name', '', array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                <div class="row padbottom">
-                                    <div class="col-sm-3" style="line-height: 42px"><b>Email</b></div>
-                                    <div class="col-sm-9">
-                                        {!! Form::email('email', '', array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                <div class="row padbottom">
-                                    <div class="col-sm-3"><b></b></div>
-                                    <div class="col-sm-9">
-                                        {!! Form::textarea('message', '', array('class' => 'form-control')) !!}
-                                    </div>
-                                </div>
-                                
-                                <div class="row padbottom">
-                                    <div class="col-sm-3"><b></b></div>
-                                    <div class="col-sm-9">
-                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                        </form>
                                     </div>
                                 </div>
 
-                          </form>
+                                <div class="col-md-8">
 
+                                    <h6 class="padbottom">SENT INVITES</h6>
+                                    
+                                    <div class="referrals bordertop">
+                                        @foreach ($referrals as $outstanding) 
+                                        <div class="row nomargin padding borderbottom">
+                                            <div class="col-xs-3 nosidepadding text"><b>{{$outstanding->friend_name}}</b></div>
+                                            <div class="col-xs-6 nosidepadding text">{{$outstanding->referral_email}}</div>
+                                            
+                                            @if ($outstanding->did_subscribe!=1)
+                                                <div class="col-xs-3 nosidepadding status"><button type="button" class="btn btn-primary small">resend</button></div>
+                                            @elseif ($outstanding->did_subscribe==1)
+                                                <div class="col-xs-3 nosidepadding status footnote text-left">redeemed on {{ date('n/j/y',strtotime($outstanding->referral_applied)) }}</div>
+                                            @endif
+                                            
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

@@ -200,7 +200,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             </form>
                             
                             <div class="menu" class="col-xs-12" data-date="{{ $weeksMenu->date2 }}">
-                                <div class="col-sm-4 text-center" v-for="meal in filteredMenu" data-menu="@{{ meal.id }}">
+                                <div class="col-xs-4 text-center" v-for="meal in filteredMenu" data-menu="@{{ meal.id }}">
 
                                     <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
                                     <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">

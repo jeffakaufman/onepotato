@@ -204,6 +204,7 @@ body.account {
 	
 	h2 {
 		margin-bottom: 1.5em;
+		letter-spacing: 0.05em;
 		
 		.edit-link {
 			text-transform: none;
@@ -219,6 +220,84 @@ body.account {
 			letter-spacing: 0;
 		}
 	}
+	h6 {
+		font-family: $font-family-semibold;
+		color: $text-color2;
+		text-transform: uppercase;
+		font-size: 16px;
+		
+		&.alt {
+			color: $brand-secondary;
+		}
+	}
+	.sidebar {
+		
+		@media (min-width: 992px) {
+			padding-right: 5%;
+		}
+	}
+}
+.referrals {
+	font-size: 14px;
+	
+	 .row {
+	 	line-height: 1.8em;
+	 }
+}
+.referrals_status {
+	
+	margin: 0 0 40px 0;
+	 
+	.item {
+		text-align: center;
+		padding-right: 10px !important;
+		
+		&.last {
+			padding-right: 0 !important;
+		}
+		span {
+		    display: inline-block;
+		    width: 100%;
+		    min-height: 85px;
+		    padding: 20px 0;
+		    position: relative;
+		    border-bottom: #CCC 6px solid;
+			
+			.icon {
+				font-size: 50px;
+				color: #ccc;
+				position: absolute;
+			    margin-left: -35px;
+			    line-height: 1;
+			    z-index: 1; 
+			}
+			p {
+				color: #fff;
+				font-size: 14px;
+				position: relative;
+				z-index: 5;
+				margin: 0;
+    			line-height: 1;
+    			margin-top: 24px;
+			}
+			// &:before {
+			// 	content: '\e803';
+			//     font-family: 'fontello';
+			//     position:absolute;
+			// }
+		}
+		&.on {
+			
+			span {
+				border-color: $brand-secondary; 
+
+				.icon {
+					color: $brand-secondary;
+				}
+			}
+		}
+	}
+	
 }
 .font11 {
 	font-size: 11px;

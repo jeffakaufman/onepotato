@@ -76,6 +76,19 @@
 	padding-top: 1em;
 	padding-bottom: 1em;
 }
+.row.padding {
+	padding-top: 0.75em;
+	padding-bottom: 0.75em;
+}
+.row.nomargin {
+	margin: 0;
+}
+.bordertop {
+	border-top: 1px solid $border-color2;
+}
+.borderbottom {
+	border-bottom: 1px solid $border-color2;
+}
 .padtop {
 	padding-top: 1em;
 }

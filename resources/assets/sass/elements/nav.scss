@@ -310,23 +310,23 @@
 		color: $text-color2;
 		font-size: 14px;
 		
-		&.active {
-			background: $bg-color-highlight;
-			border: $border-color 1px solid;
-			
-			a:hover {
-				color: $text-color2;
-    		}
-			@media (min-width: 768px) {
-				border-right: 0;
-			}
-		}
 		> a {
 			color: #585858;
 		}
 		> a:focus, > a:hover {
 			background: none;
 			color: $brand-primary;
+		}
+		&.active {
+			background: $bg-color-highlight;
+			border: $border-color 1px solid;
+			
+			a:hover, a:focus {
+				color: $text-color2;
+    		}
+			@media (min-width: 768px) {
+				border-right: 0;
+			}
 		}
 	}
 }

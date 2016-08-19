@@ -5809,7 +5809,7 @@ button.close {
   font-weight: 500; }
   .btn-primary.small, .btn-secondary.small {
     font-size: 14px;
-    padding: 5px 10px;
+    padding: 3px 10px;
     text-transform: none; }
   @media only screen and (min-width: 992px) {
     .btn-primary, .btn-secondary {
@@ -6304,19 +6304,19 @@ input.number {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
   color: #585858;
   font-size: 14px; }
-  .nav-sidebar > li.active {
-    background: #e8f9fa;
-    border: #c2eef1 1px solid; }
-    .nav-sidebar > li.active a:hover {
-      color: #585858; }
-    @media (min-width: 768px) {
-      .nav-sidebar > li.active {
-        border-right: 0; } }
   .nav-sidebar > li > a {
     color: #585858; }
   .nav-sidebar > li > a:focus, .nav-sidebar > li > a:hover {
     background: none;
     color: #1db8bf; }
+  .nav-sidebar > li.active {
+    background: #e8f9fa;
+    border: #c2eef1 1px solid; }
+    .nav-sidebar > li.active a:hover, .nav-sidebar > li.active a:focus {
+      color: #585858; }
+    @media (min-width: 768px) {
+      .nav-sidebar > li.active {
+        border-right: 0; } }
 
 .navbar-fixed-top .container .navbar-brand,
 .navbar-fixed-top .container .hamburger {
@@ -6878,6 +6878,19 @@ table.month {
   padding-top: 1em;
   padding-bottom: 1em; }
 
+.row.padding {
+  padding-top: 0.75em;
+  padding-bottom: 0.75em; }
+
+.row.nomargin {
+  margin: 0; }
+
+.bordertop {
+  border-top: 1px solid #d4d4d4; }
+
+.borderbottom {
+  border-bottom: 1px solid #d4d4d4; }
+
 .padtop {
   padding-top: 1em; }
 
@@ -7146,7 +7159,8 @@ img {
 body.account {
   font-size: 16px; }
   body.account h2 {
-    margin-bottom: 1.5em; }
+    margin-bottom: 1.5em;
+    letter-spacing: 0.05em; }
     body.account h2 .edit-link {
       text-transform: none;
       font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
@@ -7156,6 +7170,55 @@ body.account {
     body.account h4.thin {
       font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
       letter-spacing: 0; }
+  body.account h6 {
+    font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+    color: #585858;
+    text-transform: uppercase;
+    font-size: 16px; }
+    body.account h6.alt {
+      color: #e91e25; }
+  @media (min-width: 992px) {
+    body.account .sidebar {
+      padding-right: 5%; } }
+
+.referrals {
+  font-size: 14px; }
+  .referrals .row {
+    line-height: 1.8em; }
+
+.referrals_status {
+  margin: 0 0 40px 0; }
+  .referrals_status .item {
+    text-align: center;
+    padding-right: 10px !important; }
+    .referrals_status .item.last {
+      padding-right: 0 !important; }
+    .referrals_status .item span {
+      display: inline-block;
+      width: 100%;
+      min-height: 85px;
+      padding: 20px 0;
+      position: relative;
+      border-bottom: #CCC 6px solid; }
+      .referrals_status .item span .icon {
+        font-size: 50px;
+        color: #ccc;
+        position: absolute;
+        margin-left: -35px;
+        line-height: 1;
+        z-index: 1; }
+      .referrals_status .item span p {
+        color: #fff;
+        font-size: 14px;
+        position: relative;
+        z-index: 5;
+        margin: 0;
+        line-height: 1;
+        margin-top: 24px; }
+    .referrals_status .item.on span {
+      border-color: #e91e25; }
+      .referrals_status .item.on span .icon {
+        color: #e91e25; }
 
 .font11 {
   font-size: 11px; }
