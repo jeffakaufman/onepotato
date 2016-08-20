@@ -13,14 +13,21 @@ use ActiveCampaign;
 
 class AC_Mediator {
 
-    public function UpdateCustomerData(User $user) {
+    const LIST_Welcome_To_One_Potato = 3;
+    const LIST_Pre_Launch = 1;
+    const LIST_One_Potato_Subscribers = 2;
+    const LIST_Note_On_Fried_Chicken = 7;
+    const LIST_Menu_Change = 4;
+
+
+    public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
             throw new Exception("Active Campaign Connection Error");
         }
 
-        $listId = 3;
+//        $listId = self::LIST_Welcome_To_One_Potato;
 
         $firstName = $user->first_name;
         $lastName = $user->last_name;
@@ -39,9 +46,21 @@ class AC_Mediator {
             "first_name" => $firstName,
             "last_name" => $lastName,
             'phone' => $user->phone,
-            "p[{$listId}]" => $listId,
-            "status[{$listId}]" => 1, // "Active" status
         );
+
+//            "p[{$listId}]" => $listId,
+//            "status[{$listId}]" => 1, // "Active" status
+
+        foreach($listsToAdd as $listId) {
+            $contact["p[{$listId}]"] = $listId;
+            $contact["status[{$listId}]"] = 1;
+        }
+
+        foreach($listsToRemove as $listId) {
+            $contact["p[{$listId}]"] = $listId;
+            $contact["status[{$listId}]"] = 0;
+        }
+
 //var_dump($user);die();
         $contact = array_merge(
             $contact,

@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\AC_Mediator;
+use App\User;
 use Illuminate\Console\Command;
 
 class RenewalReminder extends Command
@@ -37,6 +39,19 @@ class RenewalReminder extends Command
      */
     public function handle()
     {
+        $ac = AC_Mediator::GetInstance();
+
+        User::where('password', '<>', '')->chunk(20, function($users) use($ac) {
+            foreach($users as $user) {
+                $ac->UpdateCustomerData($user);
+            }
+        });
+
+//        foreach(User::all()->cursor() as $user) {
+//            var_dump($user);
+//        }
+
+//        User::chu
         $this->comment("HEY");
     }
 }

@@ -27,5 +27,8 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('inspire')
                   ->everyMinute();
+
+        $schedule->command('renewal:reminder')
+            ->wednesdays()->at('9:00');
     }
 }
