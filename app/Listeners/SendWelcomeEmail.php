@@ -32,7 +32,7 @@ class SendWelcomeEmail
 
         $ac = AC_Mediator::GetInstance();
         try {
-            $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato]);
+            $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
         } catch (Exception $e) {
 
         }
