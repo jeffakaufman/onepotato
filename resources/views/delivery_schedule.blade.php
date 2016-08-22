@@ -28,6 +28,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
      $calendar = '<table class="month">';
      $calendar .= '<caption class="month_name">'.$monthName . '</caption>';
+
      $calendar .= '<tr>';
 
      // Create the calendar headers
@@ -52,16 +53,19 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
   
      while ($currentDay <= $numberDays) {
 
-        if ($dayOfWeek == 7) {
-
-            $dayOfWeek = 0;
-            $calendar .= '</tr><tr>';
-
-        }
-
         $currentDayRel = str_pad($currentDay, 2, '0', STR_PAD_LEFT);
           
         $date = $year.'-'.$month.'-'.$currentDayRel;
+
+        if ($dayOfWeek == 7) {
+
+            $dayOfWeek = 0;
+            if (strtotime('this week') < strtotime('+2 days', strtotime($date)))
+                $calendar .= '</tr><tr>';
+            else
+                $calendar .= '</tr>';
+
+        }
 
         $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
 
@@ -77,9 +81,9 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         
         if (in_array($date,$deliveryDates))
             $calendar .= '<td class="day delivery '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
-        else 
+        else if (strtotime('this week') < strtotime('+2 days', strtotime($date)))
             $calendar .= '<td class="day '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
- 
+        
         $currentDay++;
         $dayOfWeek++;
 
@@ -87,7 +91,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
      if ($dayOfWeek != 7) { 
           $remainingDays = 7 - $dayOfWeek;
-          $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>"; 
+            $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>"; 
      }
      $calendar .= "</tr>";
      $calendar .= "</table>";
@@ -167,9 +171,9 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                         @elseif ($weeksMenu->changeable == 'yes' && $weeksMenu->hold)
                             <div class="unskip-btn">
                                 <button disabled="disabled" type="button" class="btn btn-primary btn-unskip" style="display:none;">
-                                    <i class="fa fa-btn fa-spinner fa-spin"></i>UNSKIP THIS DELIVERY
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i>RECEIVE THIS DELIVERY
                                 </button>
-                                <button type="button" onClick="location.href='/hold/restart/{{ $userid }}/{{ $weeksMenu->date2 }}';" class="btn btn-primary btn-unskip">UNSKIP THIS DELIVERY</button>
+                                <button type="button" onClick="location.href='/hold/restart/{{ $userid }}/{{ $weeksMenu->date2 }}';" class="btn btn-primary btn-unskip">RECEIVE THIS DELIVERY</button>
                             </div>
                         @endif
                     </div>
@@ -257,6 +261,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             <div class="modal-footer">
 
                                 <p class="font16">Please select the three meals you'd like to receive.</p>
+                                <a href="#" data-dismiss="modal">Cancel</a>
                                 <button disabled="disabled" type="button" class="btn btn-primary" style="display:none;">
                                     <i class="fa fa-btn fa-spinner fa-spin"></i>Save changes
                                 </button>
@@ -288,6 +293,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             
                         </div>
                         <div class="modal-footer">
+
                             <button disabled="disabled" type="button" class="btn btn-primary" style="display:none;">
                                 <i class="fa fa-btn fa-spinner fa-spin"></i>Save changes
                             </button>
