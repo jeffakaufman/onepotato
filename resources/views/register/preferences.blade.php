@@ -29,7 +29,14 @@ $('#register3').addClass('active');
 ?>
 <div id="preferences">
     <div id="planType">
-        PLAN TYPE: @if ($children == 0) Adult @else Family, {{ $children }} children @endif <a href="{{ route('register.select_plan') }}" class="sidelink">(change)</a>
+        PLAN TYPE: 
+        @if ($children == 0) Adult @else Family, {{ $children }} 
+
+            @if ($children == 1) child
+            @else children
+            @endif 
+
+        @endif <a href="{{ route('register.select_plan') }}" class="sidelink">(change)</a>
     </div>
     <div class="container">
         <!-- Application Dashboard -->

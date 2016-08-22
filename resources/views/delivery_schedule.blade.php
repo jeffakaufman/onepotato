@@ -119,7 +119,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                 $skipDates = [];
                 foreach ($weeksMenus as $weeksMenu) {
                     array_push($deliveryDates, $weeksMenu->date2);
-                    if (count($weeksMenu->menus) == 0) array_push($skipDates, $weeksMenu->date2);
+                    if ($weeksMenu->hold) array_push($skipDates, $weeksMenu->date2);
                 }
                 //var_dump($skipDates);
                 $month = $dateComponents['mon'];                
@@ -139,38 +139,48 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         
         @foreach ($weeksMenus as $weeksMenu)
         <?php //var_dump($weeksMenu) ?>
-            <?php $toolate = false; 
-                $ddate = new DateTime($weeksMenu->date2.' 09:00:00'); 
-                $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
-                
-                $now = new DateTime();
-                $now->setTimezone(new DateTimeZone($tz));
-                
-                $ddate->sub(new DateInterval('P6D'));
-                if ($ddate < $now) $toolate = true; ?>
             <div class="week">
-                <h2><i class="fa @if (count($weeksMenu->menus)) fa-check-circle @else fa-times-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
-                    <span class="plan_size">2 Adults
-                        @if ($userProduct->productDetails()->ChildSelect), {{ $userProduct->productDetails()->ChildSelect }} Children @endif
-                        <a href="#" class="change_children sidelink" data-date="{{ $weeksMenu->date }}" data-date2="{{ $weeksMenu->date3 }}" data-children="{{ $userProduct->productDetails()->ChildSelect }}" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                <h2><i class="fa @if ($weeksMenu->hold) fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
+                    @if ($weeksMenu->changeable == 'yes' && !$weeksMenu->hold )
+                        <span class="plan_size">2 Adults
+                            @if ($weeksMenu->children), {{ $weeksMenu->children }} 
 
+                                @if ($weeksMenu->children == 1) Child
+                                @else Children
+                                @endif
+
+                            @endif
+                            <a href="#" class="change_children sidelink" data-date="{{ $weeksMenu->date2 }}" data-date2="{{ $weeksMenu->date3 }}" data-children="{{ $weeksMenu->children }}" data-toggle="modal" data-target="#changeChildren">(change)</a></span>
+                    @endif
                     <div class="subtitle">
-                        @if (count($weeksMenu->menus) > 0 && !$toolate) 
-                            <a href="#" class="change_menu" @click="fetchWeekMenu('{{ $weeksMenu->date2 }}')" data-date="{{ $weeksMenu->date2 }}" data-date2="{{ $weeksMenu->date3 }}" data-dmenu="{{ $weeksMenu->menus }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
-                            {!! Form::open(array('url' => '/delivery-schedule')) !!}
-                                {!! Form::hidden('date_to_skip', $weeksMenu->date2) !!}
-                                {!! Form::submit('SKIP THIS DELIVERY', array('class' => 'btn btn-primary btn-skip')) !!}
-                            {!! Form::close() !!}
+                        @if ($weeksMenu->changeable == 'yes' && !$weeksMenu->hold )
+
+                            @if (count($weeksMenu->menus) > 0)
+                                <a href="#" class="change_menu" @click="fetchWeekMenu('{{ $weeksMenu->date2 }}')" data-date="{{ $weeksMenu->date2 }}" data-date2="{{ $weeksMenu->date3 }}" data-dmenu="{{ $weeksMenu->menus }}" data-toggle="modal" data-target="#changeMenu">Change My Menu</a>
+                            @endif
+                            <span class="skip-btn">
+                                <button disabled="disabled" type="button" class="btn btn-primary btn-skip" style="display:none;">
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i>SKIP THIS DELIVERY
+                                </button>
+                                <button type="button" onClick="location.href='/hold/{{ $userid }}/{{ $weeksMenu->date2 }}';" class="btn btn-primary btn-skip">SKIP THIS DELIVERY</button>
+                            </span>
+                        @elseif ($weeksMenu->changeable == 'yes' && $weeksMenu->hold)
+                            <div class="unskip-btn">
+                                <button disabled="disabled" type="button" class="btn btn-primary btn-unskip" style="display:none;">
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i>UNSKIP THIS DELIVERY
+                                </button>
+                                <button type="button" onClick="location.href='/hold/restart/{{ $userid }}/{{ $weeksMenu->date2 }}';" class="btn btn-primary btn-unskip">UNSKIP THIS DELIVERY</button>
+                            </div>
                         @endif
                     </div>
                 </h2>
                 <div class="row">
                     @if (count($weeksMenu->menus) > 0) 
-
+                        
                         @foreach ($weeksMenu->menus as $menu)
                             <div class="col-xs-4">
                                 @if($menu->menu()->first()->image)
-                                <img src="{{$menu->menu()->first()->image}}" />
+                                <a href="#" data-toggle="modal" data-target="#imagemodal-{{ $menu->menu()->first()->id }}"><img src="{{$menu->menu()->first()->image}}" /></a>
                                 @else
                                 <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
                                 @endif
@@ -178,39 +188,34 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                                     <em>{{$menu->menu()->first()->menu_description}}</em>
                                 </p>
                             </div>
-                        @endforeach
-
-                    @elseif (count($weeksMenu->all) > 0)
-
-                        <delivery prefs="{{ $prefs }}" delivery="{{ $weeksMenu->date2 }}"></delivery>
-                        
-                        <template id="delivery-template">
-                            <form method="POST" action="/delivery-schedule" role="form" accept-charset="UTF-8" class="unskip-btn">
-                                {{ csrf_field() }}
-                                <input name="date_to_unskip" type="hidden" value="{{ $weeksMenu->date2 }}">
-                                <input name="menu_id[]" type="hidden" v-for="meal in filteredMenu" value="@{{ meal.id }}">
-                                <button class="btn btn-primary btn-unskip" type="submit" :disabled="form.busy">
-                                    <span v-if="form.busy">
-                                        <i class="fa fa-btn fa-spinner fa-spin"></i>UNSKIP THIS DELIVERY
-                                    </span>
-                                    <span v-else>
-                                        UNSKIP THIS DELIVERY
-                                    </span>
-                                </button>
-                            </form>
-                            
-                            <div class="menu" class="col-xs-12" data-date="{{ $weeksMenu->date2 }}">
-                                <div class="col-xs-4 text-center" v-for="meal in filteredMenu" data-menu="@{{ meal.id }}">
-
-                                    <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
-                                    <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
-                                    
-                                    <p class="caption">@{{ meal.menu_title }}<br>
-                                        <em>@{{ meal.menu_description }}</em>
-                                    </p>
+                            <div id="imagemodal-{{ $menu->menu()->first()->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title">{{ $menu->menu()->first()->menu_title }}</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <img src="{{ $menu->menu()->first()->image }}" id="imagepreview">
+                                  </div>
                                 </div>
+                              </div>
                             </div>
-                        </template>
+                        @endforeach
+                    
+                    @elseif (count($weeksMenu->date) > 0)
+                        <div class="col-xs-4">
+                            <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+                            <p class="caption">Still busy cooking</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+                            <p class="caption">Still busy cooking</p>
+                        </div>
+                        <div class="col-xs-4">
+                            <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
+                            <p class="caption">Still busy cooking</p>
+                        </div>
                     @endif
                         <?php //var_dump($weeksMenu) ?>
                 </div>
@@ -233,7 +238,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                                 <template id="change-template">
                                     <h5 class="delivery_date padbottom"></h5>
                                     <div class="row">
-                                        <div class="col-sm-4 meal text-center" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
+                                        <div class="col-sm-4 meal text-center" v-bind:class="[meal.isNotAvailable ? '' : 'avail']" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
                                             <div v-if="meal.isNotAvailable == 1" class="not_avail">No longer available</div>
                                             <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
                                             <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
@@ -250,6 +255,11 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
                             </div>
                             <div class="modal-footer">
+
+                                <p class="font16">Please select the three meals you'd like to receive.</p>
+                                <button disabled="disabled" type="button" class="btn btn-primary" style="display:none;">
+                                    <i class="fa fa-btn fa-spinner fa-spin"></i>Save changes
+                                </button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </form>
@@ -260,17 +270,11 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
             <div id="changeChildren" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
+
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">DETAILS FOR <span class="delivery_date"></span></h4>
                         </div>
-                     
-                        <form method="POST" action="" accept-charset="UTF-8" class="meals">
-                        
-                                {{ csrf_field() }}
-                    
-                        <input type="hidden" name="user_id" value="" />
-                        <input type="hidden" name="update_type" value="meals" />
                         <div class="modal-body">
 
                             <div class="row padbottom">
@@ -279,14 +283,17 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             </div>
                             <div class="row padbottom">
                                 <div class="col-sm-3"><b>Number of children</b></div>
-                                <div class="col-sm-9">{!! Form::text('children', $userProduct->productDetails()->ChildSelect, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
+                                <div class="col-sm-9">{!! Form::text('children', $weeksMenu->children, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
                             </div>
                             
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button disabled="disabled" type="button" class="btn btn-primary" style="display:none;">
+                                <i class="fa fa-btn fa-spinner fa-spin"></i>Save changes
+                            </button>
+                            <button type="button" data-user="{{ $userid }}" data-date="" data-children="{{$weeksMenu->children}}" class="btn btn-primary btn-children">Save changes</button>
                         </div>
-                        </form>
+
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
@@ -311,7 +318,24 @@ $(function() {
     });
     $('.change_children').click(function () {
         var deliveryDate = $(this).data('date2');
+        var date_to_change = $(this).data('date');
+        var numChildren = $(this).data('children');
         $('.delivery_date').text( deliveryDate );
+        $('.btn-children').attr('data-date', date_to_change).attr('data-children', numChildren);
+        $('#changeChildren input.number').val(numChildren);
+    });
+    $('.btn-children').click(function() {
+        var userId = $(this).data('user');
+        var deliveryDate = $(this).data('date');
+        var numChildren = $(this).data('children');
+        location.href='/plan/childchange/'+userId+'/'+numChildren+'/'+deliveryDate;
+    });
+    $('#changeChildren').on('click', '.numButton', function() {
+        var numChildren = $('input[name=children]').val();
+        $('.btn-children').attr('data-children', numChildren);
+    });
+    $('.btn-primary').click(function() {
+        $(this).hide().prev('button').show();
     });
 });
 </script>

@@ -71,23 +71,18 @@ h2 {
 }
 .schedule h2 {
 	color: $brand-primary;
-	font-size: 24px;
+	font-size: 16px;
 	text-transform: none;
 	letter-spacing: 0.1em;
 	margin-bottom: 1em;
 	
-	.plan_size {
-		font-size: 12px;
-		color: $text-color;
-		font-family: $font-family-sans-serif;
-		letter-spacing: 0;
-		
-		@media only screen and (max-width: 549px) {
-			text-align: right;
-			margin-top: 0.5em;
-			display: block;
-		}
+	@media only screen and (min-width: 768px) {
+		font-size: 21px;
 	}
+	@media only screen and (min-width: 992px) {
+		font-size: 24px;
+	}
+	
 	.subtitle {
 		font-family: $font-family-semibold;
 		font-size: 13px;
@@ -98,7 +93,7 @@ h2 {
 		@media only screen and (min-width: 992px) {
 			float: right;
 			font-size: 15px;
-			margin-top: -7px;
+			margin-top: 0;
 		}
 
 		a {
@@ -120,7 +115,7 @@ h2 {
 		form {
 			display: inline;
 		}
-		button {
+		.btn {
 			color: #fff;
 			font-size: 16px;
 			line-height: 1em;
@@ -133,11 +128,44 @@ h2 {
 .schedule {
 	.week {
 		position: relative;
-
+		
+		.btn-unskip {
+			font-size: 16px;
+			line-height: 1em;
+			padding: 12px 12px 8px 12px;
+		}
 		.unskip-btn {
-			position: absolute;
-			top: -7px;
-			right: 0;
+			margin: 0 15px 10px 0;
+			text-align: right;
+			
+			@media only screen and (min-width: 992px) {
+				position: absolute;
+				margin: 0;
+				top: -4px;
+				right: 0;
+			}
+		}
+		.plan_size {
+			font-size: 12px;
+			color: $text-color;
+			font-family: $font-family-sans-serif;
+			letter-spacing: 0;
+			
+			@media only screen and (min-width: 992px) {
+				display: inline-block;
+	    		margin: 0;
+			}
+		}
+	}
+	&.active {
+		.plan_size {
+			display: block;
+	    	margin: 1.5em 0;
+			
+			@media only screen and (min-width: 992px) {
+				display: inline-block;
+	    		margin: 0;
+			}
 		}
 	}
 }
@@ -610,6 +638,8 @@ h1 .sidelink {
 			
 			&:hover {
 				background: $brand-secondary;
+				@include transition(all 0.5s ease);
+				@include scale(1.2);
 			}
 		}
 		.fa {
@@ -646,20 +676,24 @@ h1 .sidelink {
 	background: $brand-secondary;
 	padding: 5px 10px;
 	color: #fff;
+	margin-left: 2px;
 	font-family: $font-family-semibold;
 	position: absolute;
 	width: 90%;
 	text-align: center;
-	-webkit-transform: rotate(-35deg) translate(-15%, 150%);
-	-moz-transform: rotate(-35deg) translate(-15%, 150%);
-	-ms-transform: rotate(-35deg) translate(-15%, 150%);
-	-o-transform: rotate(-35deg) translate(-15%, 150%);
-	transform: rotate(-35deg) translate(-15%, 150%);
+	-webkit-transform: rotate(-28deg) translate(-15%, 150%);
+	-moz-transform: rotate(-28deg) translate(-15%, 150%);
+	-ms-transform: rotate(-28deg) translate(-15%, 150%);
+	-o-transform: rotate(-28deg) translate(-15%, 150%);
+	transform: rotate(-28deg) translate(-15%, 150%);
 }
 #changeMenu .meal {
-	cursor: pointer;
+	
 	min-height: 210px;
 	
+	&.avail {
+		cursor: pointer;
+	}
 	&.selected img {
 		outline: 5px solid $brand-primary;
 	}

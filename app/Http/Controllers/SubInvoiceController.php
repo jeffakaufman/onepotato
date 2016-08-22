@@ -785,7 +785,7 @@ class SubinvoiceController extends Controller
 			}
 
 			http_response_code(200);
-		
+			return redirect('/delivery-schedule'); 
 		
 	}
 	
@@ -844,9 +844,9 @@ class SubinvoiceController extends Controller
 		$hold->date_to_hold = $holddate;
 		$hold->hold_status = "hold";
 		$hold->save();
-	
-		//if not, create one
 		
+		//if not, create one
+		return redirect('/delivery-schedule'); 
 	}
 	
 	

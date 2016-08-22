@@ -647,12 +647,23 @@ class NewUserController extends Controller
 
 			$new_sku = implode ("",$sku_array);
 			
+			$change_exists = Plan_change::where('user_id',$id)
+										->where('date_to_change',$weekof)
+										->where('status','to_change')
+										->first();
+
 			$plan_change->sku_to_change = $new_sku;
 			
-			$plan_change->save();
+			if (count($change_exists) == 0) $plan_change->save();
+			else {
+				$change_exists->old_sku = $change_exists->sku_to_change;
+				$change_exists->sku_to_change = $new_sku;
+				$change_exists->save();
+			}
 					
 			//return success code
 			http_response_code(200);
+			return redirect('/delivery-schedule'); 
 			
 	}
 

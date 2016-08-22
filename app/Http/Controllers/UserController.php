@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\Subinvoice;
+use App\Shippingholds;
 use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
@@ -21,6 +22,7 @@ use CountryState;
 use App\WhatsCookings;
 use App\Menus;
 use App\MenusUsers;
+use App\Plan_change;
 use stdClass;
 
 use \ActiveCampaign;
@@ -905,12 +907,6 @@ class UserController extends Controller
 		$productID = $userSubscription->product_id;
 		$userProduct = Product::where('id',$productID)->firstOrFail();
 		$product_type = $userProduct->product_type == 1 ? "isOmnivore" : "isVegetarian";
-		//$sku = str_split($this->attributes['sku'],2);
-
-		
-		// if ($sku[2]!="00"){
-		// 	$numChildren = (integer)$sku[2];
-		// }
 
 		$startDate = date('Y-m-d H:i:s');
 		//$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
@@ -936,12 +932,44 @@ class UserController extends Controller
 				} else {
     				$deliverySchedule->menus = [];
 				}
+
+				$plan_change = Plan_change::where('user_id',$id)->where('date_to_change',date('Y-m-d', $i))->where('status','to_change')->first();
+				if (count($plan_change) > 0) {
+					$sku = $plan_change->sku_to_change;
+					$sku_array = str_split($sku, 2);
+					$deliverySchedule->children = (integer)ltrim($sku_array[2], '0');
+				} else {
+					$deliverySchedule->children = $userProduct->productDetails()->ChildSelect;
+				}
+
+				$hold = Shippingholds::where('user_id',$id)
+						->where('date_to_hold', date('Y-m-d', $i))
+						->where('hold_status', 'hold')
+						->get();
+				if (count($hold) > 0) $deliverySchedule->hold = true;
+				else $deliverySchedule->hold = false;
+
+				$tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
+				
+				$dt = new \DateTime( date('Y-m-d', $i) );
+				$dt->setTimezone(new \DateTimeZone($tz));
+				$dt->setTime(9, 00);
+				$dt->sub(new \DateInterval('P6D'));
+				$dt->format('Y-m-d H:i');
+
+                $now = new \DateTime();
+                $now->setTimezone(new \DateTimeZone($tz));
+                $now->format('Y-m-d H:i');
+                
+                if ($dt->format('Y-m-d H:i') < $now->format('Y-m-d H:i')) $deliverySchedule->changeable = 'no';
+                else $deliverySchedule->changeable = 'yes';
+
 				$weeksMenus[] = $deliverySchedule;
 			}   
     	}
    		//echo json_encode($weeksMenus[0]);
    		//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   		return view('delivery_schedule')->with(['weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
+   		return view('delivery_schedule')->with(['userid'=>$id, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	
@@ -950,27 +978,12 @@ class UserController extends Controller
 		$id =  Auth::id();
 		$user = User::find($id);
 
-		if ($request->date_to_skip) MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_skip)->delete();
-
-		else if ($request->date_to_unskip) {
-			foreach ($request->menu_id as $menu_id) {
-				$addMenu = new MenusUsers;
-				$addMenu->users_id = $id;
-				$addMenu->menus_id = $menu_id;
-				$addMenu->delivery_date = date('Y-m-d', strtotime($request->date_to_unskip));
-				$addMenu->save();
-			}
-		}
-
-		else if ($request->date_to_change) {
-			MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_change)->delete();
-			foreach ($request->menu_id as $menu_id) {
-				$addMenu = new MenusUsers;
-				$addMenu->users_id = $id;
-				$addMenu->menus_id = $menu_id;
-				$addMenu->delivery_date = $request->date_to_change;
-				$addMenu->save();
-			}
+		$menususers = MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_change)->get();
+		$i = 0;
+		foreach ($menususers as $menususer) {
+			$menususer->menus_id = $request->menu_id[$i];
+			$i++;
+			$menususer->save();
 		}
 
 		return redirect('/delivery-schedule'); 

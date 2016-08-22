@@ -7056,20 +7056,16 @@ h2 {
 
 .schedule h2 {
   color: #1db8bf;
-  font-size: 24px;
+  font-size: 16px;
   text-transform: none;
   letter-spacing: 0.1em;
   margin-bottom: 1em; }
-  .schedule h2 .plan_size {
-    font-size: 12px;
-    color: #404040;
-    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
-    letter-spacing: 0; }
-    @media only screen and (max-width: 549px) {
-      .schedule h2 .plan_size {
-        text-align: right;
-        margin-top: 0.5em;
-        display: block; } }
+  @media only screen and (min-width: 768px) {
+    .schedule h2 {
+      font-size: 21px; } }
+  @media only screen and (min-width: 992px) {
+    .schedule h2 {
+      font-size: 24px; } }
   .schedule h2 .subtitle {
     font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
     font-size: 13px;
@@ -7080,7 +7076,7 @@ h2 {
       .schedule h2 .subtitle {
         float: right;
         font-size: 15px;
-        margin-top: -7px; } }
+        margin-top: 0; } }
     .schedule h2 .subtitle a {
       color: #e91e25; }
       .schedule h2 .subtitle a:hover {
@@ -7093,7 +7089,7 @@ h2 {
         font-size: 28px; }
     .schedule h2 .subtitle form {
       display: inline; }
-    .schedule h2 .subtitle button {
+    .schedule h2 .subtitle .btn {
       color: #fff;
       font-size: 16px;
       line-height: 1em;
@@ -7103,10 +7099,36 @@ h2 {
 
 .schedule .week {
   position: relative; }
+  .schedule .week .btn-unskip {
+    font-size: 16px;
+    line-height: 1em;
+    padding: 12px 12px 8px 12px; }
   .schedule .week .unskip-btn {
-    position: absolute;
-    top: -7px;
-    right: 0; }
+    margin: 0 15px 10px 0;
+    text-align: right; }
+    @media only screen and (min-width: 992px) {
+      .schedule .week .unskip-btn {
+        position: absolute;
+        margin: 0;
+        top: -4px;
+        right: 0; } }
+  .schedule .week .plan_size {
+    font-size: 12px;
+    color: #404040;
+    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    letter-spacing: 0; }
+    @media only screen and (min-width: 992px) {
+      .schedule .week .plan_size {
+        display: inline-block;
+        margin: 0; } }
+
+.schedule.active .plan_size {
+  display: block;
+  margin: 1.5em 0; }
+  @media only screen and (min-width: 992px) {
+    .schedule.active .plan_size {
+      display: inline-block;
+      margin: 0; } }
 
 #delivery_history h4 .subtitle {
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
@@ -7443,7 +7465,9 @@ h1 .sidelink {
       text-align: center;
       cursor: pointer; }
       #footer .social li:hover {
-        background: #e91e25; }
+        background: #e91e25;
+        transition: all 0.5s ease;
+        transform: scale(1.2); }
     #footer .social .fa {
       font-size: 18px;
       color: #fff;
@@ -7471,15 +7495,17 @@ h1 .sidelink {
   background: #e91e25;
   padding: 5px 10px;
   color: #fff;
+  margin-left: 2px;
   font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
   position: absolute;
   width: 90%;
   text-align: center;
-  transform: rotate(-35deg) translate(-15%, 150%); }
+  transform: rotate(-28deg) translate(-15%, 150%); }
 
 #changeMenu .meal {
-  cursor: pointer;
   min-height: 210px; }
+  #changeMenu .meal.avail {
+    cursor: pointer; }
   #changeMenu .meal.selected img {
     outline: 5px solid #1db8bf; }
 
