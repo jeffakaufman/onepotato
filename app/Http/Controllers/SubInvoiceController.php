@@ -744,6 +744,7 @@ class SubinvoiceController extends Controller
 	}
 	
 	public function CheckForHold ($id, $holddate) {
+		
 		//remove hold from holds table
 		$hold = Shippingholds::where('user_id', $id)
 					->where('date_to_hold', $holddate)
@@ -777,6 +778,21 @@ class SubinvoiceController extends Controller
 			if ($hold) {
 				$hold->hold_status = "released";
 				$hold->save();
+				
+				//retrieve stripe ID from subscriptions table
+				$userSubscription = UserSubscription::where('user_id',$id)->first();
+				$userSubscription->status = "active";
+				$plan_id = $userSubscription->product_id;
+
+				$product = Product::where('id', $plan_id)->first();
+				$stripe_plan_id = $product->stripe_plan_id;
+
+				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+				$subscription = \Stripe\Subscription::create(array(
+				  "customer" => $customer_stripe_id,
+				  "plan" => $stripe_plan_id
+				));
 
 				$userSubscription->stripe_id = $subscription->id;
 				$userSubscription->save();
