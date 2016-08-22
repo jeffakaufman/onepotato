@@ -162,7 +162,8 @@ class AC_Mediator {
         $arr['CANCELLATION_DATE'] = ''; //Cancellation Date	Text Input	%CANCELLATION_DATE%
         $list = array();
         foreach($arr as $key => $value) {
-            $list[urlencode("field[%{$key}%,0]")] = urlencode($value);
+            $list[urlencode("field[%{$key}%,0]")] = $value;
+//            $list[urlencode("field[%{$key}%,0]")] = urlencode($value);
         }
 //var_dump($list);
         return $list;
