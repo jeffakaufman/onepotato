@@ -779,6 +779,11 @@ class SubinvoiceController extends Controller
 				$hold->hold_status = "released";
 				$hold->save();
 				
+				//get the custoemr
+				$user = User::where('id', $id)->first();
+				$user->status="active";
+				$customer_stripe_id = $user->stripe_id;
+				
 				//retrieve stripe ID from subscriptions table
 				$userSubscription = UserSubscription::where('user_id',$id)->first();
 				$userSubscription->status = "active";
