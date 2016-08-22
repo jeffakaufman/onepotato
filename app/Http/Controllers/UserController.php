@@ -920,7 +920,7 @@ class UserController extends Controller
 
     			$deliverySchedule->date = date('l, M jS', $i);
     			$deliverySchedule->date2 = date('Y-m-d', $i);
-    			$deliverySchedule->date3 = date('F d, Y', $i);
+    			$deliverySchedule->date3 = date('F j, Y', $i);
 				$deliverySchedule->all = [];
 				if (isset($whatscooking)) {
     				//$deliverySchedule->menus = $whatscooking->menus()->where($product_type,1)->get();
