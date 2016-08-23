@@ -973,11 +973,12 @@ class UserController extends Controller
 
     	$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','sent_to_ship')->first();
 			
-		$order = Order::where('order_id',$invoices->order_id)->first();
+		if (isset($invoices)) $order = Order::where('order_id',$invoices->order_id)->first();
+		if (isset($order)) $trackingNumber = $order->tracking_number;
 
    		//echo json_encode($weeksMenus[0]);
    		//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   		return view('delivery_schedule')->with(['userid'=>$id, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'trackingNumber'=>$order->tracking_number, 'prefs'=>$sub->dietary_preferences]);
+   		return view('delivery_schedule')->with(['userid'=>$id, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'trackingNumber'=>$trackingNumber, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	
