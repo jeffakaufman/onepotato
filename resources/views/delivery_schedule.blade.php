@@ -112,11 +112,11 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                         Your next box will arrive on 
                             @for ($i = 0; $i < count($weeksMenus); $i++)
                                 @if (!$weeksMenus[$i]->hold)
-                                    {{ $weeksMenus[$i]->date}}
+                                    {{ $weeksMenus[$i]->date}}, before 8pm.
                                     @break
                                 @endif
                             @endfor
-                        , before 8pm. Tracking Number: {{ $trackingNumber }}
+                        Tracking Number: {{ $trackingNumber }}
                     @else
                         Your next scheduled delivery is 
                         @for ($i = 0; $i < count($weeksMenus); $i++)
