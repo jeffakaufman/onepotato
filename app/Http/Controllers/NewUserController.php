@@ -45,6 +45,8 @@ class NewUserController extends Controller
 
         if($existingUser && '' == $existingUser->password) {
             $validator = Validator::make($request->all(), [
+                'firstname' => 'required|max:1000',
+                'lastname' => 'required|max:1000',
                 'email' => 'required|email|max:1000',
                 'password' => 'required|max:255|same:password_confirmation',
                 'zip' => 'required|digits:5',
@@ -52,6 +54,8 @@ class NewUserController extends Controller
             ]);
         } else {
             $validator = Validator::make($request->all(), [
+            	'firstname' => 'required|max:1000',
+                'lastname' => 'required|max:1000',
 			    'email' => 'required|email|max:1000|unique:users',
                 'password' => 'required|max:255|same:password_confirmation',
                 'zip' => 'required|digits:5',
@@ -100,6 +104,8 @@ class NewUserController extends Controller
 		$productFamily1 = Product::where('sku','0202010000')->first();
 
 		$request->session()->put('step1', true);
+		$request->session()->put('firstname', $request->firstname);
+        $request->session()->put('lastname', $request->lastname);
 		$request->session()->put('user_id', $user->id);
 		$request->session()->put('zip', $request->zip);
 		$request->session()->put('adult_price', $productAdult->cost);

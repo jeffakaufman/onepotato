@@ -31,6 +31,11 @@
 			margin: 0;
 		}
 	}
+	.form-horizontal {
+		.radio + .radio, .checkbox + .checkbox {
+			margin-top: 0;
+		}
+	}
 	.radio:first-child label {
 		margin-right: 15px;
 	}
@@ -202,17 +207,13 @@
 		color: $brand-secondary;
 	}
 	.reg-field {
-		float: left;
-	   	padding: 0 2px;
-	   	width: 35%;
+		
 	}
 	.reg-button {
-		float: left;
-	   	padding: 0 2px;
-	   	width: 30%;
 	   	
 	   	.btn {
 	   		width: 100%;
+	   		
 	   	}
 	}
 	@media only screen and (max-width: 549px) {

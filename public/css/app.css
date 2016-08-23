@@ -5843,6 +5843,9 @@ button.close {
   .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
     margin: 0; }
 
+.form-horizontal .radio + .radio, .form-horizontal .checkbox + .checkbox {
+  margin-top: 0; }
+
 .radio:first-child label {
   margin-right: 15px; }
 
@@ -6019,17 +6022,8 @@ input.number {
 .help-block {
   color: #e91e25; }
 
-.reg-field {
-  float: left;
-  padding: 0 2px;
-  width: 35%; }
-
-.reg-button {
-  float: left;
-  padding: 0 2px;
-  width: 30%; }
-  .reg-button .btn {
-    width: 100%; }
+.reg-button .btn {
+  width: 100%; }
 
 @media only screen and (max-width: 549px) {
   .reg-field, .reg-button {
@@ -6378,6 +6372,13 @@ input.number {
   border-radius: 0; }
   .panel-form .panel-heading, .panel-form .panel-default > .panel-heading {
     padding-top: 10px; }
+
+.panel-register {
+  padding: 15px 20px 10px 20px;
+  margin-bottom: 15px; }
+  @media only screen and (min-width: 992px) {
+    .panel-register {
+      padding: 25px 30px 15px 30px; } }
 
 .panel-body {
   font-weight: 300; }
@@ -7166,6 +7167,16 @@ h3, h4, h5 {
   letter-spacing: 0.05em; }
   h3 .red, h4 .red, h5 .red {
     color: #e91e25; }
+
+.buckets {
+  margin: 2em 0 0 0; }
+  .buckets h5 {
+    color: #e91e25; }
+  .buckets .div {
+    background: #1db8bf;
+    height: 3px;
+    width: 40px;
+    margin: 0 auto 10px auto; }
 
 .edit-link {
   float: right;
