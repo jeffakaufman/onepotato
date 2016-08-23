@@ -218,20 +218,6 @@ function stripeResponseHandler(status, response) {
                                 <div class="col-sm-4"><b>Delivery Day</b></div>
                                 <div class="col-sm-8">Tuesday</div>
                             </div>
-                            <div class="row padding">
-                                <div class="col-sm-4"><b>Changeable By</b></div>
-                                <div class="col-sm-8">
-                                    <?php 
-                                    $deliveryDate = date('M jS',strtotime('next tuesday'));
-                                    $deliveryDate2 = date('Y-m-d',strtotime('next tuesday'));
-
-                                    //$ddate = DateTime::createFromFormat('Y-m-d', $deliveryDate2);
-                                    $ddate = date_create($deliveryDate2);
-                                    date_sub($ddate, date_interval_create_from_date_string('6 days')); ?>
-
-                                    9am on <?php echo date_format($ddate, 'M jS'); ?> (for your <?php echo $deliveryDate; ?> delivery) 
-                                </div>
-                            </div>
 
                             <div id="editPlan" class="modal fade" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">

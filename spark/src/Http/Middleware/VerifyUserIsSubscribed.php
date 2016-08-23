@@ -23,7 +23,7 @@ class VerifyUserIsSubscribed
         }
 
 
-        $redirectUrl = '/delivery-schedule';
+        $redirectUrl = '/account';
         if($this->isAdmin($request->user())) {
             $redirectUrl = '/admin/dashboard';
         }

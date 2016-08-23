@@ -17,7 +17,7 @@ class WelcomeController extends Controller
         //return view('welcome');
         if (Auth::check()) {
         	//$id = Auth::user()->id;
-        	return redirect('/delivery-schedule'); 
+        	return redirect('/account'); 
         } else {
         	return view('register-1');
         }

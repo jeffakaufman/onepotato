@@ -86,7 +86,7 @@ class UserController extends Controller
 		$referrals = Referral::where('referrer_user_id',$id)->get();
 
 		$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','shipped')->get();
-
+		$shipments = [];
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
 
