@@ -33759,7 +33759,7 @@ var app = new Vue({
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({ html: true });
-  $('[data-toggle="popover"]').popover();
+  //$('[data-toggle="popover"]').popover();
 });
 
 },{"./components/bootstrap":55,"spark":174,"spark-bootstrap":173}],54:[function(require,module,exports){
