@@ -39,7 +39,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
      $currentDay = 1;
 
-     $calendar .= "</tr><tr>";
+     $calendar .= '</tr><tr class="blank">';
 
      if ($dayOfWeek > 0) { 
           $calendar .= '<td colspan="'.$dayOfWeek.'">&nbsp;</td>'; 
@@ -71,7 +71,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
         $now = new DateTime();
         $now->setTimezone(new DateTimeZone($tz));
-        
+
         if ($date == $now->format('Y-m-d')) $active = 'active';
         else  $active = '';
 
@@ -107,7 +107,26 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
         <div class="col-xs-12">
             <h1>Delivery Schedule
-                <div class="subtitle alt">If scheduled, your next box will arrive on {{$weeksMenus[0]->date}}, before 8pm</div>
+                <div class="subtitle alt">
+                    @if (isset($trackingNumber))
+                        Your next box will arrive on 
+                            @for ($i = 0; $i < count($weeksMenus); $i++)
+                                @if (!$weeksMenus[$i]->hold)
+                                    {{ $weeksMenus[$i]->date}}
+                                    @break
+                                @endif
+                            @endfor
+                        , before 8pm. Tracking Number: {{ $trackingNumber }}
+                    @else
+                        Your next scheduled delivery is 
+                        @for ($i = 0; $i < count($weeksMenus); $i++)
+                            @if (!$weeksMenus[$i]->hold)
+                                {{ $weeksMenus[$i]->date}}.
+                                @break
+                            @endif
+                        @endfor
+                    @endif
+                </div>
             </h1>
         </div>
 
@@ -145,6 +164,13 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         <?php //var_dump($weeksMenu) ?>
             <div class="week">
                 <h2><i class="fa @if ($weeksMenu->hold) fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
+                    <span data-toggle="tooltip" data-placement="bottom" data-original-title="
+                        @if ($weeksMenu->hold)
+                            <span class='color-sec'>Skipped</span> - changeable by {{ $weeksMenu->deadline }} at 9 a.m." class="sidelink"
+                        @else
+                            <span class='color-prim'>Scheduled</span> - changeable by {{ $weeksMenu->deadline }} at 9 a.m.""
+                        @endif
+                    ><i class="icon icon-info-circled"></i></span>
                     @if ($weeksMenu->changeable == 'yes' && !$weeksMenu->hold )
                         <span class="plan_size">2 Adults
                             @if ($weeksMenu->children), {{ $weeksMenu->children }} 

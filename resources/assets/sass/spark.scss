@@ -537,6 +537,9 @@ body.with-navbar {
 		color: $brand-primary;
 	}
 }
+span.sidelink:hover {
+	color: $edit-link-color;
+}
 h1 .sidelink {
 	color: $brand-primary;
 	font-size: 13px;
@@ -686,6 +689,15 @@ h1 .sidelink {
 	-ms-transform: rotate(-28deg) translate(-15%, 150%);
 	-o-transform: rotate(-28deg) translate(-15%, 150%);
 	transform: rotate(-28deg) translate(-15%, 150%);
+}
+.icon-info-circled {
+	font-size: 16px;  
+}
+.color-sec {
+	color: $brand-secondary;
+}
+.color-prim {
+	color: $brand-primary;
 }
 #changeMenu .meal {
 	

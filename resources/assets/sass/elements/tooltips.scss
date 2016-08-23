@@ -17,8 +17,9 @@
 	}
 }
 .tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
-.tooltip-arrow, .sidelink + .tooltip.right > .tooltip-arrow,
-.tooltip-rrow, .sidelink + .tooltip.left > .tooltip-arrow,
+.sidelink + .tooltip.right > .tooltip-arrow,
+.sidelink + .tooltip.left > .tooltip-arrow,
+.sidelink + .tooltip.bottom > .tooltip-arrow,
 .sidelink + .tooltip > .tooltip-inner,
  .tooltip.top .tooltip-inner,
  .tooltip.top .tooltip-arrow,
@@ -28,11 +29,15 @@
   .tooltip.right .tooltip-arrow,
   .tooltip.left .tooltip-inner,
  .tooltip.left .tooltip-arrow,
-  .tooltip.left .tooltip-arrow {
+  .tooltip.left .tooltip-arrow,
+  .tooltip.bottom .tooltip-inner,
+ .tooltip.bottom .tooltip-arrow,
+  .tooltip.bottom .tooltip-arrow {
 	background-color: $bg-color-status; 
 	border-top-color: $bg-color-status; 
 	border-right-color: $bg-color-status; 
 	border-left-color: $bg-color-status; 
+	border-bottom-color: $bg-color-status; 
 	color: #000;
 }
 .sidelink + .tooltip > .tooltip-inner {
