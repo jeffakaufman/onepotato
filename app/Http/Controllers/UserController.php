@@ -973,7 +973,7 @@ class UserController extends Controller
 
     	$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','sent_to_ship')->first();
 		
-		$trackingNumber = '';
+		$trackingNumber = NULL;
 		if (isset($invoices)) $order = Order::where('order_id',$invoices->order_id)->first();
 		if (isset($order)) $trackingNumber = $order->tracking_number;
 
