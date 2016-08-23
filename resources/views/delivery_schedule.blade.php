@@ -111,7 +111,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                     @if (isset($trackingNumber))
                         Your next box will arrive on 
                             @for ($i = 0; $i < count($weeksMenus); $i++)
-                                @if (!$weeksMenus[$i]->hold)
+                                @if (!$weeksMenus[$i]->hold && strtotime($weeksMenus[$i]->date2) >= strtotime($startDate))
                                     {{ $weeksMenus[$i]->date}}, before 8pm.
                                     @break
                                 @endif
@@ -120,7 +120,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                     @else
                         Your next scheduled delivery is 
                         @for ($i = 0; $i < count($weeksMenus); $i++)
-                            @if (!$weeksMenus[$i]->hold)
+                            @if (!$weeksMenus[$i]->hold && strtotime($weeksMenus[$i]->date2) >= strtotime($startDate))
                                 {{ $weeksMenus[$i]->date}}.
                                 @break
                             @endif
@@ -162,6 +162,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         
         @foreach ($weeksMenus as $weeksMenu)
         <?php //var_dump($weeksMenu) ?>
+            @if (strtotime($weeksMenu->date2) >= strtotime($startDate) )
             <div class="week">
                 <h2><i class="fa @if ($weeksMenu->hold) fa-times-circle @else fa-check-circle @endif" aria-hidden="true"></i>{{ $weeksMenu->date }}
                     <span data-toggle="tooltip" data-placement="bottom" data-original-title="
@@ -250,6 +251,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                         <?php //var_dump($weeksMenu) ?>
                 </div>
             </div>
+            @endif
         @endforeach
 
             <div id="changeMenu" class="modal fade" role="dialog">

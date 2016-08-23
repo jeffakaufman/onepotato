@@ -979,7 +979,7 @@ class UserController extends Controller
 
    		//echo json_encode($weeksMenus[0]);
    		//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   		return view('delivery_schedule')->with(['userid'=>$id, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'trackingNumber'=>$trackingNumber, 'prefs'=>$sub->dietary_preferences]);
+   		return view('delivery_schedule')->with(['userid'=>$id, 'startDate'=>$user->start_date, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'trackingNumber'=>$trackingNumber, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	
