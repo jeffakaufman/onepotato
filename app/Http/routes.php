@@ -54,7 +54,10 @@ Route::post('/account/{id}', 'UserController@editAccount');
 
 
 // Delivery Schedule...
-Route::get('/delivery-schedule','UserController@showDeliverySchedule' );
+Route::get('delivery-schedule', [
+    'middleware' => 'auth',
+    'uses' => 'UserController@showDeliverySchedule'
+]);
 Route::post('/delivery-schedule', 'UserController@changeDelivery');
 
 Route::get('menu/edit/{id}', array('as' => 'menu.edit', function($id) 
