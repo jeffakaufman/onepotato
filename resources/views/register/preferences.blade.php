@@ -72,8 +72,8 @@ $('#register3').addClass('active');
                                 <div class="col-xs-6 radio nosidepadding"><input id="plan_type2" type="radio" v-model="plan_type" @click="selectAllVegetarian" name="plan_type" value="Vegetarian Box" @if(isset($veg)) {{ $veg }} @endif> <label for="plan_type2">Vegetarian Box</label></div>
                             </div>
                             <div class="row extrapadding">
-                                <div class="col-xs-6 checkbox nosidepadding"><input id="glutenfree" type="checkbox" name="prefs[]" value="9" @if (isset($glutenfree)) {{ $glutenfree }} @endif> <label for="glutenfree">Gluten free*</label></div>
-                                <div class="col-xs-6 checkbox nosidepadding"><input id="nutfree" name="prefs[]" type="checkbox" value="7" class="form-control" @if(isset($nutfree)) {{ $nutfree }} @endif /> <label for="nutfree" data-toggle="tooltip" style="display: inline-block;" data-placement="right" data-title="Our facility is not nut-free.">Nut free</label></div>
+                                <div class="col-xs-6 checkbox nosidepadding"><input id="glutenfree" v-model="prefs.glutenfree" type="checkbox" name="prefs[]" value="9" @if (isset($glutenfree)) {{ $glutenfree }} @endif> <label for="glutenfree">Gluten free*</label></div>
+                                <div class="col-xs-6 checkbox nosidepadding"><input id="nutfree" v-model="prefs.nutfree" name="prefs[]" type="checkbox" value="7" class="form-control" @if(isset($nutfree)) {{ $nutfree }} @endif /> <label for="nutfree" data-toggle="tooltip" style="display: inline-block;" data-placement="right" data-title="Our facility is not nut-free.">Nut free</label></div>
                                 <div class="col-xs-12 text-left footnote">* Gluten free meal plans are an additional $1.50 per adult meal.</div>
                             </div>
                             <div class="row padtop">
@@ -101,6 +101,7 @@ $('#register3').addClass('active');
                     <div class="note text-center">
                         <h4>Your Dietary Profile</h4>
                         You will receive <span v-if="plan_type == 'Omnivore Box'">a mixture of</span> @{{ concatPrefs }} <span v-if="plan_type == 'Omnivore Box'">and</span> vegetarian dishes.
+                        <input type="hidden" name="dietprefs" value="@{{ concatPrefs }}"/>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-5">

@@ -128,7 +128,7 @@ function stripeResponseHandler(status, response) {
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
                         <h1>Enter your billing information.
-                            <div class="panel-subtitle">You will receive future deliveries at XX per week.<br>
+                            <div class="panel-subtitle">You will receive future deliveries at ${{ $product->cost }} per week.<br>
                                 You can skip a week or cancel your account at any time with 6 days’ notice.</div>
                         </h1>
                     </div>
