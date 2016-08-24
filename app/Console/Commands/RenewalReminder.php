@@ -39,11 +39,14 @@ class RenewalReminder extends Command
      */
     public function handle()
     {
+
+        $renewalDate = new \DateTime("next Wednesday");
+//var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($ac) {
+        User::where('password', '<>', '')->chunk(20, function($users) use($ac, $renewalDate) {
             foreach($users as $user) {
-                $ac->UpdateCustomerData($user);
+                $ac->UpdateRenewalDate($user, $renewalDate);
             }
         });
 
