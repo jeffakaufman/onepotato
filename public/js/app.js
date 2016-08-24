@@ -33758,8 +33758,8 @@ var app = new Vue({
 });
 
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]').tooltip({ html: true });
+  //$('[data-toggle="popover"]').popover();
 });
 
 },{"./components/bootstrap":55,"spark":174,"spark-bootstrap":173}],54:[function(require,module,exports){
@@ -34218,6 +34218,8 @@ if (document.getElementById('preferences')) {
 				Object.keys(this.prefs).forEach(function (name) {
 					if (this.prefs[name] == true) {
 						if (name == 'redmeat') name = 'red meat';
+						if (name == 'glutenfree') name = 'gluten free';
+						if (name == 'nutfree') name = 'nut free';
 						userPrefs.push(name);
 					}
 				}.bind(this));

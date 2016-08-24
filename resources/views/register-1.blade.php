@@ -10,7 +10,7 @@ $('#register1').addClass('active');
 <!-- Basic Profile -->
 <div class="container">
 	<div class="row">
-	    <div class="col-md-8 col-md-offset-2">
+	    <div class="col-md-10 col-md-offset-1">
 	        <div class="panel panel-default">
 	            <div class="panel-heading">
 	                
@@ -22,97 +22,98 @@ $('#register1').addClass('active');
 	            </div>
 				 <!-- Display Validation Errors -->
 				        @include('errors.errors')
-	            <div class="panel-body nopadding">
-
-	                <!-- Registration Form -->
-	                {!! Form::open(['url' => '/register', 'role' => 'form', 'class' => 'form-horizontal']) !!}
+	            <div class="panel-body nopadding row">
 					
-					    <!-- Team Name -->
-					    @if (Spark::usesTeams())
-					        <div class="field" :class="{'has-error': registerForm.errors.has('team')}" v-if=" ! invitation">
+					<div class="col-sm-6">
 
-					            <input type="name" class="form-control" name="team" v-model="registerForm.team" autofocus placeholder="Team Name">
 
-					            <span class="help-block" v-show="registerForm.errors.has('team')">
-					                @{{ registerForm.errors.get('team') }}
-					            </span>
+		                <!-- Registration Form -->
+		                {!! Form::open(['url' => '/register', 'role' => 'form', 'class' => 'form-horizontal']) !!}
+						
+						    <!-- Team Name -->
+						    @if (Spark::usesTeams())
+						        <div class="field" :class="{'has-error': registerForm.errors.has('team')}" v-if=" ! invitation">
 
-					        </div>
-					    @endif
+						            <input type="name" class="form-control" name="team" v-model="registerForm.team" autofocus placeholder="Team Name">
 
-					    <div class="reg-field">
-					        <!-- Name -->
-					        <!-- <div class="field" :class="{'has-error': registerForm.errors.has('name')}">
+						            <span class="help-block" v-show="registerForm.errors.has('team')">
+						                @{{ registerForm.errors.get('team') }}
+						            </span>
 
-					            <input type="name" class="form-control" name="name" v-model="registerForm.name" placeholder="Name" autofocus>
+						        </div>
+						    @endif
+							
+							<div class="panel panel-default panel-form panel-register">
+						        <!-- Name -->
+								<div class="clearfix">
+							        <div class="form-row col-sm-6 thinpadding">
+							            <input type="name" class="form-control" name="firstname" placeholder="First Name" autofocus required>
+							        </div>
+							        <div class="form-row col-sm-6 thinpadding">
+							            <input type="name" class="form-control" name="lastname" placeholder="Last Name" required>
+							        </div>
+								</div>
+						        <!-- E-Mail Address -->
+						        <div class="clearfix">
+						        	<div class="form-row col-sm-12 thinpadding">
+						            	<input type="email" class="form-control" name="email" tabindex="1" placeholder="E-Mail Address" required>
+						            </div>
+						        </div>
 
-					            <span class="help-block" v-show="registerForm.errors.has('name')">
-					                @{{ registerForm.errors.get('name') }}
-					            </span>
+						        <!-- Password -->
+						        <div class="clearfix">
+						        	<div class="form-row col-sm-6 thinpadding">
+						            	<input type="password" class="form-control" name="password" tabindex="3" placeholder="Password" required>
+						            </div>
+								<!-- Password Confirmation -->
+									<div class="form-row col-sm-6 thinpadding">
+						            	<input type="password" class="form-control" name="password_confirmation" tabindex="4" placeholder="Confirm Password">
+									</div>
+						        </div>
+						        <!-- Zip Code -->
+						        <div class="clearfix">
+						        	<div class="form-row col-sm-12 thinpadding">
+						            	<input type="text" class="form-control" name="zip" tabindex="2" placeholder="Delivery Zip Code" value="{{ old('zip') }}" lazy>
+						            </div>
+						        </div>
+						    </div>
 
-					        </div> -->
-
-					        <!-- E-Mail Address -->
-					        <div class="field">
-
-					            <input type="email" class="form-control" name="email" tabindex="1" placeholder="E-Mail Address">
-
-					        </div>
-
-					        <!-- Password -->
-					        <div class="field">
-
-					            <input type="password" class="form-control" name="password" tabindex="3" placeholder="Password">
-
-					        </div>
-
-					    </div>
-
-					    <div class="reg-field">
-					        <!-- Zip Code -->
-					        <div class="field">
-					            <input type="text" class="form-control" name="zip" tabindex="2" placeholder="Delivery Zip Code" value="{{ old('zip') }}" lazy>
-					        </div>
-
-					        <!-- Password Confirmation -->
-					        <div class="field">
-
-					            <input type="password" class="form-control" name="password_confirmation" tabindex="4" placeholder="Confirm Password">
-
-					        </div>
-					    </div>
-
-					    <div class="reg-button">
-				            <button class="btn btn-primary">
-				                Get Started
-				            </button>
-				            <div class="disclaimer" style="margin: 10px 0;">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank">Terms of Use and Privacy Policy</a>.</div>
-					    </div>
-					{!! Form::close() !!}
-
+						    <div class="clearfix">
+					            <div class="col-sm-7 disclaimer">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank" style="color: #a8a8a8; text-decoration: underline;">Terms of Use and Privacy Policy</a>.</div>
+					            <div class="col-sm-5 nosidepadding text-right reg-button">
+					            	<button class="btn btn-primary">Continue</button>
+					            </div>
+						    </div>
+						{!! Form::close() !!}
+					</div>
+					<div class="col-sm-6 thinpadding text-right">
+						<div style="position: absolute; top: -10px; right: -10px;"><img src="/img/badge_free_shipping.png"></div>
+	        			<img src="/img/p_register.jpg" style="width: 100%">
+					</div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 
-	<div class="row">
-	    <div class="col-sm-6 col-md-4 col-md-offset-2">
-	        <h5>COMMITMENT-FREE</h5>
-	        <p>Skip deliveries, change your family size, or cancel anytime.</p>
-
-	        <h5>CUSTOMIZED</h5>
-	        <p>Customize your box based on family size, dietary preferences and allergies.  Take advantage of special kid’s pricing. </p> 
-
-	        <h5>CONVENIENT DELIVERY</h5>
-	        <p>Receive meals in a recyclable insulated box so food stays fresh.</p>
+	<div class="row buckets">
+	    <div class="col-sm-3 col-md-offset-1 text-center">
+	        <h5>NO COMMITMENT</h5>
+	        <div class="div"></div>
+	        <p>Skip weeks, change your family size, or cancel anytime.</p>
 	    </div>
-	    <div class="col-sm-6 col-md-4 text-right">
-	        <div style="position: absolute; top: -5px; right: 0;"><img src="/img/badge_free_shipping.png"></div>
-	        <img src="/img/p_register.jpg" style="width: 100%">
+	    <div class="col-sm-4 text-center">
+	        <h5>CUSTOMIZED TO YOUR FAMILY</h5>
+	        <div class="div"></div>
+	        <p>Customize to your family’s size and take advantage of special kid’s pricing. We’ll personalize your menus based on your dietary preferences. </p> 
+	    </div>
+	    <div class="col-sm-3 text-center">
+	        <h5>CONVENIENT DELIVERY</h5>
+	        <div class="div"></div>
+	        <p>Meals arrive in a recyclable insulated box so food stays fresh until you open it.</p>
 	    </div>
 	</div>
 	<div class="row">
-	    <div class="footnote pad col-md-8 col-md-offset-2">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
+	    <div class="footnote pad col-md-10 col-md-offset-1">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 	</div>
 </div>
 @endsection

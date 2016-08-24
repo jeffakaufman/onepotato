@@ -19,8 +19,42 @@ class AC_Mediator {
     const LIST_Note_On_Fried_Chicken = 7;
     const LIST_Menu_Change = 4;
 
+    public function UpdateRenewalDate(User $user, \DateTime $renewalDate) {
+        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+
+        if(!$userSubscription) {
+            return false;
+        }
+
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = array(
+            "email" => $user->email,
+            "field[%RENEWAL_DATE%]" => $renewalDate->format("Y-m-d"),
+        );
+
+
+        $contact_sync = $ac->api("contact/sync", $contact);
+        return $contact_sync;
+
+    }
 
     public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
+        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+
+        if(!$userSubscription) {
+            return false;
+        }
+
+        $product = Product::find($userSubscription->product_id);
+        if(!$product) {
+            return false;
+        }
+
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
@@ -64,7 +98,7 @@ class AC_Mediator {
 //var_dump($user);die();
         $contact = array_merge(
             $contact,
-            $this->_getCustomConstomerFields($user)
+            $this->_getCustomCustomerFields($user, $userSubscription, $product)
         );
 
 //var_dump($contact);die();
@@ -84,10 +118,8 @@ class AC_Mediator {
     }
 
 
-    private function _getCustomConstomerFields(User $user) {
-        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+    private function _getCustomCustomerFields(User $user, UserSubscription $userSubscription, Product $product) {
 
-        $product = Product::find($userSubscription->product_id);
 //        $product->
 //        $deliveryDate = date('Y-m-d', strtotime($user->start_date));
 
@@ -121,45 +153,45 @@ class AC_Mediator {
         $arr['BOX_TYPE'] = $productInfo->BoxType; //Box Type	Text Input	%BOX_TYPE%
         $arr['DELIVERY_DAY'] = $nextDeliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
 
-        $arr['TERM'] = ''; //Term	Text Input	%TERM%
+//        $arr['TERM'] = ''; //Term	Text Input	%TERM%
         $arr['PRICE'] = $product ? $product->cost : ''; //        Price	Text Input	%PRICE%
         $arr['STATUS'] = $user->status; //        Status	Text Input	%STATUS%
         $arr['REFERENCE_ID'] = $userSubscription->stripe_id; //        Reference ID	Text Input	%REFERENCE_ID%
-        $arr['DELIVERY_SKIP_DATE'] = ''; //        Delivery Skip Date	Text Input	%DELIVERY_SKIP_DATE%	This should update to blank if they did not skip that week
-        $arr['PAYMENT_FAIL_COUNT'] = ''; //Payment Fail Count	Text Input	%PAYMENT_FAIL_COUNT%	This should update to blank if they make a payment
-//        $arr['GIFT_CARD_ISSUED'] = ''; //Gift Card Issued	Text Input	%GIFT_CARD_ISSUED%	Removed on 7/28/16 per conversation this is not good enough for data.
-        $arr['REFERRAL_NAME'] = ''; //Referral Name	Text Input	%REFERRAL_NAME%	Added 7/28/16
-        $arr['REFERRAL_EMAIL'] = ''; //Referral Email	Text Input	%REFERRAL_EMAIL%	Added 7/28/16
-        $arr['GIFT_CARD_AMOUNT'] = ''; //Gift Card Amount	Text Input	%GIFT_CARD_AMOUNT%	Added 7/28/16
-        $arr['GIFT_CARD_RECIPIENT_NAME'] = ''; //Gift Card Recipient Name	Text Input	%GIFT_CARD_RECIPIENT_NAME%	Added 7/28/16
-        $arr['REFERRAL_FEE_AMOUNT'] = ''; //Referral Fee Amount	Text Input	%REFERRAL_FEE_AMOUNT%	Added 7/28/16
-        $arr['GIFT_CARD_PURCHASER_NAME'] = ''; //Gift Card Purchaser Name	Text Input	%GIFT_CARD_PURCHASER_NAME%	Added 7/28/16
-        $arr['PERSONALIZED_GIFT_CARD_LINK'] = ''; //Personalized Gift Card Link	Text Input	%PERSONALIZED_GIFT_CARD_LINK%	Added 7/28/16
+//        $arr['DELIVERY_SKIP_DATE'] = ''; //        Delivery Skip Date	Text Input	%DELIVERY_SKIP_DATE%	This should update to blank if they did not skip that week
+//        $arr['PAYMENT_FAIL_COUNT'] = ''; //Payment Fail Count	Text Input	%PAYMENT_FAIL_COUNT%	This should update to blank if they make a payment
+        // REMOVED        $arr['GIFT_CARD_ISSUED'] = ''; //Gift Card Issued	Text Input	%GIFT_CARD_ISSUED%	Removed on 7/28/16 per conversation this is not good enough for data.
+//        $arr['REFERRAL_NAME'] = ''; //Referral Name	Text Input	%REFERRAL_NAME%	Added 7/28/16
+//        $arr['REFERRAL_EMAIL'] = ''; //Referral Email	Text Input	%REFERRAL_EMAIL%	Added 7/28/16
+//        $arr['GIFT_CARD_AMOUNT'] = ''; //Gift Card Amount	Text Input	%GIFT_CARD_AMOUNT%	Added 7/28/16
+//        $arr['GIFT_CARD_RECIPIENT_NAME'] = ''; //Gift Card Recipient Name	Text Input	%GIFT_CARD_RECIPIENT_NAME%	Added 7/28/16
+//        $arr['REFERRAL_FEE_AMOUNT'] = ''; //Referral Fee Amount	Text Input	%REFERRAL_FEE_AMOUNT%	Added 7/28/16
+//        $arr['GIFT_CARD_PURCHASER_NAME'] = ''; //Gift Card Purchaser Name	Text Input	%GIFT_CARD_PURCHASER_NAME%	Added 7/28/16
+//        $arr['PERSONALIZED_GIFT_CARD_LINK'] = ''; //Personalized Gift Card Link	Text Input	%PERSONALIZED_GIFT_CARD_LINK%	Added 7/28/16
 //Standard AC Fields
-//                $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
-//                $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
-//                $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
-//                $arr['PHONE'] = $user->phone; //Phone	Text Input	%PHONE%
+//  NO NEED TO UPDATE              $arr['FIRSTNAME'] = $firstName; //First Name	Text Input	%FIRSTNAME%
+//  NO NEED TO UPDATE              $arr['LASTNAME'] = $lastName; //Last Name	Text Input	%LASTNAME%
+//  NO NEED TO UPDATE              $arr['EMAIL'] = $user->email; //Email	Text Input	%EMAIL%
+//  NO NEED TO UPDATE              $arr['PHONE'] = $user->phone; //Phone	Text Input	%PHONE%
         $arr['ZIP_CODE'] = $user->billing_zip; //Zip Code	Text Input	%ZIP_CODE%
-        $arr['LATITUDE'] = ''; //Latitude	Text Input	%LATITUDE%
-        $arr['LONGITUDE'] = ''; //Longitude	Text Input	%LONGITUDE%
-        $arr['MEMBERRATING'] = ''; //Member_Rating	Text Input	%MEMBERRATING%
-        $arr['CONFIRMTIME'] = ''; //Confirm_Time	Text Input	%CONFIRMTIME%
+//        $arr['LATITUDE'] = ''; //Latitude	Text Input	%LATITUDE%
+//        $arr['LONGITUDE'] = ''; //Longitude	Text Input	%LONGITUDE%
+//        $arr['MEMBERRATING'] = ''; //Member_Rating	Text Input	%MEMBERRATING%
+//        $arr['CONFIRMTIME'] = ''; //Confirm_Time	Text Input	%CONFIRMTIME%
         $arr['STATE'] = $user->billing_state; //State	Text Input	%STATE%
-        $arr['TIMEZONE'] = ''; //TimeZone	Text Input	%TIMEZONE%
-        $arr['LASTCHANGED'] = ''; //Last_Changed	Text Input	%LASTCHANGED%
-        $arr['LEID'] = ''; //LEID	Text Input	%LEID%
-        $arr['EUID'] = ''; //EUID	Text Input	%EUID%
-        $arr['REGION'] = ''; //REGION	Text Input	%REGION%
-        $arr['CC'] = ''; //CC	Text Input	%CC%
-        $arr['NOTES'] = ''; //Notes	Text Input	%NOTES%
-        $arr['DSTOFF'] = ''; //DSTOFF	Text Input	%DSTOFF%
-        $arr['GMTOFF'] = ''; //GMTOFF	Text Input	%GMTOFF%
-        $arr['OPTINIP'] = ''; //OPTIN_IP	Text Input	%OPTINIP%
-        $arr['OPTINTIME'] = ''; //OPTIN_TIME	Text Input	%OPTINTIME%
-        $arr['CONFIRMIP'] = ''; //Confirm_IP	Text Input	%CONFIRMIP%
+//        $arr['TIMEZONE'] = ''; //TimeZone	Text Input	%TIMEZONE%
+//        $arr['LASTCHANGED'] = ''; //Last_Changed	Text Input	%LASTCHANGED%
+//        $arr['LEID'] = ''; //LEID	Text Input	%LEID%
+//        $arr['EUID'] = ''; //EUID	Text Input	%EUID%
+//        $arr['REGION'] = ''; //REGION	Text Input	%REGION%
+//        $arr['CC'] = ''; //CC	Text Input	%CC%
+//        $arr['NOTES'] = ''; //Notes	Text Input	%NOTES%
+//        $arr['DSTOFF'] = ''; //DSTOFF	Text Input	%DSTOFF%
+//        $arr['GMTOFF'] = ''; //GMTOFF	Text Input	%GMTOFF%
+//        $arr['OPTINIP'] = ''; //OPTIN_IP	Text Input	%OPTINIP%
+//        $arr['OPTINTIME'] = ''; //OPTIN_TIME	Text Input	%OPTINTIME%
+//        $arr['CONFIRMIP'] = ''; //Confirm_IP	Text Input	%CONFIRMIP%
         $arr['SUBSCRIPTION_STATUS'] = $userSubscription->status; //Subscription Status	Text Input	%SUBSCRIPTION_STATUS%
-        $arr['CANCELLATION_DATE'] = ''; //Cancellation Date	Text Input	%CANCELLATION_DATE%
+//        $arr['CANCELLATION_DATE'] = ''; //Cancellation Date	Text Input	%CANCELLATION_DATE%
         $list = array();
         foreach($arr as $key => $value) {
             $list[urlencode("field[%{$key}%,0]")] = $value;

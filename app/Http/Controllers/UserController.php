@@ -86,7 +86,7 @@ class UserController extends Controller
 		$referrals = Referral::where('referrer_user_id',$id)->get();
 
 		$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','shipped')->get();
-
+		$shipments = [];
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
 
@@ -954,22 +954,32 @@ class UserController extends Controller
 				$dt = new \DateTime( date('Y-m-d', $i) );
 				$dt->setTimezone(new \DateTimeZone($tz));
 				$dt->setTime(9, 00);
-				$dt->sub(new \DateInterval('P6D'));
+				$dt->sub(new \DateInterval('P5D'));
 				$dt->format('Y-m-d H:i');
 
                 $now = new \DateTime();
                 $now->setTimezone(new \DateTimeZone($tz));
                 $now->format('Y-m-d H:i');
-                
+
                 if ($dt->format('Y-m-d H:i') < $now->format('Y-m-d H:i')) $deliverySchedule->changeable = 'no';
                 else $deliverySchedule->changeable = 'yes';
 
+                $deliverySchedule->deadline = $dt->format('l, M jS');
+
 				$weeksMenus[] = $deliverySchedule;
-			}   
+			}
+
     	}
+
+    	$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','sent_to_ship')->first();
+		
+		$trackingNumber = NULL;
+		if (isset($invoices)) $order = Order::where('order_id',$invoices->order_id)->first();
+		if (isset($order)) $trackingNumber = $order->tracking_number;
+
    		//echo json_encode($weeksMenus[0]);
    		//echo json_encode($weeksMenus[0]->menus[0]->menu()->get());
-   		return view('delivery_schedule')->with(['userid'=>$id, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'prefs'=>$sub->dietary_preferences]);
+   		return view('delivery_schedule')->with(['userid'=>$id, 'startDate'=>$user->start_date, 'weeksMenus'=>$weeksMenus, 'userProduct'=>$userProduct, 'trackingNumber'=>$trackingNumber, 'prefs'=>$sub->dietary_preferences]);
 
 	}
 	

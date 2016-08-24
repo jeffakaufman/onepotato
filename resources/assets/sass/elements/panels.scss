@@ -19,6 +19,14 @@
 		padding-top: 10px;
 	}
 }
+.panel-register {
+	padding: 15px 20px 10px 20px;
+	margin-bottom: 15px;
+	
+	@media only screen and (min-width: 992px) {
+		padding: 25px 30px 15px 30px;
+	}
+}
 .panel-body {
 	font-weight: 300;
 	

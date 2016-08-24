@@ -5838,8 +5838,13 @@ button.close {
     .radio label.inline, .checkbox label.inline {
       display: inline-block; }
 
-.radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
-  margin: 0; }
+.radio + .radio, .checkbox + .checkbox {
+  margin-top: 10px; }
+  .radio + .radio.nomargin, .checkbox + .checkbox.nomargin {
+    margin: 0; }
+
+.form-horizontal .radio + .radio, .form-horizontal .checkbox + .checkbox {
+  margin-top: 0; }
 
 .radio:first-child label {
   margin-right: 15px; }
@@ -6017,17 +6022,8 @@ input.number {
 .help-block {
   color: #e91e25; }
 
-.reg-field {
-  float: left;
-  padding: 0 2px;
-  width: 35%; }
-
-.reg-button {
-  float: left;
-  padding: 0 2px;
-  width: 30%; }
-  .reg-button .btn {
-    width: 100%; }
+.reg-button .btn {
+  width: 100%; }
 
 @media only screen and (max-width: 549px) {
   .reg-field, .reg-button {
@@ -6377,6 +6373,13 @@ input.number {
   .panel-form .panel-heading, .panel-form .panel-default > .panel-heading {
     padding-top: 10px; }
 
+.panel-register {
+  padding: 15px 20px 10px 20px;
+  margin-bottom: 15px; }
+  @media only screen and (min-width: 992px) {
+    .panel-register {
+      padding: 25px 30px 15px 30px; } }
+
 .panel-body {
   font-weight: 300; }
   .panel-body .p-b-lg {
@@ -6495,8 +6498,9 @@ table.month {
   text-align: left; }
 
 .tooltip-arrow, .sidelink + .tooltip.top > .tooltip-arrow,
-.tooltip-arrow, .sidelink + .tooltip.right > .tooltip-arrow,
-.tooltip-rrow, .sidelink + .tooltip.left > .tooltip-arrow,
+.sidelink + .tooltip.right > .tooltip-arrow,
+.sidelink + .tooltip.left > .tooltip-arrow,
+.sidelink + .tooltip.bottom > .tooltip-arrow,
 .sidelink + .tooltip > .tooltip-inner,
 .tooltip.top .tooltip-inner,
 .tooltip.top .tooltip-arrow,
@@ -6506,11 +6510,15 @@ table.month {
 .tooltip.right .tooltip-arrow,
 .tooltip.left .tooltip-inner,
 .tooltip.left .tooltip-arrow,
-.tooltip.left .tooltip-arrow {
+.tooltip.left .tooltip-arrow,
+.tooltip.bottom .tooltip-inner,
+.tooltip.bottom .tooltip-arrow,
+.tooltip.bottom .tooltip-arrow {
   background-color: #eefeff;
   border-top-color: #eefeff;
   border-right-color: #eefeff;
   border-left-color: #eefeff;
+  border-bottom-color: #eefeff;
   color: #000; }
 
 .sidelink + .tooltip > .tooltip-inner {
@@ -6905,6 +6913,9 @@ table.month {
       padding-left: 30px;
       padding-right: 30px; } }
 
+tr.blank {
+  display: none; }
+
 .bottom {
   vertical-align: bottom; }
 
@@ -7040,7 +7051,7 @@ h1 {
     font-size: 16px; }
     h1 .subtitle.alt {
       color: #404040;
-      margin-top: 1em;
+      margin-top: 0.5em;
       letter-spacing: 0;
       line-height: 1.2em; }
 
@@ -7156,6 +7167,16 @@ h3, h4, h5 {
   letter-spacing: 0.05em; }
   h3 .red, h4 .red, h5 .red {
     color: #e91e25; }
+
+.buckets {
+  margin: 2em 0 0 0; }
+  .buckets h5 {
+    color: #e91e25; }
+  .buckets .div {
+    background: #1db8bf;
+    height: 3px;
+    width: 40px;
+    margin: 0 auto 10px auto; }
 
 .edit-link {
   float: right;
@@ -7391,6 +7412,9 @@ body.with-navbar {
   .sidelink.alt {
     color: #1db8bf; }
 
+span.sidelink:hover {
+  color: #e82128; }
+
 h1 .sidelink {
   color: #1db8bf;
   font-size: 13px; }
@@ -7501,6 +7525,15 @@ h1 .sidelink {
   width: 90%;
   text-align: center;
   transform: rotate(-28deg) translate(-15%, 150%); }
+
+.icon-info-circled {
+  font-size: 16px; }
+
+.color-sec {
+  color: #e91e25; }
+
+.color-prim {
+  color: #1db8bf; }
 
 #changeMenu .meal {
   min-height: 210px; }
