@@ -15,10 +15,15 @@ if (document.getElementById('payment')) {
     			coupon: [],
     			expiry_month: 'Expiration Month',
     			expiry_year: 'Expiration Year',
-    			bad_expiry: false
+                // cvc: '',
+                bad_expiry: false,
+    			bad_expiry2: false,
+                // no_cvc: false,
+                bad_cc: false
     		}
     	},
         methods: {
+            
         	validatePromo: function() { // /coupon/getamount/85.90/SaveThreeBucks9109
         		this.promocode = $('input[name=promocode]').val();
 
@@ -55,7 +60,14 @@ if (document.getElementById('payment')) {
                     	this.bad_expiry = false;
                     }
 
+                } 
+                if (this.expiry_month == 'Expiration Month' || this.expiry_year == 'Expiration Year') {
+                    this.bad_expiry2 = true;
+                } else {
+                    this.bad_expiry2 = false;
                 }
+                // if (this.cvc == '') this.no_cvc = true;
+                // else this.no_cvc = false;
             }
         }
     });

@@ -33985,7 +33985,7 @@ var ChangeMenuComponent = Vue.extend({
       });
       this.menuFull = true;
       var numMeals = 3;
-      console.log(this.menuFull);
+      //console.log(this.menuFull);
       $('#changeMenu .meal.avail').click(function () {
 
         var menuId = $(this).data('id');
@@ -34017,7 +34017,7 @@ var ChangeMenuComponent = Vue.extend({
           this.menuFull = true;
           $('#changeMenu button[type=submit]').removeAttr('disabled');
         }
-        console.log(this.menuFull);
+        //console.log(this.menuFull);
       });
     }
   }
@@ -34065,10 +34065,15 @@ if (document.getElementById('payment')) {
                 coupon: [],
                 expiry_month: 'Expiration Month',
                 expiry_year: 'Expiration Year',
-                bad_expiry: false
+                // cvc: '',
+                bad_expiry: false,
+                bad_expiry2: false,
+                // no_cvc: false,
+                bad_cc: false
             };
         },
         methods: {
+
             validatePromo: function validatePromo() {
                 // /coupon/getamount/85.90/SaveThreeBucks9109
                 this.promocode = $('input[name=promocode]').val();
@@ -34104,6 +34109,13 @@ if (document.getElementById('payment')) {
                         this.bad_expiry = false;
                     }
                 }
+                if (this.expiry_month == 'Expiration Month' || this.expiry_year == 'Expiration Year') {
+                    this.bad_expiry2 = true;
+                } else {
+                    this.bad_expiry2 = false;
+                }
+                // if (this.cvc == '') this.no_cvc = true;
+                // else this.no_cvc = false;
             }
         }
     });
@@ -34137,6 +34149,8 @@ var MenuComponent = Vue.extend({
 			if (year <= 1999) year = year + 100;
 			month = ('0' + (date.getMonth() + 1)).slice(-2);
 			day = ('0' + date.getDate()).slice(-2);
+
+			var dates = new Array();
 
 			this.$http.get('/whatscooking/' + year + '-' + month + '-' + day, function (menu) {
 				this.list = menu;
@@ -34191,7 +34205,79 @@ var MenuComponent = Vue.extend({
 		}
 	}
 });
+var MenusComponent = Vue.extend({
+	template: '#menus-template',
+	ready: function ready() {
+		this.fetchMenus();
+	},
+	props: ['prefs'],
+
+	data: function data() {
+		return {
+			lists: []
+		};
+	},
+	methods: {
+		fetchMenus: function fetchMenus() {
+
+			var date, year, month, day;
+
+			date = new Date($('#startDate').val());
+			year = date.getFullYear();
+			if (year <= 1999) year = year + 100;
+			month = ('0' + (date.getMonth() + 1)).slice(-2);
+			day = ('0' + date.getDate()).slice(-2);
+
+			this.$http.get('/whatscooking/' + year + '-' + month + '-' + day, function (menu) {
+				this.lists = menu;
+				//console.log(this.list);
+			});
+		}
+	},
+	computed: {
+		filteredMenus: function filteredMenus(meal) {
+			var userMenus = [];
+			var meatDone = false;
+			for (var i = 0; i < this.lists.length; i++) {
+				var noNuts = false;
+				if (this.prefs.nutfree && this.list[i].hasNuts) noNuts = true;
+
+				if (this.prefs.redmeat && this.list[i].hasBeef && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.prefs.fish && this.list[i].hasFish && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.prefs.pork && this.list[i].hasPork && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.prefs.poultry && this.list[i].hasPoultry && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.prefs.lamb && this.list[i].hasLamb && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.prefs.shellfish && this.list[i].hasShellfish && !noNuts) {
+					userMenus.push(this.list[i]);
+				}
+				if (this.list[i].vegetarianBackup) {
+					userMenus.push(this.list[i]);
+				}
+				meatDone = true;
+			}
+			if (meatDone) {
+				for (var i = 0; i < this.list.length; i++) {
+					if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup) {
+						userMenus.push(this.list[i]);
+					}
+				}
+			}
+			return userMenus.slice(0, 3);
+		}
+	}
+});
 Vue.component('menu', MenuComponent);
+Vue.component('menus', MenusComponent);
 
 if (document.getElementById('preferences')) {
 	new Vue({

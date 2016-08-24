@@ -31,7 +31,7 @@ var ChangeMenuComponent = Vue.extend({
         	});
         	this.menuFull = true;
         	var numMeals = 3;
-        	console.log(this.menuFull);
+        	//console.log(this.menuFull);
         	$('#changeMenu .meal.avail').click(function() {
         		
         		var menuId = $(this).data('id');
@@ -63,7 +63,7 @@ var ChangeMenuComponent = Vue.extend({
         			this.menuFull = true;
         			$('#changeMenu button[type=submit]').removeAttr('disabled');
         		}
-        		console.log(this.menuFull);
+        		//console.log(this.menuFull);
 
         	});
         }

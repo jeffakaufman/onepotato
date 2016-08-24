@@ -6946,6 +6946,9 @@ tr.blank {
   -ms-flex-pack: center;
   justify-content: center; }
 
+.help-block {
+  font-size: 14px; }
+
 .hide {
   display: none; }
 

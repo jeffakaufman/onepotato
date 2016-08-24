@@ -47,33 +47,33 @@ $('#register1').addClass('active');
 						        <!-- Name -->
 								<div class="clearfix">
 							        <div class="form-row col-sm-6 thinpadding">
-							            <input type="name" class="form-control" name="firstname" placeholder="First Name" autofocus required>
+							            <input type="name" class="form-control" name="firstname" placeholder="First Name" tabindex="1" autofocus required>
 							        </div>
 							        <div class="form-row col-sm-6 thinpadding">
-							            <input type="name" class="form-control" name="lastname" placeholder="Last Name" required>
+							            <input type="name" class="form-control" name="lastname" placeholder="Last Name" tabindex="2" required>
 							        </div>
 								</div>
 						        <!-- E-Mail Address -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-12 thinpadding">
-						            	<input type="email" class="form-control" name="email" tabindex="1" placeholder="E-Mail Address" required>
+						            	<input type="email" class="form-control" name="email" tabindex="3" placeholder="E-Mail Address" required>
 						            </div>
 						        </div>
 
 						        <!-- Password -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-6 thinpadding">
-						            	<input type="password" class="form-control" name="password" tabindex="3" placeholder="Password" required>
+						            	<input type="password" class="form-control" name="password" tabindex="4" placeholder="Password" required>
 						            </div>
 								<!-- Password Confirmation -->
 									<div class="form-row col-sm-6 thinpadding">
-						            	<input type="password" class="form-control" name="password_confirmation" tabindex="4" placeholder="Confirm Password">
+						            	<input type="password" class="form-control" name="password_confirmation" tabindex="5" placeholder="Confirm Password">
 									</div>
 						        </div>
 						        <!-- Zip Code -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-12 thinpadding">
-						            	<input type="text" class="form-control" name="zip" tabindex="2" placeholder="Delivery Zip Code" value="{{ old('zip') }}" lazy>
+						            	<input type="text" class="form-control" name="zip" tabindex="6" placeholder="Delivery Zip Code" value="{{ old('zip') }}" lazy>
 						            </div>
 						        </div>
 						    </div>
