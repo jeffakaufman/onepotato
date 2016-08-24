@@ -22,7 +22,7 @@ $('#register5').addClass('active');
     if (Session::has('phone')) $phone = Session::get('phone');
 ?>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
+<script type="text/javascript">Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");</script>
 <script>
 /*stripe code*/
 
