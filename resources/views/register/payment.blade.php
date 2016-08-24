@@ -25,7 +25,7 @@ $('#register5').addClass('active');
 <<<<<<< HEAD
 <script type="text/javascript">Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");</script>
 =======
-<script type="text/javascript">Stripe.setPublishableKey("pk_live_VZ5POXVmRN68WHCsdd5s6sVv");</script>
+<script type="text/javascript">Stripe.setPublishableKey("{{ env('STRIPE_KEY') }}");</script>
 >>>>>>> b80870da0521df1223c23c1e8537331501af90d5
 <script>
 /*stripe code*/
