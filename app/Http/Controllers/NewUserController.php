@@ -326,7 +326,7 @@ class NewUserController extends Controller
 		$user = User::find($request->user_id);
 		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 		$product = Product::where('id',$userSubscription->product_id)->first();
-		
+//var_dump($product);
 		//store shipping address
 		$shippingAddress = new Shipping_address;
 		$shippingAddress->shipping_first_name = $request->firstname;
@@ -376,11 +376,37 @@ class NewUserController extends Controller
 			with([
 				'user'=>$user,
 				'start_date'=>$request->start_date,
-				'product'=>$product
+				'product'=>$product,
+                'prefilledCoupon' => $request->session()->get('existingUser') ? @$this->_existingCoupons[$product->sku] : '',
 				]);
 		
 	}
-		
+
+	private $_existingCoupons = [
+        '0202000000'	=> '',
+        '0202010000' => 'Loyalty1Child-xj89',
+        '0202020000' => 'Loyalty2Children-hg67',
+        '0202030000' => 'Loyalty3Children-yj93',
+        '0202040000' => 'Loyalty4Children-nb09',
+        '0202000100' => 'LoyaltyGF-rp45',
+        '0202010100' => 'Loyalty1ChildGF-jm83',
+        '0202020100' => 'Loyalty2ChildrenGF-qw10',
+        '0202030100' => 'Loyalty3ChildrenGF-xm72',
+        '0202040100' => 'Loyalty4ChildrenGF-vs21',
+
+        '0102000000' => '',
+        '0102010000' => 'Loyalty1Child-xj89',
+        '0102020000' => 'Loyalty2Children-hg67',
+        '0102030000' => 'Loyalty3Children-yj93',
+        '0102040000' => 'Loyalty4Children-nb09',
+        '0102000100' => 'LoyaltyGF-rp45',
+        '0102010100' => 'Loyalty1ChildGF-jm83',
+        '0102020100' => 'Loyalty2ChildrenGF-qw10',
+        '0102030100' => 'Loyalty3ChildrenGF-xm72',
+        '0102040100' => 'Loyalty4ChildrenGF-vs21',
+    ];
+
+
 	public function RecordPayment (Request $request) {
 		
 			//engage STRIPE

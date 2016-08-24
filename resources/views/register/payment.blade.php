@@ -263,7 +263,11 @@ function stripeResponseHandler(status, response) {
                                 Expiration date should not be in the past.
                             </div>
                         </div>
-                        <div class="row form-group extrapadding">
+                        <div class="row form-group extrapadding"
+                             @if($prefilledCoupon)
+                                style="display:none"
+                             @endif
+                        >
                             <div class="col-xs-5 col-sm-4 thinpadding first">
                                 <label class="select">
                                     <select type="select" class="form-control" name="promotype" @change="validatePromo" v-model="promotype">
@@ -277,10 +281,10 @@ function stripeResponseHandler(status, response) {
                             </div>
                             <div class="col-xs-5 col-sm-4 thinpadding">
                                 <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
-                                <input type="text" name="promocode" class="form-control" v-model="promocode" lazy>
+                                <input type="text" name="promocode" class="form-control" v-model="promocode" lazy value="{{$prefilledCoupon}}">
                             </div> 
                             <div class="col-xs-2 thinpadding last" style="line-height: 42px">
-                                <div @click="validatePromo" class="link">Apply</div>
+                                <div id="ValidatePromoElement" @click="validatePromo" class="link">Apply</div>
                             </div>
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
@@ -386,6 +390,13 @@ $(function() {
             $('input[name=firstname], input[name=lastname], input[name=address], input[name=address_2], input[name=city], select[name=state], input[name=zip], input[name=phone]').val('');
         }
     });
+@if($prefilledCoupon)
+    document.getElementById('ValidatePromoElement').dispatchEvent(new Event('click'));
+@endif
+
+//    console.log();
+//    Vue.methods.validatePromo();
+
 });
 </script>
 @endsection
