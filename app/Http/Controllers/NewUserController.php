@@ -23,6 +23,9 @@ use Auth;
 
 class NewUserController extends Controller
 {
+
+    const EXISTING_USER_CHILD_DISCOUNT = 1.51;
+
     /**
      * Create a new controller instance.
      *
@@ -92,8 +95,11 @@ class NewUserController extends Controller
             $request->session()->put('city', $user->billing_city);
             $request->session()->put('phone', $user->phone);
 
+            $request->session()->put('existingUser', true);
+
         } else {
             $user = new User;
+            $request->session()->put('existingUser', false);
         }
 
 		$user->email = $request->email;
@@ -103,13 +109,20 @@ class NewUserController extends Controller
 		$productAdult = Product::where('sku','0202000000')->first();
 		$productFamily1 = Product::where('sku','0202010000')->first();
 
+        $adultDiscount = 0;
+        $familyDiscount = 0;
+
+        if($existingUser) {
+            $familyDiscount = self::EXISTING_USER_CHILD_DISCOUNT * 3;
+        }
+
 		$request->session()->put('step1', true);
 		$request->session()->put('firstname', $request->firstname);
         $request->session()->put('lastname', $request->lastname);
 		$request->session()->put('user_id', $user->id);
 		$request->session()->put('zip', $request->zip);
-		$request->session()->put('adult_price', $productAdult->cost);
-		$request->session()->put('family1_price', $productFamily1->cost);
+		$request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
+		$request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
 
 		return view('register.select_plan')->with([
 			'user'=>$user,
