@@ -311,7 +311,7 @@ class NewUserController extends Controller
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
 		$request->session()->put('start_date', $request->start_date);
-		$request->session()->put('dietprefs', $dietprefs);
+		$request->session()->put('dietprefs', $request->dietprefs);
 		$request->session()->put('state', $state->state);
 
 //        var_dump($user);die();

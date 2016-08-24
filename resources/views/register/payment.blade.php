@@ -22,7 +22,7 @@ $('#register5').addClass('active');
     if (Session::has('phone')) $phone = Session::get('phone');
 ?>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<script type="text/javascript">Stripe.setPublishableKey("pk_test_JnXPsZ2vOrTOHzTEHd6eSi92");</script>
+<script type="text/javascript">Stripe.setPublishableKey("pk_live_VZ5POXVmRN68WHCsdd5s6sVv");</script>
 <script>
 /*stripe code*/
 
@@ -128,7 +128,7 @@ function stripeResponseHandler(status, response) {
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
                         <h1>Enter your billing information.
-                            <div class="panel-subtitle">You will receive future deliveries at XX per week.<br>
+                            <div class="panel-subtitle">You will receive future deliveries at ${{ $product->cost }} per week.<br>
                                 You can skip a week or cancel your account at any time with 6 days’ notice.</div>
                         </h1>
                     </div>

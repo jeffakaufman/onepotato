@@ -34218,6 +34218,8 @@ if (document.getElementById('preferences')) {
 				Object.keys(this.prefs).forEach(function (name) {
 					if (this.prefs[name] == true) {
 						if (name == 'redmeat') name = 'red meat';
+						if (name == 'glutenfree') name = 'gluten free';
+						if (name == 'nutfree') name = 'nut free';
 						userPrefs.push(name);
 					}
 				}.bind(this));
