@@ -504,7 +504,7 @@ class SubinvoiceController extends Controller
 		$stripe_id = $event_json->data->object->lines->data[0]->id;
 		
 		//coupon code (may not exist)
-		if ($event_json->data->object->discount->coupon->id) {
+		if (isset($event_json->data->object->discount->coupon->id)) {
 			$subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
 		}
 	
