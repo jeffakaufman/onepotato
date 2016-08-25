@@ -499,7 +499,7 @@ class SubinvoiceController extends Controller
 		$period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
 		
 		$subinvoice->period_start_date = $period_start_date_formatted;
-		$subinvoice->period_end_date = $peiod_end_date_formatted;
+		$subinvoice->period_end_date = $period_end_date_formatted;
 		
 		$stripe_id = $event_json->data->object->lines->data[0]->id;
 		
