@@ -475,13 +475,36 @@ class SubinvoiceController extends Controller
 		
 		//$charge_date = new DateTime();
 		//$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");	
+		
+		//store trialing days
+		
+		//store period_start_date, period_end_date
+		
 		$charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");	
 		
 		
 		$subinvoice->charge_date = $charge_date_formatted;
 		$subinvoice->stripe_customer_id = $event_json->data->object->customer;
 		$subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
+		
+		$period_start_date_unix = $event_json->data->object->lines->data[0]->period->start;
+		$period_end_date_unix = $event_json->data->object->lines->data[0]->period->end;
+		
+		$period_start_date_str = date("c", $period_start_date_unix);
+		$period_start_date = new DateTime($period_start_date_str);
+		$period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");	
+		
+		$period_end_date_str = date("c", $period_end_date_unix);
+		$period_end_date = new DateTime($period_end_date_str);
+		$period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
+		
+		$subinvoice->period_start_date = $period_start_date_formatted;
+		$subinvoice->period_end_date = $peiod_end_date_formatted;
+		
 		$stripe_id = $event_json->data->object->lines->data[0]->id;
+		
+		//coupon code (may not exist)
+		$subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
 		
 		$subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
 		$subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
