@@ -123,7 +123,7 @@ $('#register3').addClass('active');
                             <div class="row">
                                 
                                 <menu :prefs="prefs" :loaded.sync="loaded"></menu>
-    
+                                
                             </div>
     
                             <template id="menu-template">
@@ -133,9 +133,9 @@ $('#register3').addClass('active');
                                     <div class="meal col-xs-4 font11 thinpadding" v-for="meal in filteredMenu" track-by="id">
                                         <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
                                         <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
-                                        <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }}</div>
+                                        <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }} @{{ meal.id }}</div>
 
-                                        <input type="hidden" name="menus_id[]" value="@{{ meal.id }}" />
+                                        <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" />
                                         
                                         <div id="imagemodal-@{{ meal.id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
@@ -154,6 +154,13 @@ $('#register3').addClass('active');
                                     
                                 </div>
                                 
+                            </template>
+
+                            <menus :prefs="prefs"></menus>
+
+                            <template id="menus-template">
+                                <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" v-for="meal in filteredMenus" />
+                                <!-- <input type="hidden" name="menus_id[]" value="" v-for="meal in filteredMenus" /> -->
                             </template>
                         </div>
                     </div>

@@ -34208,71 +34208,98 @@ var MenuComponent = Vue.extend({
 var MenusComponent = Vue.extend({
 	template: '#menus-template',
 	ready: function ready() {
-		this.fetchMenus();
+		this.initMenus();
 	},
 	props: ['prefs'],
 
 	data: function data() {
 		return {
 			lists: []
+
 		};
 	},
 	methods: {
-		fetchMenus: function fetchMenus() {
-
-			var date, year, month, day;
+		initMenus: function initMenus() {
+			var i, date, sdate, year, month, day;
 
 			date = new Date($('#startDate').val());
-			year = date.getFullYear();
-			if (year <= 1999) year = year + 100;
-			month = ('0' + (date.getMonth() + 1)).slice(-2);
-			day = ('0' + date.getDate()).slice(-2);
+			for (i = 0; i < 5; i++) {
+				sdate = moment(date).local();
+				sdate.add(7, 'days');
+				date = sdate.format('Y-MM-DD');
+				year = sdate.get('year');
+				month = ('0' + (sdate.get('month') + 1)).slice(-2);
+				day = ('0' + sdate.get('date')).slice(-2);
+				this.fetchMenus(i, year, month, day, date);
+			}
+		},
+		fetchMenus: function fetchMenus(i, year, month, day, date) {
 
 			this.$http.get('/whatscooking/' + year + '-' + month + '-' + day, function (menu) {
-				this.lists = menu;
-				//console.log(this.list);
+				this.lists.push(menu);
+				//console.log(this.lists);
+			}.bind(this)).error(function (error) {
+				this.lists.push(this.altlist);
 			});
 		}
 	},
 	computed: {
+
 		filteredMenus: function filteredMenus(meal) {
-			var userMenus = [];
+			var userMenus = [],
+			    list = [],
+			    items = {},
+			    combined = [];
 			var meatDone = false;
 			for (var i = 0; i < this.lists.length; i++) {
-				var noNuts = false;
-				if (this.prefs.nutfree && this.list[i].hasNuts) noNuts = true;
 
-				if (this.prefs.redmeat && this.list[i].hasBeef && !noNuts) {
-					userMenus.push(this.list[i]);
+				for (var j = 0; j < this.lists[i].length; j++) {
+					combined.push(this.lists[i][j]);
 				}
-				if (this.prefs.fish && this.list[i].hasFish && !noNuts) {
-					userMenus.push(this.list[i]);
+			}
+
+			for (var j = 0; j < combined.length; j++) {
+				var meals = combined.filter(function (elem, index, self) {
+					return index == self.indexOf(elem);
+				});
+
+				if (this.prefs.nutfree && meals[j].hasNuts) var noNuts = true;
+
+				if (this.prefs.redmeat && meals[j].hasBeef && !noNuts) {
+					userMenus.push(meals[j]);
 				}
-				if (this.prefs.pork && this.list[i].hasPork && !noNuts) {
-					userMenus.push(this.list[i]);
+				if (this.prefs.fish && meals[j].hasFish && !noNuts) {
+					userMenus.push(meals[j]);
 				}
-				if (this.prefs.poultry && this.list[i].hasPoultry && !noNuts) {
-					userMenus.push(this.list[i]);
+				if (this.prefs.pork && meals[j].hasPork && !noNuts) {
+					userMenus.push(meals[j]);
 				}
-				if (this.prefs.lamb && this.list[i].hasLamb && !noNuts) {
-					userMenus.push(this.list[i]);
+				if (this.prefs.poultry && meals[j].hasPoultry && !noNuts) {
+					userMenus.push(meals[j]);
 				}
-				if (this.prefs.shellfish && this.list[i].hasShellfish && !noNuts) {
-					userMenus.push(this.list[i]);
+				if (this.prefs.lamb && meals[j].hasLamb && !noNuts) {
+					userMenus.push(meals[j]);
 				}
-				if (this.list[i].vegetarianBackup) {
-					userMenus.push(this.list[i]);
+				if (this.prefs.shellfish && meals[j].hasShellfish && !noNuts) {
+					userMenus.push(meals[j]);
+				}
+				if (meals[j].vegetarianBackup) {
+					userMenus.push(meals[j]);
 				}
 				meatDone = true;
 			}
 			if (meatDone) {
-				for (var i = 0; i < this.list.length; i++) {
-					if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup) {
-						userMenus.push(this.list[i]);
+				for (var j = 0; j < combined.length; j++) {
+
+					var meals = combined.filter(function (elem, index, self) {
+						return index == self.indexOf(elem);
+					});
+					if (meals[j].isVegetarian && !meals[j].vegetarianBackup) {
+						userMenus.push(meals[j]);
 					}
 				}
 			}
-			return userMenus.slice(0, 3);
+			return userMenus;
 		}
 	}
 });
@@ -34314,7 +34341,7 @@ if (document.getElementById('preferences')) {
 		},
 		methods: {
 			fetchNewMenu: function fetchNewMenu() {
-				this.$children[0].fetchMenu();
+				this.$children[1].fetchMenu();
 			},
 			selectAllOmnivore: function selectAllOmnivore() {
 				this.prefs.redmeat = true;
