@@ -311,6 +311,11 @@ class SubinvoiceController extends Controller
 						}
 					}
 				
+					}else{
+						//update the status
+						$invoice->invoice_status = "does_not_ship";
+						$invoice->save();
+						
 					}//end if
 				} //end foreach
 		
