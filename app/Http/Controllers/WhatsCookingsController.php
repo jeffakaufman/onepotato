@@ -128,7 +128,6 @@ class WhatsCookingsController extends Controller
 	    $menu = Menus::find($request->menu_id);
 	    $menu->menu_title = $request->menu_title;
 		$menu->menu_description = $request->menu_description;
-		$menu->menu_delivery_date = $request->week_of;
         $menu->hasBeef = $request->hasBeef ? $request->hasBeef : 0;
         $menu->hasPoultry = $request->hasPoultry ? $request->hasPoultry : 0;
         $menu->hasFish = $request->hasFish ? $request->hasFish : 0;
@@ -197,7 +196,6 @@ class WhatsCookingsController extends Controller
 	    $menu = new Menus;
 	    $menu->menu_title = $request->menu_title;
 		$menu->menu_description = $request->menu_description;
-		$menu->menu_delivery_date = $request->week_of;
         $menu->hasBeef = $request->hasBeef ? $request->hasBeef : 0;
         $menu->hasPoultry = $request->hasPoultry ? $request->hasPoultry : 0;
         $menu->hasFish = $request->hasFish ? $request->hasFish : 0;
