@@ -173,7 +173,7 @@ class SubinvoiceController extends Controller
 			
 			$amountCharged = $invoice->charge_amount;
 			
-			echo "Coupon Code: " . $invoice->coupon_code;
+		
 			
 			if (($amountCharged != '0') || ($amountCharged=='0' && $invoice->coupon_code=='ForeverFreeX8197')) {
 			
