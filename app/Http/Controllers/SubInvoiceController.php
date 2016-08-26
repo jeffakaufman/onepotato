@@ -173,7 +173,7 @@ class SubinvoiceController extends Controller
 			
 			$amountCharged = $invoice->charge_amount;
 			
-			if (($amountCharged != '0') || ($amountCharged=='0' && $invoice->coupon=='ForeverFreeX8197')) {
+			if (($amountCharged != '0') || ($amountCharged=='0' && $invoice->coupon_code=='ForeverFreeX8197')) {
 			
 			
 				//use the user_id field to get the User and Current Shipping Address from user, usersubscriptions, and shipping_addresses
