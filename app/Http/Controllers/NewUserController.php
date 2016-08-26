@@ -433,8 +433,11 @@ class NewUserController extends Controller
 			$todaysDate = new DateTime();
 			
 		
+			//check to see what start date they want
+			$startDate = date('Y-m-d', strtotime($request->start_date));
+		
 			//get the trial_ends date
-			$trial_ends_timestamp = $this->GetTrialEndsDate();
+			$trial_ends_timestamp = $this->GetTrialEndsDate_withStart($startDate);
 			
 			//check to see if there's a coupon
 			$promo_type = $request->promotype;
@@ -599,9 +602,32 @@ class NewUserController extends Controller
 		return $returnJSON;
 		
 	}
+	
+	
+	public function GetTrialEndsDate_withStart ($startDate) {
 		
+		//trial ends should be the PREVIOUS Wendesday at 16:00:00 
+		
+		//time of day cutoff for orders
+		$cutOffTime = "16:00:00";
+		$cutOffDay = "Wednesday";
+		
+		
+		$trial_end_date = new DateTime($startDate, new DateTimeZone('America/Los_Angeles'));
+		$trial_end_date->modify('last ' . $cutOffDay . ' ' . $cutOffTime);
+		
+		return ($trial_end_date->getTimestamp());
+		
+	}
 		
 	public function GetTrialEndsDate() {
+		
+		
+		
+			//use start date - find the previous Wednesday at 16:00:00
+		
+		
+		
 		
 			//figure out date logic for trial period - 
 			// - mist be UNIX timestamp
@@ -629,6 +655,8 @@ class NewUserController extends Controller
 			//echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
 			//echo "Current time: " . $todaysDate->format('Y-m-d H:i:s') . "<br />";
 			
+			
+			//THIS IS ALL OLD CODE _ SINCE WE KNOW THE START DATE, we can just use that as the 
 			//check to see if today is the same day as the cutoff day
 			if ($currentDay==$cutOffDay) {
 				
@@ -659,6 +687,7 @@ class NewUserController extends Controller
 				
 			}
 		
+			
 			return ($trial_ends->getTimestamp());
 		
 			//echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
