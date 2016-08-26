@@ -153,7 +153,7 @@ class NewUserController extends Controller
 
     	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
 			if (date('N', $i) == 2) {//Tuesday == 2 {
-				$upcomingDates[date('m/d/y', $i)] = date('F d, Y', strtotime(date('m/d/y', $i)));
+				$upcomingDates[date('m/d/y', $i)] = date('F j, Y', strtotime(date('m/d/y', $i)));
 			}   
     	}
     	$request->session()->put('step2', true);
@@ -297,16 +297,23 @@ class NewUserController extends Controller
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 
-		MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->delete();
-		
-		foreach ($request->menus_id as $menu_id) {
-			$firstMenu = new MenusUsers;
-			$firstMenu->users_id = $request->user_id;
-			$firstMenu->menus_id = $menu_id;
-			$firstMenu->delivery_date = date('Y-m-d', strtotime($request->start_date));
-			$firstMenu->save();
+		$menus_id = $request->menus_id;
+
+		foreach ($menus_id as $ddate => $menu) {
+			$i = 0;
+			MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($ddate)))->delete();
+
+			$menu_ids = (array)$menu;
+			foreach ($menu_ids as $menu_id) {
+		        $newMenu = new MenusUsers;
+				$newMenu->users_id = $request->user_id;
+				$newMenu->menus_id = $menu_id;
+				$newMenu->delivery_date = $ddate;
+				$newMenu->save();
+		        $i++;
+		        if ($i == 3) break;
+		    }
 		}
-		$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
 
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
