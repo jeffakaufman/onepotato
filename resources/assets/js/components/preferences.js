@@ -29,6 +29,9 @@ var MenuComponent = Vue.extend({
 	        var dates = new Array;
 
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
+				for (var i = 0; i < menu.length; i++) {
+		    		menu[i]['menu_delivery_date'] = year + '-' + month + '-' + day;
+	    		}
 	    		this.list = menu;
 	    		this.loaded = false;
 	    		//console.log(this.list);
