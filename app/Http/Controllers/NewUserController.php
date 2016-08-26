@@ -315,8 +315,6 @@ class NewUserController extends Controller
 		    }
 		}
 
-		$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
-
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
 		$request->session()->put('start_date', $request->start_date);
