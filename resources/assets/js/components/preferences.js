@@ -91,7 +91,6 @@ var MenusComponent = Vue.extend({
     data: function () {
 	    return {
 	    	lists: [],
-	    	
 	    }
     },
     methods: {
@@ -113,68 +112,72 @@ var MenusComponent = Vue.extend({
     	fetchMenus: function(i,year,month,day,date) {
     		
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
+				
+				for (var i = 0; i < menu.length; i++) {
+		    		menu[i]['menu_delivery_date'] = date;
+	    		}
 	    		this.lists.push(menu);
-	    		//console.log(this.lists);
-	    	}.bind(this)).error(function(error) {
-                this.lists.push(this.altlist);
-            });
+	    		
+	    	});
 		    
 	  	}
 	},
 	computed: {
 
 		filteredMenus: function(meal) {
-	  		var userMenus = [], list = [], items = {}, combined = [];
+	  		var userMenus = [], combined = [];
 			var meatDone = false;
-	  		for (var i = 0; i < this.lists.length; i++) {
-				
-				for (var j = 0; j < this.lists[i].length; j++) {
-					combined.push(this.lists[i][j]);
-				}
-	  		}
 
-  			for (var j = 0; j < combined.length; j++) {
-  				var meals = combined.filter(function(elem, index, self) {
-				    return index == self.indexOf(elem);
-				});
-				
-	  			if (this.prefs.nutfree && meals[j].hasNuts) var noNuts = true;
+			if (this.lists.length) {
+	  			for (var i = 0; i < this.lists.length; i++) {
+					for (var j = 0; j < this.lists[i].length; j++) {
+						combined.push(this.lists[i][j]);
+					}
+				}
 	  			
-		        if (this.prefs.redmeat && meals[j].hasBeef && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (this.prefs.fish && meals[j].hasFish && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (this.prefs.pork && meals[j].hasPork && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (this.prefs.poultry && meals[j].hasPoultry && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (this.prefs.lamb && meals[j].hasLamb && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (this.prefs.shellfish && meals[j].hasShellfish && !noNuts) {
-		          	userMenus.push(meals[j]);
-		        }
-		        if (meals[j].vegetarianBackup) {
-		          	userMenus.push(meals[j]);
-		        } 
-		        meatDone = true;
-		    }
-	        if (meatDone) {
-	        	for (var j = 0; j < combined.length; j++) {
-	        		
+	  			for (var j = 0; j < combined.length; j++) {
 	  				var meals = combined.filter(function(elem, index, self) {
 					    return index == self.indexOf(elem);
-					})
-			        if (meals[j].isVegetarian && !meals[j].vegetarianBackup) {
-			        	userMenus.push(meals[j]);
+					});
+					
+		  			if (this.prefs.nutfree && meals[j].hasNuts) var noNuts = true;
+		  			
+			        if (this.prefs.redmeat && meals[j].hasBeef && !noNuts) {
+			          	userMenus.push(meals[j]);
 			        }
-
+			        if (this.prefs.fish && meals[j].hasFish && !noNuts) {
+			          	userMenus.push(meals[j]);
+			        }
+			        if (this.prefs.pork && meals[j].hasPork && !noNuts) {
+			          	userMenus.push(meals[j]);
+			        }
+			        if (this.prefs.poultry && meals[j].hasPoultry && !noNuts) {
+			          	userMenus.push(meals[j]);
+			        }
+			        if (this.prefs.lamb && meals[j].hasLamb && !noNuts) {
+			          	userMenus.push(meals[j]);
+			        }
+			        if (this.prefs.shellfish && meals[j].hasShellfish && !noNuts) {
+			          	userMenus.push(meals[j]);
+			        }
+			        if (meals[j].vegetarianBackup) {
+			          	userMenus.push(meals[j]);
+			        } 
+			        meatDone = true;
 			    }
-	     	} 
+		        if (meatDone) {
+		        	for (var j = 0; j < combined.length; j++) {
+		        		
+		  				var meals = combined.filter(function(elem, index, self) {
+						    return index == self.indexOf(elem);
+						})
+				        if (meals[j].isVegetarian && !meals[j].vegetarianBackup) {
+				        	userMenus.push(meals[j]);
+				        }
+
+				    }
+		     	} 
+		    }
 		   	return userMenus;
         }
 	}
