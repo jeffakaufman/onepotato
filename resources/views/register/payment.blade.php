@@ -288,10 +288,10 @@ function checkLuhn(input) {
                             </div> 
                         </div>
                         <div class="row form-group extrapadding" v-show="bad_expiry || bad_expiry2">
-                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry">
+                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry" transition="expand">
                                 Expiration date should not be in the past.
                             </div>
-                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry2">
+                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry2" transition="expand">
                                 Expiration date is required.
                             </div>
                         </div>
@@ -354,7 +354,7 @@ function checkLuhn(input) {
                             </div>
                             <div class="col-sm-5">
                                 <h5>FIRST DELIVERY</h5>
-                                {{ date('F d', strtotime($start_date)) }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
+                                {{ date('F j', strtotime($start_date)) }} <a href="{{ route('register.preferences') }}" class="sidelink">(change)</a>
                             </div>
                         </div>
                         <div class="row padbottom">
@@ -368,7 +368,7 @@ function checkLuhn(input) {
                         <p>&nbsp;</p>
 
                         <div class="row padtop font16">
-                            <div class="panel-heading text-left">order TOTAL FOR {{ date('F d', strtotime($start_date)) }}</div>
+                            <div class="panel-heading text-left">order TOTAL FOR {{ date('F j', strtotime($start_date)) }}</div>
                             <div class="panel-body">
                                 <div class="col-xs-12 col-sm-8 nosidepadding">
                                     <div class="col-xs-7 nosidepadding eh">{{ $product->product_description }} </div>

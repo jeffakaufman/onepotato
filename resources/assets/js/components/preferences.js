@@ -34,6 +34,7 @@ var MenuComponent = Vue.extend({
 	    		}
 	    		this.list = menu;
 	    		this.loaded = false;
+	    		this.clickable = true;
 	    		//console.log(this.list);
 	    	}.bind(this)).error(function(error) {
                 this.list = this.altlist;

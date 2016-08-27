@@ -133,7 +133,7 @@ $('#register3').addClass('active');
                                     <div class="meal col-xs-4 font11 thinpadding" v-for="meal in filteredMenu" track-by="id">
                                         <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
                                         <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
-                                        <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }} @{{ meal.id }}</div>
+                                        <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }} <em>@{{ meal.menu_description }}</em></div>
 
                                         <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" />
                                         
