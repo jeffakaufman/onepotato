@@ -34092,9 +34092,11 @@ if (document.getElementById('payment')) {
                         $('#totalcost').html('$' + newprice);
                         $('#code .label').text('Coupon code');
                         this.hasCode = true;
+                        this.wrongCode = false;
                     } else {
                         $('#discount').html('-$XX.XX');
                         $('#totalcost').html(this.product_cost);
+                        this.hasCode = false;
                         this.wrongCode = true;
                     }
                     //console.log(this.coupon);

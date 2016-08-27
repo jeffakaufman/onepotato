@@ -323,7 +323,8 @@ function checkLuhn(input) {
                             </div>
                         </div>
                         <div v-show="wrongCode && promocode != ''" transition="expand">
-                            <div class="row extrapadding">Sorry, this code is not valid.</div>
+                            <div class="col-xs-5 col-sm-4 thinpadding first"></div>
+                            <div class="col-xs-7 col-sm-8 row extrapadding">Sorry, this code is not valid.</div>
                         </div>
                     </div>
 

@@ -6919,7 +6919,8 @@ tr.blank {
 .expand-transition {
   transition: all .3s ease;
   max-height: 150px;
-  overflow: hidden; }
+  overflow: hidden;
+  color: #e91e25; }
 
 /* .expand-enter defines the starting state for entering */
 /* .expand-leave defines the ending state for leaving */
