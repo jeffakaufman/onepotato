@@ -34063,6 +34063,7 @@ if (document.getElementById('payment')) {
                 promocode: '',
                 product_cost: '',
                 coupon: [],
+                hasCode: false,
                 expiry_month: 'Expiration Month',
                 expiry_year: 'Expiration Year',
                 // cvc: '',
@@ -34088,6 +34089,8 @@ if (document.getElementById('payment')) {
 
                         $('#discount').html('-$' + discount);
                         $('#totalcost').html('$' + newprice);
+                        $('#code .label').text('Coupon code');
+                        hasCode = true;
                     } else {
                         $('#discount').html('-$XX.XX');
                         $('#totalcost').html(this.product_cost);
@@ -34114,8 +34117,6 @@ if (document.getElementById('payment')) {
                 } else {
                     this.bad_expiry2 = false;
                 }
-                // if (this.cvc == '') this.no_cvc = true;
-                // else this.no_cvc = false;
             }
         }
     });
