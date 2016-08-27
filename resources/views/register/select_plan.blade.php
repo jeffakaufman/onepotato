@@ -32,7 +32,7 @@ Both plans include 3 meals per week.</div>
 				 {{ csrf_field() }}
 				<input type="hidden" name="children" value="{{ isset($children) ? $children : 0 }}" />
 				<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
-				<input type="hidden" name="zip" value="{{ $zip }}" />
+				<input type="hidden" name="zip" value="{{$zip}}" />
 
         <div class="row">
             <div class="col-sm-6 col-md-5 col-md-offset-1">
@@ -73,7 +73,7 @@ Both plans include 3 meals per week.</div>
 					 {{ csrf_field() }}
 				
 					<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
-					<input type="hidden" name="zip" value="{{ $zip }}" />
+					<input type="hidden" name="zip" value="@if (isset($zip)) {{$zip}} @endif" />
 
             <div class="col-sm-6 col-md-5">
                 <div class="panel panel-default panel-form text-center">

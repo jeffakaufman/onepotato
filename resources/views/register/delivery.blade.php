@@ -9,6 +9,7 @@ $('#register4').addClass('active');
 @section('content')
 <?php 
     if (Session::has('user_id')) $user_id = Session::get('user_id');
+    if (Session::has('zip')) $zip = Session::get('zip');
     if (Session::has('children')) $children = Session::get('children');
     if (Session::has('plantype')) $plantype = Session::get('plantype');
     if (Session::has('dietprefs')) $dietprefs = Session::get('dietprefs');
@@ -20,7 +21,6 @@ $('#register4').addClass('active');
     if (Session::has('address2')) $address2 = Session::get('address2');
     if (Session::has('city')) $city = Session::get('city');
     if (Session::has('state')) $state = Session::get('state');
-    if (Session::has('zip')) $zip = Session::get('zip');
     if (Session::has('phone')) $phone = Session::get('phone');
     if (Session::has('instructions')) $instructions = Session::get('instructions');
 ?>
@@ -52,7 +52,7 @@ $('#register4').addClass('active');
 <form class="form-horizontal" role="form" method="post"  action="{{ url('/register/delivery') }}">
 					 {{ csrf_field() }}
 
-					<input type="hidden" name="start_date" value="{{ $start_date }}" />
+					<input type="hidden" name="start_date" value="{{$start_date}}" />
 					<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
                     <!-- <input type="hidden" name="children" value="{{ $children }}" /> -->
                     <!-- <input type="hidden" name="plantype" value="{{ $plantype }}" /> -->
@@ -77,34 +77,34 @@ $('#register4').addClass('active');
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="@if (isset($firstname)){{ $firstname }}@endif" autofocus>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="@if (isset($firstname)){{$firstname}}@endif" autofocus required>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="@if (isset($lastname)){{ $lastname }}@endif" autofocus>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="@if (isset($lastname)){{$lastname}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="@if (isset($address)){{ $address }}@endif">
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="@if (isset($address)){{$address}}@endif" required>
                                 </div>
 
                                 <!-- Address Line 2 -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2" value="@if (isset($address2)){{ $address2 }}@endif">
+                                    <input type="text" class="form-control" name="address_line_2" lazy placeholder="Address Line 2" value="@if (isset($address2)){{$address2}}@endif">
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                        <input type="text" class="form-control" name="city" lazy placeholder="City" value="@if (isset($city)){{ $city }}@endif">
+                                    <input type="text" class="form-control" name="city" lazy placeholder="City" value="@if (isset($city)){{$city}}@endif" required>
                                 </div>
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
                                     <label class="select">
-                                        <select name="state" type="select" class="form-control">
+                                        <select name="state" type="select" class="form-control" required>
                                             <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
                                             <option value="CA" @if( $state == 'CA') selected @endif>California</option>
                                             <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
@@ -113,13 +113,13 @@ $('#register4').addClass('active');
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="{{ $zip }}" lazy>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="@if (isset($zip)){{$zip}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 nosidepadding">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" lazy value="@if (isset($phone)){{ $phone }}@endif">
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" value="@if (isset($phone)){{$phone}}@endif" required>
                                 </div>
                             </div>
 

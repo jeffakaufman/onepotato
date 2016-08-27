@@ -73,7 +73,7 @@ $('#register1').addClass('active');
 						        <!-- Zip Code -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-12 thinpadding">
-						            	<input type="text" class="form-control" name="zip" tabindex="6" placeholder="Delivery Zip Code" value="{{ old('zip') }}" lazy>
+						            	<input type="text" class="form-control" name="zip" tabindex="6" placeholder="Delivery Zip Code" value="{{old('zip')}}" lazy>
 						            </div>
 						        </div>
 						    </div>

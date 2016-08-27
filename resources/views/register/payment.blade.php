@@ -284,7 +284,7 @@ function checkLuhn(input) {
                                 </label>
                             </div>
                             <div class="col-xs-2 thinpadding last">
-                                <input type="text" class="form-control card-cvc" required placeholder="CVC" lazy>
+                                <input type="text" class="form-control card-cvc" pattern="[0-9]*" required placeholder="CVC" lazy>
                             </div> 
                         </div>
                         <div class="row form-group extrapadding" v-show="bad_expiry || bad_expiry2">
@@ -376,8 +376,8 @@ function checkLuhn(input) {
                                     <div class="col-xs-5 nosidepadding text-right">$3.00</div>
                                 </div>
                                 @endif
-                                <div class="col-xs-12 col-sm-8 nosidepadding">
-                                    <div class="col-xs-7 nosidepadding">Referral code</div>
+                                <div class="col-xs-12 col-sm-8 nosidepadding" v-show="hasCode">
+                                    <div class="col-xs-7 nosidepadding label">Referral code</div>
                                     <div id="discount" class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
                                 </div>
                                 <div class="col-xs-12 col-sm-8 nosidepadding total">

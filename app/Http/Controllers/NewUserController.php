@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\UserHasRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 use App\User;
 use App\Shipping_address;
 use App\Csr_note;
@@ -124,10 +125,8 @@ class NewUserController extends Controller
 		$request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
 		$request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
 
-		return view('register.select_plan')->with([
-			'user'=>$user,
-			'zip'=>$request->zip
-		]);
+		return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
+		
 	}
 	
 	public function RecordPlan (Request $request) {
@@ -159,6 +158,7 @@ class NewUserController extends Controller
     	$request->session()->put('step2', true);
     	$request->session()->put('children', $numChildren);
     	$request->session()->put('upcoming_dates', $upcomingDates);
+    	$request->session()->put('zip', $request->zip);
 
 		return view('register.preferences')->with([
 			'children'=>$numChildren,
@@ -317,13 +317,14 @@ class NewUserController extends Controller
 
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
+		$request->session()->put('zip', $request->zip);
 		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $request->dietprefs);
 		$request->session()->put('state', $state->state);
 
 //        var_dump($user);die();
 
-		return view('register.delivery')->with(['user'=>$user]);
+		return view('register.delivery')->with(['user'=>$user])->with(['zip'=>$request->zip]);
 	}
 
 
