@@ -107,6 +107,16 @@
 tr.blank {
 	display: none;
 }
+.expand-transition {
+  transition: all .3s ease;
+  max-height: 150px;
+  overflow: hidden;
+}
+/* .expand-enter defines the starting state for entering */
+/* .expand-leave defines the ending state for leaving */
+.expand-enter, .expand-leave {
+  max-height: 0;
+}
 .bottom {
 	vertical-align: bottom;
 }

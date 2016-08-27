@@ -14,6 +14,7 @@ if (document.getElementById('payment')) {
     			product_cost: '',
     			coupon: [],
                 hasCode: false,
+                wrongCode: false,
     			expiry_month: 'Expiration Month',
     			expiry_year: 'Expiration Year',
                 // cvc: '',
@@ -39,10 +40,11 @@ if (document.getElementById('payment')) {
                         $('#discount').html('-$'+discount);
                         $('#totalcost').html('$'+newprice);
                         $('#code .label').text('Coupon code');
-                        hasCode = true;
+                        this.hasCode = true;
                     } else {
                         $('#discount').html('-$XX.XX');
                         $('#totalcost').html(this.product_cost);
+                        this.wrongCode = true;
                     }
                     //console.log(this.coupon);
                     

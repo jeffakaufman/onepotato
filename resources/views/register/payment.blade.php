@@ -322,6 +322,9 @@ function checkLuhn(input) {
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
                             </div>
                         </div>
+                        <div v-show="wrongCode" transition="expand">
+                            <div class="row extrapadding">Sorry, this code is not valid.</div>
+                        </div>
                     </div>
 
                 </div>
@@ -376,7 +379,7 @@ function checkLuhn(input) {
                                     <div class="col-xs-5 nosidepadding text-right">$3.00</div>
                                 </div>
                                 @endif
-                                <div class="col-xs-12 col-sm-8 nosidepadding" v-show="hasCode">
+                                <div id="code" class="col-xs-12 col-sm-8 nosidepadding" v-show="hasCode">
                                     <div class="col-xs-7 nosidepadding label">Referral code</div>
                                     <div id="discount" class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
                                 </div>
