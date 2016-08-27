@@ -322,7 +322,7 @@ function checkLuhn(input) {
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
                             </div>
                         </div>
-                        <div v-show="wrongCode" transition="expand">
+                        <div v-show="wrongCode && promocode != ''" transition="expand">
                             <div class="row extrapadding">Sorry, this code is not valid.</div>
                         </div>
                     </div>
