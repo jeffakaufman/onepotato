@@ -313,7 +313,7 @@ function checkLuhn(input) {
                             </div>
                             <div class="col-xs-5 col-sm-4 thinpadding">
                                 <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
-                                <input type="text" name="promocode" class="form-control" v-model="promocode" lazy value="{{$prefilledCoupon}}">
+                                <input type="text" name="promocode" class="form-control" v-model="promocode" @blur="validatePromo" value="{{$prefilledCoupon}}">
                             </div> 
                             <div class="col-xs-2 thinpadding last" style="line-height: 42px">
                                 <div id="ValidatePromoElement" @click="validatePromo" class="link">Apply</div>
