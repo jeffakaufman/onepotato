@@ -39,7 +39,7 @@ if (document.getElementById('payment')) {
                         
                         $('#discount').html('-$'+discount);
                         $('#totalcost').html('$'+newprice);
-                        $('#code .label').text('Coupon code');
+                        $('#code .label2').text('Coupon code');
                         this.hasCode = true;
                         this.wrongCode = false;
                     } else {
