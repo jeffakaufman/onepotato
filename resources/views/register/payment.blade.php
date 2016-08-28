@@ -168,29 +168,29 @@ function checkLuhn(input) {
 
                             <!-- First Name -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{ $firstname }}" required autofocus>
+                                <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$firstname}}" required autofocus>
                             </div>
 
                             <!-- Last Name -->
                             <div class="form-row col-sm-6 thinpadding last">
-                                <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{ $lastname }}" required>
+                                <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$lastname}}" required>
                             </div>
                         </div>
                         <div class="row extrapadding">
                             <!-- Address -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{ $address }}" required>
+                                <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{$address}}" required>
                             </div>
 
                             <!-- Address Line 2 -->
                             <div class="form-row col-sm-6 thinpadding last">
-                                <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2" value="{{ $address2 }}">
+                                <input type="text" name="address_2" class="form-control" lazy placeholder="Address Line 2" value="{{$address2}}">
                             </div>
                         </div>
                         <div class="row extrapadding">
                             <!-- City -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{ $city }}" required>
+                                <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{$city}}" required>
                             </div>
 
                             <!-- State & ZIP Code -->
@@ -207,13 +207,13 @@ function checkLuhn(input) {
 
                             <!-- Zip Code -->
                             <div class="form-row col-sm-2 thinpadding last">
-                                <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{ $zip }}" required lazy>
+                                <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{$zip}}" required>
                             </div>
                         </div>
                         <div class="row extrapadding">
                             <!-- Phone -->
                             <div class="form-row col-sm-12 nosidepadding">
-                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{ $phone }}" lazy>
+                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{$phone}}" required>
                             </div>
                         </div>
 
@@ -232,7 +232,7 @@ function checkLuhn(input) {
                         </div>
                         <div class="row form-group extrapadding">
                             <div class="col-xs-12 nosidepadding">
-                                <input type="text" class="form-control card-number" data-trigger="blur" placeholder="Card Number" required onblur="
+                                <input type="text" class="form-control card-number" maxlength="19" placeholder="Card Number" required onblur="
                                       cc_number_saved = this.value;
                                       this.value = this.value.replace(/[^\d]/g, '');
                                       if(!checkLuhn(this.value)) {
