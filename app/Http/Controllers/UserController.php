@@ -213,7 +213,7 @@ class UserController extends Controller
 
 				// Get the credit card details submitted by the form
 				$token = $request->stripeToken;
-
+				
 
 				//first see if there's already a record for this customer in STRIPE and update using Token
 				$customer = \Stripe\Customer::retrieve($user->stripe_id);
@@ -295,6 +295,9 @@ class UserController extends Controller
 			
 			$referrals = Referral::where('referrer_user_id',$request->user_id)->get();
 			
+			
+			return redirect('/account/' . $request->user_id);
+			/*
 			return view('account')
 						->with(['user'=>$user, 
 								'shippingAddress'=>$shippingAddress, 
@@ -302,6 +305,7 @@ class UserController extends Controller
 								'userProduct'=>$userProduct, 
 								'states'=>$states,
 								'referrals'=>$referrals]);
+								*/
 	}
 
 	/**
