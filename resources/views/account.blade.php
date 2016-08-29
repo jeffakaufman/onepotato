@@ -440,7 +440,7 @@ function stripeResponseHandler(status, response) {
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Zip</b></div>
                                                 <div class="col-sm-9">
-                                                    {!! Form::text('zip', $shippingAddress->zip, array('class' => 'form-control')) !!}
+                                                    {!! Form::text('zip', $shippingAddress->shipping_zip, array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>
                                             <div class="row padbottom">
