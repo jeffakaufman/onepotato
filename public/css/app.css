@@ -5803,18 +5803,21 @@ button.close {
   background-color: #e91e25;
   border: none;
   border-radius: 0;
-  padding: 5px 10px 2px 10px;
+  font-size: 18px;
+  padding: 10px 20px;
   text-transform: uppercase;
-  font-size: 15px;
   font-weight: 500; }
   .btn-primary.small, .btn-secondary.small {
     font-size: 14px;
     padding: 3px 10px;
     text-transform: none; }
-  @media only screen and (min-width: 992px) {
+  @media only screen and (max-width: 767px) {
     .btn-primary, .btn-secondary {
-      font-size: 18px;
-      padding: 10px 20px; } }
+      width: 100%; } }
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .btn-primary, .btn-secondary {
+      font-size: 15px;
+      padding: 5px 10px 2px 10px; } }
 
 .btn-secondary {
   background-color: #1db8bf; }
@@ -6290,6 +6293,9 @@ input.number {
 
 .hamburger {
   float: right; }
+
+body.register .hamburger {
+  display: none; }
 
 .nav-sidebar .icon {
   margin-right: 5px;
@@ -6877,10 +6883,11 @@ table.month {
 .thinpadding {
   padding-right: 5px;
   padding-left: 5px; }
-  .thinpadding.first {
-    padding-left: 0; }
-  .thinpadding.last {
-    padding-right: 0; }
+  @media only screen and (min-width: 768px) {
+    .thinpadding.first {
+      padding-left: 0; }
+    .thinpadding.last {
+      padding-right: 0; } }
 
 .padding {
   padding-top: 1em;
@@ -7335,10 +7342,10 @@ body.with-navbar {
     @media (min-width: 992px) {
       body.with-navbar.home {
         padding-top: 100px; } }
-  body.with-navbar.register-select_plan, body.with-navbar.register-preferences, body.with-navbar.register-delivery {
+  body.with-navbar.register-select_plan, body.with-navbar.register-preferences {
     padding-top: 100px; }
     @media (min-width: 992px) {
-      body.with-navbar.register-select_plan, body.with-navbar.register-preferences, body.with-navbar.register-delivery {
+      body.with-navbar.register-select_plan, body.with-navbar.register-preferences {
         padding-top: 130px; } }
 
 #hero {

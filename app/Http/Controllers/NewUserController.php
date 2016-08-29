@@ -207,9 +207,9 @@ class NewUserController extends Controller
 		if ($num_kids=="3") {$theSKU .= "03";}
 		if ($num_kids=="4") {$theSKU .= "04";}
 			
-	
+		
 		//if ($request->glutenfree) {
-		if (in_array('9', $request->prefs)) {
+		if ($request->prefs && in_array('9', $request->prefs)) {
 			$theSKU .= "0100";
 			$glutenfree = 'yes';
 		}else{
@@ -231,49 +231,49 @@ class NewUserController extends Controller
 		$userSubscription->save();
 
 		$prefs = array();
-		if (in_array('9', $request->prefs)) {
+		if ($request->prefs && in_array('9', $request->prefs)) {
 			array_push($prefs, 'gluten free');
 			$request->session()->put('glutenfree', 'checked');
 		} else {
 			$request->session()->put('glutenfree', '');
 		}
-		if (in_array('1', $request->prefs)) {
+		if ($request->prefs && in_array('1', $request->prefs)) {
 			array_push($prefs, 'red meat');
 			$request->session()->put('redmeat', 'checked');
 		} else {
 			$request->session()->put('redmeat', '');
 		}
-		if (in_array('2', $request->prefs)) {
+		if ($request->prefs && in_array('2', $request->prefs)) {
 			array_push($prefs, 'poultry');
 			$request->session()->put('poultry', 'checked');
 		} else {
 			$request->session()->put('poultry', '');
 		}
-		if (in_array('3', $request->prefs)) {
+		if ($request->prefs && in_array('3', $request->prefs)) {
 			array_push($prefs, 'fish');
 			$request->session()->put('fish', 'checked');
 		} else {
 			$request->session()->put('fish', '');
 		}
-		if (in_array('4', $request->prefs)) {
+		if ($request->prefs && in_array('4', $request->prefs)) {
 			array_push($prefs, 'lamb');
 			$request->session()->put('lamb', 'checked');
 		} else {
 			$request->session()->put('lamb', '');
 		}
-		if (in_array('5', $request->prefs)) {
+		if ($request->prefs && in_array('5', $request->prefs)) {
 			array_push($prefs, 'pork');
 			$request->session()->put('pork', 'checked');
 		} else {
 			$request->session()->put('pork', '');
 		}
-		if (in_array('6', $request->prefs)) {
+		if ($request->prefs && in_array('6', $request->prefs)) {
 			array_push($prefs, 'shellfish');
 			$request->session()->put('shellfish', 'checked');
 		} else {
 			$request->session()->put('shellfish', 'checked');
 		}
-		if (in_array('7', $request->prefs)) {
+		if ($request->prefs && in_array('7', $request->prefs)) {
 			array_push($prefs, 'nuts');
 			$request->session()->put('nuts', 'checked');
 		} else {

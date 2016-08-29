@@ -295,7 +295,9 @@
 }
 
 .hamburger { float: right; }
-
+body.register .hamburger {
+	display: none;
+}
 .nav-sidebar {
 
 	.icon {

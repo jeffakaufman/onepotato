@@ -102,14 +102,6 @@
 
                             <li class="divider"></li>
 
-                            <li>
-                                <a href="#">
-                                    Recipe Book
-                                </a>
-                            </li>
-
-                            <li class="divider"></li>
-
                             <!-- Logout -->
                             <li>
                                 <a href="/logout">

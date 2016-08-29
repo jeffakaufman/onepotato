@@ -59,7 +59,8 @@ $('#register4').addClass('active');
 
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <a href="{{ route('register.preferences') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
+                <a href="{{ route('register.preferences') }}" style="position: absolute; margin-top: -2em;">
+                    <i class="fa fa-caret-left" aria-hidden="true"></i> BACK</a>
                 <div class="panel panel-default panel-form">
         
                         <div class="panel-heading text-left extrapadding">Delivery Location <a data-toggle="tooltip" data-placement="right" data-title="Shipping is free and convenient. Meals are carefully packaged in an insulated, recyclable box so food stays fresh even if you’re not home when we deliver." class="sidelink">more details</a></div>

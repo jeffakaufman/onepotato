@@ -21,7 +21,7 @@ $('#register2').addClass('active');
                 <div class="panel panel-default">
                     <div class="panel-heading with-subtitle">
                         <h1>Pick the plan that’s best for your family
-                            <div class="panel-subtitle">No Commitment. Skip, cancel or change your family size any time.<br>
+                            <div class="panel-subtitle">No Commitment. Skip deliveries, change your family size, or cancel anytime.<br>
 Both plans include 3 meals per week.</div>
                         </h1>
                     </div>

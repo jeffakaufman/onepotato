@@ -15,8 +15,8 @@ if (document.getElementById('payment')) {
     			coupon: [],
                 hasCode: false,
                 wrongCode: false,
-    			expiry_month: 'Expiration Month',
-    			expiry_year: 'Expiration Year',
+    			expiry_month: '',
+    			expiry_year: '',
                 // cvc: '',
                 bad_expiry: false,
     			bad_expiry2: false,
@@ -57,7 +57,7 @@ if (document.getElementById('payment')) {
                 var today = new Date();
                 var this_month = today.getMonth() + 1;
                 var this_year = today.getFullYear();
-                if (this.expiry_month != 'Expiration Month' && this.expiry_year != 'Expiration Year') {
+                if (this.expiry_month != '' && this.expiry_year != '') {
                 	
                 	var month = parseInt(this.expiry_month);
                 	var year = parseInt(20 + this.expiry_year);
@@ -68,11 +68,11 @@ if (document.getElementById('payment')) {
                     }
 
                 } 
-                if (this.expiry_month == 'Expiration Month' || this.expiry_year == 'Expiration Year') {
-                    this.bad_expiry2 = true;
-                } else {
-                    this.bad_expiry2 = false;
-                }
+                // if (this.expiry_month == '' || this.expiry_year == '') {
+                //     this.bad_expiry2 = true;
+                // } else {
+                //     this.bad_expiry2 = false;
+                // }
             }
         }
     });

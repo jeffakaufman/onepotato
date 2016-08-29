@@ -151,7 +151,8 @@ function checkLuhn(input) {
         </div>
         <div class="row">
             <div class="col-md-6">
-                <a href="{{ route('register.delivery') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
+                <a href="{{ route('register.delivery') }}" style="position: absolute; margin-top: -2em;">
+                    <i class="fa fa-caret-left" aria-hidden="true"></i> BACK</a>
                 <div class="panel panel-default panel-form">
             
                     <div class="panel-heading text-left extrapadding">Billing Information</div>
@@ -212,7 +213,7 @@ function checkLuhn(input) {
                         </div>
                         <div class="row extrapadding">
                             <!-- Phone -->
-                            <div class="form-row col-sm-12 nosidepadding">
+                            <div class="form-row col-sm-12 thinpadding">
                                 <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{$phone}}" required>
                             </div>
                         </div>
@@ -222,7 +223,7 @@ function checkLuhn(input) {
                     <div class="panel-heading text-left extrapadding">Payment Information</div>
                     <div id="payment_info" class="panel-body font16">
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-6 nosidepadding">
+                            <div class="col-xs-6 thinpadding">
                                 <label class="select">
                                     <select type="select" class="form-control" required>
                                         <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
@@ -231,7 +232,7 @@ function checkLuhn(input) {
                             </div>
                         </div>
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-12 nosidepadding">
+                            <div class="col-xs-12 thinpadding">
                                 <input type="text" class="form-control card-number" maxlength="19" placeholder="Card Number" required onblur="
                                       cc_number_saved = this.value;
                                       this.value = this.value.replace(/[^\d]/g, '');
@@ -248,10 +249,10 @@ function checkLuhn(input) {
                             </div>
                         </div>
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-6 thinpadding first">
+                            <div class="col-xs-5 thinpadding first">
                                 <label class="select">
                                     <select type="select" v-model="expiry_month" @change="checkDate" class="form-control card-expiry-month" required>
-                                        <option>Expiration Month</option>
+                                        <option value="">Expiration Month</option>
                                         <option value="01">January</option>
                                         <option value="02">February</option>
                                         <option value="03">March</option>
@@ -270,7 +271,7 @@ function checkLuhn(input) {
                             <div class="col-xs-4 thinpadding">
                                 <label class="select">
                                     <select type="select" v-model="expiry_year" @change="checkDate" class="form-control card-expiry-year" required>
-                                        <option>Expiration Year</option>
+                                        <option value="">Expiration Year</option>
                                         <option value="16">2016</option>
                                         <option value="17">2017</option>
                                         <option value="18">2018</option>
@@ -283,15 +284,15 @@ function checkLuhn(input) {
                                     </select>
                                 </label>
                             </div>
-                            <div class="col-xs-2 thinpadding last">
+                            <div class="col-xs-3 thinpadding last">
                                 <input type="text" class="form-control card-cvc" pattern="[0-9]*" required placeholder="CVC" lazy>
                             </div> 
                         </div>
                         <div class="row form-group extrapadding" v-show="bad_expiry || bad_expiry2">
-                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry" transition="expand">
+                            <div class="col-xs-12 help-block thinpadding" v-show="bad_expiry" transition="expand">
                                 Expiration date should not be in the past.
                             </div>
-                            <div class="col-xs-12 help-block nosidepadding" v-show="bad_expiry2" transition="expand">
+                            <div class="col-xs-12 help-block thinpadding" v-show="bad_expiry2" transition="expand">
                                 Expiration date is required.
                             </div>
                         </div>
@@ -300,7 +301,7 @@ function checkLuhn(input) {
                                 style="display:none"
                              @endif
                         >
-                            <div class="col-xs-5 col-sm-4 thinpadding first">
+                            <div class="col-xs-6 col-sm-5 thinpadding first">
                                 <label class="select">
                                     <select type="select" class="form-control" name="promotype" @change="validatePromo" v-model="promotype">
                                         <!-- <option value="" selected>Code type</option>-->
@@ -311,12 +312,9 @@ function checkLuhn(input) {
                                     </select>
                                 </label>
                             </div>
-                            <div class="col-xs-5 col-sm-4 thinpadding">
+                            <div class="col-xs-6 col-sm-5 thinpadding last">
                                 <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
                                 <input type="text" name="promocode" class="form-control" v-model="promocode" @keyup="validatePromo" value="{{$prefilledCoupon}}">
-                            </div> 
-                            <div class="col-xs-2 thinpadding last" style="line-height: 42px">
-                                <div id="ValidatePromoElement" @click="validatePromo" class="link">Apply</div>
                             </div>
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
@@ -324,7 +322,7 @@ function checkLuhn(input) {
                         </div>
                         <div v-show="wrongCode && promocode != ''" transition="expand">
                             <div class="col-xs-5 col-sm-4 thinpadding first"></div>
-                            <div class="col-xs-7 col-sm-8 row extrapadding">Sorry, this code is not valid.</div>
+                            <div class="col-xs-7 col-sm-8 row thinpadding">Sorry, this code is not valid.</div>
                         </div>
                     </div>
 

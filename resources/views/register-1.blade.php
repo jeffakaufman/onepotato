@@ -47,16 +47,16 @@ $('#register1').addClass('active');
 						        <!-- Name -->
 								<div class="clearfix">
 							        <div class="form-row col-sm-6 thinpadding">
-							            <input type="name" class="form-control" name="firstname" placeholder="First Name" tabindex="1" autofocus required>
+							            <input type="name" class="form-control" name="firstname" placeholder="First Name" tabindex="1" value="{{old('firstname')}}" autofocus required>
 							        </div>
 							        <div class="form-row col-sm-6 thinpadding">
-							            <input type="name" class="form-control" name="lastname" placeholder="Last Name" tabindex="2" required>
+							            <input type="name" class="form-control" name="lastname" placeholder="Last Name" tabindex="2" value="{{old('lastname')}}" required>
 							        </div>
 								</div>
 						        <!-- E-Mail Address -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-12 thinpadding">
-						            	<input type="email" class="form-control" name="email" tabindex="3" placeholder="E-Mail Address" required>
+						            	<input type="email" class="form-control" name="email" tabindex="3" placeholder="E-Mail Address" value="{{old('email')}}" required>
 						            </div>
 						        </div>
 
@@ -73,7 +73,7 @@ $('#register1').addClass('active');
 						        <!-- Zip Code -->
 						        <div class="clearfix">
 						        	<div class="form-row col-sm-12 thinpadding">
-						            	<input type="text" class="form-control" name="zip" tabindex="6" placeholder="Delivery Zip Code" value="{{old('zip')}}" lazy>
+						            	<input type="text" class="form-control" name="zip" tabindex="6" placeholder="Delivery Zip Code" value="{{old('zip')}}">
 						            </div>
 						        </div>
 						    </div>

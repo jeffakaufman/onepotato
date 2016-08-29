@@ -34065,8 +34065,8 @@ if (document.getElementById('payment')) {
                 coupon: [],
                 hasCode: false,
                 wrongCode: false,
-                expiry_month: 'Expiration Month',
-                expiry_year: 'Expiration Year',
+                expiry_month: '',
+                expiry_year: '',
                 // cvc: '',
                 bad_expiry: false,
                 bad_expiry2: false,
@@ -34106,7 +34106,7 @@ if (document.getElementById('payment')) {
                 var today = new Date();
                 var this_month = today.getMonth() + 1;
                 var this_year = today.getFullYear();
-                if (this.expiry_month != 'Expiration Month' && this.expiry_year != 'Expiration Year') {
+                if (this.expiry_month != '' && this.expiry_year != '') {
 
                     var month = parseInt(this.expiry_month);
                     var year = parseInt(20 + this.expiry_year);
@@ -34116,11 +34116,11 @@ if (document.getElementById('payment')) {
                         this.bad_expiry = false;
                     }
                 }
-                if (this.expiry_month == 'Expiration Month' || this.expiry_year == 'Expiration Year') {
-                    this.bad_expiry2 = true;
-                } else {
-                    this.bad_expiry2 = false;
-                }
+                // if (this.expiry_month == '' || this.expiry_year == '') {
+                //     this.bad_expiry2 = true;
+                // } else {
+                //     this.bad_expiry2 = false;
+                // }
             }
         }
     });
@@ -34140,7 +34140,7 @@ var MenuComponent = Vue.extend({
 	data: function data() {
 		return {
 			list: [],
-			altlist: [{ "id": 1, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 2, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 3, "menu_description": "", "menu_title": "", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }],
+			altlist: [{ "id": 1, "menu_description": "", "menu_title": "Still busy cooking", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 2, "menu_description": "", "menu_title": "Still busy cooking", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }, { "id": 3, "menu_description": "", "menu_title": "Still busy cooking", "image": "/img/foodpot.jpg", "isVegetarian": 1, "isOmnivore": 0, "hasBeef": 0, "hasPoultry": 0, "hasFish": 0, "hasLamb": 0, "hasPork": 0, "hasShellfish": 0, "hasNoGluten": 0, "hasNuts": 0, "vegetarianBackup": 0, "noDairy": 0, "noEgg": 0, "noSoy": 0, "oven": 0, "stovetop": 0, "slowcooker": 0, "isNotAvailable": 0, "dietaryPreferenceNumber": null, "pivot": { "whats_cookings_id": null, "menus_id": null } }],
 			clickable: true
 		};
 	},
@@ -34350,7 +34350,7 @@ if (document.getElementById('preferences')) {
 		},
 		methods: {
 			fetchNewMenu: function fetchNewMenu() {
-				this.$children[1].fetchMenu();
+				this.$refs.menu.fetchMenu();
 			},
 			selectAllOmnivore: function selectAllOmnivore() {
 				this.prefs.redmeat = true;

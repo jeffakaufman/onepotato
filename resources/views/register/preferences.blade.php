@@ -60,7 +60,8 @@ $('#register3').addClass('active');
             <input type="hidden" name="family1_price" value="{{ $family1_price }}" />
             <div class="row">
                 <div class="col-sm-6 col-md-5 col-md-offset-1">
-                    <a href="{{ route('register.select_plan') }}" style="position: absolute; margin-top: -2em;">&lt BACK</a>
+                    <a href="{{ route('register.select_plan') }}" style="position: absolute; margin-top: -2em;">
+                        <i class="fa fa-caret-left" aria-hidden="true"></i> BACK</a>
                     <div class="panel panel-default panel-form marginless">
                         <div class="panel-heading text-left extrapadding">dietary preferences <a data-toggle="tooltip" data-placement="right" data-title="We create 5 menus to suit a variety of dietary preferences. Every week, we’ll use your preferences to select which of our menus best fit what you eat. You can change your preferences at any time from your account settings." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
@@ -122,7 +123,7 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 
-                                <menu :prefs="prefs" :loaded.sync="loaded"></menu>
+                                <menu v-ref:menu :prefs="prefs" :loaded.sync="loaded"></menu>
                                 
                             </div>
     
@@ -131,8 +132,11 @@ $('#register3').addClass('active');
                                 <div id="menu" class="col-xs-12 extrapadding">
     
                                     <div class="meal col-xs-4 font11 thinpadding" v-for="meal in filteredMenu" track-by="id">
-                                        <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
-                                        <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
+                                        <div v-if="meal.image">
+                                            <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
+                                            <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
+                                        </div>
+                                        <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
                                         <div class="col-xs-9 col-xs-offset-1 padding nosidepadding text-center">@{{ meal.menu_title }} <em>@{{ meal.menu_description }}</em></div>
 
                                         <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" />
@@ -156,7 +160,7 @@ $('#register3').addClass('active');
                                 
                             </template>
 
-                            <menus :prefs="prefs"></menus>
+                            <menus v-ref:menus :prefs="prefs"></menus>
 
                             <template id="menus-template">
                                 <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" v-for="meal in filteredMenus" />
