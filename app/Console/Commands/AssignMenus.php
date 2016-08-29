@@ -9,6 +9,7 @@ use App\Product;
 use App\User;
 use App\UserSubscription;
 use App\WhatsCookings;
+use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 use DB;
 
@@ -19,7 +20,7 @@ class AssignMenus extends Command
      *
      * @var string
      */
-    protected $signature = 'assign:menus';
+    protected $signature = 'assign:menus {date?}';
 
     /**
      * The console command description.
@@ -46,10 +47,27 @@ class AssignMenus extends Command
     public function handle()
     {
 
-        $today = new \DateTime('now');
+        if($this->argument('date')) {
+            list($_dummy, $nextDeliveryDate) = explode('=', $this->argument('date'), 2);
+            try {
+                $theDate = new \DateTime($nextDeliveryDate);
+            } catch (\Exception $e) {
+                echo "Wrong Date";
+                return;
+            }
+            $nextDeliveryDate = $theDate->format('Y-m-d');
+            $test = WhatsCookings::where('week_of', '=', $nextDeliveryDate)->first();
 
-        $nextDeliveryDate = WhatsCookings::where('week_of', '>', $today->format('Y-m-d'))
-            ->min('week_of');
+            if(!$test) {
+                echo("Wrong Date");
+                return;
+            }
+        } else {
+            $today = new \DateTime('now');
+
+            $nextDeliveryDate = WhatsCookings::where('week_of', '>', $today->format('Y-m-d'))
+                ->min('week_of');
+        }
 
 //var_dump($nextDeliveryDate);
         $this->_fillWeekPositions($this->_getCurrentMenus($nextDeliveryDate));
