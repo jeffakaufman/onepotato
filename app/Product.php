@@ -12,7 +12,7 @@ class Product extends Model {
 
 	//split the sku into a string
 	public function productDetails() {
-		$sku = str_split($this->attributes['sku'],2);
+		$sku = $this->_getSplitSku();
 		$productInformation = new stdClass;
 		if ($sku[0]=="01"){
 			$productInformation->BoxType = "Vegetarian";
@@ -43,6 +43,25 @@ class Product extends Model {
     {
         return $this->hasMany('App\UserSubscription');
     }
-	
+
+    public function IsVegetarian() {
+        $sku = $this->_getSplitSku();
+        return ($sku[0] == "01");
+    }
+
+    public function IsOmnivore() {
+        $sku = $this->_getSplitSku();
+        return ($sku[0] == "02");
+    }
+
+    public function GetBoxType() {
+        $d = $this->productDetails();
+        return $d->BoxType;
+    }
+
+    private function _getSplitSku() {
+        return str_split($this->attributes['sku'],2);
+    }
+
 	
 }

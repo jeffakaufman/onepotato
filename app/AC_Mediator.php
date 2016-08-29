@@ -37,6 +37,11 @@ class AC_Mediator {
             "field[%RENEWAL_DATE%]" => $renewalDate->format("Y-m-d"),
         );
 
+        $contact = array_merge(
+            $contact,
+            $this->_getNextDeliveryData($user)
+        );
+
 
         $contact_sync = $ac->api("contact/sync", $contact);
         return $contact_sync;
@@ -117,6 +122,41 @@ class AC_Mediator {
         return $contact_id;
     }
 
+
+    private function _getNextDeliveryData(User $user) {
+        $today = new \DateTime();
+//var_dump($today);
+        $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
+            ->where('delivery_date', '>', $today->format('Y-m-d'))
+            ->min('delivery_date');
+//var_dump($nextDeliveryDate);die();
+
+        $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
+        $meal1 = $nextDelivery[0]->menus_id;
+        $meal2 = $nextDelivery[1]->menus_id;
+        $meal3 = $nextDelivery[2]->menus_id;
+
+        $menu1 = Menu::find($meal1);
+        $menu2 = Menu::find($meal2);
+        $menu3 = Menu::find($meal3);
+
+        $arr = array();
+        $arr['NEXT_DELIVERY_DATE'] = $nextDeliveryDate; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
+        $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+        $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+        $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+        $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
+        $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
+        $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+        $arr['DELIVERY_DAY'] = $nextDeliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
+
+        $list = array();
+        foreach($arr as $key => $value) {
+            $list[urlencode("field[%{$key}%,0]")] = $value;
+        }
+        return $list;
+
+    }
 
     private function _getCustomCustomerFields(User $user, UserSubscription $userSubscription, Product $product) {
 

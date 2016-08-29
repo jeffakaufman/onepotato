@@ -6,6 +6,12 @@ use Laravel\Spark\User as SparkUser;
 
 class User extends SparkUser
 {
+
+//    public function subscription() {
+//        return $this->hasOne('App\Subscription', 'users_id');
+//    }
+
+
     /**
      * The attributes that are mass assignable.
      *

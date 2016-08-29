@@ -914,16 +914,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.2.44",
+            "version": "v5.2.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f24b7acfb494437ef00bdd062bed61eb21535546"
+                "reference": "2a79f920d5584ec6df7cf996d922a742d11095d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f24b7acfb494437ef00bdd062bed61eb21535546",
-                "reference": "f24b7acfb494437ef00bdd062bed61eb21535546",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2a79f920d5584ec6df7cf996d922a742d11095d1",
+                "reference": "2a79f920d5584ec6df7cf996d922a742d11095d1",
                 "shasum": ""
             },
             "require": {
@@ -1040,7 +1040,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-08-23 13:03:29"
+            "time": "2016-08-26 11:44:52"
         },
         {
             "name": "laravel/spark",
@@ -1974,16 +1974,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v3.20.0",
+            "version": "v3.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b"
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b",
-                "reference": "2ebcac34b287bfc017b13c6fecb6a7dbb96f1e7b",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
+                "reference": "0f4f89094b6a1ba9c9c1b5c32358d8d0acc19682",
                 "shasum": ""
             },
             "require": {
@@ -2025,7 +2025,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-08-08 19:50:55"
+            "time": "2016-08-25 22:58:28"
         },
         {
             "name": "swiftmailer/swiftmailer",
