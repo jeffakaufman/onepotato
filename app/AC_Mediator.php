@@ -19,6 +19,8 @@ class AC_Mediator {
     const LIST_Note_On_Fried_Chicken = 7;
     const LIST_Menu_Change = 4;
 
+    const AUTOMATION_Welcome_Email = 2;
+
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
@@ -78,6 +80,46 @@ class AC_Mediator {
         $contact_sync = $ac->api("contact/sync", $contact);
 
         return $contact_sync;
+
+    }
+
+
+    public function SendMessage(User $user, $campaignId, $messageId) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = array(
+            "email" => $user->email,
+            "campaignid" => $campaignId,
+            "messageid" => $messageId,
+            "type" => 'mime',
+            "action" => 'send',
+        );
+//var_dump($contact);die();
+        $response = $ac->api("campaign/send", $contact);
+var_dump($response);die();
+        return $response;
+
+    }
+
+    public function RemoveFromAutomation(User $user, $automationId) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = array(
+            "contact_email" => $user->email,
+            "automation" => $automationId,
+        );
+//var_dump($contact);die();
+        $response = $ac->api("automation/contact/remove", $contact);
+//var_dump($response);
+        return $response;
 
     }
 

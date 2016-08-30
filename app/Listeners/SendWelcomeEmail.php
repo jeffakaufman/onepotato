@@ -50,7 +50,9 @@ class SendWelcomeEmail
                     }
                 }
                 if($alreadySubscribed) {
-                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+//                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+//                    $r = $ac->RemoveFromAutomation($event->user, AC_Mediator::AUTOMATION_Welcome_Email);
+                    $r = $ac->SendMessage($event->user, 2, 23);
 //var_dump($r);
                 }
             }
