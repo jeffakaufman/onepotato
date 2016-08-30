@@ -301,18 +301,20 @@ class NewUserController extends Controller
 
 		foreach ($menus_id as $ddate => $menu) {
 			$i = 0;
-			MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($ddate)))->delete();
+			if (strtotime($ddate) >= strtotime($request->start_date)) {
+				MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($ddate)))->delete();
 
-			$menu_ids = (array)$menu;
-			foreach ($menu_ids as $menu_id) {
-		        $newMenu = new MenusUsers;
-				$newMenu->users_id = $request->user_id;
-				$newMenu->menus_id = $menu_id;
-				$newMenu->delivery_date = $ddate;
-				$newMenu->save();
-		        $i++;
-		        if ($i == 3) break;
-		    }
+				$menu_ids = (array)$menu;
+				foreach ($menu_ids as $menu_id) {
+			        $newMenu = new MenusUsers;
+					$newMenu->users_id = $request->user_id;
+					$newMenu->menus_id = $menu_id;
+					$newMenu->delivery_date = $ddate;
+					$newMenu->save();
+			        $i++;
+			        if ($i == 3) break;
+			    }
+			}
 		}
 
 		$request->session()->put('step3', true);
