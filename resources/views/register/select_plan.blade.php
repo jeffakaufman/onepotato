@@ -1,5 +1,4 @@
 <?php 
-session_destroy();
 session_start();
     if( isset( $_SESSION['registered']) ) header("Location: /account");
 ?>
