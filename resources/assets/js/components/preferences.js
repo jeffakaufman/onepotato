@@ -1,4 +1,5 @@
 var MenuComponent = Vue.extend({
+	name: 'menu',
     template: '#menu-template',
     ready: function() {
     	this.fetchMenu();
@@ -86,6 +87,7 @@ var MenuComponent = Vue.extend({
 	}
 });
 var MenusComponent = Vue.extend({
+	name: 'menus',
     template: '#menus-template',
     ready: function() {
     	this.initMenus();
@@ -254,10 +256,10 @@ if (document.getElementById('preferences')) {
 		  			else this.plan_type = 'Vegetarian Box';
 		  	}
 		},
-		components: {
-        	'menu': MenuComponent,
-        	'menus': MenusComponent
-        }
+		// components: {
+  //       	'menu': MenuComponent,
+  //       	'menus': MenusComponent
+  //       }
 	});
 }
 

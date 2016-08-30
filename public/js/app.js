@@ -34130,6 +34130,7 @@ if (document.getElementById('payment')) {
 'use strict';
 
 var MenuComponent = Vue.extend({
+	name: 'menu',
 	template: '#menu-template',
 	ready: function ready() {
 		this.fetchMenu();
@@ -34215,6 +34216,7 @@ var MenuComponent = Vue.extend({
 	}
 });
 var MenusComponent = Vue.extend({
+	name: 'menus',
 	template: '#menus-template',
 	ready: function ready() {
 		this.initMenus();
@@ -34367,10 +34369,6 @@ if (document.getElementById('preferences')) {
 				});
 				if (isOmni) this.plan_type = 'Omnivore Box';else this.plan_type = 'Vegetarian Box';
 			}
-		},
-		components: {
-			'menu': MenuComponent,
-			'menus': MenusComponent
 		}
 	});
 }
