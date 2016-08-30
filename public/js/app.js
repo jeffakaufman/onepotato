@@ -34130,7 +34130,7 @@ if (document.getElementById('payment')) {
 'use strict';
 
 var MenuComponent = Vue.extend({
-	name: 'menu',
+	name: 'first-menu',
 	template: '#menu-template',
 	ready: function ready() {
 		this.fetchMenu();
@@ -34216,7 +34216,7 @@ var MenuComponent = Vue.extend({
 	}
 });
 var MenusComponent = Vue.extend({
-	name: 'menus',
+	name: 'all-menus',
 	template: '#menus-template',
 	ready: function ready() {
 		this.initMenus();
@@ -34314,8 +34314,8 @@ var MenusComponent = Vue.extend({
 		}
 	}
 });
-Vue.component('menu', MenuComponent);
-Vue.component('menus', MenusComponent);
+Vue.component('first-menu', MenuComponent);
+Vue.component('all-menus', MenusComponent);
 
 if (document.getElementById('preferences')) {
 	new Vue({
@@ -34352,7 +34352,7 @@ if (document.getElementById('preferences')) {
 		},
 		methods: {
 			fetchNewMenu: function fetchNewMenu() {
-				this.$refs.menu.fetchMenu();
+				this.$refs.firstMenu.fetchMenu();
 			},
 			selectAllOmnivore: function selectAllOmnivore() {
 				this.prefs.redmeat = true;
@@ -34371,8 +34371,8 @@ if (document.getElementById('preferences')) {
 			}
 		},
 		components: {
-			'menu': MenuComponent,
-			'menus': MenusComponent
+			'first-menu': MenuComponent,
+			'all-menus': MenusComponent
 		}
 	});
 }

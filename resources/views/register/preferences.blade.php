@@ -123,7 +123,7 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 
-                                <menu v-ref:menu :prefs="prefs" :loaded.sync="loaded" transition="fade"></menu>
+                                <first-menu v-ref:first-menu :prefs="prefs" :loaded.sync="loaded" transition="fade"></first-menu>
                                 
                             </div>
     
@@ -160,7 +160,7 @@ $('#register3').addClass('active');
                                 
                             </template>
 
-                            <menus v-ref:menus :prefs="prefs"></menus>
+                            <all-menus v-ref:all-menus :prefs="prefs"></all-menus>
 
                             <template id="menus-template">
                                 <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" v-for="meal in filteredMenus" />
