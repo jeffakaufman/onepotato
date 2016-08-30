@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+session_start();
     if( isset( $_SESSION['registered']) ) header("Location: /account");
 ?>
 @extends('spark::layouts.app')
