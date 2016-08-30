@@ -540,7 +540,7 @@ class NewUserController extends Controller
 			$meal3 = $firstDelivery[2]->menus_id;
 
 		$request->session()->flush();
-		$request->session()->put('registered', true);
+		$_SESSION["registered"] = 'yes';
 
         event(new UserHasRegistered($user));
         Auth::login($user, true);
