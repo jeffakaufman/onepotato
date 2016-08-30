@@ -34,7 +34,7 @@ class AC_Mediator {
 
         $contact = array(
             "email" => $user->email,
-            "field[%RENEWAL_DATE%]" => $renewalDate->format("Y-m-d"),
+            "field[%RENEWAL_DATE%]" => $this->_formatDate($renewalDate),
         );
 
         $contact = array_merge(
@@ -141,14 +141,14 @@ class AC_Mediator {
         $menu3 = Menu::find($meal3);
 
         $arr = array();
-        $arr['NEXT_DELIVERY_DATE'] = $nextDeliveryDate; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
+        $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
         $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
         $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
         $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
         $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
         $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
         $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
-        $arr['DELIVERY_DAY'] = $nextDeliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
+        $arr['DELIVERY_DAY'] = $this->_formatDate($nextDeliveryDate); //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
 
         $list = array();
         foreach($arr as $key => $value) {
@@ -158,40 +158,54 @@ class AC_Mediator {
 
     }
 
+    /**
+     * @param $input \DateTime|string
+     * @return string
+     */
+    private function _formatDate($input) {
+        if(!($input instanceof \DateTime)) {
+            $input = new \DateTime($input);
+        }
+
+        return $input->format('F jS, Y'); //August 26th, 2016
+    }
+
+
     private function _getCustomCustomerFields(User $user, UserSubscription $userSubscription, Product $product) {
 
 //        $product->
 //        $deliveryDate = date('Y-m-d', strtotime($user->start_date));
 
-        $today = new \DateTime();
+//        $today = new \DateTime();
 //var_dump($today);
-        $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
-            ->where('delivery_date', '>', $today->format('Y-m-d'))
-            ->min('delivery_date');
+//        $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
+//            ->where('delivery_date', '>', $today->format('Y-m-d'))
+//            ->min('delivery_date');
 //var_dump($nextDeliveryDate);die();
 
-        $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
-        $meal1 = $nextDelivery[0]->menus_id;
-        $meal2 = $nextDelivery[1]->menus_id;
-        $meal3 = $nextDelivery[2]->menus_id;
+//        $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
+//        $meal1 = $nextDelivery[0]->menus_id;
+//        $meal2 = $nextDelivery[1]->menus_id;
+//        $meal3 = $nextDelivery[2]->menus_id;
 
-        $menu1 = Menu::find($meal1);
-        $menu2 = Menu::find($meal2);
-        $menu3 = Menu::find($meal3);
+//        $menu1 = Menu::find($meal1);
+//        $menu2 = Menu::find($meal2);
+//        $menu3 = Menu::find($meal3);
 
         $productInfo = $product ? $product->productDetails() : new stdClass();
 //var_dump($productInfo);
         $arr = array();
-        $arr['NEXT_DELIVERY_DATE'] = $nextDeliveryDate; //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
-        $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
-        $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
-        $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
-        $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
-        $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
-        $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+//        $arr['NEXT_DELIVERY_DATE'] = $nextDeliveryDate; //              [YES] Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
+//        $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //       [YES] Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+//        $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //     [YES] Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+//        $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //     [YES] Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+//        $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //   [YES] Your Meal Name	Text Input	%YOUR_MEAL_NAME%	Your Meal Name
+//        $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; // [YES] Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
+//        $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; // [YES] Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+//        $arr['DELIVERY_DAY'] = $nextDeliveryDate; //                    [YES] Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
+
         $arr['PRODUCT'] = $product ? $product->product_description : ''; //        Product	Text Input	%PRODUCT%	ex: One Potato Box, 2 Adults, 2 Children
         $arr['BOX_TYPE'] = $productInfo->BoxType; //Box Type	Text Input	%BOX_TYPE%
-        $arr['DELIVERY_DAY'] = $nextDeliveryDate; //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
 
 //        $arr['TERM'] = ''; //Term	Text Input	%TERM%
         $arr['PRICE'] = $product ? $product->cost : ''; //        Price	Text Input	%PRICE%
@@ -237,6 +251,9 @@ class AC_Mediator {
             $list[urlencode("field[%{$key}%,0]")] = $value;
 //            $list[urlencode("field[%{$key}%,0]")] = urlencode($value);
         }
+
+        $list = array_merge($list, $this->_getNextDeliveryData($user));
+
 //var_dump($list);
         return $list;
     }
