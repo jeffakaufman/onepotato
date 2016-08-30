@@ -182,7 +182,7 @@ var_dump($response);die();
             $this->_getCustomCustomerFields($user, $userSubscription, $product)
         );
 
-//var_dump($contact);die();
+var_dump($contact);die();
         $contact_sync = $ac->api("contact/sync", $contact);
 
         return $contact_sync;
