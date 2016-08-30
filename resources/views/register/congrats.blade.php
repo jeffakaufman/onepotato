@@ -1,7 +1,6 @@
 @extends('spark::layouts.app')
 
 @section('register-nav')
-<?php session_start(); $_SESSION['registered'] = 'yes'; ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -51,7 +50,7 @@
             </div>
         </div>
     </div>
-
+    @if ($meal1 != 0)
     <div class="row">
         
         <div class="panel panel-default">
@@ -92,6 +91,7 @@
 
         </div>
     </div>
+    @endif
     <!-- <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default panel-form">
 
