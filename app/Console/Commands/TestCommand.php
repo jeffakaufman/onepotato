@@ -39,6 +39,6 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        event(new UserHasRegistered(new User(['email'=>'ahhmed@mail.ru'])));
+        event(new UserHasRegistered(User::where('email', 'ahhmed@mail.ru')->first()));
     }
 }
