@@ -48,6 +48,43 @@ class AC_Mediator {
 
     }
 
+    public function GetCustomerData(User $user) {
+
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+        $params = [
+            'email' => $user->email,
+        ];
+
+//var_dump($params);
+        return $ac->api("contact/view?email={$user->email}");
+    }
+
+    public function Unsubscribe(User $user, $list) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = array(
+            "email" => $user->email,
+        );
+        foreach($list as $listId) {
+            $contact["p[{$listId}]"] = $listId;
+            $contact["status[{$listId}]"] = 2;
+        }
+//var_dump($contact);die();
+        $contact_sync = $ac->api("contact/sync", $contact);
+
+        return $contact_sync;
+
+    }
+
+
     public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
@@ -97,7 +134,7 @@ class AC_Mediator {
 
         foreach($listsToRemove as $listId) {
             $contact["p[{$listId}]"] = $listId;
-            $contact["status[{$listId}]"] = 0;
+            $contact["status[{$listId}]"] = 2;
         }
 
 //var_dump($user);die();
@@ -279,7 +316,7 @@ class AC_Mediator {
             config('services.activecampaign.api_url'),
             config('services.activecampaign.api_key')
         );
-
+//var_dump($this->connection->credentials_test());
         if ($this->connection->credentials_test()) {
             return $this->connection;
         } else {

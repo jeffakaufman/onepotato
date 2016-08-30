@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
          Commands\Inspire::class,
          Commands\RenewalReminder::class,
          Commands\AssignMenus::class,
+         Commands\TestCommand::class,
     ];
 
     /**

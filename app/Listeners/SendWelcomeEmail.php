@@ -32,9 +32,33 @@ class SendWelcomeEmail
 
         $ac = AC_Mediator::GetInstance();
         try {
+
+//var_dump($event->user);
+            $currentCustomer = $ac->GetCustomerData($event->user);
+
+            if($currentCustomer) {
+                $alreadySubscribed = false;
+                foreach((array)$currentCustomer->lists as $listId => $list) {
+                    switch ($listId) {
+                        case AC_Mediator::LIST_One_Potato_Subscribers:
+                            $alreadySubscribed = true;
+                            break;
+
+                        default:
+                            // Do nothing
+                            break;
+                    }
+                }
+                if($alreadySubscribed) {
+                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+//var_dump($r);
+                }
+            }
+
+//die();
             $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
         } catch (Exception $e) {
-
+var_dump($e->getMessage());
         }
         return;
 
