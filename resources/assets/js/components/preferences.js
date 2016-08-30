@@ -116,7 +116,7 @@ var MenusComponent = Vue.extend({
 			
     	},
     	fetchMenus: function(i,year,month,day,date) {
-    		
+    		if (year <= 1999) year = year + 100;
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
 				
 				for (var i = 0; i < menu.length; i++) {
@@ -188,8 +188,8 @@ var MenusComponent = Vue.extend({
         }
 	}
 });
-Vue.component('first-menu', MenuComponent);
-Vue.component('all-menus', MenusComponent);
+// Vue.component('first-menu', MenuComponent);
+// Vue.component('all-menus', MenusComponent);
 
 if (document.getElementById('preferences')) {
 	new Vue({

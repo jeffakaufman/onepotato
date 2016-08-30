@@ -6923,6 +6923,13 @@ table.month {
 tr.blank {
   display: none; }
 
+.fade-transition {
+  transition: all 0.5s ease;
+  opacity: 1; }
+
+.fade-enter, .fade-leave {
+  opacity: 0; }
+
 .expand-transition {
   transition: all .3s ease;
   max-height: 150px;
