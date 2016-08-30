@@ -49,18 +49,18 @@ class SendWelcomeEmail
                     }
                 }
                 if($alreadySubscribed) {
-//                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
 //                    $r = $ac->RemoveFromAutomation($event->user, AC_Mediator::AUTOMATION_Welcome_Email);
-//                    $r = $ac->SendMessage($event->user, 2, 23);
+//                    $r = $ac->SendMessage($event->user, 23, 23);
 //var_dump($r);
                 }
             }
 
 //die();
             $r = $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
-var_dump($r);
+//var_dump($r);
         } catch (Exception $e) {
-var_dump($e->getMessage());
+//var_dump($e->getMessage());
         }
     }
 }
