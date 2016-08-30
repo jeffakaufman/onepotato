@@ -34369,8 +34369,8 @@ if (document.getElementById('preferences')) {
 			}
 		},
 		components: {
-			menu: MenuComponent,
-			menus: MenusComponent
+			'menu': MenuComponent,
+			'menus': MenusComponent
 		}
 	});
 }
