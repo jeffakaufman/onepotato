@@ -109,6 +109,7 @@ var MenusComponent = Vue.extend({
 		        sdate.add(7, 'days');
 		    	date = sdate.format('Y-MM-DD');
 		    	year = sdate.get('year');
+		    	if (year <= 1999) year = year + 100;
 		        month = ('0' + (sdate.get('month')+1)).slice(-2);
 		        day = ('0' + sdate.get('date')).slice(-2);
 			  	this.fetchMenus(i,year,month,day,date);
@@ -116,7 +117,7 @@ var MenusComponent = Vue.extend({
 			
     	},
     	fetchMenus: function(i,year,month,day,date) {
-    		if (year <= 1999) year = year + 100;
+    		
 			this.$http.get('/whatscooking/'+ year + '-' + month + '-' + day, function(menu){
 				
 				for (var i = 0; i < menu.length; i++) {
