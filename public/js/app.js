@@ -34369,6 +34369,10 @@ if (document.getElementById('preferences')) {
 				});
 				if (isOmni) this.plan_type = 'Omnivore Box';else this.plan_type = 'Vegetarian Box';
 			}
+		},
+		components: {
+			'menu': MenuComponent,
+			'menus': MenusComponent
 		}
 	});
 }

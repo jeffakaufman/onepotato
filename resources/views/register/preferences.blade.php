@@ -123,7 +123,7 @@ $('#register3').addClass('active');
                             </div>
                             <div class="row">
                                 
-                                <menu v-ref:menu :prefs="prefs" :loaded.sync="loaded"></menu>
+                                <menu v-ref:menu :prefs="prefs" :loaded.sync="loaded" transition="fade"></menu>
                                 
                             </div>
     

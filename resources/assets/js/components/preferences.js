@@ -256,10 +256,10 @@ if (document.getElementById('preferences')) {
 		  			else this.plan_type = 'Vegetarian Box';
 		  	}
 		},
-		// components: {
-  //       	'menu': MenuComponent,
-  //       	'menus': MenusComponent
-  //       }
+		components: {
+        	'menu': MenuComponent,
+        	'menus': MenusComponent
+        }
 	});
 }
 
