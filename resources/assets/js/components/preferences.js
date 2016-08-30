@@ -107,9 +107,12 @@ var MenusComponent = Vue.extend({
     		for (i=0; i<5; i++) {
     			sdate = moment( date ).local();
 		        sdate.add(7, 'days');
-		    	date = sdate.format('Y-MM-DD');
 		    	year = sdate.get('year');
-		    	if (year <= 1999) year = year + 100;
+		    	if (year <= 1999) {
+		    		year = year + 100;
+		    		sdate.add(100, 'years');
+		    	}
+		    	date = sdate.format('Y-MM-DD');
 		        month = ('0' + (sdate.get('month')+1)).slice(-2);
 		        day = ('0' + sdate.get('date')).slice(-2);
 			  	this.fetchMenus(i,year,month,day,date);
