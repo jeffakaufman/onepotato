@@ -213,7 +213,7 @@ function checkLuhn(input) {
                         </div>
                         <div class="row extrapadding">
                             <!-- Phone -->
-                            <div class="form-row col-sm-12 thinpadding">
+                            <div class="form-row col-sm-12 thinpadding first last">
                                 <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{$phone}}" required>
                             </div>
                         </div>
@@ -223,7 +223,7 @@ function checkLuhn(input) {
                     <div class="panel-heading text-left extrapadding">Payment Information</div>
                     <div id="payment_info" class="panel-body font16">
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-6 thinpadding">
+                            <div class="col-xs-6 thinpadding first">
                                 <label class="select">
                                     <select type="select" class="form-control" required>
                                         <option v-for="card in cards" value="@{{ card }}">@{{ card }}</option>
@@ -232,7 +232,7 @@ function checkLuhn(input) {
                             </div>
                         </div>
                         <div class="row form-group extrapadding">
-                            <div class="col-xs-12 thinpadding">
+                            <div class="col-xs-12 thinpadding first last">
                                 <input type="text" class="form-control card-number" maxlength="19" placeholder="Card Number" required onblur="
                                       cc_number_saved = this.value;
                                       this.value = this.value.replace(/[^\d]/g, '');
@@ -244,7 +244,7 @@ function checkLuhn(input) {
                             </div>
                         </div>
                         <div class="row form-group extrapadding bad_cc" style="display:none">
-                            <div class="col-xs-12 help-block nosidepadding">
+                            <div class="col-xs-12 help-block thinpadding">
                                 Sorry, that is not a valid number - please try again!
                             </div>
                         </div>
@@ -368,21 +368,21 @@ function checkLuhn(input) {
                         <div class="row padtop font16">
                             <div class="panel-heading text-left">order TOTAL FOR {{ date('F j', strtotime($start_date)) }}</div>
                             <div class="panel-body">
-                                <div class="col-xs-12 col-sm-8 nosidepadding">
+                                <div class="col-xs-12 col-sm-8 thinpadding">
                                     <div class="col-xs-7 nosidepadding eh">{{ $product->product_description }} </div>
                                     <div class="col-xs-5 text-right nosidepadding eh bottom"> ${{ $product->cost }}</div>
                                 </div>
                                 @if ($glutenfree == 'checked')
-                                <div class="col-xs-12 col-sm-8 nosidepadding">
+                                <div class="col-xs-12 col-sm-8 thinpadding">
                                     <div class="col-xs-7 nosidepadding">Gluten free</div>
                                     <div class="col-xs-5 nosidepadding text-right">$3.00</div>
                                 </div>
                                 @endif
-                                <div id="code" class="col-xs-12 col-sm-8 nosidepadding" v-show="hasCode">
+                                <div id="code" class="col-xs-12 col-sm-8 thinpadding" v-show="hasCode">
                                     <div class="col-xs-7 nosidepadding label2">Referral code</div>
                                     <div id="discount" class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>
                                 </div>
-                                <div class="col-xs-12 col-sm-8 nosidepadding total">
+                                <div class="col-xs-12 col-sm-8 thinpadding total">
                                     <div class="col-xs-7 nosidepadding">TOTAL</div>
                                     <div id="totalcost" class="col-xs-5 nosidepadding text-right">${{ $product->cost }}</div>
                                 </div>

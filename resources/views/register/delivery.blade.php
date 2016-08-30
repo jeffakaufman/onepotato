@@ -66,8 +66,8 @@ $('#register4').addClass('active');
                         <div class="panel-heading text-left extrapadding">Delivery Location <a data-toggle="tooltip" data-placement="right" data-title="Shipping is free and convenient. Meals are carefully packaged in an insulated, recyclable box so food stays fresh even if you’re not home when we deliver." class="sidelink">more details</a></div>
                         <div class="panel-body font16 nopadding">
                             <div class="row nowrap extrapadding">
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="home" @if (isset($loc) && $loc == 'home') checked @else checked @endif> <label for="delivery_home">Home</label></div>
-                                <div class="col-xs-4 radio nosidepadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" value="business" @if (isset($loc) && $loc == 'business') checked @endif> <label for="delivery_busines">Business</label></div>
+                                <div class="col-xs-6 col-sm-4 radio thinpadding nomargin"><input id="delivery_home" type="radio" name="delivery_loc" value="home" @if (isset($loc) && $loc == 'home') checked @else checked @endif> <label for="delivery_home">Home</label></div>
+                                <div class="col-xs-6 col-sm-4 radio thinpadding nomargin"><input id="delivery_busines" type="radio" name="delivery_loc" value="business" @if (isset($loc) && $loc == 'business') checked @endif> <label for="delivery_busines">Business</label></div>
                             </div>
                         </div>
 
@@ -119,7 +119,7 @@ $('#register4').addClass('active');
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
-                                <div class="form-row col-sm-12 nosidepadding">
+                                <div class="form-row col-sm-12 thinpadding">
                                     <input type="text" class="form-control" name="phone" placeholder="Phone Number" value="@if (isset($phone)){{$phone}}@endif" required>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@ $('#register4').addClass('active');
                         <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a data-toggle="tooltip" data-title="Please be as specific as possible. Instructions such as “leave at door” should indicate the type of door (e.g. exterior or interior door) and include any other helpful context, such as a code to enter the building." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row extrapadding">
-                                <div class="col-sm-12 nosidepadding"><textarea name="delivery_instructions" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
+                                <div class="col-sm-12 thinpadding"><textarea name="delivery_instructions" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
                             </div>
                         </div>
 <?php /*
