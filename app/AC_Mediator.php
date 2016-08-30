@@ -55,9 +55,6 @@ class AC_Mediator {
         } catch (Exception $e) {
             throw new Exception("Active Campaign Connection Error");
         }
-        $params = [
-            'email' => $user->email,
-        ];
 
 //var_dump($params);
         return $ac->api("contact/view?email={$user->email}");
