@@ -1,3 +1,9 @@
+<?php if (Session::has('registered')) {
+        if (Session::get('registered') == true) {
+            header('Location: /account');
+        }
+    }
+?>
 @extends('spark::layouts.app')
 
 @section('register_nav')
