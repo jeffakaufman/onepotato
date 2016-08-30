@@ -33,7 +33,6 @@ class SendWelcomeEmail
         $ac = AC_Mediator::GetInstance();
         try {
 
-//var_dump($event->user);
             $currentCustomer = $ac->GetCustomerData($event->user);
 
             if($currentCustomer) {
