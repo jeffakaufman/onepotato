@@ -126,7 +126,7 @@ var_dump($response);die();
 
     public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
-
+var_dump($userSubscription);
         if(!$userSubscription) {
             return false;
         }
@@ -135,7 +135,7 @@ var_dump($response);die();
         if(!$product) {
             return false;
         }
-
+var_dump($product);
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
