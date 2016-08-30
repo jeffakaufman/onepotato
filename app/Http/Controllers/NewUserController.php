@@ -542,9 +542,9 @@ class NewUserController extends Controller
 				$meal2 = $firstDelivery[1]->menus_id;
 				$meal3 = $firstDelivery[2]->menus_id;
 			} else {
-				$meal1 = 0;
-				$meal2 = 0;
-				$meal3 = 0;
+				$meal1 = '0';
+				$meal2 = '0';
+				$meal3 = '0';
 			}
 
 		$request->session()->flush();
