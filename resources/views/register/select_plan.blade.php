@@ -94,7 +94,7 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-right">Number of children:</div>
                             <div class="plan-info col-xs-6 text-left field">
                                 <label class="select inline">
-                                    <select name="children" v-model="children" type="select" class="form-control inline">
+                                    <select name="children" v-model="ch" type="select" class="form-control inline">
                                         <option value="1" @if (isset($children) && $children == 1) selected @elseif (!isset($children)) selected @endif>1</option>
                                         <option value="2" @if (isset($children) && $children == 2) selected @endif>2</option>
                                         <option value="3" @if (isset($children) && $children == 3) selected @endif>3</option>
@@ -115,10 +115,10 @@ Both plans include 3 meals per week.</div>
                         <div class="row nowrap">
                             <div class="plan-info col-xs-6 text-right">Minimum weekly cost:</div>
                             <div class="plan-info col-xs-6 text-left">
-                                <span v-show="children == 1">{{ $family1_price }}</span>
-                                <span v-show="children == 2">{{ $family1_price + $childCost }}</span>
-                                <span v-show="children == 3">{{ $family1_price + ($childCost * 2) }}</span>
-                                <span v-show="children == 4">{{ $family1_price + ($childCost * 3) }}</span>
+                                <span v-show="ch == 1">{{ $family1_price }}</span>
+                                <span v-show="ch == 2">{{ $family1_price + $childCost }}</span>
+                                <span v-show="ch == 3">{{ $family1_price + ($childCost * 2) }}</span>
+                                <span v-show="ch == 4">{{ $family1_price + ($childCost * 3) }}</span>
                             </div>
                         </div>
                         <div class="row action">
