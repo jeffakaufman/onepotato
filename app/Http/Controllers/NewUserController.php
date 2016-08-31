@@ -44,6 +44,7 @@ class NewUserController extends Controller
 	public function RecordNewuser (Request $request) {
 
 //	    var_dump($request->email);
+		$request->session()->put('has_registered','false');
 
 	    $existingUser = User::where('email', $request->email)->first();
 
@@ -421,6 +422,7 @@ class NewUserController extends Controller
 		
 		
 			if ($request->session()->get('has_registered') == "true") {
+				
 				//redirect them to the account page
 				return redirect('/account/' . $request->user_id); 
 				
