@@ -419,6 +419,13 @@ class NewUserController extends Controller
 
 	public function RecordPayment (Request $request) {
 		
+		
+			if ($request->session()->get('has_registered') == "true") {
+				//redirect them to the account page
+				return redirect('/account/' . $request->user_id); 
+				
+			}
+		
 			//engage STRIPE
 				
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -552,6 +559,7 @@ class NewUserController extends Controller
         event(new UserHasRegistered($user));
         Auth::login($user, true);
 
+		$request->session()->put('has_registered','true');
 		
         return view('register.congrats')->with([
         	'user'=>$user,
