@@ -236,9 +236,15 @@ class SubinvoiceController extends Controller
 				
 							//GET menu titles for this user
 							$menu_titles = $this->getMenuTitles($id);
-			
+							
+							if (isset($subscriber->dietary_preferences)) {
+								$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+							} else {
+								$dietary_prefs_string = "";
+							}
+							
 							$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles . "]]></CustomField1>";
-							$ship_xml .= "<CustomField2><![CDATA[" . $subscriber->dietary_preferences . "]]></CustomField2>";
+							$ship_xml .= "<CustomField2><![CDATA[" . $dietary_prefs_string . "]]></CustomField2>";
 							$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
 			
 			
