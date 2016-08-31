@@ -333,6 +333,13 @@ class NewUserController extends Controller
 
 	public function RecordDeliveryPreferences (Request $request) {
 		
+			if ($request->session()->get('has_registered') == "true") {
+				
+				//redirect them to the account page
+				return redirect('/account/' . $request->user_id); 
+				
+			}
+		
 		//store first and last name in User field
 		$user = User::find($request->user_id);
 		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
