@@ -280,7 +280,10 @@ class UserController extends Controller
 			$newProduct = Product::where('sku',$theSKU)->first();
 
 			$userSubscription->product_id = $newProduct->id;
-			$userSubscription->dietary_preferences = implode(",",$request->prefs);
+			if (isset($request->prefs)) {
+					$userSubscription->dietary_preferences = implode(",",$request->prefs);
+			}
+		
 			$userSubscription->save();
 
 			//update STRIPE
