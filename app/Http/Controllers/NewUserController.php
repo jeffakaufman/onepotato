@@ -537,7 +537,7 @@ class NewUserController extends Controller
 			$user->save();
 
 			$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();
-			if (isset($firstDelivery)) {
+			if (count($firstDelivery) > 0) {
 				$meal1 = $firstDelivery[0]->menus_id;
 				$meal2 = $firstDelivery[1]->menus_id;
 				$meal3 = $firstDelivery[2]->menus_id;
