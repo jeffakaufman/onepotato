@@ -486,84 +486,280 @@ class SubinvoiceController extends Controller
 			// Retrieve the request's body and parse it as JSON
 			$input = @file_get_contents("php://input");
 			$event_json = json_decode($input);
-file_put_contents(__DIR__."/../../../storage/logs/stripe.log", $input);
+//file_put_contents(__DIR__."/../../../storage/logs/stripe.log", $input);
 		// Do something with $event_json
-		
+
 		//record the invoice data to the database
-		
-		
+
+
 		//record the RAW JSON to the log (need to create)
-		
+
 		//record the parsed JSON to the database
 
-		//date function here is pesky
-		$subinvoice = new Subinvoice;
-		
-		$subinvoice->stripe_event_id = $event_json->id;
-		
-		$timeStamp = $event_json->data->object->date;
-		$dtStr = date("c", $timeStamp);
-		$charge_date = new DateTime($dtStr);
-		
-		//$charge_date = new DateTime();
-		//$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");	
-		
-		//store trialing days
-		
-		//store period_start_date, period_end_date
-		
-		$charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");	
-		
-		
-		$subinvoice->charge_date = $charge_date_formatted;
-		$subinvoice->stripe_customer_id = $event_json->data->object->customer;
-		
-		if (isset($event_json->data->object->charge)) {
-			$subinvoice->stripe_charge_code = $event_json->data->object->charge;
-		}
-		
-		$subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
-		
-		$period_start_date_unix = $event_json->data->object->lines->data[0]->period->start;
-		$period_end_date_unix = $event_json->data->object->lines->data[0]->period->end;
-		
-		$period_start_date_str = date("c", $period_start_date_unix);
-		$period_start_date = new DateTime($period_start_date_str);
-		$period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");	
-		
-		$period_end_date_str = date("c", $period_end_date_unix);
-		$period_end_date = new DateTime($period_end_date_str);
-		$period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
-		
-		$subinvoice->period_start_date = $period_start_date_formatted;
-		$subinvoice->period_end_date = $period_end_date_formatted;
-		
-		$stripe_id = $event_json->data->object->lines->data[0]->id;
-		
-		//coupon code (may not exist)
-		if (isset($event_json->data->object->discount->coupon->id)) {
-			$subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
-		}
-	
-		
-		$subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
-		$subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
-		$subinvoice->invoice_status = "charged_not_shipped";
-		$subinvoice->raw_json = $input;
-	
-		
-		//link user_id
-		
-		$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
-		$subinvoice->user_id = $subscriber->user_id;
-		
-		$subinvoice->save();
-		
+
+        switch($event_json->type) {
+            case 'invoice.payment_failed':
+                // Need to send data to Active Campaign
+                // By adding tag 'CC-Fail' to the correct customer
+                // We are able to get him by subscription_id from stripe
+                // also need to do something with "Payment Fail Count" -- looks like we need to check this and increment, may be field will be added to DB later, but can't find it now
+
+
+
+                break;
+
+            case 'invoice.payment_succeeded':
+            default:
+                //date function here is pesky
+                $subinvoice = new Subinvoice;
+
+                $subinvoice->stripe_event_id = $event_json->id;
+
+                $timeStamp = $event_json->data->object->date;
+                $dtStr = date("c", $timeStamp);
+                $charge_date = new DateTime($dtStr);
+
+                //$charge_date = new DateTime();
+                //$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");
+
+                //store trialing days
+
+                //store period_start_date, period_end_date
+
+                $charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");
+
+
+                $subinvoice->charge_date = $charge_date_formatted;
+                $subinvoice->stripe_customer_id = $event_json->data->object->customer;
+
+                if (isset($event_json->data->object->charge)) {
+                    $subinvoice->stripe_charge_code = $event_json->data->object->charge;
+                }
+
+                $subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
+
+                $period_start_date_unix = $event_json->data->object->lines->data[0]->period->start;
+                $period_end_date_unix = $event_json->data->object->lines->data[0]->period->end;
+
+                $period_start_date_str = date("c", $period_start_date_unix);
+                $period_start_date = new DateTime($period_start_date_str);
+                $period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");
+
+                $period_end_date_str = date("c", $period_end_date_unix);
+                $period_end_date = new DateTime($period_end_date_str);
+                $period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
+
+                $subinvoice->period_start_date = $period_start_date_formatted;
+                $subinvoice->period_end_date = $period_end_date_formatted;
+
+                $stripe_id = $event_json->data->object->lines->data[0]->id;
+
+                //coupon code (may not exist)
+                if (isset($event_json->data->object->discount->coupon->id)) {
+                    $subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
+                }
+
+
+                $subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
+                $subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
+                $subinvoice->invoice_status = "charged_not_shipped";
+                $subinvoice->raw_json = $input;
+
+
+                //link user_id
+
+                $subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+                $subinvoice->user_id = $subscriber->user_id;
+
+                $subinvoice->save();
+
+                break;
+        }
+
 		http_response_code(200); // PHP 5.4 or greater
 		
 		
 	}
-	
+
+
+/*
+{
+  "created": 1326853478,
+  "livemode": false,
+  "id": "evt_00000000000000",
+  "type": "invoice.payment_failed",
+  "object": "event",
+  "request": null,
+  "pending_webhooks": 1,
+  "api_version": "2016-07-06",
+  "data": {
+    "object": {
+      "id": "in_00000000000000",
+      "object": "invoice",
+      "amount_due": 8544,
+      "application_fee": null,
+      "attempt_count": 1,
+      "attempted": true,
+      "charge": "ch_00000000000000",
+      "closed": false,
+      "currency": "usd",
+      "customer": "cus_00000000000000",
+      "date": 1472684478,
+      "description": null,
+      "discount": null,
+      "ending_balance": 0,
+      "forgiven": false,
+      "lines": {
+        "data": [
+          {
+            "id": "sub_96qcU08gQQ8NRL",
+            "object": "line_item",
+            "amount": 8544,
+            "currency": "usd",
+            "description": null,
+            "discountable": true,
+            "livemode": true,
+            "metadata": {
+            },
+            "period": {
+              "start": 1473289200,
+              "end": 1473894000
+            },
+            "plan": {
+              "id": "omn_2_adults_4_child_gf_1",
+              "object": "plan",
+              "amount": 13494,
+              "created": 1472049058,
+              "currency": "usd",
+              "interval": "week",
+              "interval_count": 1,
+              "livemode": false,
+              "metadata": {
+              },
+              "name": "Omnivore Box for 2 Adults and 4 Children Gluten Free",
+              "statement_descriptor": null,
+              "trial_period_days": null
+            },
+            "proration": false,
+            "quantity": 1,
+            "subscription": null,
+            "type": "subscription"
+          }
+        ],
+        "total_count": 1,
+        "object": "list",
+        "url": "/v1/invoices/in_18ohhqLxTAk76ScVHotpKDiV/lines"
+      },
+      "livemode": false,
+      "metadata": {
+      },
+      "next_payment_attempt": null,
+      "paid": false,
+      "period_end": 1472684400,
+      "period_start": 1472532264,
+      "receipt_number": null,
+      "starting_balance": 0,
+      "statement_descriptor": null,
+      "subscription": "sub_00000000000000",
+      "subtotal": 8544,
+      "tax": null,
+      "tax_percent": null,
+      "total": 8544,
+      "webhooks_delivered_at": 1472684478
+    }
+  }
+}
+	 */
+
+
+/*
+{
+  "created": 1326853478,
+  "livemode": false,
+  "id": "evt_00000000000000",
+  "type": "invoice.payment_succeeded",
+  "object": "event",
+  "request": null,
+  "pending_webhooks": 1,
+  "api_version": "2016-07-06",
+  "data": {
+    "object": {
+      "id": "in_00000000000000",
+      "object": "invoice",
+      "amount_due": 8544,
+      "application_fee": null,
+      "attempt_count": 1,
+      "attempted": true,
+      "charge": "_00000000000000",
+      "closed": true,
+      "currency": "usd",
+      "customer": "cus_00000000000000",
+      "date": 1472684478,
+      "description": null,
+      "discount": null,
+      "ending_balance": 0,
+      "forgiven": false,
+      "lines": {
+        "data": [
+          {
+            "id": "sub_96qcU08gQQ8NRL",
+            "object": "line_item",
+            "amount": 8544,
+            "currency": "usd",
+            "description": null,
+            "discountable": true,
+            "livemode": true,
+            "metadata": {
+            },
+            "period": {
+              "start": 1473289200,
+              "end": 1473894000
+            },
+            "plan": {
+              "id": "omn_2_adults_4_child_gf_1",
+              "object": "plan",
+              "amount": 13494,
+              "created": 1472049058,
+              "currency": "usd",
+              "interval": "week",
+              "interval_count": 1,
+              "livemode": false,
+              "metadata": {
+              },
+              "name": "Omnivore Box for 2 Adults and 4 Children Gluten Free",
+              "statement_descriptor": null,
+              "trial_period_days": null
+            },
+            "proration": false,
+            "quantity": 1,
+            "subscription": null,
+            "type": "subscription"
+          }
+        ],
+        "total_count": 1,
+        "object": "list",
+        "url": "/v1/invoices/in_18ohhqLxTAk76ScVHotpKDiV/lines"
+      },
+      "livemode": false,
+      "metadata": {
+      },
+      "next_payment_attempt": null,
+      "paid": true,
+      "period_end": 1472684400,
+      "period_start": 1472532264,
+      "receipt_number": null,
+      "starting_balance": 0,
+      "statement_descriptor": null,
+      "subscription": "sub_00000000000000",
+      "subtotal": 8544,
+      "tax": null,
+      "tax_percent": null,
+      "total": 8544,
+      "webhooks_delivered_at": 1472684478
+    }
+  }
+}
+ */
 	public function testStripeJSON() {
 		
 		$input = '{
