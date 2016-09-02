@@ -547,7 +547,7 @@ class NewUserController extends Controller
 			$user->billing_country = "US";
 			$user->start_date =  date('Y-m-d', strtotime($request->start_date));
 			$user->phone =  $request->phone;
-			
+			$userSubscription->name=$user->name;
 			
 			$userSubscription->save();
 			$user->save();
