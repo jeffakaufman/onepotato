@@ -486,6 +486,8 @@ class SubinvoiceController extends Controller
 			// Retrieve the request's body and parse it as JSON
 			$input = @file_get_contents("php://input");
 			$event_json = json_decode($input);
+var_dump(__DIR__);
+var_dump(dirname(__FILE__));
 file_put_contents(__DIR__."../../../storage/logs/stripe.log", $input);
 		// Do something with $event_json
 		
