@@ -105,11 +105,10 @@ class UserController extends Controller
 
 			$order = Order::where('order_id',$invoices[$i]->order_id)->get();
 			$deliveryHistory->ship_date = date('F j, Y', strtotime($order[0]->ship_date));
-			$deliveryHistory->cost = $invoices[$i]->charge_amount;
+			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
 			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
 			$shipments[] = $deliveryHistory;
 		}
-
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -118,9 +117,6 @@ class UserController extends Controller
 							'states'=>$states,
 							'referrals'=>$referrals,
 							'shipments'=>$shipments]);
-		
-		
-	
 	}
 
 	//handles all the /account/ functionality - current

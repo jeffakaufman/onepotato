@@ -491,7 +491,7 @@ function stripeResponseHandler(status, response) {
                                             
                                             <div class="subtitle">
                                                 @if ($shipment->cost != 0) Order Total: ${{ number_format( $shipment->cost, 2 ) }} @endif
-                                                <span class="promo_note">Paid with Referral Credit</span>
+                                                <span class="promo_note">Credit Card</span>
                                             </div>
                                         </h4>
                                         <div class="row">
