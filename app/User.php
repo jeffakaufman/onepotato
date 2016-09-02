@@ -7,9 +7,9 @@ use Laravel\Spark\User as SparkUser;
 class User extends SparkUser
 {
 
-//    public function subscription() {
-//        return $this->hasOne('App\Subscription', 'users_id');
-//    }
+    public function userSubscription() {
+        return $this->hasOne('App\UserSubscription', 'user_id');
+    }
 
 
     /**

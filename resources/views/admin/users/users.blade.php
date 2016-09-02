@@ -21,12 +21,17 @@
                     <div class="panel-heading">Users</div>
 
                     <div class="panel-body">
+						    <div class="row">
+						    	<div class="user_name col-sm-3"><strong>User Name</strong></div>
+						    	<div class="user_name col-sm-5"><strong>Email Address</strong></div>
+						    	<div class="user_name col-sm-3 text-center"><strong>First Delivery Date</strong></div>
+	                        </div>
 		
-	
-						<a href="/user/new/">Create a New User</a><br/><br />
-                        @foreach ($users as $user)
-						    <div>
-						    	<span class="user_name" style="display:inline-block;width:200px;"><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></span><span  style="display:inline-block;width:200px;" class="user_name">{{ $user->email }}</span>
+	                  @foreach ($users as $user)
+						    <div class="row">
+						    	<div class="user_name col-sm-3" ><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></div>
+						    	<div class="user_name col-sm-5">{{ $user->email }}</div>
+						    	<div class="user_name col-sm-3 text-center">{{ date('m/d/y', strtotime($user->start_date)) }}</div>
 	                        </div>
 						@endforeach
                     </div>

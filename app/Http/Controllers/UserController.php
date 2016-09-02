@@ -59,7 +59,18 @@ class UserController extends Controller
      */
     public function showUsers()
     {
-        	$users = User::get();
+        	//$users = User::get();
+        	
+        	//$users = User::has('userSubscription')->get();
+        	$users = User::whereHas('userSubscription', function ($query) {
+        		$query->where('stripe_id', '<>', '');
+        		})
+        		->orderBy('start_date', 'desc')
+        		->orderBy('name', 'asc')
+        		->get();
+        	
+        	//echo $users;
+        	
 			return view('admin.users.users')->with(['users'=>$users]);
     }
 
