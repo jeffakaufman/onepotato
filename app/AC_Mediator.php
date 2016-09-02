@@ -123,16 +123,30 @@ var_dump($response);die();
 
     }
 
+    private function _log($string) {
+        $fp = fopen(__DIR__."/../storage/logs/ac.log", 'a');
+
+        if(!$fp) return;
+
+        $now = new \DateTime('now');
+
+        fputs($fp, "[{$now->format('Y-m-d H:i:s')}] {$string}\r\n");
+
+        fclose($fp);
+    }
+
 
     public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 //var_dump($userSubscription);
         if(!$userSubscription) {
+            $this->_log("User {$user->email} has no subscription");
             return false;
         }
 
         $product = Product::find($userSubscription->product_id);
         if(!$product) {
+            $this->_log("User {$user->email} has no product");
             return false;
         }
 //var_dump($product);
@@ -184,6 +198,7 @@ var_dump($response);die();
 
 //var_dump($contact);die();
         $contact_sync = $ac->api("contact/sync", $contact);
+        $this->_log(json_encode($contact_sync));
 
         return $contact_sync;
 

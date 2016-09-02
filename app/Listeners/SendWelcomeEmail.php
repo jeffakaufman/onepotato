@@ -58,6 +58,7 @@ class SendWelcomeEmail
 
 //die();
             $r = $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
+
 //var_dump($r);
         } catch (Exception $e) {
 //var_dump($e->getMessage());
