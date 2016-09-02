@@ -115,6 +115,7 @@ Route::get('/admin/gift_cards', 'GiftCardsController@show');
 Route::get('/admin/subscriptions', 'SubscriptionsController@show');
 Route::get('/admin/product_orders', 'OrdersController@show');
 
+Route::get('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice');
 Route::post('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice');
 Route::get('/admin/services/invoice/test', 'SubinvoiceController@testStripeInvoice');
 Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
