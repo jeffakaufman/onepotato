@@ -1,10 +1,8 @@
 <div id="quote">
 	<div class="container">
 		<div class="col-md-8 col-md-offset-2">
-			 <div class="quote-text">"Ratur sume re nobitatempe corehen itempore conseni hillum, 
-	eum quam quam, nosandae pe renihit, qui que poreri tem esequame odit, consequam,
-	qui quiberes a quid que sam dolest, tectum quibus magnis."</div>
-			<div class="quote-name">—John, Los Angeles</div>
+			 <div class="quote-text">"A great way to get my kids food thats fresh, healthy and delicious."</div>
+			<div class="quote-name">—Leslie, Los Angeles</div>
 		</div>
 	</div>
 </div>
