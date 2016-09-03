@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\AC_Mediator;
 use App\Events\UserHasRegistered;
 use Illuminate\Console\Command;
 use App\User;
@@ -39,6 +40,9 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        event(new UserHasRegistered(User::where('email', 'ahhmed@mail.ru')->first()));
+//        event(new UserHasRegistered(User::where('email', 'ahhmed@mail.ru')->first()));
+
+        $ac = AC_Mediator::GetInstance();
+        $ac->PaymentFailed(User::where('email', 'ahhmed@mail.ru')->first());
     }
 }

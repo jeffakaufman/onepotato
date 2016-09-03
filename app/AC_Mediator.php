@@ -21,6 +21,73 @@ class AC_Mediator {
 
     const AUTOMATION_Welcome_Email = 2;
 
+
+    public function PaymentFailed(User $user) {
+        try {
+            $customerData = $this->GetCustomerData($user);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $currentFailedCountValue = 0;
+
+        foreach($customerData->fields as $f) {
+            switch($f->perstag) {
+                case 'PAYMENT_FAIL_COUNT':
+                    $currentFailedCountValue = (int) $f->val;
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        ++$currentFailedCountValue;
+
+
+        $this->_updateCustomerFields($user, ['PAYMENT_FAIL_COUNT' => (string)$currentFailedCountValue, ]);
+        $this->_addCustomerTag($user, 'CC-Fail');
+    }
+
+    private function _updateCustomerFields(User $user, $fields) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+
+        $contact = [
+            "email" => $user->email,
+        ];
+
+        foreach($fields as $key => $value) {
+            $contact["field[%".urlencode($key)."%,0]"] = $value;
+        }
+//var_dump($contact);
+        $contact_sync = $ac->api("contact/sync", $contact);
+        return $contact_sync;
+
+    }
+
+    private function _addCustomerTag(User $user, $tags) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = [
+            'email' => $user->email,
+            'tags' => $tags,
+        ];
+
+        $r = $ac->api("contact/tag_add", $contact);
+//var_dump($r);die();
+        return $r;
+    }
+
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
@@ -36,7 +103,7 @@ class AC_Mediator {
 
         $contact = array(
             "email" => $user->email,
-            "field[%RENEWAL_DATE%]" => $this->_formatDate($renewalDate),
+            "field[%RENEWAL_DATE%,0]" => $this->_formatDate($renewalDate),
         );
 
         $contact = array_merge(
