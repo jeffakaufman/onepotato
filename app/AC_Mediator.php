@@ -295,17 +295,17 @@ var_dump($response);die();
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
         if(count($nextDelivery) > 0) {
             $meal1 = $nextDelivery[0]->menus_id;
+            $menu1 = Menu::find($meal1);
         }
         if(count($nextDelivery) > 1) {
             $meal2 = $nextDelivery[1]->menus_id;
+            $menu2 = Menu::find($meal2);
         }
         if(count($nextDelivery) > 2) {
             $meal3 = $nextDelivery[2]->menus_id;
+            $menu3 = Menu::find($meal3);
         }
 
-        $menu1 = Menu::find($meal1);
-        $menu2 = Menu::find($meal2);
-        $menu3 = Menu::find($meal3);
 
         $arr = array();
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
