@@ -88,7 +88,7 @@ class AC_Mediator {
         return $r;
     }
 
-    public function UpdateRenewalDate(User $user, \DateTime $renewalDate) {
+    public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
         if(!$userSubscription) {
@@ -108,7 +108,7 @@ class AC_Mediator {
 
         $contact = array_merge(
             $contact,
-            $this->_getNextDeliveryData($user)
+            $this->_getNextDeliveryData($user, $now)
         );
 
 
@@ -284,8 +284,8 @@ var_dump($response);die();
     }
 
 
-    private function _getNextDeliveryData(User $user) {
-        $today = new \DateTime();
+    private function _getNextDeliveryData(User $user, $now = "now") {
+        $today = new \DateTime($now);
 //var_dump($today);
         $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
             ->where('delivery_date', '>', $today->format('Y-m-d'))
@@ -293,9 +293,15 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
-        $meal1 = $nextDelivery[0]->menus_id;
-        $meal2 = $nextDelivery[1]->menus_id;
-        $meal3 = $nextDelivery[2]->menus_id;
+        if($nextDelivery[0]) {
+            $meal1 = $nextDelivery[0]->menus_id;
+        }
+        if($nextDelivery[1]) {
+            $meal2 = $nextDelivery[1]->menus_id;
+        }
+        if($nextDelivery[2]) {
+            $meal3 = $nextDelivery[2]->menus_id;
+        }
 
         $menu1 = Menu::find($meal1);
         $menu2 = Menu::find($meal2);
