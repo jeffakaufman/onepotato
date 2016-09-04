@@ -47,7 +47,7 @@ class AC_Mediator {
 
 
         $this->_updateCustomerFields($user, ['PAYMENT_FAIL_COUNT' => (string)$currentFailedCountValue, ]);
-        $this->_addCustomerTag($user, 'CC-Fail');
+        $this->AddCustomerTag($user, 'CC-Fail');
     }
 
     private function _updateCustomerFields(User $user, $fields) {
@@ -71,7 +71,7 @@ class AC_Mediator {
 
     }
 
-    private function _addCustomerTag(User $user, $tags) {
+    public function AddCustomerTag(User $user, $tags) {
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
@@ -113,6 +113,9 @@ class AC_Mediator {
 
 
         $contact_sync = $ac->api("contact/sync", $contact);
+
+        $this->AddCustomerTag($user, 'Renewal');
+
         return $contact_sync;
 
     }
