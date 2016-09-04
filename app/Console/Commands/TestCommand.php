@@ -44,6 +44,6 @@ class TestCommand extends Command
 
         $ac = AC_Mediator::GetInstance();
 //        $ac->PaymentFailed(User::where('email', 'ahhmed@mail.ru')->first());
-        $ac->UpdateRenewalDate(User::where('email', 'ahhmed@mail.ru')->first(), new \DateTime("+3 days"));
+        $ac->UpdateRenewalDate(User::where('email', 'ahhmed@mail.ru')->first(), new \DateTime("+3 days"), "+5 days");
     }
 }
