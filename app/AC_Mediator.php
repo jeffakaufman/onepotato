@@ -21,7 +21,74 @@ class AC_Mediator {
 
     const AUTOMATION_Welcome_Email = 2;
 
-    public function UpdateRenewalDate(User $user, \DateTime $renewalDate) {
+
+    public function PaymentFailed(User $user) {
+        try {
+            $customerData = $this->GetCustomerData($user);
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $currentFailedCountValue = 0;
+
+        foreach($customerData->fields as $f) {
+            switch($f->perstag) {
+                case 'PAYMENT_FAIL_COUNT':
+                    $currentFailedCountValue = (int) $f->val;
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
+        }
+
+        ++$currentFailedCountValue;
+
+
+        $this->_updateCustomerFields($user, ['PAYMENT_FAIL_COUNT' => (string)$currentFailedCountValue, ]);
+        $this->AddCustomerTag($user, 'CC-Fail');
+    }
+
+    private function _updateCustomerFields(User $user, $fields) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+
+        $contact = [
+            "email" => $user->email,
+        ];
+
+        foreach($fields as $key => $value) {
+            $contact["field[%".urlencode($key)."%,0]"] = $value;
+        }
+//var_dump($contact);
+        $contact_sync = $ac->api("contact/sync", $contact);
+        return $contact_sync;
+
+    }
+
+    public function AddCustomerTag(User $user, $tags) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = [
+            'email' => $user->email,
+            'tags' => $tags,
+        ];
+
+        $r = $ac->api("contact/tag_add", $contact);
+//var_dump($r);die();
+        return $r;
+    }
+
+    public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
         if(!$userSubscription) {
@@ -36,16 +103,19 @@ class AC_Mediator {
 
         $contact = array(
             "email" => $user->email,
-            "field[%RENEWAL_DATE%]" => $this->_formatDate($renewalDate),
+            "field[%RENEWAL_DATE%,0]" => $this->_formatDate($renewalDate),
         );
 
         $contact = array_merge(
             $contact,
-            $this->_getNextDeliveryData($user)
+            $this->_getNextDeliveryData($user, $now)
         );
 
 
         $contact_sync = $ac->api("contact/sync", $contact);
+
+        $this->AddCustomerTag($user, 'Renewal');
+
         return $contact_sync;
 
     }
@@ -214,8 +284,8 @@ var_dump($response);die();
     }
 
 
-    private function _getNextDeliveryData(User $user) {
-        $today = new \DateTime();
+    private function _getNextDeliveryData(User $user, $now = "now") {
+        $today = new \DateTime($now);
 //var_dump($today);
         $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
             ->where('delivery_date', '>', $today->format('Y-m-d'))
@@ -223,13 +293,19 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
-        $meal1 = $nextDelivery[0]->menus_id;
-        $meal2 = $nextDelivery[1]->menus_id;
-        $meal3 = $nextDelivery[2]->menus_id;
+        if(count($nextDelivery) > 0) {
+            $meal1 = $nextDelivery[0]->menus_id;
+            $menu1 = Menu::find($meal1);
+        }
+        if(count($nextDelivery) > 1) {
+            $meal2 = $nextDelivery[1]->menus_id;
+            $menu2 = Menu::find($meal2);
+        }
+        if(count($nextDelivery) > 2) {
+            $meal3 = $nextDelivery[2]->menus_id;
+            $menu3 = Menu::find($meal3);
+        }
 
-        $menu1 = Menu::find($meal1);
-        $menu2 = Menu::find($meal2);
-        $menu3 = Menu::find($meal3);
 
         $arr = array();
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date

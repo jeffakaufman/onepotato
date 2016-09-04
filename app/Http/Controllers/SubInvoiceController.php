@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AC_Mediator;
 use Illuminate\Http\Request;
 use App\Subinvoice;
 
@@ -499,80 +500,12 @@ class SubinvoiceController extends Controller
 
         switch($event_json->type) {
             case 'invoice.payment_failed':
-                // Need to send data to Active Campaign
-                // By adding tag 'CC-Fail' to the correct customer
-                // We are able to get him by subscription_id from stripe
-                // also need to do something with "Payment Fail Count" -- looks like we need to check this and increment, may be field will be added to DB later, but can't find it now
-
-
-
+                $this->_invoicePaymentFailed($event_json);
                 break;
 
             case 'invoice.payment_succeeded':
             default:
-                //date function here is pesky
-                $subinvoice = new Subinvoice;
-
-                $subinvoice->stripe_event_id = $event_json->id;
-
-                $timeStamp = $event_json->data->object->date;
-                $dtStr = date("c", $timeStamp);
-                $charge_date = new DateTime($dtStr);
-
-                //$charge_date = new DateTime();
-                //$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");
-
-                //store trialing days
-
-                //store period_start_date, period_end_date
-
-                $charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");
-
-
-                $subinvoice->charge_date = $charge_date_formatted;
-                $subinvoice->stripe_customer_id = $event_json->data->object->customer;
-
-                if (isset($event_json->data->object->charge)) {
-                    $subinvoice->stripe_charge_code = $event_json->data->object->charge;
-                }
-
-                $subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
-
-                $period_start_date_unix = $event_json->data->object->lines->data[0]->period->start;
-                $period_end_date_unix = $event_json->data->object->lines->data[0]->period->end;
-
-                $period_start_date_str = date("c", $period_start_date_unix);
-                $period_start_date = new DateTime($period_start_date_str);
-                $period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");
-
-                $period_end_date_str = date("c", $period_end_date_unix);
-                $period_end_date = new DateTime($period_end_date_str);
-                $period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
-
-                $subinvoice->period_start_date = $period_start_date_formatted;
-                $subinvoice->period_end_date = $period_end_date_formatted;
-
-                $stripe_id = $event_json->data->object->lines->data[0]->id;
-
-                //coupon code (may not exist)
-                if (isset($event_json->data->object->discount->coupon->id)) {
-                    $subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
-                }
-
-
-                $subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
-                $subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
-                $subinvoice->invoice_status = "charged_not_shipped";
-                $subinvoice->raw_json = $input;
-
-
-                //link user_id
-
-                $subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
-                $subinvoice->user_id = $subscriber->user_id;
-
-                $subinvoice->save();
-
+                $this->_invoicePaymentSucceeded($event_json);
                 break;
         }
 
@@ -580,6 +513,99 @@ class SubinvoiceController extends Controller
 		
 		
 	}
+
+    private function _invoicePaymentFailed($event_json) {
+        // Need to send data to Active Campaign
+        // By adding tag 'CC-Fail' to the correct customer
+        // We are able to get him by subscription_id from stripe
+        // also need to do something with "Payment Fail Count" -- looks like we need to check this and increment, may be field will be added to DB later, but can't find it now
+        $user = $this->_getUser($event_json);
+
+        if($user instanceof User) {
+            $ac = AC_Mediator::GetInstance();
+            $ac->PaymentFailed($user);
+        }
+    }
+
+    private function _getUser($event_json) {
+        $stripeCustomerId = $event_json->data->object->customer;
+        $stripeSubscriptionId = $event_json->data->object->lines->data[0]->id;
+
+        $user = User::where('stripe_id', $stripeCustomerId)->first();
+
+        if(!$user) {
+            $subscription = UserSubscription::where('stripe_id', $stripeSubscriptionId)->first();
+            $userId = $subscription->user_id;
+            $user = User::find($userId);
+        }
+
+        return $user;
+    }
+
+    private function _invoicePaymentSucceeded($event_json) {
+        //date function here is pesky
+        $subinvoice = new Subinvoice;
+
+        $subinvoice->stripe_event_id = $event_json->id;
+
+        $timeStamp = $event_json->data->object->date;
+        $dtStr = date("c", $timeStamp);
+        $charge_date = new DateTime($dtStr);
+
+        //$charge_date = new DateTime();
+        //$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");
+
+        //store trialing days
+
+        //store period_start_date, period_end_date
+
+        $charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");
+
+
+        $subinvoice->charge_date = $charge_date_formatted;
+        $subinvoice->stripe_customer_id = $event_json->data->object->customer;
+
+        if (isset($event_json->data->object->charge)) {
+            $subinvoice->stripe_charge_code = $event_json->data->object->charge;
+        }
+
+        $subinvoice->stripe_sub_id = $event_json->data->object->lines->data[0]->id;
+
+        $period_start_date_unix = $event_json->data->object->lines->data[0]->period->start;
+        $period_end_date_unix = $event_json->data->object->lines->data[0]->period->end;
+
+        $period_start_date_str = date("c", $period_start_date_unix);
+        $period_start_date = new DateTime($period_start_date_str);
+        $period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");
+
+        $period_end_date_str = date("c", $period_end_date_unix);
+        $period_end_date = new DateTime($period_end_date_str);
+        $period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
+
+        $subinvoice->period_start_date = $period_start_date_formatted;
+        $subinvoice->period_end_date = $period_end_date_formatted;
+
+        $stripe_id = $event_json->data->object->lines->data[0]->id;
+
+        //coupon code (may not exist)
+        if (isset($event_json->data->object->discount->coupon->id)) {
+            $subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
+        }
+
+
+        $subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
+        $subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
+        $subinvoice->invoice_status = "charged_not_shipped";
+        $subinvoice->raw_json = $input;
+
+
+        //link user_id
+
+        $subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+        $subinvoice->user_id = $subscriber->user_id;
+
+        $subinvoice->save();
+    }
 
 
 /*

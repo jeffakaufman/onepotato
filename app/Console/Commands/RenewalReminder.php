@@ -13,7 +13,7 @@ class RenewalReminder extends Command
      *
      * @var string
      */
-    protected $signature = 'renewal:reminder';
+    protected $signature = 'renewal:reminder {date?} {now?}';
 
     /**
      * The console command description.
@@ -40,13 +40,30 @@ class RenewalReminder extends Command
     public function handle()
     {
 
-        $renewalDate = new \DateTime("next Wednesday");
+        if($this->argument('date')) {
+            list($_dummy, $nextDeliveryDate) = explode('=', $this->argument('date'), 2);
+            try {
+                $renewalDate = new \DateTime($nextDeliveryDate);
+            } catch (\Exception $e) {
+                echo "Wrong Date";
+                return;
+            }
+        } else {
+            $renewalDate = new \DateTime("next Wednesday");
+        }
+
+        if($this->argument('now')) {
+            list($_dummy, $now) = explode('=', $this->argument('now'), 2);
+        } else {
+            $now = 'now';
+        }
+
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($ac, $renewalDate) {
+        User::where('password', '<>', '')->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
-                $ac->UpdateRenewalDate($user, $renewalDate);
+                $ac->UpdateRenewalDate($user, $renewalDate, $now);
             }
         });
 
