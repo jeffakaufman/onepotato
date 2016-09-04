@@ -293,9 +293,15 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
-        $meal1 = $nextDelivery[0]->menus_id;
-        $meal2 = $nextDelivery[1]->menus_id;
-        $meal3 = $nextDelivery[2]->menus_id;
+        if($nextDelivery[0]) {
+            $meal1 = $nextDelivery[0]->menus_id;
+        }
+        if($nextDelivery[1]) {
+            $meal2 = $nextDelivery[1]->menus_id;
+        }
+        if($nextDelivery[2]) {
+            $meal3 = $nextDelivery[2]->menus_id;
+        }
 
         $menu1 = Menu::find($meal1);
         $menu2 = Menu::find($meal2);
