@@ -90,14 +90,6 @@ class AC_Mediator {
 
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
 
-        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
-
-        if(!$userSubscription) {
-            return false;
-        }
-
-echo "#{$user->id} {$user->name} {$user->email} processing started ...\r\n";
-
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
@@ -115,7 +107,6 @@ echo "#{$user->id} {$user->name} {$user->email} processing started ...\r\n";
         );
 
 
-echo "Continue processing.\r\n\r\n";return;
 //        $contact_sync = $ac->api("contact/sync", $contact);
 
 //        $this->AddCustomerTag($user, 'Renewal');
