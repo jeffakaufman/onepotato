@@ -69,7 +69,9 @@ class RenewalReminder extends Command
             foreach($users as $user) {
 echo "#{$user->id} {$user->name} {$user->email} processing started ...\r\n";
 
-                $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+                $userSubscription = UserSubscription::where('user_id',$user->id)
+                    ->where('status', '=', 'active')
+                    ->first();
                 if(!$userSubscription) {
 echo "SKIP. No subscription.\r\n\r\n";
                     continue;
