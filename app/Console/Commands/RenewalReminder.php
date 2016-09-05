@@ -15,7 +15,7 @@ class RenewalReminder extends Command
      *
      * @var string
      */
-    protected $signature = 'renewal:reminder {date?} {now?}';
+    protected $signature = 'renewal:reminder {date?} {now?} {only?}';
 
     /**
      * The console command description.
@@ -60,12 +60,23 @@ class RenewalReminder extends Command
             $now = 'now';
         }
 
+        if($this->argument('only')) {
+            list($_dummy, $only) = explode('=', $this->argument('only'), 2);
+        } else {
+            $now = false;
+        }
+
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
-        User::where('password', '<>', '')
-            ->where('start_date', '<>', '')
-            ->chunk(20, function($users) use($ac, $renewalDate, $now) {
+        $condition = User::where('password', '<>', '')
+            ->where('start_date', '<>', '');
+
+        if($only) {
+            $condition->where('email', '=', $only);
+        }
+
+        $condition->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
 
                 $this->comment("#{$user->id} {$user->name} {$user->email} processing started ...\r\n");
@@ -89,7 +100,7 @@ class RenewalReminder extends Command
                 }
 
                 try {
-                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
+//                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
                     $this->comment("DONE. Continue processing.\r\n\r\n");
                 } catch (\Exception $e) {
                     $this->comment("FAILED. ".$e->getMessage()."\r\n\r\n");
