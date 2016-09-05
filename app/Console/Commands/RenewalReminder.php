@@ -66,7 +66,7 @@ class RenewalReminder extends Command
 
         User::where('password', '<>', '')
             ->where('start_date', '<>', '')
-            ->where('start_date', '>', $_now->format('Y-m-d'))
+            ->where('start_date', '<=', $_now->format('Y-m-d'))
             ->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
