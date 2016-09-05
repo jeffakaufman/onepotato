@@ -96,7 +96,7 @@ class AC_Mediator {
             return false;
         }
 
-echo "#{$user->id} {$user->name} processing started ...\r\n";
+echo "#{$user->id} {$user->name} {$user->email} processing started ...\r\n";
 
         try {
             $ac = $this->_getConnection();
