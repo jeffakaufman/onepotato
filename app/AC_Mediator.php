@@ -115,7 +115,7 @@ echo "No Subscription. STOP. \r\n";
         );
 
 
-echo "Continue processing.\r\n\r\n";
+echo "Continue processing.\r\n\r\n";return;
 //        $contact_sync = $ac->api("contact/sync", $contact);
 
 //        $this->AddCustomerTag($user, 'Renewal');
