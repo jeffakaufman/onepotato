@@ -86,7 +86,7 @@ echo "SKIP. Starts later.\r\n\r\n";
                 }
 
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
-echo "DONE. Continue processing.\r\n\r\n";return;
+echo "DONE. Continue processing.\r\n\r\n";
 
             }
         });
