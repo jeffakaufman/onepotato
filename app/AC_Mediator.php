@@ -108,7 +108,7 @@ class AC_Mediator {
 
 
 //        $contact_sync = $ac->api("contact/sync", $contact);
-
+$contact_sync = false;
 //        $this->AddCustomerTag($user, 'Renewal');
 
         return $contact_sync;
