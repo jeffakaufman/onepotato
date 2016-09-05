@@ -24,6 +24,7 @@ use App\Menus;
 use App\MenusUsers;
 use App\Plan_change;
 use stdClass;
+use Carbon\Carbon;
 
 use \ActiveCampaign;
 use \App\Menu;
@@ -64,12 +65,13 @@ class UserController extends Controller
         	//$users = User::has('userSubscription')->get();
         	$users = User::whereHas('userSubscription', function ($query) {
         		$query->where('stripe_id', '<>', '');
+        		$query->where('name', '<>', '');
         		})
         		->orderBy('start_date', 'desc')
         		->orderBy('name', 'asc')
         		->get();
         	
-        	//echo $users;
+        	//echo json_encode($users[0]->userSubscription()->get());
         	
 			return view('admin.users.users')->with(['users'=>$users]);
     }
@@ -96,13 +98,16 @@ class UserController extends Controller
 
 		$referrals = Referral::where('referrer_user_id',$id)->get();
 
-		$invoices = Subinvoice::where('user_id',$id)->where('invoice_status','shipped')->get();
+		$invoices = Subinvoice::where('user_id',$id)
+			->where('invoice_status','shipped')
+			->whereDate('period_end_date','<',Carbon::today()->toDateString())
+			->orderBy('order_id','desc')
+			->get();
+		
 		$shipments = [];
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
-
 			$deliveryHistory->order_id = $invoices[$i]->order_id;
-
 			$order = Order::where('order_id',$invoices[$i]->order_id)->get();
 			$deliveryHistory->ship_date = date('F j, Y', strtotime($order[0]->ship_date));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
@@ -117,7 +122,7 @@ class UserController extends Controller
 							'states'=>$states,
 							'referrals'=>$referrals,
 							'shipments'=>$shipments]);
-	}
+	}	
 
 	//handles all the /account/ functionality - current
 	
