@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\AC_Mediator;
 use App\User;
+use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 
 class RenewalReminder extends Command
@@ -58,10 +59,15 @@ class RenewalReminder extends Command
             $now = 'now';
         }
 
+        $_now = new \DateTime($now);
+
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($ac, $renewalDate, $now) {
+        User::where('password', '<>', '')
+            ->where('start_date', '<>', '')
+            ->where('start_date', '>', $_now->format('Y-m-d'))
+            ->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
             }
