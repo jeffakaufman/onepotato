@@ -89,9 +89,12 @@ class AC_Mediator {
     }
 
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
+
+echo "#{$user->id} {$user->name} processing started ...\r\n";
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
         if(!$userSubscription) {
+echo "No Subscription. STOP. \r\n";
             return false;
         }
 
@@ -112,9 +115,10 @@ class AC_Mediator {
         );
 
 
-        $contact_sync = $ac->api("contact/sync", $contact);
+echo "Continue processing.\r\n\r\n";
+//        $contact_sync = $ac->api("contact/sync", $contact);
 
-        $this->AddCustomerTag($user, 'Renewal');
+//        $this->AddCustomerTag($user, 'Renewal');
 
         return $contact_sync;
 
@@ -293,31 +297,46 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
-        if(count($nextDelivery) > 0) {
-            $meal1 = $nextDelivery[0]->menus_id;
-            $menu1 = Menu::find($meal1);
-        }
-        if(count($nextDelivery) > 1) {
-            $meal2 = $nextDelivery[1]->menus_id;
-            $menu2 = Menu::find($meal2);
-        }
-        if(count($nextDelivery) > 2) {
-            $meal3 = $nextDelivery[2]->menus_id;
-            $menu3 = Menu::find($meal3);
-        }
 
-
-        $arr = array();
+        $arr = [];
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
-        $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
-        $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
-        $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
-        $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
-        $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
-        $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
         $arr['DELIVERY_DAY'] = $this->_formatDate($nextDeliveryDate); //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
 
-        $list = array();
+
+        try {
+            $meal1 = $nextDelivery[0]->menus_id;
+            $menu1 = Menu::find($meal1);
+            $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+            $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
+        } catch(\Exception $e) {
+echo "No Meal 1\r\n";
+            $arr['YOUR_MEAL_IMAGE'] = ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+            $arr['YOUR_MEAL_NAME'] = ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
+        }
+
+        try {
+            $meal2 = $nextDelivery[1]->menus_id;
+            $menu2 = Menu::find($meal2);
+            $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+            $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
+        } catch (\Exception $e) {
+            $arr['YOUR_MEAL_IMAGE_2'] = ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+            $arr['YOUR_MEAL_NAME_2'] = ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
+echo "No Meal 2\r\n";
+        }
+
+        try {
+            $meal3 = $nextDelivery[2]->menus_id;
+            $menu3 = Menu::find($meal3);
+            $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+            $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+        } catch (\Exception $e) {
+            $arr['YOUR_MEAL_IMAGE_3'] = ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+            $arr['YOUR_MEAL_NAME_3'] = ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
+echo "No Meal 3\r\n";
+        }
+
+        $list = [];
         foreach($arr as $key => $value) {
             $list[urlencode("field[%{$key}%,0]")] = $value;
         }
