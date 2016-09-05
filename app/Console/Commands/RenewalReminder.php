@@ -67,28 +67,29 @@ class RenewalReminder extends Command
             ->where('start_date', '<>', '')
             ->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
-echo "#{$user->id} {$user->name} {$user->email} processing started ...\r\n";
+
+                $this->comment("#{$user->id} {$user->name} {$user->email} processing started ...\r\n");
 
                 $userSubscription = UserSubscription::where('user_id',$user->id)
                     ->where('status', '=', 'active')
                     ->first();
                 if(!$userSubscription) {
-echo "SKIP. No subscription.\r\n\r\n";
+                    $this->comment("SKIP. No subscription.\r\n\r\n");
                     continue;
                 }
 
                 $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
                 if(!$nextDeliveryDate) {
-echo "SKIP. No next delivery date.\r\n\r\n";
+                    $this->comment("SKIP. No next delivery date.\r\n\r\n");
                     continue;
                 }
                 if(new \DateTime($nextDeliveryDate) < new \DateTime($user->start_date)) {
-echo "SKIP. Starts later.\r\n\r\n";
+                    $this->comment("SKIP. Starts later.\r\n\r\n");
                     continue;
                 }
 
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
-echo "DONE. Continue processing.\r\n\r\n";
+                $this->comment("DONE. Continue processing.\r\n\r\n");
 
             }
         });
@@ -97,7 +98,5 @@ echo "DONE. Continue processing.\r\n\r\n";
 //            var_dump($user);
 //        }
 
-//        User::chu
-        $this->comment("HEY");
     }
 }
