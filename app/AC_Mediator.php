@@ -288,13 +288,20 @@ var_dump($response);die();
     }
 
 
-    private function _getNextDeliveryData(User $user, $now = "now") {
+    public function GetNextDeliveryDate(User $user, $now = 'now') {
         $today = new \DateTime($now);
 //var_dump($today);
         $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
             ->where('delivery_date', '>', $today->format('Y-m-d'))
             ->min('delivery_date');
+
+        return $nextDeliveryDate;
+    }
+
+    private function _getNextDeliveryData(User $user, $now = "now") {
 //var_dump($nextDeliveryDate);die();
+
+        $nextDeliveryDate = $this->GetNextDeliveryDate($user, $now);
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
 

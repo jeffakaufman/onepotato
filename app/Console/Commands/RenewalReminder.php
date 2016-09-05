@@ -59,16 +59,17 @@ class RenewalReminder extends Command
             $now = 'now';
         }
 
-        $_now = new \DateTime($now);
-
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
         User::where('password', '<>', '')
             ->where('start_date', '<>', '')
-            ->where('start_date', '<=', $_now->format('Y-m-d'))
             ->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
+                $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
+                if(!$nextDeliveryDate) continue;
+                if(new \DateTime($nextDeliveryDate) > new \DateTime($user->start_date)) continue;
+
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
             }
         });
