@@ -90,13 +90,13 @@ class AC_Mediator {
 
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
 
-echo "#{$user->id} {$user->name} processing started ...\r\n";
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 
         if(!$userSubscription) {
-echo "No Subscription. STOP. \r\n";
             return false;
         }
+
+echo "#{$user->id} {$user->name} processing started ...\r\n";
 
         try {
             $ac = $this->_getConnection();
