@@ -80,7 +80,7 @@ echo "SKIP. No subscription.\r\n\r\n";
 echo "SKIP. No next delivery date.\r\n\r\n";
                     continue;
                 }
-                if(new \DateTime($nextDeliveryDate) <= new \DateTime($user->start_date)) {
+                if(new \DateTime($nextDeliveryDate) < new \DateTime($user->start_date)) {
 echo "SKIP. Starts later.\r\n\r\n";
                     continue;
                 }
