@@ -475,13 +475,7 @@ function stripeResponseHandler(status, response) {
                         <h2>Delivery History <a href="/delivery-schedule" class="sidelink alt">see upcoming delivery schedule</a></h2>
                         
                         <div v-if="user">
-
-                            <?php function cmp($a, $b){
-                                return strcmp($a->ship_date, $b->ship_date);
-                            }
-                            usort($shipments, "cmp");
-                            //var_dump($shipments); ?>
-                        
+                            
                             @foreach ($shipments as $shipment)
 
                                 @if (count($shipment) > 0) 
