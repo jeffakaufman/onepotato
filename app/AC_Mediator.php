@@ -101,7 +101,7 @@ echo "No Subscription. STOP. \r\n";
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
-            throw new Exception("Active Campaign Connection Error");
+//            throw new Exception("Active Campaign Connection Error"); //TODO :: uncomment live
         }
 
         $contact = array(
