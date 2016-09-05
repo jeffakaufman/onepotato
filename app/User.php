@@ -10,6 +10,10 @@ class User extends SparkUser
     public function userSubscription() {
         return $this->hasOne('App\UserSubscription', 'user_id');
     }
+    
+    public function userSubInvoices() {
+        return $this->hasMany('App\Subinvoice', 'user_id');
+    }
 
 
     /**
