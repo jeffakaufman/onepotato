@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\AC_Mediator;
 use App\User;
+use App\UserSubscription;
+use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 
 class RenewalReminder extends Command
@@ -61,9 +63,34 @@ class RenewalReminder extends Command
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($ac, $renewalDate, $now) {
+        User::where('password', '<>', '')
+            ->where('start_date', '<>', '')
+            ->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
+
+                $this->comment("#{$user->id} {$user->name} {$user->email} processing started ...\r\n");
+
+                $userSubscription = UserSubscription::where('user_id',$user->id)
+                    ->where('status', '=', 'active')
+                    ->first();
+                if(!$userSubscription) {
+                    $this->comment("SKIP. No subscription.\r\n\r\n");
+                    continue;
+                }
+
+                $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
+                if(!$nextDeliveryDate) {
+                    $this->comment("SKIP. No next delivery date.\r\n\r\n");
+                    continue;
+                }
+                if(new \DateTime($nextDeliveryDate) < new \DateTime($user->start_date)) {
+                    $this->comment("SKIP. Starts later.\r\n\r\n");
+                    continue;
+                }
+
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
+                $this->comment("DONE. Continue processing.\r\n\r\n");
+
             }
         });
 
@@ -71,7 +98,5 @@ class RenewalReminder extends Command
 //            var_dump($user);
 //        }
 
-//        User::chu
-        $this->comment("HEY");
     }
 }

@@ -90,14 +90,6 @@ class AC_Mediator {
 
     public function UpdateRenewalDate(User $user, \DateTime $renewalDate, $now = "now") {
 
-        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
-
-        if(!$userSubscription) {
-            return false;
-        }
-
-echo "#{$user->id} {$user->name} processing started ...\r\n";
-
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
@@ -115,9 +107,8 @@ echo "#{$user->id} {$user->name} processing started ...\r\n";
         );
 
 
-echo "Continue processing.\r\n\r\n";return;
 //        $contact_sync = $ac->api("contact/sync", $contact);
-
+$contact_sync = false;
 //        $this->AddCustomerTag($user, 'Renewal');
 
         return $contact_sync;
@@ -288,13 +279,20 @@ var_dump($response);die();
     }
 
 
-    private function _getNextDeliveryData(User $user, $now = "now") {
+    public function GetNextDeliveryDate(User $user, $now = 'now') {
         $today = new \DateTime($now);
 //var_dump($today);
         $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
             ->where('delivery_date', '>', $today->format('Y-m-d'))
             ->min('delivery_date');
+
+        return $nextDeliveryDate;
+    }
+
+    private function _getNextDeliveryData(User $user, $now = "now") {
 //var_dump($nextDeliveryDate);die();
+
+        $nextDeliveryDate = $this->GetNextDeliveryDate($user, $now);
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
 
