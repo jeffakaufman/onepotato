@@ -68,7 +68,7 @@ class RenewalReminder extends Command
             foreach($users as $user) {
                 $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
                 if(!$nextDeliveryDate) continue;
-                if(new \DateTime($nextDeliveryDate) > new \DateTime($user->start_date)) continue;
+                if(new \DateTime($nextDeliveryDate) <= new \DateTime($user->start_date)) continue;
 
                 $ac->UpdateRenewalDate($user, $renewalDate, $now);
             }
