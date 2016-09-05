@@ -93,7 +93,7 @@ class AC_Mediator {
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
-//            throw new Exception("Active Campaign Connection Error"); //TODO :: uncomment live
+            throw new Exception("Active Campaign Connection Error");
         }
 
         $contact = array(
@@ -107,9 +107,9 @@ class AC_Mediator {
         );
 
 
-//        $contact_sync = $ac->api("contact/sync", $contact);
-$contact_sync = false;
-//        $this->AddCustomerTag($user, 'Renewal');
+        $contact_sync = $ac->api("contact/sync", $contact);
+//$contact_sync = false;
+        $this->AddCustomerTag($user, 'Renewal');
 
         return $contact_sync;
 
