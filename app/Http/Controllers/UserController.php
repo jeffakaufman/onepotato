@@ -25,7 +25,7 @@ use App\MenusUsers;
 use App\Plan_change;
 use stdClass;
 use Carbon\Carbon;
-
+use DB;
 use \ActiveCampaign;
 use \App\Menu;
 use App\AC_Mediator;
@@ -63,6 +63,7 @@ class UserController extends Controller
         	//$users = User::get();
         	
         	//$users = User::has('userSubscription')->get();
+        	/*
         	$users = User::whereHas('userSubscription', function ($query) {
         		$query->where('stripe_id', '<>', '');
         		$query->where('name', '<>', '');
@@ -70,9 +71,20 @@ class UserController extends Controller
         		->orderBy('start_date', 'desc')
         		->orderBy('name', 'asc')
         		->get();
+        	*/
         	
-        	//echo json_encode($users[0]->userSubscription()->get());
         	
+	    	$users = DB::table('users')
+				->select('users.id','users.email','users.name', 'users.start_date', 'subscriptions.status', DB::raw('sum(subinvoices.charge_amount/100) as revenue'))
+	    		->join('subscriptions','users.id','=','subscriptions.user_id')
+	    		->join('subinvoices','users.id','=','subinvoices.user_id')
+        		->where('subscriptions.stripe_id', '<>', '')
+        		->where('subscriptions.name', '<>', '')
+        		->orderBy('start_date', 'desc')
+        		->orderBy('subscriptions.name', 'asc')
+				->groupBy('users.id')
+	    		->get();
+
 			return view('admin.users.users')->with(['users'=>$users]);
     }
 
