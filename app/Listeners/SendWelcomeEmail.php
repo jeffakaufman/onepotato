@@ -33,11 +33,16 @@ class SendWelcomeEmail
      */
     public function handle(UserHasRegistered $event)
     {
+        $this->_sendAc($event->user);
+        $this->_sendEmail($event->user);
+    }
 
+    private function _sendAc(User $user) {
         $ac = AC_Mediator::GetInstance();
+        $r = false;
         try {
 
-            $currentCustomer = $ac->GetCustomerData($event->user);
+            $currentCustomer = $ac->GetCustomerData($user);
 //var_dump($currentCustomer);
             if($currentCustomer && $currentCustomer->success && $currentCustomer->lists) {
                 $alreadySubscribed = false;
@@ -53,7 +58,7 @@ class SendWelcomeEmail
                     }
                 }
                 if($alreadySubscribed) {
-                    $r = $ac->Unsubscribe($event->user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+                    $r = $ac->Unsubscribe($user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
 //                    $r = $ac->RemoveFromAutomation($event->user, AC_Mediator::AUTOMATION_Welcome_Email);
 //                    $r = $ac->SendMessage($event->user, 23, 23);
 //var_dump($r);
@@ -61,16 +66,14 @@ class SendWelcomeEmail
             }
 
 //die();
-            $r = $ac->UpdateCustomerData($event->user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
+            $r = $ac->UpdateCustomerData($user, [AC_Mediator::LIST_Welcome_To_One_Potato, AC_Mediator::LIST_One_Potato_Subscribers, ]);
 
 //var_dump($r);
         } catch (Exception $e) {
 //var_dump($e->getMessage());
         }
 
-        //
-
-        $this->_sendEmail($event->user);
+        return $r;
     }
 
     private function _sendEmail(User $user) {
@@ -109,9 +112,11 @@ class SendWelcomeEmail
         $r = Mail::send('emails.order_details', $params, function($m) use ($user, $subscription) {
 //            $m->from('ahhmed@mail.ru', 'Aleksey Zagarov');
 //            $m->to('jenna@onepotato.com', 'Jenna')->subject("New Order #{$subscription->id} Created");
-            $m->to('azagarov@mail.ru', 'Jenna')->subject("New Order #{$subscription->id} Created");
+//            $m->to('azagarov@mail.ru', 'Jenna')->subject("New Order #{$subscription->id} Created");
+            $m->to('agedgouda@gmail.com', 'Jenna')->subject("New Order #{$subscription->id} Created");
         });
 
+        return $r;
     }
 
 }

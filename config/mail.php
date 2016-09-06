@@ -1,22 +1,43 @@
 <?php
-
+/*
 return [
     'driver' => 'smtp',
-    'host' => 'email-smtp.us-west-2.amazonaws.com',
-    'port' => 465,
-    'encryption' => 'tls',
+    'host' => 'smtpout.secureserver.net',
+    'port' => 3535,
+//    'encryption' => 'tls',
     'from' => [
-        'address' => 'noreply@onepotato.com',
+//        'address' => 'agedgouda@gmail.com',
+        'address' => 'azagarov@mail.ru',
         'name' => 'One potato mailing system',
     ],
 
-    'username' => 'AKIAJPA4YB3O5QUO3O7A',
-    'password' => 'Ap8Ql15q7N8+VoKbMK0zYtOxmihzcf/ckx+X9IPG9w2E',
+    'username' => 'noreply@onepotato.com',
+    'password' => 'noreply@onepotato.com',
 
     "sendmail" => "/usr/sbin/sendmail -bs",
     "pretend" => false,
 ];
 
+
+return [
+    'driver' => 'smtp',
+    'host' => 'email-smtp.us-west-2.amazonaws.com',
+    'port' => 587,
+    'encryption' => 'tls',
+    'from' => [
+//        'address' => 'agedgouda@gmail.com',
+        'address' => 'azagarov@mail.ru',
+        'name' => 'One potato mailing system',
+    ],
+
+    'username' => 'AKIAIFSFPDI7NHLU24MQ',
+    'password' => 'AiY27IpzswB335GN9VbzFvvvpP/Y+Po22uf0MUQVtuN+',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false,
+];
+
+*/
 return [
 
 			"driver" => "smtp",
