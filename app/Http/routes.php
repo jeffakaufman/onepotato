@@ -179,3 +179,8 @@ $router->group(['middleware' => 'admin'], function($router) {
 
 Route::get('user/test/{id}', 'UserController@showTest');
 
+Route::get('/__test__/test', function() {
+    \Illuminate\Support\Facades\Artisan::call('test:command');
+    echo "ok";
+});
+
