@@ -34,8 +34,8 @@ class SendWelcomeEmail
         try {
 
             $currentCustomer = $ac->GetCustomerData($event->user);
-var_dump($currentCustomer);
-            if($currentCustomer) {
+//var_dump($currentCustomer);
+            if($currentCustomer && $currentCustomer->success && $currentCustomer->lists) {
                 $alreadySubscribed = false;
                 foreach((array)$currentCustomer->lists as $listId => $list) {
                     switch ($listId) {
