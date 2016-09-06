@@ -200,6 +200,10 @@ var_dump($response);die();
         fclose($fp);
     }
 
+    public function TestLog() {
+        $this->_log("This is the test");
+    }
+
 
     public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
