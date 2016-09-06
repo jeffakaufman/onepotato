@@ -67,7 +67,7 @@ $(document).ready(function() {
 		}
 
 		// Validate other form elements, if needed!
-		error = false;
+	
 		// Check for errors:
 		if (!error) {
 
@@ -79,6 +79,10 @@ $(document).ready(function() {
 				exp_year: expYear
 			}, stripeResponseHandler);
 
+		}else{
+			
+				$('.bad_cc').slideDown();
+			
 		}
 		
 		
@@ -97,6 +101,9 @@ function stripeResponseHandler(status, response) {
 
 		//	reportError(response.error.message);
 		$('.bad_cc').slideDown();
+	
+		$('#submitBtn').attr("disabled", "false"); // Re-enable submission
+		
 
 	} else { 
 		// No errors, submit the form:
@@ -397,7 +404,7 @@ function checkLuhn(input) {
                         <div class="row padtop">
                             <div class="col-xs-12">
                                 <div style="display: inline-block" class="text-left">
-                                    <button class="btn btn-primary" @click="checkDate">
+                                    <button class="btn btn-primary" id="submitBtn" @click="checkDate">
                                         Place Order
                                     </button>
                                     <div class="disclaimer text-left padtop">By clicking “Place Order” you agree to purchasing a continuous subscription, receiving deliveries and being billed to your designated payment method weekly, unless you a skip a delivery through your Delivery Schedule page or cancel your subscription.  You may cancel your subscription by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ.</div>
