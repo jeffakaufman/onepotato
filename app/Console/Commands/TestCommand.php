@@ -41,6 +41,7 @@ class TestCommand extends Command
     public function handle()
     {
         event(new UserHasRegistered(User::where('email', 'ira.napoliello@gmail.com')->first()));
+        event(new UserHasRegistered(User::where('email', 'agedgouda@gmail.com')->first()));
 
 //        $ac = AC_Mediator::GetInstance();
 //        $ac->PaymentFailed(User::where('email', 'ahhmed@mail.ru')->first());
