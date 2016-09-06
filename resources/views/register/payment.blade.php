@@ -96,6 +96,7 @@ function stripeResponseHandler(status, response) {
 	if (response.error) {
 
 		//	reportError(response.error.message);
+		$('.bad_cc').slideDown();
 
 	} else { 
 		// No errors, submit the form:
