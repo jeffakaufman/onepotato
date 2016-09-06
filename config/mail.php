@@ -1,15 +1,40 @@
 <?php
+
+return [
+    'driver' => 'smtp',
+    'host' => 'email-smtp.us-west-2.amazonaws.com',
+    'port' => 465,
+    'encryption' => 'tls',
+    'from' => [
+        'address' => 'noreply@onepotato.com',
+        'name' => 'One potato mailing system',
+    ],
+
+    'username' => 'AKIAJPA4YB3O5QUO3O7A',
+    'password' => 'Ap8Ql15q7N8+VoKbMK0zYtOxmihzcf/ckx+X9IPG9w2E',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false,
+];
+
 return [
 
 			"driver" => "smtp",
             "host" => "mailtrap.io",
             "port" => 2525,
+//            "port" => 2525,
             "from" => array(
                 "address" => "from@example.com",
                 "name" => "Example"
             ),
-            "username" => "09a5440b2e9119",
-            "password" => "096bdb9851cc3f",
+//            "username" => "09a5440b2e9119",
+//            "password" => "096bdb9851cc3f",
+
+            "username" => "bcc4c9ab06e523",
+            "password" => "3d475c5e5ba1a5",
+
+    'encryption' => 'tls',
+
             "sendmail" => "/usr/sbin/sendmail -bs",
             "pretend" => false
 ];
