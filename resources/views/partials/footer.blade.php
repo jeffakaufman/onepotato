@@ -34,11 +34,11 @@
 	<div class="container">© one potato <?php echo date('Y'); ?></div>
 </div>
 <script type="text/javascript">
-var _mfq = _mfq || [];
-  (function() {
-    var mf = document.createElement("script");
-    mf.type = "text/javascript"; mf.async = true;
-    mf.src = "//cdn.mouseflow.com/projects/bac0e3b7-cf34-446c-81e0-d54ea1f179ca.js";
-    document.getElementsByTagName("head")[0].appendChild(mf);
-  })();
+    var _mfq = _mfq || [];
+    (function() {
+        var mf = document.createElement("script");
+        mf.type = "text/javascript"; mf.async = true;
+        mf.src = "//cdn.mouseflow.com/projects/bac0e3b7-cf34-446c-81e0-d54ea1f179ca.js";
+        document.getElementsByTagName("head")[0].appendChild(mf);
+    })();
 </script>
