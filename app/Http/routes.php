@@ -179,7 +179,7 @@ $router->group(['middleware' => 'admin'], function($router) {
 
 Route::get('user/test/{id}', 'UserController@showTest');
 
-Route::get('/__test__/test', function() {
+Route::get('/__test__/test', function() { //TODO :: remove or comment after all debugging is done
     \Illuminate\Support\Facades\Artisan::call('test:command');
     echo "ok";
 });

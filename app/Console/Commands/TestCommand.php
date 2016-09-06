@@ -40,12 +40,12 @@ class TestCommand extends Command
      */
     public function handle()
     {
-//        event(new UserHasRegistered(User::where('email', 'ahhmed@mail.ru')->first()));
+        event(new UserHasRegistered(User::where('email', 'ira.napoliello@gmail.com')->first()));
 
-        $ac = AC_Mediator::GetInstance();
+//        $ac = AC_Mediator::GetInstance();
 //        $ac->PaymentFailed(User::where('email', 'ahhmed@mail.ru')->first());
 //        $ac->UpdateRenewalDate(User::where('email', 'ahhmed@mail.ru')->first(), new \DateTime("+3 days"), "+5 days");
 
-        $ac->TestLog();
+//        $ac->TestLog();
     }
 }
