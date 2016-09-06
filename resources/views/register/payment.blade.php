@@ -35,10 +35,10 @@ $('#register5').addClass('active');
 $(document).ready(function() {
 
 	// Watch for a form submission:
-	$("#payment-form").submit(function(event) {
+	$("#payment-form").click(function(event) {
 
 		// Flag variable:
-		//var error = false;
+		var error = false;
 
 		// disable the submit button to prevent repeated clicks:
 		$('#submitBtn').attr("disabled", "disabled");
@@ -46,7 +46,7 @@ $(document).ready(function() {
 		// Get the values:
 		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
 		
-		console.log (ccNum);
+		console.log ("CC Num: " + ccNum);
 		
 		// Validate the number:
 		if (!Stripe.card.validateCardNumber(ccNum)) {
@@ -67,10 +67,11 @@ $(document).ready(function() {
 		}
 
 		// Validate other form elements, if needed!
-		error = false;
+	
 		// Check for errors:
 		if (!error) {
-
+			console.log ('sending to Stripe');
+			
 			// Get the Stripe token:
 			Stripe.card.createToken({
 				number: ccNum,
@@ -79,6 +80,11 @@ $(document).ready(function() {
 				exp_year: expYear
 			}, stripeResponseHandler);
 
+		}else{
+			
+				$("#submitBtn").removeAttr("disabled"); // Re-enable submission
+				console.log ("errors - removed disabled");
+			
 		}
 		
 		
@@ -96,6 +102,11 @@ function stripeResponseHandler(status, response) {
 	if (response.error) {
 
 		//	reportError(response.error.message);
+		$('.bad_cc').slideDown();
+	
+		$('#submitBtn').attr("disabled", "false"); // Re-enable submission
+		console.log ("STRIPE ERRORS!!");
+		return false;
 
 	} else { 
 		// No errors, submit the form:
@@ -111,6 +122,7 @@ function stripeResponseHandler(status, response) {
 	  f.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
 
 	  // Submit the form:
+		console.log ("FORM SUBMITTED!");
 	  f.get(0).submit();
 
 	}
@@ -149,6 +161,7 @@ function checkLuhn(input) {
                             <div class="panel-subtitle">You will receive future deliveries at ${{ $product->cost }} per week.<br>
                                 You can skip a week or cancel your account at any time with 6 days’ notice.</div>
                         </h1>
+						<div class="stripe-server-error" style="color:red !important;">{{ $stripeError or '' }}</div>
                     </div>
                 </div>
             </div>
@@ -396,7 +409,7 @@ function checkLuhn(input) {
                         <div class="row padtop">
                             <div class="col-xs-12">
                                 <div style="display: inline-block" class="text-left">
-                                    <button class="btn btn-primary" @click="checkDate">
+                                    <button class="btn btn-primary" id="submitBtn" @click="checkDate">
                                         Place Order
                                     </button>
                                     <div class="disclaimer text-left padtop">By clicking “Place Order” you agree to purchasing a continuous subscription, receiving deliveries and being billed to your designated payment method weekly, unless you a skip a delivery through your Delivery Schedule page or cancel your subscription.  You may cancel your subscription by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ.</div>

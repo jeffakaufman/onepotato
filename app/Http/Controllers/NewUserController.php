@@ -436,6 +436,7 @@ class NewUserController extends Controller
 			}
 		
 			//engage STRIPE
+			//check Stripe first, before anything happens, so user can be returned to the right place
 				
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 			
@@ -500,27 +501,87 @@ class NewUserController extends Controller
 			
 			//user does not have a oupon
 			if ($valid_coupon==0) {
-			$customer = \Stripe\Customer::create(array(
-					"source" => $token,
-					"plan" => $userProduct->stripe_plan_id,
-					"email" => $user->email,
-					"trial_end" => $trial_ends_timestamp
-				)
-			);
+				
+					try {
+						$customer = \Stripe\Customer::create(array(
+								"source" => $token,
+								"plan" => $userProduct->stripe_plan_id,
+								"email" => $user->email,
+								"trial_end" => $trial_ends_timestamp
+							));
+
+					} catch (\Stripe\Error\Card $e) {
+					    
+						// Card was declined.
+						$e_json = $e->getJsonBody();
+						$err = $e_json['error'];
+						$stripeError = $err['message'];
+						
+							//take user back to payment page
+							return view('register.payment')->
+									with([
+										'user'=>$user,
+										'start_date'=>$request->start_date,
+										'product'=>$userProduct,
+						                'prefilledCoupon' => $request->session()->get('existingUser') ? @$this->_existingCoupons[$userProduct->sku] : '',
+										'stripeError' => $stripeError,
+										]);
+						
+					} catch (\Stripe\Error\ApiConnection $e) {
+					    // Network problem, perhaps try again.
+					} catch (\Stripe\Error\InvalidRequest $e) {
+					    // You screwed up in your programming. Shouldn't happen!
+					} catch (\Stripe\Error\Api $e) {
+					    // Stripe's servers are down!
+					} catch (\Stripe\Error\Base $e) {
+					    // Something else that's not the customer's fault.
+					}
+		
 			
-			}
+			} //end if
 			
 			//user has a valid coupon
 			if ($valid_coupon==1) {
-				$customer = \Stripe\Customer::create(array(
+				
+				try {
+					$customer = \Stripe\Customer::create(array(
 						"source" => $token,
 						"plan" => $userProduct->stripe_plan_id,
 						"email" => $user->email,
 						"trial_end" => $trial_ends_timestamp,
 						"coupon" => $promo_code
-					)
-				);
+					));
+					
+				} catch (\Stripe\Error\Card $e) {
+					    
+					// Card was declined.
+					$e_json = $e->getJsonBody();
+					$err = $e_json['error'];
+					$stripeError = $err['message'];
+					
+						//take user back to payment page
+						return view('register.payment')->
+								with([
+									'user'=>$user,
+									'start_date'=>$request->start_date,
+									'product'=>$userProduct,
+					                'prefilledCoupon' => $request->session()->get('existingUser') ? @$this->_existingCoupons[$userProduct->sku] : '',
+									'stripeError' => $stripeError,
+									]);
+									
+					} catch (\Stripe\Error\ApiConnection $e) {
+					    // Network problem, perhaps try again.
+					} catch (\Stripe\Error\InvalidRequest $e) {
+					    // You screwed up in your programming. Shouldn't happen!
+					} catch (\Stripe\Error\Api $e) {
+					    // Stripe's servers are down!
+					} catch (\Stripe\Error\Base $e) {
+					    // Something else that's not the customer's fault.
+					}
 
+
+			
+			
 			}
 			
 			

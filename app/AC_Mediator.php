@@ -93,7 +93,7 @@ class AC_Mediator {
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
-//            throw new Exception("Active Campaign Connection Error"); //TODO :: uncomment live
+            throw new Exception("Active Campaign Connection Error");
         }
 
         $contact = array(
@@ -107,9 +107,9 @@ class AC_Mediator {
         );
 
 
-//        $contact_sync = $ac->api("contact/sync", $contact);
-$contact_sync = false;
-//        $this->AddCustomerTag($user, 'Renewal');
+        $contact_sync = $ac->api("contact/sync", $contact);
+//$contact_sync = false;
+        $this->AddCustomerTag($user, 'Renewal');
 
         return $contact_sync;
 
@@ -198,6 +198,10 @@ var_dump($response);die();
         fputs($fp, "[{$now->format('Y-m-d H:i:s')}] {$string}\r\n");
 
         fclose($fp);
+    }
+
+    public function TestLog() {
+        $this->_log("This is the test");
     }
 
 
@@ -307,7 +311,7 @@ var_dump($response);die();
             $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
             $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
         } catch(\Exception $e) {
-echo "No Meal 1\r\n";
+//echo "No Meal 1\r\n";
             $arr['YOUR_MEAL_IMAGE'] = ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
             $arr['YOUR_MEAL_NAME'] = ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
         }
@@ -320,7 +324,7 @@ echo "No Meal 1\r\n";
         } catch (\Exception $e) {
             $arr['YOUR_MEAL_IMAGE_2'] = ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
             $arr['YOUR_MEAL_NAME_2'] = ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
-echo "No Meal 2\r\n";
+//echo "No Meal 2\r\n";
         }
 
         try {
@@ -331,7 +335,7 @@ echo "No Meal 2\r\n";
         } catch (\Exception $e) {
             $arr['YOUR_MEAL_IMAGE_3'] = ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
             $arr['YOUR_MEAL_NAME_3'] = ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
-echo "No Meal 3\r\n";
+//echo "No Meal 3\r\n";
         }
 
         $list = [];

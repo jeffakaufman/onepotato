@@ -1,15 +1,61 @@
 <?php
+/*
+return [
+    'driver' => 'smtp',
+    'host' => 'smtpout.secureserver.net',
+    'port' => 3535,
+//    'encryption' => 'tls',
+    'from' => [
+//        'address' => 'agedgouda@gmail.com',
+        'address' => 'azagarov@mail.ru',
+        'name' => 'One potato mailing system',
+    ],
+
+    'username' => 'noreply@onepotato.com',
+    'password' => 'noreply@onepotato.com',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false,
+];
+
+
+return [
+    'driver' => 'smtp',
+    'host' => 'email-smtp.us-west-2.amazonaws.com',
+    'port' => 587,
+    'encryption' => 'tls',
+    'from' => [
+//        'address' => 'agedgouda@gmail.com',
+        'address' => 'azagarov@mail.ru',
+        'name' => 'One potato mailing system',
+    ],
+
+    'username' => 'AKIAIFSFPDI7NHLU24MQ',
+    'password' => 'AiY27IpzswB335GN9VbzFvvvpP/Y+Po22uf0MUQVtuN+',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false,
+];
+
+*/
 return [
 
 			"driver" => "smtp",
             "host" => "mailtrap.io",
             "port" => 2525,
+//            "port" => 2525,
             "from" => array(
                 "address" => "from@example.com",
                 "name" => "Example"
             ),
-            "username" => "09a5440b2e9119",
-            "password" => "096bdb9851cc3f",
+//            "username" => "09a5440b2e9119",
+//            "password" => "096bdb9851cc3f",
+
+            "username" => "bcc4c9ab06e523",
+            "password" => "3d475c5e5ba1a5",
+
+    'encryption' => 'tls',
+
             "sendmail" => "/usr/sbin/sendmail -bs",
             "pretend" => false
 ];
