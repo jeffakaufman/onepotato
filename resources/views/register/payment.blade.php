@@ -207,18 +207,18 @@ function checkLuhn(input) {
 
                             <!-- First Name -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" class="form-control" name="firstname" placeholder="First Name" value="{{$firstname}}" required autofocus>
+                                <input type="text" class="form-control" name="firstname" placeholder="First Name*" value="{{$firstname}}" required autofocus>
                             </div>
 
                             <!-- Last Name -->
                             <div class="form-row col-sm-6 thinpadding last">
-                                <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="{{$lastname}}" required>
+                                <input type="text" class="form-control" name="lastname" placeholder="Last Name*" value="{{$lastname}}" required>
                             </div>
                         </div>
                         <div class="row extrapadding">
                             <!-- Address -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" name="address" class="form-control" lazy placeholder="Address" value="{{$address}}" required>
+                                <input type="text" name="address" class="form-control" lazy placeholder="Address*" value="{{$address}}" required>
                             </div>
 
                             <!-- Address Line 2 -->
@@ -229,14 +229,14 @@ function checkLuhn(input) {
                         <div class="row extrapadding">
                             <!-- City -->
                             <div class="form-row col-sm-6 thinpadding first">
-                                <input type="text" name="city" class="form-control" lazy placeholder="City" value="{{$city}}" required>
+                                <input type="text" name="city" class="form-control" lazy placeholder="City*" value="{{$city}}" required>
                             </div>
 
                             <!-- State & ZIP Code -->
                             <div class="form-row col-sm-4 thinpadding">
 
                                 <label class="select">
-                                    <select name="state" type="select" class="form-control" required>
+                                    <select name="state" type="select" class="form-control" required placeholder="State*">
                                         <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
                                         <option value="CA" @if( $state == 'CA') selected @endif>California</option>
                                         <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
@@ -246,13 +246,13 @@ function checkLuhn(input) {
 
                             <!-- Zip Code -->
                             <div class="form-row col-sm-2 thinpadding last">
-                                <input type="text" name="zip" class="form-control" placeholder="Zip" value="{{$zip}}" required>
+                                <input type="text" name="zip" class="form-control" placeholder="Zip*" value="{{$zip}}" required>
                             </div>
                         </div>
                         <div class="row extrapadding">
                             <!-- Phone -->
                             <div class="form-row col-sm-12 thinpadding first last">
-                                <input type="text" name="phone" class="form-control" placeholder="Phone Number" value="{{$phone}}" required>
+                                <input type="text" name="phone" class="form-control" placeholder="Phone Number*" value="{{$phone}}" required>
                             </div>
                         </div>
 
@@ -271,7 +271,7 @@ function checkLuhn(input) {
                         </div>
                         <div class="row form-group extrapadding">
                             <div class="col-xs-12 thinpadding first last">
-                                <input type="text" class="form-control card-number" maxlength="19" placeholder="Card Number" required onblur="
+                                <input type="text" class="form-control card-number" maxlength="19" placeholder="Card Number*" required onblur="
                                       cc_number_saved = this.value;
                                       this.value = this.value.replace(/[^\d]/g, '');
                                       if(!checkLuhn(this.value)) {
@@ -290,7 +290,7 @@ function checkLuhn(input) {
                             <div class="col-xs-5 thinpadding first">
                                 <label class="select">
                                     <select type="select" v-model="expiry_month" @change="checkDate" class="form-control card-expiry-month" required>
-                                        <option value="">Expiration Month</option>
+                                        <option value="">Expiration Month*</option>
                                         <option value="01">January</option>
                                         <option value="02">February</option>
                                         <option value="03">March</option>
@@ -309,7 +309,7 @@ function checkLuhn(input) {
                             <div class="col-xs-4 thinpadding">
                                 <label class="select">
                                     <select type="select" v-model="expiry_year" @change="checkDate" class="form-control card-expiry-year" required>
-                                        <option value="">Expiration Year</option>
+                                        <option value="">Expiration Year*</option>
                                         <option value="16">2016</option>
                                         <option value="17">2017</option>
                                         <option value="18">2018</option>
@@ -323,7 +323,7 @@ function checkLuhn(input) {
                                 </label>
                             </div>
                             <div class="col-xs-3 thinpadding last">
-                                <input type="text" class="form-control card-cvc" pattern="[0-9]*" required placeholder="CVC" lazy>
+                                <input type="text" class="form-control card-cvc" pattern="[0-9]*" required placeholder="CVC*" lazy>
                             </div> 
                         </div>
                         <div class="row form-group extrapadding" v-show="bad_expiry || bad_expiry2">

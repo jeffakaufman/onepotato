@@ -31,6 +31,67 @@ class DashboardController extends Controller
     public function show()
     {
   
+  		$menus = DB::table('menus_users')
+				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
+	    		->join('menus','menus_users.menus_id','=','menus.id')
+	    		->join('users','menus_users.users_id','=','users.id')
+	    		->join('subscriptions','subscriptions.user_id','=','users.id')
+	    		->join('products','subscriptions.product_id','=','products.id')
+				->where('delivery_date', ">=",date('Y-m-d H:i:s'))
+				->where('delivery_date', "<=",date('Y-m-d H:i:s', strtotime("+6 days")))
+				->groupBy('delivery_date','menus_id','product_title')
+				->orderBy('delivery_date')
+				->orderBy('menus_id')
+				->orderBy('products.id')
+				->get();
+        
+        $newSubs = DB::table('users')
+				->select('start_date','products.product_description', DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.user_id','=','users.id')
+	    		->join('products','subscriptions.product_id','=','products.id')
+				->groupBy('start_date','products.product_description')
+				->orderBy('start_date','products.product_description')
+				->where('start_date', ">",date('Y-m-d H:i:s'))
+				->where('subscriptions.stripe_id', "<>","0")
+				->get();
+        
+        $totalNewSubs = DB::table('users')
+				->select('subscriptions.status', DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.user_id','=','users.id')
+	    		->join('products','subscriptions.product_id','=','products.id')
+				->whereNotNull('subscriptions.status')
+				->where('start_date', ">",date('Y-m-d H:i:s'))
+				->where('subscriptions.stripe_id', "<>","0")
+				->groupBy('subscriptions.status')
+				->orderBy('subscriptions.status')
+				->get();
+        
+        $totalSubs = DB::table('users')
+				->select('subscriptions.status', DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.user_id','=','users.id')
+	    		->join('products','subscriptions.product_id','=','products.id')
+				->whereNotNull('subscriptions.status')
+				->where('start_date', "<=",date('Y-m-d H:i:s'))
+				->groupBy('subscriptions.status')
+				->orderBy('subscriptions.status')
+				->get();
+				
+		
+        
+        $skips = DB::table('users')
+				->select('date_to_hold', DB::raw('count(*) as total'))
+	    		->join('shippingholds','shippingholds.user_id','=','users.id')
+				->where('date_to_hold', ">=",date('Y-m-d H:i:s'))
+				->groupBy('date_to_hold')
+				->orderBy('date_to_hold')
+				->get();		
+       
+       	//echo json_encode($totalNewSubs);
+    	return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','newSubs'=>$newSubs,'totalSubs'=>$totalSubs,'skips'=>$skips]);
+    }
+    public function showReports()
+    {
+  
     	$menus = DB::table('menus_users')
 				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
 	    		->join('menus','menus_users.menus_id','=','menus.id')
@@ -38,7 +99,7 @@ class DashboardController extends Controller
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->groupBy('delivery_date','menus_id','product_title')
-				->orderBy('delivery_date')
+				->orderBy('delivery_date', 'desc')
 				->orderBy('menus_id')
 				->orderBy('products.id')
 				->get();

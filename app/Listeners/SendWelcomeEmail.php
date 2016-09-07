@@ -111,8 +111,8 @@ class SendWelcomeEmail
 
         $r = Mail::send('emails.order_details', $params, function($m) use ($user, $subscription) {
 //            $m->from('ahhmed@mail.ru', 'Aleksey Zagarov');
-//            $m->to('jenna@onepotato.com', 'Jenna')->subject("New Order #{$subscription->id} Created");
-//            $m->to('azagarov@mail.ru', 'Jenna')->subject("New Order #{$subscription->id} Created");
+            $m->to('jenna@onepotato.com', 'Jenna');
+            $m->to('azagarov@mail.ru', 'Jenna');
             $m->to('agedgouda@gmail.com', 'Jenna')->subject("New Order #{$subscription->id} Created");
         });
 

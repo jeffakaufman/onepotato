@@ -106,6 +106,41 @@
 		padding-right: 30px;
 	}
 }
+#whats_cooking {
+	min-height: 600px;
+	.buttons {
+		@media only screen and (min-width: 768px) {
+			padding: 0 40px 20px 0;
+		}
+	}
+}
+.weekPager {
+	
+	@media only screen and (min-width: 768px) {
+		float: right;
+		margin: 18px 30px 0 0;
+	}
+	
+	.date {
+		display: inline-block;
+		color: $brand-primary;
+		font-size: 24px;
+		font-family: $font-family-semibold;
+		margin-right: 10px;
+	}
+	.weekNav {
+		display: inline-block;
+		cursor: pointer;
+	}
+	.fa {
+		font-size: 28px;
+		color: $brand-primary;
+		
+		&:hover {
+			color: $brand-secondary;
+		}
+	}
+}
 tr.blank {
 	display: none;
 }

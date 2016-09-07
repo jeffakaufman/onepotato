@@ -231,9 +231,9 @@ Alexander Pierce App\User Object
                 <i class="fa fa-truck"></i> <span>Shipments</span>
             </a>
         </li>
-        <li class="menuitem-coupons">
-            <a href="/admin/coupons">
-                <i class="fa fa-shekel"></i> <span>Coupons</span>
+        <li class="menuitem-reports">
+            <a href="/admin/reports">
+                <i class="fa fa-shekel"></i> <span>Reports</span>
             </a>
         </li>
     </ul>

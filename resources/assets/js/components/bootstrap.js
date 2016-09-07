@@ -14,7 +14,7 @@ require('./../spark-components/bootstrap');
 //require('./welcome');
 //require('./home');
 require('./user');
-require('./whatscookings');
+require('./whats_cooking');
 require('./preferences');
 require('./delivery');
 require('./payment');

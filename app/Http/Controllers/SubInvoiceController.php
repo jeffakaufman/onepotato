@@ -930,11 +930,11 @@ class SubinvoiceController extends Controller
 		
 		//check Holds table
 		
-		//first get the date for the "week of" - assuming this is going to run on Wednesday, it's always the previous Monday
+		//first get the date for the "week of" - assuming this is going to run on Wednesday, it's always the previous Tuesday
 
 		$WeekOfDate = new DateTime();
 		$WeekOfDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
-		$WeekOfDate->modify('Monday this week');
+		$WeekOfDate->modify('Tuesday nex week');
 		
 		echo $WeekOfDate->format('Y-m-d') . "<br />";
 		$WeekOfDate_string = $WeekOfDate->format('Y-m-d');

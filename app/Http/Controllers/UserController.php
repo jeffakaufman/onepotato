@@ -74,20 +74,122 @@ class UserController extends Controller
         	*/
         	
         	
-	    	$users = DB::table('users')
-				->select('users.id','users.email','users.name', 'users.start_date', 'subscriptions.status', DB::raw('sum(subinvoices.charge_amount/100) as revenue'))
-	    		->join('subscriptions','users.id','=','subscriptions.user_id')
-	    		->join('subinvoices','users.id','=','subinvoices.user_id')
-        		->where('subscriptions.stripe_id', '<>', '')
-        		->where('subscriptions.name', '<>', '')
-        		->orderBy('start_date', 'desc')
-        		->orderBy('subscriptions.name', 'asc')
-				->groupBy('users.id')
-	    		->get();
+	    	$users = $this->_getUsersList();
 
-			return view('admin.users.users')->with(['users'=>$users]);
+			return view('admin.users.users')->with(['users'=>$users, 'params' => $this->_getListParams()]);
     }
 
+
+    private function _getUsersList() {
+
+        $params = $this->_getListParams();
+//var_dump($params);die();
+        $query = DB::table('users')
+            ->select('users.id','users.email','users.name', 'users.start_date', 'subscriptions.status', DB::raw('sum(subinvoices.charge_amount/100) as revenue'))
+            ->join('subscriptions','users.id','=','subscriptions.user_id')
+            ->join('subinvoices','users.id','=','subinvoices.user_id')
+            ->where('subscriptions.stripe_id', '<>', '')
+            ->where('subscriptions.name', '<>', '');
+
+            if(isset($params['filterText'])) {
+                $query->where(function($query) use ($params){
+                    $query->where('users.name', 'like', '%'.$params['filterText'].'%')
+                        ->orWhere('users.email', 'like', '%'.$params['filterText'].'%');
+                });
+            }
+
+            $query->orderBy($params['orderBy'], $params['orderDir']);
+
+            $query->orderBy('users.name', 'asc')
+            ->groupBy('users.id');
+
+         return $query->get();
+    }
+
+    private function _getListParams() {
+        $params = [
+            'orderBy' => 'start_date',
+            'orderDir' => 'desc',
+
+            'filterText' => '',
+        ];
+
+        $sessionParams = session('usersListParams');
+        if($sessionParams) {
+            $params = array_merge($params, $sessionParams);
+        }
+
+        return $params;
+    }
+
+    public function updateListParams(Request $request, $type, $value = '') {
+        $currentParams = $this->_getListParams();
+        $sessionData = session('usersListParams');
+//var_dump($sessionData);die();
+        if(!$sessionData) {
+            $sessionData = [];
+        }
+
+        switch($type) {
+            case 'orderBy':
+                $mapping = [
+                    'userName' => [
+                        'field' => 'users.name',
+                        'dir' => 'asc',
+                    ],
+                    'email' => [
+                        'field' => 'users.email',
+                        'dir' => 'asc',
+                    ],
+                    'startDate' => [
+                        'field' => 'users.start_date',
+                        'dir' => 'desc',
+                    ],
+                    'revenue' => [
+                        'field' => 'revenue',
+                        'dir' => 'desc',
+                    ],
+                    'status' => [
+                        'field' => 'subscriptions.status',
+                        'dir' => 'asc',
+                    ],
+                ];
+
+                if(isset($mapping[$value])) {
+                    $_value = $mapping[$value]['field'];
+                    if($currentParams['orderBy'] == $_value) {
+                        $sessionData['orderDir'] = $currentParams['orderDir'] == 'asc' ? 'desc' : 'asc';
+                    } else {
+                        $sessionData['orderBy'] = $_value;
+                        $sessionData['orderDir'] = $mapping[$value]['dir'];
+                    }
+
+
+                } else {
+                    //Do Nothing
+                }
+
+                break;
+
+            case 'filterText':
+                $sessionData['filterText'] = $value;
+                break;
+
+            default:
+                //Do Nothing
+                break;
+        }
+
+//var_dump($type);
+//var_dump($value);
+
+        session(['usersListParams' => $sessionData]);
+        return redirect("/admin/users");
+/*
+		<div class="user_name col-sm-2 text-center"><strong><a href="/admin/users/updateListParams/orderBy/status">Status</a></strong></div>
+
+         */
+    }
 
 	//get data for the accounts page - current
 
@@ -1043,5 +1145,4 @@ var_dump($x->UpdateCustomerData($user));die();
     }
 
 }
-
 

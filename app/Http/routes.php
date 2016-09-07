@@ -52,6 +52,9 @@ Route::get('/congrats', array('as' => 'register.congrats', function() {
 Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
 
+Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
+    return view('whats_cooking');
+}));
 
 // Delivery Schedule...
 Route::get('delivery-schedule', [
@@ -149,6 +152,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
     Route::get('/admin/users', 'UserController@showUsers');
+    Route::get('/admin/users/updateListParams/{type}/{value?}', 'UserController@updateListParams');
+
     Route::get('/admin/user/{id}', 'UserController@showUser');
     Route::post('/admin/user/{id}', 'UserController@updateUser');
     Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
@@ -162,6 +167,7 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::post('/admin/user/referrals/{id}', 'UserController@sendReferral');
 
     Route::get('/admin/dashboard', 'DashboardController@show');
+    Route::get('/admin/reports', 'DashboardController@showReports');
     Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
     Route::get('/admin/one_time_products', 'ProductsController@oneTimeList');
     Route::get('/admin/gift_cards', 'GiftCardsController@show');

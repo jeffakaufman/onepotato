@@ -5811,19 +5811,36 @@ button.close {
     font-size: 14px;
     padding: 3px 10px;
     text-transform: none; }
-  @media only screen and (max-width: 767px) {
-    .btn-primary, .btn-secondary {
-      width: 90%; } }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .btn-primary, .btn-secondary {
       font-size: 15px;
       padding: 5px 10px 2px 10px; } }
+
+@media only screen and (max-width: 767px) {
+  .btn-primary {
+    width: 90%; } }
+
+.btn-outline {
+  border: #1db8bf 2px solid;
+  background: #fff;
+  color: #1db8bf;
+  border-radius: 0;
+  font-size: 16px;
+  padding: 6px 10px 4px 10px;
+  outline: 0;
+  display: inline-block; }
+  .btn-outline:hover, .btn-outline.active {
+    color: #e91e25;
+    border-color: #e91e25; }
 
 .btn-secondary {
   background-color: #1db8bf; }
 
 .col-md-2 .btn {
   width: 100%; }
+
+.btn:focus {
+  outline: 0; }
 
 .radio, .checkbox {
   display: inline-block;
@@ -6922,6 +6939,34 @@ table.month {
     .extrapadding {
       padding-left: 30px;
       padding-right: 30px; } }
+
+#whats_cooking {
+  min-height: 600px; }
+  @media only screen and (min-width: 768px) {
+    #whats_cooking .buttons {
+      padding: 0 40px 20px 0; } }
+
+@media only screen and (min-width: 768px) {
+  .weekPager {
+    float: right;
+    margin: 18px 30px 0 0; } }
+
+.weekPager .date {
+  display: inline-block;
+  color: #1db8bf;
+  font-size: 24px;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  margin-right: 10px; }
+
+.weekPager .weekNav {
+  display: inline-block;
+  cursor: pointer; }
+
+.weekPager .fa {
+  font-size: 28px;
+  color: #1db8bf; }
+  .weekPager .fa:hover {
+    color: #e91e25; }
 
 tr.blank {
   display: none; }
