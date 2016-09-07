@@ -38,6 +38,50 @@ return [
 ];
 
 */
+/*
+return [
+    "driver" => "smtp",
+    "host" => "aspmx.l.google.com",
+    "port" => 25,
+    "from" => array(
+        "address" => "azagarov@gmail.com",
+        "name" => "Example"
+    ),
+//            "username" => "09a5440b2e9119",
+//            "password" => "096bdb9851cc3f",
+
+//    "username" => "azagarov",
+//    "password" => "az@gAr0v",
+
+//    'encryption' => 'tls',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false
+
+];
+*/
+
+return [
+    "driver" => "smtp",
+    "host" => "smtp.gmail.com",
+    "port" => 587,
+    "from" => array(
+        "address" => "noreply@onepotato.com",
+        "name" => "Onepotato Mailing System"
+    ),
+//            "username" => "09a5440b2e9119",
+//            "password" => "096bdb9851cc3f",
+
+    "username" => "azagarov",
+    "password" => "az@gAr0v",
+
+    'encryption' => 'tls',
+
+    "sendmail" => "/usr/sbin/sendmail -bs",
+    "pretend" => false
+
+];
+
 return [
 
 			"driver" => "smtp",
