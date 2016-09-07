@@ -34,44 +34,65 @@ $('#register5').addClass('active');
 
 $(document).ready(function() {
 
+    function checkFields() {
+        var formValidates = true;
+        $('input[required], select[required]').each(function() {
+            if ($(this).val() == '') {
+                formValidates = false;
+            } 
+        });
+        if (formValidates) {
+            $("#submitBtn").removeAttr("disabled");
+        } else {
+            $("#submitBtn").prop("disabled",true);
+        }
+    }
+    checkFields();
+    $('input[required], select[required]').keyup(function() {
+        checkFields();
+    });
 	// Watch for a form submission:
-	$("#payment-form").click(function(event) {
+	$("#submitBtn").on('click',function(event) {
 
 		// Flag variable:
 		var error = false;
 
 		// disable the submit button to prevent repeated clicks:
-		$('#submitBtn').attr("disabled", "disabled");
-
+		$(this).prop("disabled",true);
+        
+        var messages = '';
 		// Get the values:
 		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
 		
-		console.log ("CC Num: " + ccNum);
+		//console.log ("CC Num: " + ccNum);
 		
 		// Validate the number:
 		if (!Stripe.card.validateCardNumber(ccNum)) {
 			error = true;
-			console.log ('The credit card number appears to be invalid.');
+			messages += 'The credit card number appears to be invalid.<br>';
 		}
 
 		// Validate the CVC:
 		if (!Stripe.card.validateCVC(cvcNum)) {
 			error = true;
-			console.log ('The CVC number appears to be invalid.');
+			messages += 'The CVC number appears to be invalid.<br>';
 		}
 
 		// Validate the expiration:
 		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
 			error = true;
-			console.log ('The expiration date appears to be invalid.');
+			messages += 'The expiration date appears to be invalid.';
 		}
+        if (error) {
+            $('#submitErrors').html(messages).slideDown();
+        }
 
 		// Validate other form elements, if needed!
 	
 		// Check for errors:
 		if (!error) {
-			console.log ('sending to Stripe');
-			
+			//console.log ('sending to Stripe');
+			$('#submitErrors').html('').slideUp();
 			// Get the Stripe token:
 			Stripe.card.createToken({
 				number: ccNum,
@@ -83,7 +104,7 @@ $(document).ready(function() {
 		}else{
 			
 				$("#submitBtn").removeAttr("disabled"); // Re-enable submission
-				console.log ("errors - removed disabled");
+				//console.log ("errors - removed disabled");
 			
 		}
 		
@@ -318,9 +339,9 @@ function checkLuhn(input) {
                                 style="display:none"
                              @endif
                         >
-                            <div class="col-xs-6 col-sm-5 thinpadding first">
+                            <div class="col-xs-5 col-sm-4 thinpadding first">
                                 <label class="select">
-                                    <select type="select" class="form-control" name="promotype" @change="validatePromo" v-model="promotype">
+                                    <select type="select" class="form-control" name="promotype" v-model="promotype">
                                         <!-- <option value="" selected>Code type</option>-->
                                         <!-- <option v-for="code in promos" :value="code.key">@{{ code.label }}</option> -->
                                         <option value="coupon">Coupon</option>
@@ -329,9 +350,12 @@ function checkLuhn(input) {
                                     </select>
                                 </label>
                             </div>
-                            <div class="col-xs-6 col-sm-5 thinpadding last">
+                            <div class="col-xs-5 col-sm-4 thinpadding">
                                 <input type="hidden" name="product_cost" value="{{ $product->cost }}" v-model="product_cost">
-                                <input type="text" name="promocode" class="form-control" v-model="promocode" @keyup="validatePromo" value="{{$prefilledCoupon}}">
+                                <input type="text" name="promocode" class="form-control" v-model="promocode" value="{{$prefilledCoupon}}">
+                            </div>
+                            <div class="col-xs-2 thinpadding last">
+                                <div @click="validatePromo" style="line-height: 42px; display: inline-block; cursor: pointer">Apply</div>
                             </div>
                             <div class="hidden-xs col-sm-2 thinpadding last" style="line-height: 42px">
                                 <a data-toggle="tooltip" data-placement="right" data-title="Lorem ipsum." class="sidelink">what's this?</a>
@@ -349,8 +373,8 @@ function checkLuhn(input) {
 
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading text-left nopa">Order Summary</div>
-                    <div class="panel-body">
+                    <div class="panel-heading text-left nosidepadding">Order Summary</div>
+                    <div class="panel-body info">
                         <div class="row padbottom">
                             <div class="col-sm-7">
                                 <h5>PLAN TYPE</h5>
@@ -412,6 +436,7 @@ function checkLuhn(input) {
                                     <button class="btn btn-primary" id="submitBtn" @click="checkDate">
                                         Place Order
                                     </button>
+                                    <div id="submitErrors"></div>
                                     <div class="disclaimer text-left padtop">By clicking “Place Order” you agree to purchasing a continuous subscription, receiving deliveries and being billed to your designated payment method weekly, unless you a skip a delivery through your Delivery Schedule page or cancel your subscription.  You may cancel your subscription by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ.</div>
                                 </div>
                             </div>
