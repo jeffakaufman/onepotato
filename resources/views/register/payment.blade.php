@@ -33,26 +33,29 @@ $('#register5').addClass('active');
 /*stripe code*/
 
 $(document).ready(function() {
-
+    var formValidates = true;
     function checkFields() {
         var formValidates = true;
         $('input[required], select[required]').each(function() {
             if ($(this).val() == '') {
                 formValidates = false;
+                $(this).addClass('error');
             } 
         });
-        if (formValidates) {
-            $("#submitBtn").removeAttr("disabled");
-        } else {
-            $("#submitBtn").prop("disabled",true);
-        }
     }
-    checkFields();
-    $('input[required], select[required]').keyup(function() {
-        checkFields();
+    if(device.desktop()) var wW = window.outerWidth;
+    else var wW = $(window).width();
+    
+    var is_windows = navigator.appVersion.indexOf("Win") != -1;
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    
+    if (is_windows && is_chrome) wW = parseInt(wW) - 16;
+    $(window).resize(function() {
+        if (is_windows && is_chrome) wW = parseInt(wW) - 16;
     });
-	// Watch for a form submission:
 	$("#submitBtn").on('click',function(event) {
+
+        checkFields();
 
 		// Flag variable:
 		var error = false;
@@ -70,21 +73,30 @@ $(document).ready(function() {
 		if (!Stripe.card.validateCardNumber(ccNum)) {
 			error = true;
 			messages += 'The credit card number appears to be invalid.<br>';
+            $('.card-number').addClass('error');
 		}
 
 		// Validate the CVC:
 		if (!Stripe.card.validateCVC(cvcNum)) {
 			error = true;
 			messages += 'The CVC number appears to be invalid.<br>';
+            $('.card-cvc').addClass('error');
 		}
 
 		// Validate the expiration:
 		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
 			error = true;
 			messages += 'The expiration date appears to be invalid.';
+            $('.card-expiry-month').addClass('error');
+            $('.card-expiry-year').addClass('error');
 		}
-        if (error) {
-            $('#submitErrors').html(messages).slideDown();
+        if (error || !formValidates) {
+            //$('#submitErrors').html(messages).slideDown();
+            if (wW < 992) { 
+                $('html,body').animate({
+                    scrollTop: $('.error').first().offset().top - 70
+                }, 500);
+            }
         }
 
 		// Validate other form elements, if needed!
