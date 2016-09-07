@@ -101,18 +101,18 @@ $(function() {
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="@if (isset($firstname)){{$firstname}}@endif" autofocus required>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name*" value="@if (isset($firstname)){{$firstname}}@endif" autofocus required>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="@if (isset($lastname)){{$lastname}}@endif" required>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name*" value="@if (isset($lastname)){{$lastname}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="@if (isset($address)){{$address}}@endif" required>
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address*" value="@if (isset($address)){{$address}}@endif" required>
                                 </div>
 
                                 <!-- Address Line 2 -->
@@ -123,7 +123,7 @@ $(function() {
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="city" lazy placeholder="City" value="@if (isset($city)){{$city}}@endif" required>
+                                    <input type="text" class="form-control" name="city" lazy placeholder="City*" value="@if (isset($city)){{$city}}@endif" required>
                                 </div>
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
@@ -137,13 +137,13 @@ $(function() {
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="@if (isset($zip)){{$zip}}@endif" required>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip*" value="@if (isset($zip)){{$zip}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 thinpadding first last">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" value="@if (isset($phone)){{$phone}}@endif" required>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number*" value="@if (isset($phone)){{$phone}}@endif" required>
                                 </div>
                             </div>
 
