@@ -31,7 +31,7 @@ $(function() {
     $(".btn-primary").on('click',function(event) {
         checkFields();
         if (!formValidates) {
-            if (wW < 992) { 
+            if (wW < 768) { 
                 $('html,body').animate({
                     scrollTop: $('.error').first().offset().top - 70
                 }, 500);
