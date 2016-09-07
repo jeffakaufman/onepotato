@@ -52,6 +52,9 @@ Route::get('/congrats', array('as' => 'register.congrats', function() {
 Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
 
+Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
+    return view('whats_cooking');
+}));
 
 // Delivery Schedule...
 Route::get('delivery-schedule', [

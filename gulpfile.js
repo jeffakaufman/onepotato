@@ -26,6 +26,7 @@ elixir(function(mix) {
 	    	'moment-timezone-with-data-2010-2020.min.js',
 	    ], 'public/js/vendor_header.js')
 	    .scripts([
+	    	'jquery.matchHeight.js',
 	    	'sweetalert.min.js'
 	    ], 'public/js/vendor_footer.js')
        	.browserify('app.js', null, null, { paths: 'vendor/laravel/spark/resources/assets/js' });

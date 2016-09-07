@@ -25,6 +25,7 @@ var ChangeMenuComponent = Vue.extend({
 	},
 	watch: {
         fullMenu:function(){
+            $('.meal').matchHeight();
         	$('#changeMenu input').each(function() {
         		var menuId = $(this).val();
         		$('#changeMenu .meal[data-id='+menuId+']').removeClass('select').addClass('selected');
