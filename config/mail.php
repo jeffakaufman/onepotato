@@ -72,8 +72,8 @@ return [
 //            "username" => "09a5440b2e9119",
 //            "password" => "096bdb9851cc3f",
 
-    "username" => "azagarov",
-    "password" => "az@gAr0v",
+    "username" => "",
+    "password" => "",
 
     'encryption' => 'tls',
 
