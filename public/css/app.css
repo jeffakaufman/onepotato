@@ -5813,7 +5813,7 @@ button.close {
     text-transform: none; }
   @media only screen and (max-width: 767px) {
     .btn-primary, .btn-secondary {
-      width: 100%; } }
+      width: 90%; } }
   @media only screen and (min-width: 768px) and (max-width: 991px) {
     .btn-primary, .btn-secondary {
       font-size: 15px;
@@ -6388,6 +6388,9 @@ body.register .hamburger {
 
 .panel-body {
   font-weight: 300; }
+  @media only screen and (max-width: 767px) {
+    .panel-body.info {
+      padding: 15px 0; } }
   .panel-body .p-b-lg {
     margin-bottom: 1em; }
   .panel-body.nopadding {
@@ -7351,6 +7354,10 @@ body.account .caption {
   padding: 1em 0;
   color: #e91e25;
   display: none; }
+
+@media (min-width: 768px) {
+  .with-disclaimer {
+    display: inline-block; } }
 
 body.with-navbar {
   padding-top: 60px; }

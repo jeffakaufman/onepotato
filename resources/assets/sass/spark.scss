@@ -401,6 +401,11 @@ body.account .caption {
 	color: $brand-secondary;
 	display: none;
 }
+@media (min-width: 768px) {
+	.with-disclaimer {
+		display: inline-block;
+	}
+}
 body.with-navbar {
     padding-top: 60px;
     
