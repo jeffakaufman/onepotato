@@ -34,6 +34,23 @@ $('#register5').addClass('active');
 
 $(document).ready(function() {
 
+    function checkFields() {
+        var formValidates = true;
+        $('input[required], select[required]').each(function() {
+            if ($(this).val() == '') {
+                formValidates = false;
+            } 
+        });
+        if (formValidates) {
+            $("#submitBtn").removeAttr("disabled");
+        } else {
+            $("#submitBtn").prop("disabled",true);
+        }
+    }
+    checkFields();
+    $('input[required], select[required]').keyup(function() {
+        checkFields();
+    });
 	// Watch for a form submission:
 	$("#submitBtn").on('click',function(event) {
 
