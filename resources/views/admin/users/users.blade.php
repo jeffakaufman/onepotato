@@ -12,12 +12,26 @@
     </ol>
 @endsection
 @section('content')
-	<div class="row  col-offset-1">
-		<div class="user_name col-sm-3"><strong>User Name</strong></div>
-		<div class="user_name col-sm-2"><strong>Email Address</strong></div>
-		<div class="user_name col-sm-2 text-center"><strong>First Delivery Date</strong></div>
-		<div class="user_name col-sm-1 text-center"><strong>Revenue</strong></div>
-		<div class="user_name col-sm-2 text-center"><strong>Status</strong></div>
+
+	<div class="container">
+		<!-- Application Dashboard -->
+		{{--<div class="row">--}}
+			{{--<div class="col-md-10 col-md-offset-1">--}}
+				<div class="panel panel-default">
+					<div class="">
+						<div style="text-align: right;">
+							<input type="text" id="filterText" value="{{$params['filterText']}}" />
+							<button onclick="document.location.href='/admin/users/updateListParams/filterText/'+$('#filterText').val();">Filter</button>
+						</div>
+					</div>
+					<div class="panel-body">
+
+	<div class="row col-offset-1">
+		<div class="user_name col-sm-3"><strong><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></strong></div>
+		<div class="user_name col-sm-2"><strong><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></strong></div>
+		<div class="user_name col-sm-2 text-center"><strong><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></strong></div>
+		<div class="user_name col-sm-1 text-center"><strong><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></strong></div>
+		<div class="user_name col-sm-2 text-center"><strong><a href="/admin/users/updateListParams/orderBy/status">Status</a></strong></div>
 	</div>
 	@foreach ($users as $user)
 	<div class="row">
@@ -34,4 +48,10 @@
 		</div>
 	</div>
 	@endforeach
+
+					</div>
+				{{--</div>--}}
+			{{--</div>--}}
+		</div>
+	</div>
 @endsection

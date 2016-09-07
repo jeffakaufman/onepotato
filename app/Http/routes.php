@@ -149,6 +149,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
     Route::get('/admin/users', 'UserController@showUsers');
+    Route::get('/admin/users/updateListParams/{type}/{value?}', 'UserController@updateListParams');
+
     Route::get('/admin/user/{id}', 'UserController@showUser');
     Route::post('/admin/user/{id}', 'UserController@updateUser');
     Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
