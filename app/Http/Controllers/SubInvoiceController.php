@@ -934,7 +934,7 @@ class SubinvoiceController extends Controller
 
 		$WeekOfDate = new DateTime();
 		$WeekOfDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
-		$WeekOfDate->modify('Tuesday nex week');
+		$WeekOfDate->modify('Tuesday next week');
 		
 		echo $WeekOfDate->format('Y-m-d') . "<br />";
 		$WeekOfDate_string = $WeekOfDate->format('Y-m-d');
