@@ -33857,7 +33857,7 @@ require('./../spark-components/bootstrap');
 //require('./welcome');
 //require('./home');
 require('./user');
-require('./whatscookings');
+require('./whats_cooking');
 require('./preferences');
 require('./delivery');
 require('./payment');
@@ -33889,7 +33889,7 @@ $(function () {
 	});
 });
 
-},{"./../spark-components/bootstrap":64,"./account":54,"./delivery":56,"./delivery_schedule":57,"./payment":58,"./preferences":59,"./user":60,"./whatscookings":61}],56:[function(require,module,exports){
+},{"./../spark-components/bootstrap":64,"./account":54,"./delivery":56,"./delivery_schedule":57,"./payment":58,"./preferences":59,"./user":60,"./whats_cooking":61}],56:[function(require,module,exports){
 'use strict';
 
 Vue.component('delivery', {
@@ -33979,6 +33979,7 @@ var ChangeMenuComponent = Vue.extend({
   },
   watch: {
     fullMenu: function fullMenu() {
+      $('.meal').matchHeight();
       $('#changeMenu input').each(function () {
         var menuId = $(this).val();
         $('#changeMenu .meal[data-id=' + menuId + ']').removeClass('select').addClass('selected');
@@ -34402,13 +34403,120 @@ Vue.component('spark-navbar', {
 },{}],61:[function(require,module,exports){
 'use strict';
 
-Vue.component('whatscookings', {
-    props: ['user'],
+var MenuComponent = Vue.extend({
+	name: 'menu',
+	template: '#menu-template',
+	ready: function ready() {
+		this.fetchMenu();
+	},
+	data: function data() {
+		return {
+			list: [],
+			currentDate: ''
+		};
+	},
+	methods: {
+		fetchMenu: function fetchMenu(week) {
 
-    ready: function ready() {
-        //
-    }
+			var date, date2, today, tuesday, year, m, month, d, day, input;
+
+			if (week === undefined) {
+				today = new Date();
+				var daysUntilTuesday = 9 - today.getDay();
+				tuesday = moment().add(daysUntilTuesday, 'days').calendar();
+			} else {
+				if (this.currentDate != '') {
+					input = this.currentDate;
+				} else {
+					input = $('.weekNav').data('week');
+				}
+
+				var parts = input.match(/(\d+)/g);
+				today = new Date(parts[0], parts[1] - 1, parts[2]);
+				if (week == 'next') {
+					tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).add(7, 'days');
+				} else {
+					tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).subtract(7, 'days');
+				}
+			}
+			date = new Date(tuesday);
+
+			year = date.getFullYear();
+			if (year <= 1999) year = year + 100;
+			m = date.getMonth();
+			month = ('0' + (date.getMonth() + 1)).slice(-2);
+			d = date.getDate();
+			day = ('0' + date.getDate()).slice(-2);
+			date = year + '-' + month + '-' + day;
+			this.currentDate = date;
+
+			var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			date2 = 'Tuesday, ' + monthNames[m] + ' ' + d;
+
+			this.$http.get('/whatscooking/' + date, function (meals) {
+				this.list = meals;
+				$('.weekNav').attr('data-week', date);
+				$('.weekPager .date').text(date2);
+				//console.log(this.list);
+			}.bind(this));
+		}
+	},
+	computed: {
+		getMenu: function getMenu(meal) {
+			return this.list;
+		}
+	},
+	watch: {
+		getMenu: function getMenu() {
+			$('.meal').matchHeight();
+		}
+	}
 });
+
+if (document.getElementById('whats_cooking')) {
+	new Vue({
+		el: '#whats_cooking',
+		ready: function ready() {},
+		data: function data() {
+			return {
+				plan_type: '',
+				prefs: {
+					redmeat: '',
+					poultry: '',
+					fish: '',
+					lamb: '',
+					pork: '',
+					shellfish: '',
+					nuts: ''
+				}
+			};
+		},
+		computed: {},
+		methods: {
+			fetchNewMenu: function fetchNewMenu(week) {
+				this.$refs.menu.fetchMenu(week);
+			},
+			selectAllOmnivore: function selectAllOmnivore() {
+				this.prefs.redmeat = true;
+				this.prefs.poultry = true, this.prefs.fish = true, this.prefs.lamb = true, this.prefs.pork = true, this.prefs.shellfish = true;
+			},
+			selectAllVegetarian: function selectAllVegetarian() {
+				this.prefs.redmeat = false, this.prefs.poultry = false, this.prefs.fish = false, this.prefs.lamb = false, this.prefs.pork = false, this.prefs.shellfish = false;
+			},
+			selectOmni: function selectOmni() {
+
+				var isOmni = false;
+				$('input.pref').each(function () {
+					if ($(this).is(':checked')) isOmni = true;
+				});
+				if (isOmni) this.plan_type = 'Omnivore Box';else this.plan_type = 'Vegetarian Box';
+			}
+		},
+		components: {
+			'menu': MenuComponent
+		}
+	});
+}
 
 },{}],62:[function(require,module,exports){
 'use strict';
