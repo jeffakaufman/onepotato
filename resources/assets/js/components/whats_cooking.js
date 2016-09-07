@@ -14,11 +14,11 @@ var MenuComponent = Vue.extend({
     	fetchMenu: function(week) {
     		
     		var date, date2, today, tuesday, year, m, month, d, day, input;
-	        
+
 	        if (week  === undefined) {
 	        	today = new Date();
 	        	var daysUntilTuesday = 9 - today.getDay();
-	        	tuesday = moment().add(daysUntilTuesday, 'days').calendar();
+	        	tuesday = moment().add(daysUntilTuesday, 'days');
 	        } else {
 	        	if (this.currentDate != '') {
 	        		input = this.currentDate;
