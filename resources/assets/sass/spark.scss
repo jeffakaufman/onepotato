@@ -396,6 +396,11 @@ body.account .caption {
 .tab-content {
 	padding: 5px 15px;
 }
+#submitErrors {
+	padding: 1em 0;
+	color: $brand-secondary;
+	display: none;
+}
 body.with-navbar {
     padding-top: 60px;
     

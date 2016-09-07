@@ -41,8 +41,8 @@ $(document).ready(function() {
 		var error = false;
 
 		// disable the submit button to prevent repeated clicks:
-		$('#submitBtn').attr("disabled", "disabled");
-
+		$('#submitBtn').attr("disabled", true);
+        var messages = '';
 		// Get the values:
 		var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
 		
@@ -51,27 +51,30 @@ $(document).ready(function() {
 		// Validate the number:
 		if (!Stripe.card.validateCardNumber(ccNum)) {
 			error = true;
-			console.log ('The credit card number appears to be invalid.');
+			messages += 'The credit card number appears to be invalid.<br>';
 		}
 
 		// Validate the CVC:
 		if (!Stripe.card.validateCVC(cvcNum)) {
 			error = true;
-			console.log ('The CVC number appears to be invalid.');
+			messages += 'The CVC number appears to be invalid.<br>';
 		}
 
 		// Validate the expiration:
 		if (!Stripe.card.validateExpiry(expMonth, expYear)) {
 			error = true;
-			console.log ('The expiration date appears to be invalid.');
+			messages += 'The expiration date appears to be invalid.<br>';
 		}
+        if (error) {
+            $('#submitErrors').html(messages).slideDown();
+        }
 
 		// Validate other form elements, if needed!
 	
 		// Check for errors:
 		if (!error) {
 			console.log ('sending to Stripe');
-			
+			$('#submitErrors').html('').slideUp();
 			// Get the Stripe token:
 			Stripe.card.createToken({
 				number: ccNum,
@@ -412,6 +415,7 @@ function checkLuhn(input) {
                                     <button class="btn btn-primary" id="submitBtn" @click="checkDate">
                                         Place Order
                                     </button>
+                                    <div id="submitErrors"></div>
                                     <div class="disclaimer text-left padtop">By clicking “Place Order” you agree to purchasing a continuous subscription, receiving deliveries and being billed to your designated payment method weekly, unless you a skip a delivery through your Delivery Schedule page or cancel your subscription.  You may cancel your subscription by contacting us and following the instructions in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQ.</div>
                                 </div>
                             </div>

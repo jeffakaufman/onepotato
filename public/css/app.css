@@ -7028,6 +7028,14 @@ tr.blank {
 div.clear {
   clear: both; }
 
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+  display: -ms-flexbox;
+  display: flex; }
+
 #spark-terms-screen h1 {
   font-size: 26px;
   margin-top: 35px;
@@ -7338,6 +7346,11 @@ body.account .caption {
 
 .tab-content {
   padding: 5px 15px; }
+
+#submitErrors {
+  padding: 1em 0;
+  color: #e91e25;
+  display: none; }
 
 body.with-navbar {
   padding-top: 60px; }
