@@ -30,6 +30,12 @@
 .panel-body {
 	font-weight: 300;
 	
+	&.info {
+		@media only screen and (max-width: 767px) {
+			padding: 15px 0;
+		}	
+	}
+	
 	.p-b-lg {
 		margin-bottom: 1em;
 	}

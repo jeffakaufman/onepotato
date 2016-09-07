@@ -178,7 +178,7 @@ $('#register4').addClass('active');
 
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-sm-offset-6 text-right">
-                        <div style="display: inline-block" class="text-center">
+                        <div class="with-disclaimer text-center">
                             <button class="btn btn-primary">
                                 Continue to billing
                             </button>
