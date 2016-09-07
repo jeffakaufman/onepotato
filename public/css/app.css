@@ -5942,6 +5942,9 @@ input[type=checkbox]:checked + label:before {
 .has-error .control-label {
   color: #404040; }
 
+input.error, select.error {
+  outline: #e91e25 1px solid; }
+
 .form-horizontal .control-label, .control-label {
   font-size: 16px;
   padding-top: 13px;

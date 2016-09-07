@@ -93,6 +93,9 @@
 	  	color: $text-color;
 	  }
 	}
+	input.error, select.error {
+		outline: $brand-secondary 1px solid;
+	}
 	.form-horizontal .control-label, .control-label {
 		font-size: 16px;
 	  	padding-top: 13px;

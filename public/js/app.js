@@ -34423,7 +34423,7 @@ var MenuComponent = Vue.extend({
 			if (week === undefined) {
 				today = new Date();
 				var daysUntilTuesday = 9 - today.getDay();
-				tuesday = moment().add(daysUntilTuesday, 'days').calendar();
+				tuesday = moment().add(daysUntilTuesday, 'days');
 			} else {
 				if (this.currentDate != '') {
 					input = this.currentDate;

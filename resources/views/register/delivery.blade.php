@@ -8,22 +8,35 @@ session_start();
 <script>
 $(function() {
     $('#register4').addClass('active');
+    var formValidates = true;
     function checkFields() {
         var formValidates = true;
         $('input[required], select[required]').each(function() {
             if ($(this).val() == '') {
                 formValidates = false;
+                $(this).addClass('error');
             } 
         });
-        if (formValidates) {
-            $(".btn-primary").removeAttr("disabled");
-        } else {
-            $(".btn-primary").prop("disabled",true);
-        }
     }
-    checkFields();
-    $('input[required], select[required]').keyup(function() {
+    if(device.desktop()) var wW = window.outerWidth;
+    else var wW = $(window).width();
+    
+    var is_windows = navigator.appVersion.indexOf("Win") != -1;
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    
+    if (is_windows && is_chrome) wW = parseInt(wW) - 16;
+    $(window).resize(function() {
+        if (is_windows && is_chrome) wW = parseInt(wW) - 16;
+    });
+    $(".btn-primary").on('click',function(event) {
         checkFields();
+        if (!formValidates) {
+            if (wW < 768) { 
+                $('html,body').animate({
+                    scrollTop: $('.error').first().offset().top - 70
+                }, 500);
+            }
+        }
     });
 });
 </script>
