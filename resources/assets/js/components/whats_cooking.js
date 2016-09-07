@@ -6,7 +6,8 @@ var MenuComponent = Vue.extend({
     },
     data: function () {
 	    return {
-	    	list: []
+	    	list: [],
+	    	currentDate: ''
 	    }
     },
     methods: {
@@ -19,10 +20,14 @@ var MenuComponent = Vue.extend({
 	        	var daysUntilTuesday = 9 - today.getDay();
 	        	tuesday = moment().add(daysUntilTuesday, 'days').calendar();
 	        } else {
-	        	input = $('.weekNav.next').data('week');
+	        	if (this.currentDate != '') {
+	        		input = this.currentDate;
+	        	} else {
+	        		input = $('.weekNav').data('week');
+	        	}
+	        	
 	        	var parts = input.match(/(\d+)/g);
 	        	today = new Date( parts[0], parts[1]-1, parts[2] );
-	        	console.log(today);
 	        	if (week == 'next') {
 	        		tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).add(7, 'days');
 	        	} else {
@@ -38,6 +43,7 @@ var MenuComponent = Vue.extend({
 	        d = date.getDate();
 	        day = ('0' + date.getDate()).slice(-2);
 	        date = year + '-' + month + '-' + day;
+	        this.currentDate = date;
 
 	        var monthNames = ["January", "February", "March", "April", "May", "June",
 			  "July", "August", "September", "October", "November", "December"

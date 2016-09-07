@@ -6,7 +6,26 @@ session_start();
 
 @section('register_nav')
 <script>
-$('#register4').addClass('active');
+$(function() {
+    $('#register4').addClass('active');
+    function checkFields() {
+        var formValidates = true;
+        $('input[required], select[required]').each(function() {
+            if ($(this).val() == '') {
+                formValidates = false;
+            } 
+        });
+        if (formValidates) {
+            $(".btn-primary").removeAttr("disabled");
+        } else {
+            $(".btn-primary").prop("disabled",true);
+        }
+    }
+    checkFields();
+    $('input[required], select[required]').keyup(function() {
+        checkFields();
+    });
+});
 </script>
 @endsection
 
