@@ -28,9 +28,9 @@ var MenuComponent = Vue.extend({
 	        	
 	        	var parts = input.match(/(\d+)/g);
 	        	today = new Date( parts[0], parts[1]-1, parts[2] );
-	        	if (week == 'next') {
+	        	if (week == 'next' && $('.weekNav.next').hasClass('active')) {
 	        		tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).add(7, 'days');
-	        	} else {
+	        	} else if ( $('.weekNav.prev').hasClass('active')) {
 	        		tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).subtract(7, 'days');
 	        	}
 	        }

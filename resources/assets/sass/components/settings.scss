@@ -160,6 +160,21 @@
     top: 0;
 	cursor: pointer;
 	
+	&.disabled {
+		cursor: default;
+		border-color: #cdcdcd;
+		
+		.fa {
+			color: #cdcdcd;
+		}
+		&:hover {
+			background: none;
+			
+			.fa {
+				color: #cdcdcd;
+			}
+		}
+	}
 	&.prev {
 		left: 10px;
 		

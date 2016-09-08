@@ -16,9 +16,9 @@ try {
     
     <div class="row">
         <div class="title text-center">
-            <div class="weekNav prev" @click="fetchNewMenu('prev')" data-week=""><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+            <div class="weekNav prev disabled" @click="fetchNewMenu('prev')" data-week=""><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
             <h1>What's Cooking the week of <span class="date"></span></h1>
-            <div class="weekNav next" @click="fetchNewMenu('next')" data-week=""><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+            <div class="weekNav next active" @click="fetchNewMenu('next')" data-week=""><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
         </div>
     </div><!-- .row -->
     <div class="row buttons padding">

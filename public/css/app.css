@@ -6986,6 +6986,15 @@ table.month {
   line-height: 1em;
   top: 0;
   cursor: pointer; }
+  .weekNav.disabled {
+    cursor: default;
+    border-color: #cdcdcd; }
+    .weekNav.disabled .fa {
+      color: #cdcdcd; }
+    .weekNav.disabled:hover {
+      background: none; }
+      .weekNav.disabled:hover .fa {
+        color: #cdcdcd; }
   .weekNav.prev {
     left: 10px; }
     @media only screen and (min-width: 992px) {
