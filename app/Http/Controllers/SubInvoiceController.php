@@ -596,7 +596,7 @@ class SubinvoiceController extends Controller
         $subinvoice->charge_amount = $event_json->data->object->lines->data[0]->amount;
         $subinvoice->plan_id = $event_json->data->object->lines->data[0]->plan->id;
         $subinvoice->invoice_status = "charged_not_shipped";
-        $subinvoice->raw_json = $input;
+        $subinvoice->raw_json = json_encode($event_json);
 
 
         //link user_id
