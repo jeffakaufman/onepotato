@@ -33,7 +33,7 @@ class SendWelcomeEmail
      */
     public function handle(UserHasRegistered $event)
     {
-        $this->_sendAc($event->user);
+//        $this->_sendAc($event->user);
         $this->_sendEmail($event->user);
     }
 
