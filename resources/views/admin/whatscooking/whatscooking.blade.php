@@ -62,7 +62,7 @@
 						        		</div>
 						        		<div class="col-sm-4">
 						        		{!! Form::checkbox('hasNoGluten',1,false) !!} Gluten-Free<br />
-						        		{!! Form::checkbox('hasNuts',1,false) !!} Nuts<br />
+						        		{!! Form::checkbox('hasNuts',1,false) !!} Nut-Free<br />
 						        		</div>  
 						        	</div>  
 						        </div>     
@@ -180,7 +180,7 @@
 	            	    	    	 			   	@if($menu->hasNoGluten)
 	            	    	        					<img src='/img/no_wheat.png'>
 													@endif
-	            	    	       		 			@if(!$menu->hasNuts)
+	            	    	       		 			@if($menu->hasNuts)
 	            	    	        					<img src='/img/no_nuts.png'>
 													@endif	 
 	            	    	        				@if($menu->noDairy)
