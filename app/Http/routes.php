@@ -127,6 +127,7 @@ Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateSh
 //ship station routes
 Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
+Route::get('/shipstation/test','SubinvoiceController@getOrderXMLTest');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
 //cancellation, reactivation, hold routes
