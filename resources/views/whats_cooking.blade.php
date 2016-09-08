@@ -101,7 +101,9 @@ $(function() {
             $('.meal.omni').show(); 
             $('.meal.veg').show();
         } else {
+            $('.btn-outline').removeClass('active');
             $(this).addClass('active');
+
             if ($(this).hasClass('veg')) {
                 $('.meal.omni').hide(); 
                 $('.meal.veg').show(); 
