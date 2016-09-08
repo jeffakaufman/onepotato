@@ -34,7 +34,11 @@ class SendWelcomeEmail
     public function handle(UserHasRegistered $event)
     {
         $this->_sendAc($event->user);
-        $this->_sendEmail($event->user);
+        try {
+            $this->_sendEmail($event->user);
+        } catch (\Exception $e) {
+
+        }
     }
 
     private function _sendAc(User $user) {
