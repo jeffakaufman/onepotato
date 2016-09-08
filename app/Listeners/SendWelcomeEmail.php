@@ -37,7 +37,7 @@ class SendWelcomeEmail
         try {
             $this->_sendEmail($event->user);
         } catch (\Exception $e) {
-
+//var_dump($e->getMessage());
         }
     }
 
