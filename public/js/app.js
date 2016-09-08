@@ -34468,8 +34468,9 @@ var MenuComponent = Vue.extend({
 	},
 	watch: {
 		getMenu: function getMenu() {
-			$('.meal .inner').matchHeight();
-			$('.meal .inner').matchHeight();
+			setTimeout(function () {
+				$('.meal .inner').matchHeight();
+			}, 1000);
 		}
 	}
 });
