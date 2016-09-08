@@ -34451,12 +34451,12 @@ var MenuComponent = Vue.extend({
 			this.currentDate = date;
 
 			var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			date2 = 'Tuesday, ' + monthNames[m] + ' ' + d;
+			date2 = monthNames[m] + ' ' + d;
 
 			this.$http.get('/whatscooking/' + date, function (meals) {
 				this.list = meals;
 				$('.weekNav').attr('data-week', date);
-				$('.weekPager .date').text(date2);
+				$('.title .date').text(date2);
 				//console.log(this.list);
 			}.bind(this));
 		}
@@ -34468,7 +34468,7 @@ var MenuComponent = Vue.extend({
 	},
 	watch: {
 		getMenu: function getMenu() {
-			$('.meal').matchHeight();
+			$('.meal .inner').matchHeight();
 		}
 	}
 });
