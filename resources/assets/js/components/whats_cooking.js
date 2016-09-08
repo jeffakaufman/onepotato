@@ -66,6 +66,7 @@ var MenuComponent = Vue.extend({
 	watch: {
 		getMenu: function() {
 			$('.meal .inner').matchHeight();
+			$('.meal .inner').matchHeight();
 		}
 	}
 });
