@@ -34470,7 +34470,7 @@ var MenuComponent = Vue.extend({
 		getMenu: function getMenu() {
 			setTimeout(function () {
 				$('.meal .inner').matchHeight();
-			}, 1000);
+			}, 2000);
 		}
 	}
 });

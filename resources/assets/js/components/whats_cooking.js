@@ -65,7 +65,7 @@ var MenuComponent = Vue.extend({
 	},
 	watch: {
 		getMenu: function() {
-			setTimeout(function(){ $('.meal .inner').matchHeight(); }, 1000);
+			setTimeout(function(){ $('.meal .inner').matchHeight(); }, 2000);
 		}
 	}
 });
