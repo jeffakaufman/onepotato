@@ -8,22 +8,35 @@ session_start();
 <script>
 $(function() {
     $('#register4').addClass('active');
+    var formValidates = true;
     function checkFields() {
         var formValidates = true;
         $('input[required], select[required]').each(function() {
             if ($(this).val() == '') {
                 formValidates = false;
+                $(this).addClass('error');
             } 
         });
-        if (formValidates) {
-            $(".btn-primary").removeAttr("disabled");
-        } else {
-            $(".btn-primary").prop("disabled",true);
-        }
     }
-    checkFields();
-    $('input[required], select[required]').keyup(function() {
+    if(device.desktop()) var wW = window.outerWidth;
+    else var wW = $(window).width();
+    
+    var is_windows = navigator.appVersion.indexOf("Win") != -1;
+    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+    
+    if (is_windows && is_chrome) wW = parseInt(wW) - 16;
+    $(window).resize(function() {
+        if (is_windows && is_chrome) wW = parseInt(wW) - 16;
+    });
+    $(".btn-primary").on('click',function(event) {
         checkFields();
+        if (!formValidates) {
+            if (wW < 768) { 
+                $('html,body').animate({
+                    scrollTop: $('.error').first().offset().top - 70
+                }, 500);
+            }
+        }
     });
 });
 </script>
@@ -101,18 +114,18 @@ $(function() {
 
                                 <!-- First Name -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="firstname" placeholder="First Name" value="@if (isset($firstname)){{$firstname}}@endif" autofocus required>
+                                    <input type="text" class="form-control" name="firstname" placeholder="First Name*" value="@if (isset($firstname)){{$firstname}}@endif" autofocus required>
                                 </div>
 
                                 <!-- Last Name -->
                                 <div class="form-row col-sm-6 thinpadding last">
-                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name" value="@if (isset($lastname)){{$lastname}}@endif" required>
+                                    <input type="text" class="form-control" name="lastname" placeholder="Last Name*" value="@if (isset($lastname)){{$lastname}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Address -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="address" lazy placeholder="Address" value="@if (isset($address)){{$address}}@endif" required>
+                                    <input type="text" class="form-control" name="address" lazy placeholder="Address*" value="@if (isset($address)){{$address}}@endif" required>
                                 </div>
 
                                 <!-- Address Line 2 -->
@@ -123,7 +136,7 @@ $(function() {
                             <div class="row extrapadding">
                                 <!-- City -->
                                 <div class="form-row col-sm-6 thinpadding first">
-                                    <input type="text" class="form-control" name="city" lazy placeholder="City" value="@if (isset($city)){{$city}}@endif" required>
+                                    <input type="text" class="form-control" name="city" lazy placeholder="City*" value="@if (isset($city)){{$city}}@endif" required>
                                 </div>
                                 <!-- State & ZIP Code -->
                                 <div class="form-row col-sm-4 thinpadding">
@@ -137,13 +150,13 @@ $(function() {
                                 </div>
                                 <!-- Zip Code -->
                                 <div class="form-row col-sm-2 thinpadding last">
-                                    <input type="text" class="form-control" name="zip" placeholder="Zip" value="@if (isset($zip)){{$zip}}@endif" required>
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip*" value="@if (isset($zip)){{$zip}}@endif" required>
                                 </div>
                             </div>
                             <div class="row extrapadding">
                                 <!-- Phone -->
                                 <div class="form-row col-sm-12 thinpadding first last">
-                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number" value="@if (isset($phone)){{$phone}}@endif" required>
+                                    <input type="text" class="form-control" name="phone" placeholder="Phone Number*" value="@if (isset($phone)){{$phone}}@endif" required>
                                 </div>
                             </div>
 

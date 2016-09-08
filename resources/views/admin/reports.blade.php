@@ -2,7 +2,7 @@
 
 @section('page_header')
     <h1>
-        Dashboard
+        Reports
         <small>Control panel</small>
     </h1>
     <ol class="breadcrumb">
@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><strong>This Weeks Menus</strong></div>
+                    <div class="panel-heading"><strong>Upcoming Meals</strong></div>
                     <div class="panel-body">
                     
                     
@@ -83,6 +83,63 @@
                 </div>
             </div>
             </div>
+
+
+            <div class="col-sm-2"> 
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>Omnivore Meals</strong></div>
+                    <div class="panel-body">
+                    	<div class="row">
+                    		<div class="col-sm-5"> 
+                    			Beef
+                    		</div>	
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->beef}}
+                    		</div>	
+                    	</div>
+                    	<div class="row">	
+                    		<div class="col-sm-5">
+                    			Poultry
+                    		</div>
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->poultry}}
+                    		</div>	
+                    	</div>
+                    	<div class="row">
+                    		<div class="col-sm-5">
+                    			Fish
+                    		</div>
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->fish}}
+                    		</div>	
+                    	</div>
+                    	<div class="row">
+                    		<div class="col-sm-5">
+                    			Lamb
+                    		</div>
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->lamb}}
+                    		</div>
+                    	</div>
+                    	<div class="row">	
+                    		<div class="col-sm-5">
+                    			Pork
+                    		</div>
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->pork}}
+                    		</div>	
+                    	</div>
+                    	<div class="row">
+                    		<div class="col-sm-5">
+                    			Shellfish
+                    		</div>
+                    		<div class="col-sm-5 text-right"> 
+                    			{{$meat->shellfish}}
+                    		</div>
+                    	</div>
+                   	</div>
+           		</div>
+           	</div>
       		<div class="col-sm-5"> 
       			<div class="row">
         			<div class="panel panel-default">
@@ -94,33 +151,10 @@
         				@foreach ($totalSubs as $totalSub)
 	    					<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
             					<div class="col-sm-10">
-            					{{  $totalSub->status  }}
+                					{{ $totalSub->product_description }}
                 				</div>
                					<div class="col-sm-2 text-right">
-            					{{  $totalSub->total  }}
-                				</div>
-            				</div>	
-            				<?php
-            					$i++; 
-                    		?>
-            				@endforeach
-						</div>
-      				</div>  
-      			</div> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>Upcoming Skips</strong></div>
-                		<div class="panel-body">
-                		<?php 
-                	    		$i = 0;
-                	    ?>
-        				@foreach ($skips as $skip)
-	    					<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
-            					<div class="col-sm-10">
-            					{{  date('F d, Y', strtotime($skip->date_to_hold))  }}
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $skip->total  }}
+                					{{$totalSub->total}}
                 				</div>
             				</div>	
             				<?php
