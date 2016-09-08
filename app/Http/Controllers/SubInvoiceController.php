@@ -199,15 +199,16 @@ class SubinvoiceController extends Controller
 			
 				if ($shippingAddress) {
 					//create a new record in the Orders table
-					$order = new Order;
+					//$order = new Order;
 				    // $order->save();
 
 					//get the OrderID from the order table
 					//add arbitrary number to the primary key to obfuscate order ids
 
-					$order_id = $order->id + 11565;
-					$order->order_id = $order_id;
+					//$order_id = $order->id + 11565;
+					//$order->order_id = $order_id;
 					// $order->save();	
+					$order_id = "12345";
 			
 					//add a batch ID so that we can easily get all the orders sent to ship station
 			
