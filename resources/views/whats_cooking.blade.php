@@ -56,7 +56,7 @@ try {
                                     <img src="/img/pork.png" v-show="meal.hasPork">
                                     <span v-show="meal.hasShellfish">Shellfish</span>
                                     <img src="/img/no_wheat.png" v-show="meal.hasNoGluten">
-                                    <img src="/img/no_nuts.png" v-show="!meal.hasNuts">
+                                    <img src="/img/no_nuts.png" v-show="meal.hasNuts">
                                     <img src="/img/no_dairy.jpg" v-show="meal.noDairy">
                                     <img src="/img/no_eggs.png" v-show="meal.noEgg">
                                     <img src="/img/no_soy.png" v-show="meal.noSoy">
