@@ -7019,6 +7019,10 @@ table.month {
     .weekNav:hover .fa {
       color: #fff; }
 
+.alignright {
+  float: right;
+  margin-left: 20px; }
+
 tr.blank {
   display: none; }
 
@@ -7195,6 +7199,17 @@ h2 {
   font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   color: #585858; }
+
+#faq h2 {
+  color: #1db8bf;
+  font-size: 24px;
+  text-transform: none;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+
+#faq h3 {
+  color: #585858;
+  font-size: 18px;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
 
 .tab-pane h2 {
   border-bottom: #585858 1px solid;

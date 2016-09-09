@@ -65,6 +65,17 @@ h2 {
 	text-transform: uppercase;
 	color: $text-color2;
 }
+#faq h2 {
+	color: $brand-primary;
+	font-size: 24px;
+	text-transform: none;
+	font-family: $font-family-semibold;
+}
+#faq h3 {
+	color: $text-color2;
+	font-size: 18px;
+	font-family: $font-family-semibold;
+}
 .tab-pane h2 {
 	border-bottom: $text-color2 1px solid;
 	padding-bottom: 1em;
