@@ -35,7 +35,7 @@ try {
                                 
             <div id="menu">
                 <div class="col-xs-12">
-                    <div class="meal col-xs-4" v-for="meal in getMenu" v-bind:class="{ 'veg':meal.isVegetarian, 'omni':meal.isOmnivore }" track-by="id">
+                    <div class="meal col-xs-12 col-sm-6 col-md-4" v-for="meal in getMenu" v-bind:class="{ 'veg':meal.isVegetarian, 'omni':meal.isOmnivore }" track-by="id">
                         <div class="inner">
                             
                             <div class="text-center">
