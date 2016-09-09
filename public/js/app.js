@@ -34453,6 +34453,10 @@ var MenuComponent = Vue.extend({
 			}
 			// console.log(tuesday);
 			if (tuesday != '') {
+				var filter;
+				$('.btn-outline').each(function () {
+					if ($(this).hasClass('active')) filter = $(this).attr('id');
+				});
 				date = new Date(tuesday);
 
 				year = date.getFullYear();
@@ -34471,9 +34475,26 @@ var MenuComponent = Vue.extend({
 					this.list = meals;
 					$('.weekNav').attr('data-week', date);
 					$('.title .date').text(date2);
+					if (filter) {
+						this.filterMenu(filter);
+					} else {
+						setTimeout(function () {
+							$('.meal').addClass('loaded');
+						}, 1000);
+					}
 					//console.log(this.list);
 				}.bind(this));
 			}
+		},
+		filterMenu: function filterMenu(filter) {
+			setTimeout(function () {
+				$('.meal').hide();
+				$('.meal.' + filter).show();
+				$('.meal').addClass('loaded');
+			}, 1000);
+			setTimeout(function () {
+				$('.meal:visible .inner').matchHeight();
+			}, 3000);
 		}
 	},
 	computed: {

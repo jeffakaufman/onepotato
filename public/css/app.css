@@ -6963,7 +6963,11 @@ table.month {
       width: 80%;
       margin: 0 10%; }
   #whats_cooking .meal {
-    margin-bottom: 30px; }
+    margin-bottom: 30px;
+    opacity: 0;
+    transition: opacity 0.5 ease; }
+    #whats_cooking .meal.loaded {
+      opacity: 1; }
     #whats_cooking .meal .inner {
       background: #fff;
       border: 1px solid #1db8bf;

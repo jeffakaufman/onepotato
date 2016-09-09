@@ -22,9 +22,9 @@ try {
         </div>
     </div><!-- .row -->
     <div class="row buttons padding">
-        <div class="col-xs-12 text-center">
-            <div class="btn btn-outline veg">Vegetarian Box</div>
-            <div class="btn btn-outline omni">Omnivore Box</div>
+        <div class="col-xs-12 filters text-center">
+            <div id="veg" class="btn btn-outline veg">Vegetarian Box</div>
+            <div id="omni" class="btn btn-outline omni">Omnivore Box</div>
         </div>
     </div><!-- .row -->
     <div class="row">
@@ -94,7 +94,7 @@ try {
 </div>
 <script>
 $(function() {
-    $('.btn-outline').click(function() {
+    $('.filters').on('click','.btn-outline', function() {
 
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
@@ -112,7 +112,7 @@ $(function() {
                 $('.meal.omni').show();
             }
         }
-        
+        $('.meal:visible .inner').matchHeight();
     });
 });
 </script>
