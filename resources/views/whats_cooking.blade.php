@@ -52,9 +52,9 @@ try {
                                     <img src="/img/beef.png" v-show="meal.hasBeef">
                                     <img src="/img/chicken.png" v-show="meal.hasPoultry">
                                     <img src="/img/fish.png" v-show="meal.hasFish">
-                                    <span v-show="meal.hasLamb">Lamb</span>
+                                    <img src="/img/lamb.png" v-show="meal.hasLamb">
                                     <img src="/img/pork.png" v-show="meal.hasPork">
-                                    <span v-show="meal.hasShellfish">Shellfish</span>
+                                    <img src="/img/shrimp.png" v-show="meal.hasShellfish">
                                     <img src="/img/no_wheat.png" v-show="meal.hasNoGluten">
                                     <img src="/img/no_nuts.png" v-show="meal.hasNuts">
                                     <img src="/img/no_dairy.jpg" v-show="meal.noDairy">
