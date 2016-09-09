@@ -65,16 +65,23 @@ h2 {
 	text-transform: uppercase;
 	color: $text-color2;
 }
-#faq h2 {
+#static h2 {
 	color: $brand-primary;
-	font-size: 24px;
+	font-size: 21px;
 	text-transform: none;
 	font-family: $font-family-semibold;
+	
+	@media (min-width: 1200px) {
+		font-size: 24px;
+	}
 }
-#faq h3 {
+#static h3 {
 	color: $text-color2;
-	font-size: 18px;
+	font-size: 16px;
 	font-family: $font-family-semibold;
+	@media (min-width: 1200px) {
+		font-size: 18px;
+	}
 }
 .tab-pane h2 {
 	border-bottom: $text-color2 1px solid;
@@ -249,6 +256,7 @@ p {
 }
 img {
 	max-width: 100%;
+	height: auto;
 }
 .alert-danger strong {
 	color: #fff;
@@ -634,35 +642,45 @@ h1 .sidelink {
 	}
 	li {
 		list-style: none;
-	
-		@media (min-width: 768px) {
-			line-height: 85px;
-			display: inline-block;
-		}
 	}
 	
 	.links {
+		margin-top: 1em;
 		a {
 			color: $brand-primary;
 		}
 		a:hover {
 			color: $brand-secondary;
 		}
-
+		li {
+			line-height: 85px;
+			display: inline-block;
+			margin-right: 30px;
+			@media (max-width: 768px) {
+				line-height: 2em;
+				text-align: center;
+				display: block;
+				margin: 0;
+			}
+		}
 		@media (min-width: 768px) {
-
+			margin-top: 0;
 			float: left;
 		
-			li {
-				margin-right: 30px;
-			}
 		}
 		
 	}
 	.social {
-		float: right;
+		
 		line-height: 85px;
 		
+		@media (min-width: 768px) {
+			float: right;
+		}
+		@media (max-width: 767px) {
+			width: 100%;
+			text-align: center;
+		}
 		li {
 			background: $brand-primary;
 			-webkit-border-radius: 50%;
@@ -673,6 +691,7 @@ h1 .sidelink {
 			line-height: 32px;
 			margin: 0 5px;
 			text-align: center;
+			display: inline-block;
 			cursor: pointer;
 			
 			&:hover {
@@ -753,4 +772,8 @@ h1 .sidelink {
 	font-size: 10px;
 	color: $brand-primary;
 	padding: 10px 0;
+	
+	@media (max-width: 767px) {
+		text-align: center;
+	}
 }

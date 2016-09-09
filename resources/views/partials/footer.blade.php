@@ -11,12 +11,12 @@
 	<div class="container">
 		<div class="links">
 			<ul>
-				<li><a href="#">FAQ</a></li>
-				<li><a href="#">One Family. One Meal.</a></li>
-				<li><a href="#">Our Partners</a></li>
-				<li><a href="#">contact us</a></li>
-				<li><a href="#">privacy policy</a></li>
-				<li><a href="#">terms of use</a></li>
+				<li><a href="/how-it-works">How it Works</a></li>
+				<li><a href="/learn-more">Learn More</a></li>
+				<li><a href="/about-us">About Us</a></li>
+				<li><a href="/recycling">Recycling</a></li>
+				<li><a href="mailto:hello@onepotato.com">contact us</a></li>
+				<li><a href="/handling">Handling</a></li>
 			</ul>
 		</div>
 		<div class="social">

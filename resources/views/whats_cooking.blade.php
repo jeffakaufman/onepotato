@@ -45,7 +45,7 @@ try {
                                 </div>
                                 <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
                             </div>
-                            <div class="text font16 allpadding">
+                            <div class="text allpadding">
                                 <h4>@{{ meal.menu_title }}</h4>
                                 @{{ meal.menu_description }}
                                 <div class="icons">
@@ -55,11 +55,11 @@ try {
                                     <img src="/img/lamb.png" v-show="meal.hasLamb">
                                     <img src="/img/pork.png" v-show="meal.hasPork">
                                     <img src="/img/shrimp.png" v-show="meal.hasShellfish">
-                                    <img src="/img/no_wheat.png" v-show="meal.hasNoGluten">
-                                    <img src="/img/no_nuts.png" v-show="meal.hasNuts">
-                                    <img src="/img/no_dairy.jpg" v-show="meal.noDairy">
-                                    <img src="/img/no_eggs.png" v-show="meal.noEgg">
-                                    <img src="/img/no_soy.png" v-show="meal.noSoy">
+                                    <img src="/img/no_wheat.png" class="no" v-show="meal.hasNoGluten">
+                                    <img src="/img/no_nuts.png" class="no" v-show="meal.hasNuts">
+                                    <img src="/img/no_dairy.jpg" class="no" v-show="meal.noDairy">
+                                    <img src="/img/no_eggs.png" class="no" v-show="meal.noEgg">
+                                    <img src="/img/no_soy.png" class="no" v-show="meal.noSoy">
                                     <img src="/img/oven.png" v-show="meal.oven"> 
                                     <img src="/img/fry_pan.png" v-show="meal.stovetop">
                                     <img src="/img/dutch_oven.png" v-show="meal.slowcooker">

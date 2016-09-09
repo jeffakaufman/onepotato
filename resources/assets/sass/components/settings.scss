@@ -75,7 +75,7 @@
 	// }
 }
 .allpadding {
-	padding: 15px;
+	padding: 10px 15px;
 }
 .padding {
 	padding-top: 1em;
@@ -135,6 +135,9 @@
 		&.loaded {
 			opacity: 1;
 		}
+		h4 {
+			margin-bottom: 0.25em;
+		}
 		.inner {
 			background: #fff;
 			border: 1px solid $brand-primary;
@@ -146,6 +149,10 @@
 			bottom: 15px;
 			img, div {
 				height: 30px;
+			}
+			img.no {
+				height: 20px;
+				vertical-align: bottom;
 			}
 		}
 	}
@@ -181,7 +188,7 @@
 		}
 	}
 	&.prev {
-		left: 10px;
+		left: 30px;
 		
 		@media only screen and (min-width: 992px) {
 			left: 10%;
@@ -191,7 +198,7 @@
 		}
 	}
 	&.next {
-		right: 10px;
+		right: 30px;
 		
 		@media only screen and (min-width: 992px) {
 			right: 10%;
@@ -220,6 +227,7 @@
 .alignright {
 	float: right;
 	margin-left: 20px;
+	margin-bottom: 20px;
 }
 tr.blank {
 	display: none;
