@@ -13,49 +13,87 @@ var MenuComponent = Vue.extend({
     methods: {
     	fetchMenu: function(week) {
     		
-    		var date, date2, today, tuesday, year, m, month, d, day, input;
-
+    		var date, date2, today, year, m, month, d, day, input;
+    		var tuesday = '';
 	        if (week  === undefined) {
 	        	today = new Date();
 	        	var daysUntilTuesday = 9 - today.getDay();
 	        	tuesday = moment().add(daysUntilTuesday, 'days');
 	        } else {
-	        	if (this.currentDate != '') {
-	        		input = this.currentDate;
-	        	} else {
-	        		input = $('.weekNav').data('week');
-	        	}
-	        	
-	        	var parts = input.match(/(\d+)/g);
-	        	today = new Date( parts[0], parts[1]-1, parts[2] );
-	        	if (week == 'next') {
-	        		tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).add(7, 'days');
-	        	} else {
-	        		tuesday = moment([today.getFullYear(), today.getMonth(), today.getDate()]).subtract(7, 'days');
+	        	today = new Date();
+	        	var parts = this.currentDate.match(/(\d+)/g);
+	        	var curDeliveryWeek = new Date( parts[0], parts[1]-1, parts[2] );
+	        	var nextDeliveryWeek = moment([curDeliveryWeek.getFullYear(), curDeliveryWeek.getMonth(), curDeliveryWeek.getDate()]).add(7, 'days');
+	        	var nextnextDeliveryWeek = moment([curDeliveryWeek.getFullYear(), curDeliveryWeek.getMonth(), curDeliveryWeek.getDate()]).add(14, 'days');
+	        	var lastDeliveryWeek = moment([curDeliveryWeek.getFullYear(), curDeliveryWeek.getMonth(), curDeliveryWeek.getDate()]).subtract(7, 'days');
+	        	var lastlastDeliveryWeek = moment([curDeliveryWeek.getFullYear(), curDeliveryWeek.getMonth(), curDeliveryWeek.getDate()]).subtract(14, 'days');
+	        	// console.log(nextDeliveryWeek.format('YYYY-MM-DD'));
+	        	// console.log(nextnextDeliveryWeek.format('YYYY-MM-DD'));
+
+	        	if (week == 'next' && $('.weekNav.next').hasClass('active')) {
+	        		tuesday = nextDeliveryWeek;
+	        		$('.weekNav.prev').removeClass('disabled').addClass('active');
+	        		var http = new XMLHttpRequest();
+		        	var testjson = '/whatscooking/'+nextnextDeliveryWeek.format('YYYY-MM-DD');
+				    http.open('HEAD', testjson, false);
+				    http.send();
+				    if(http.status>200) {
+				    	$('.weekNav.next').addClass('disabled').removeClass('active');
+		        	}
+	        	} else if (week == 'prev' && $('.weekNav.prev').hasClass('active')) {
+	        		tuesday = lastDeliveryWeek;
+	        		$('.weekNav.next').removeClass('disabled').addClass('active');
+	        		if (moment(lastlastDeliveryWeek).isBefore(today, 'day')) 
+	        			$('.weekNav.prev').addClass('disabled').removeClass('active');
+	        		else 
+	        			$('.weekNav.prev').removeClass('disabled').addClass('active');
 	        	}
 	        }
-	        date = new Date(tuesday);
+	        // console.log(tuesday);
+	        if (tuesday != '') {
+	        	var filter;
+	        	$('.btn-outline').each(function() {
+	        		if ($(this).hasClass('active')) filter = $(this).attr('id');
+	        	});
+		        date = new Date(tuesday);
 
-	        year = date.getFullYear();
-	        if (year <= 1999) year = year + 100;
-	        m = date.getMonth();
-	        month = ('0' + (date.getMonth()+1)).slice(-2);
-	        d = date.getDate();
-	        day = ('0' + date.getDate()).slice(-2);
-	        date = year + '-' + month + '-' + day;
-	        this.currentDate = date;
+		        year = date.getFullYear();
+		        if (year <= 1999) year = year + 100;
+		        m = date.getMonth();
+		        month = ('0' + (date.getMonth()+1)).slice(-2);
+		        d = date.getDate();
+		        day = ('0' + date.getDate()).slice(-2);
+		        date = year + '-' + month + '-' + day;
+		        this.currentDate = date;
 
-	        var monthNames = ["January", "February", "March", "April", "May", "June",
-			  "July", "August", "September", "October", "November", "December"
-			];
-	        date2 = 'Tuesday, ' + monthNames[m] + ' ' + d;
+		        var monthNames = ["January", "February", "March", "April", "May", "June",
+				  "July", "August", "September", "October", "November", "December"
+				];
+		        date2 = monthNames[m] + ' ' + d;
 
-			this.$http.get('/whatscooking/'+ date, function(meals){
-	    		this.list = meals;
-	    		$('.weekNav').attr('data-week',date);
-	    		$('.weekPager .date').text(date2);
-	    		//console.log(this.list);
-	    	}.bind(this));
+				this.$http.get('/whatscooking/'+ date, function(meals){
+		    		this.list = meals;
+		    		$('.weekNav').attr('data-week',date);
+		    		$('.title .date').text(date2);
+		    		if (filter) {
+		    			this.filterMenu(filter);
+		    		} else {
+		    			setTimeout(function(){ $('.meal').addClass('loaded'); }, 1000);
+		    		}
+		    		//console.log(this.list);
+		    	}.bind(this));
+		    }
+
+	  	},
+	  	filterMenu: function(filter) {
+			setTimeout(function(){ 
+				$('.meal').hide();
+				$('.meal.'+filter).show();
+				$('.meal').addClass('loaded');
+			}, 1000);
+			setTimeout(function(){ 
+				$('.meal:visible .inner').matchHeight();
+			}, 3000);
 	  	}
 	},
 	computed: {
@@ -65,7 +103,7 @@ var MenuComponent = Vue.extend({
 	},
 	watch: {
 		getMenu: function() {
-			$('.meal').matchHeight();
+			setTimeout(function(){ $('.meal .inner').matchHeight(); }, 2000);
 		}
 	}
 });

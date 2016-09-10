@@ -165,7 +165,7 @@ $(function() {
                         <div class="panel-heading text-left extrapadding">Special Delivery Instructions <a data-toggle="tooltip" data-title="Please be as specific as possible. Instructions such as “leave at door” should indicate the type of door (e.g. exterior or interior door) and include any other helpful context, such as a code to enter the building." class="sidelink">what's this?</a></div>
                         <div class="panel-body font16">
                             <div class="row extrapadding">
-                                <div class="col-sm-12 thinpadding first last"><textarea name="delivery_instructions" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
+                                <div class="col-sm-12 thinpadding first last"><textarea name="delivery_instructions" maxlength="100" class="form-control">@if (isset($instructions)){{ $instructions }}@endif</textarea></div>
                             </div>
                         </div>
 <?php /*

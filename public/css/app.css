@@ -5821,17 +5821,20 @@ button.close {
     width: 90%; } }
 
 .btn-outline {
-  border: #1db8bf 2px solid;
+  border: #e91e25 2px solid;
   background: #fff;
-  color: #1db8bf;
+  color: #e91e25;
   border-radius: 0;
-  font-size: 16px;
-  padding: 6px 10px 4px 10px;
+  font-size: 14px;
+  padding: 6px 20px 4px 20px;
   outline: 0;
-  display: inline-block; }
-  .btn-outline:hover, .btn-outline.active {
-    color: #e91e25;
-    border-color: #e91e25; }
+  display: inline-block;
+  cursor: pointer;
+  box-shadow: none; }
+  .btn-outline.active, .btn-outline:hover {
+    color: #fff;
+    background: #e91e25;
+    box-shadow: none; }
 
 .btn-secondary {
   background-color: #1db8bf; }
@@ -6912,6 +6915,9 @@ table.month {
     .thinpadding.last {
       padding-right: 0; } }
 
+.allpadding {
+  padding: 10px 15px; }
+
 .padding {
   padding-top: 1em;
   padding-bottom: 1em; }
@@ -6945,31 +6951,87 @@ table.month {
 
 #whats_cooking {
   min-height: 600px; }
-  @media only screen and (min-width: 768px) {
-    #whats_cooking .buttons {
-      padding: 0 40px 20px 0; } }
+  #whats_cooking .buttons {
+    padding-bottom: 20px; }
+    @media only screen and (min-width: 768px) {
+      #whats_cooking .buttons {
+        padding: 20px 0 40px 0; } }
+  #whats_cooking .title {
+    position: relative;
+    margin-top: 30px; }
+    #whats_cooking .title h1 {
+      width: 80%;
+      margin: 0 10%; }
+  #whats_cooking .meal {
+    margin-bottom: 30px;
+    opacity: 0;
+    transition: opacity 0.5 ease; }
+    #whats_cooking .meal.loaded {
+      opacity: 1; }
+    #whats_cooking .meal h4 {
+      margin-bottom: 0.25em; }
+    #whats_cooking .meal .inner {
+      background: #fff;
+      border: 1px solid #1db8bf;
+      padding-bottom: 50px;
+      position: relative; }
+    #whats_cooking .meal .icons {
+      position: absolute;
+      bottom: 15px; }
+      #whats_cooking .meal .icons img, #whats_cooking .meal .icons div {
+        height: 30px; }
+      #whats_cooking .meal .icons img.no {
+        height: 20px;
+        vertical-align: bottom; }
 
-@media only screen and (min-width: 768px) {
-  .weekPager {
-    float: right;
-    margin: 18px 30px 0 0; } }
-
-.weekPager .date {
-  display: inline-block;
-  color: #1db8bf;
-  font-size: 24px;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
-  margin-right: 10px; }
-
-.weekPager .weekNav {
-  display: inline-block;
+.weekNav {
+  position: absolute;
+  border: 2px solid #e91e25;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding: 5px 0;
+  text-align: center;
+  line-height: 1em;
+  top: 0;
   cursor: pointer; }
-
-.weekPager .fa {
-  font-size: 28px;
-  color: #1db8bf; }
-  .weekPager .fa:hover {
+  .weekNav.disabled {
+    cursor: default;
+    border-color: #cdcdcd; }
+    .weekNav.disabled .fa {
+      color: #cdcdcd; }
+    .weekNav.disabled:hover {
+      background: none; }
+      .weekNav.disabled:hover .fa {
+        color: #cdcdcd; }
+  .weekNav.prev {
+    left: 30px; }
+    @media only screen and (min-width: 992px) {
+      .weekNav.prev {
+        left: 10%; } }
+    .weekNav.prev .fa {
+      margin-right: 2px; }
+  .weekNav.next {
+    right: 30px; }
+    @media only screen and (min-width: 992px) {
+      .weekNav.next {
+        right: 10%; } }
+    .weekNav.next .fa {
+      margin-left: 3px; }
+  .weekNav .fa {
+    font-size: 18px;
     color: #e91e25; }
+    .weekNav .fa:hover {
+      color: #e91e25; }
+  .weekNav:hover {
+    background: #e91e25; }
+    .weekNav:hover .fa {
+      color: #fff; }
+
+.alignright {
+  float: right;
+  margin-left: 20px;
+  margin-bottom: 20px; }
 
 tr.blank {
   display: none; }
@@ -7148,6 +7210,23 @@ h2 {
   text-transform: uppercase;
   color: #585858; }
 
+#static h2 {
+  color: #1db8bf;
+  font-size: 21px;
+  text-transform: none;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  @media (min-width: 1200px) {
+    #static h2 {
+      font-size: 24px; } }
+
+#static h3 {
+  color: #585858;
+  font-size: 16px;
+  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  @media (min-width: 1200px) {
+    #static h3 {
+      font-size: 18px; } }
+
 .tab-pane h2 {
   border-bottom: #585858 1px solid;
   padding-bottom: 1em; }
@@ -7281,7 +7360,8 @@ p {
   margin: 0 0 1.5em; }
 
 img {
-  max-width: 100%; }
+  max-width: 100%;
+  height: auto; }
 
 .alert-danger strong {
   color: #fff; }
@@ -7559,22 +7639,35 @@ h1 .sidelink {
     padding: 0; }
   #footer li {
     list-style: none; }
+  #footer .links {
+    margin-top: 1em; }
+    #footer .links a {
+      color: #1db8bf; }
+    #footer .links a:hover {
+      color: #e91e25; }
+    #footer .links li {
+      line-height: 85px;
+      display: inline-block;
+      margin-right: 30px; }
+      @media (max-width: 768px) {
+        #footer .links li {
+          line-height: 2em;
+          text-align: center;
+          display: block;
+          margin: 0; } }
     @media (min-width: 768px) {
-      #footer li {
-        line-height: 85px;
-        display: inline-block; } }
-  #footer .links a {
-    color: #1db8bf; }
-  #footer .links a:hover {
-    color: #e91e25; }
-  @media (min-width: 768px) {
-    #footer .links {
-      float: left; }
-      #footer .links li {
-        margin-right: 30px; } }
+      #footer .links {
+        margin-top: 0;
+        float: left; } }
   #footer .social {
-    float: right;
     line-height: 85px; }
+    @media (min-width: 768px) {
+      #footer .social {
+        float: right; } }
+    @media (max-width: 767px) {
+      #footer .social {
+        width: 100%;
+        text-align: center; } }
     #footer .social li {
       background: #1db8bf;
       border-radius: 50%;
@@ -7583,6 +7676,7 @@ h1 .sidelink {
       line-height: 32px;
       margin: 0 5px;
       text-align: center;
+      display: inline-block;
       cursor: pointer; }
       #footer .social li:hover {
         background: #e91e25;
@@ -7644,5 +7738,8 @@ h1 .sidelink {
   font-size: 10px;
   color: #1db8bf;
   padding: 10px 0; }
+  @media (max-width: 767px) {
+    #copyright {
+      text-align: center; } }
 
 /*# sourceMappingURL=app.css.map */

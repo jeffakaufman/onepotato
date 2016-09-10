@@ -74,6 +74,9 @@
 	// 	padding-right: 0;
 	// }
 }
+.allpadding {
+	padding: 10px 15px;
+}
 .padding {
 	padding-top: 1em;
 	padding-bottom: 1em;
@@ -109,37 +112,122 @@
 #whats_cooking {
 	min-height: 600px;
 	.buttons {
+		padding-bottom: 20px;
+		
 		@media only screen and (min-width: 768px) {
-			padding: 0 40px 20px 0;
+			padding: 20px 0 40px 0;
+		}
+	}
+	.title {
+		position: relative;
+		margin-top: 30px;
+		
+		h1 {
+			width: 80%;
+			margin: 0 10%;
+		}
+	}
+	.meal {
+		margin-bottom: 30px;
+		opacity: 0;
+		transition: opacity 0.5 ease;
+		
+		&.loaded {
+			opacity: 1;
+		}
+		h4 {
+			margin-bottom: 0.25em;
+		}
+		.inner {
+			background: #fff;
+			border: 1px solid $brand-primary;
+			padding-bottom: 50px;
+			position: relative;
+		}
+		.icons {
+			position: absolute;
+			bottom: 15px;
+			img, div {
+				height: 30px;
+			}
+			img.no {
+				height: 20px;
+				vertical-align: bottom;
+			}
 		}
 	}
 }
-.weekPager {
+.weekNav {
 	
-	@media only screen and (min-width: 768px) {
-		float: right;
-		margin: 18px 30px 0 0;
-	}
+	position: absolute;
+    border: 2px solid $brand-secondary;
+	-webkit-border-radius: 50%; 
+	-moz-border-radius: 50%; 
+	border-radius: 50%; 
+    width: 30px;
+    height: 30px;
+    padding: 5px 0;
+    text-align: center;
+    line-height: 1em;
+    top: 0;
+	cursor: pointer;
 	
-	.date {
-		display: inline-block;
-		color: $brand-primary;
-		font-size: 24px;
-		font-family: $font-family-semibold;
-		margin-right: 10px;
+	&.disabled {
+		cursor: default;
+		border-color: #cdcdcd;
+		
+		.fa {
+			color: #cdcdcd;
+		}
+		&:hover {
+			background: none;
+			
+			.fa {
+				color: #cdcdcd;
+			}
+		}
 	}
-	.weekNav {
-		display: inline-block;
-		cursor: pointer;
+	&.prev {
+		left: 30px;
+		
+		@media only screen and (min-width: 992px) {
+			left: 10%;
+		}
+		.fa {
+			margin-right: 2px;
+		}
+	}
+	&.next {
+		right: 30px;
+		
+		@media only screen and (min-width: 992px) {
+			right: 10%;
+		}
+		
+		.fa {
+			margin-left: 3px;
+		}
 	}
 	.fa {
-		font-size: 28px;
-		color: $brand-primary;
+		font-size: 18px;
+		color: $brand-secondary;
 		
 		&:hover {
 			color: $brand-secondary;
 		}
 	}
+	&:hover {
+		background: $brand-secondary;
+		
+		.fa {
+			color: #fff;
+		}
+	}
+}
+.alignright {
+	float: right;
+	margin-left: 20px;
+	margin-bottom: 20px;
 }
 tr.blank {
 	display: none;

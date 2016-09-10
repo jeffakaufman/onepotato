@@ -71,18 +71,25 @@
 	    }
 	}
 	.btn-outline {
-		border: #1db8bf 2px solid;
+		border: $brand-secondary 2px solid;
 	    background: #fff;
-	    color: #1db8bf;
+	    color: $brand-secondary;
 	    border-radius: 0;
-	    font-size: 16px;
-	    padding: 6px 10px 4px 10px;
+	    font-size: 14px;
+	    padding: 6px 20px 4px 20px;
 	    outline: 0;
 	    display: inline-block;
+	    cursor: pointer;
+	    -webkit-box-shadow: none;
+  		-moz-box-shadow:    none;
+  		box-shadow:         none;
 	    
-	    &:hover, &.active {
-	    	color: $brand-secondary;
-	    	border-color: $brand-secondary;
+	    &.active, &:hover {
+	    	color: #fff;
+	    	background: $brand-secondary;
+	    	-webkit-box-shadow: none;
+	  		-moz-box-shadow:    none;
+	  		box-shadow:         none;
 	    }
 	}
 	.btn-secondary {

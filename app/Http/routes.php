@@ -42,13 +42,27 @@ Route::get('/congrats', array('as' => 'register.congrats', function() {
 	return view('register.congrats');
 }));
 
-// Account...
-/*Route::get('/account', array('as' => 'account', function() {
-	return view('account');
-}));*/
-// Account...
+// Static...
+Route::get('/faq', array('as' => 'faq', function() {
+	return view('static.faq');
+}));
+Route::get('/how-it-works', array('as' => 'static.how_it_works', function() {
+    return view('static.how_it_works');
+}));
+Route::get('/learn-more', array('as' => 'static.learn_more', function() {
+    return view('static.learn_more');
+}));
+Route::get('/about-us', array('as' => 'static.about_us', function() {
+    return view('static.about_us');
+}));
+Route::get('/recycling', array('as' => 'static.recycling', function() {
+    return view('static.recycling');
+}));
+Route::get('/handling', array('as' => 'static.handling', function() {
+    return view('static.handling');
+}));
 
-
+// Account...
 Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
 
@@ -127,6 +141,7 @@ Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateSh
 //ship station routes
 Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
+Route::get('/shipstation/test','SubinvoiceController@getOrderXMLTest');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
 
 //cancellation, reactivation, hold routes
