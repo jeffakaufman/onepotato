@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AC_Mediator;
+use App\Recipe_ingredient;
 use App\User;
 use App\UserSubscription;
 use Faker\Provider\DateTime;
@@ -42,29 +43,41 @@ class RenewalReminder extends Command
     public function handle()
     {
 
-        if($this->argument('date')) {
-            list($_dummy, $nextDeliveryDate) = explode('=', $this->argument('date'), 2);
-            try {
-                $renewalDate = new \DateTime($nextDeliveryDate);
-            } catch (\Exception $e) {
-                echo "Wrong Date";
-                return;
+        $renewalDate = new \DateTime("next Wednesday");
+        $now = 'now';
+        $only = false;
+
+        foreach($this->argument() as $key => $a) {
+            if($key == 'command') continue;
+            if(!$a) continue;
+
+            list($_key, $_value) = explode('=', $a, 2);
+
+            switch($_key) {
+                case 'date':
+                    try {
+                        $renewalDate = new \DateTime($_value);
+                    } catch (\Exception $e) {
+                        echo "Wrong Date";
+                        return;
+                    }
+                    break;
+
+                case 'now':
+                    $now = $_value;
+                    break;
+
+                case 'only':
+                    $only =  $_value;
+                    break;
             }
-        } else {
-            $renewalDate = new \DateTime("next Wednesday");
         }
 
-        if($this->argument('now')) {
-            list($_dummy, $now) = explode('=', $this->argument('now'), 2);
-        } else {
-            $now = 'now';
-        }
 
-        if($this->argument('only')) {
-            list($_dummy, $only) = explode('=', $this->argument('only'), 2);
-        } else {
-            $now = false;
-        }
+//var_dump($renewalDate);
+//var_dump($now);
+//var_dump($only);
+//die();
 
 //var_dump($renewalDate);die();
         $ac = AC_Mediator::GetInstance();

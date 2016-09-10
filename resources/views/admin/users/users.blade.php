@@ -35,7 +35,8 @@
 	</div>
 	@foreach ($users as $user)
 	<div class="row">
-		<div class="user_name col-sm-3" ><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></div>
+		{{--<div class="user_name col-sm-3" ><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></div>--}}
+		<div class="user_name col-sm-3" ><a href="/admin/user_details/{{ $user->id }}">{{ $user->name }}</a></div>
 		<div class="user_name col-sm-2">{{ $user->email }}</div>
 		<div class="user_name col-sm-2 text-center">{{ date('m/d/y', strtotime($user->start_date)) }}</div>
 		<div class="user_name col-sm-1 text-right">${{ $user->revenue }}</div>

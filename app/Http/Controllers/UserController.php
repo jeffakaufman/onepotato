@@ -470,6 +470,34 @@ class UserController extends Controller
 
     }
 
+    public function showUserDetails($id)
+    {
+
+		$user = User::find($id);
+		$states = CountryState::getStates('US');
+		$shippingAddresses = Shipping_address::where('user_id',$id)->orderBy('is_current', 'desc')->get();
+		$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+
+		$userSubscription = UserSubscription::where('user_id',$id)->first();
+
+		if ($userSubscription) {
+			$productID = $userSubscription->product_id;
+			$userProduct = Product::where('id',$productID)->firstOrFail();
+		}
+
+		$referrals = Referral::where('referrer_user_id',$id)->get();
+
+		return view('admin.users.user_details')
+				->with(['user'=>$user,
+						'shippingAddresses'=>$shippingAddresses,
+						'userSubscription'=>$userSubscription,
+						'csr_notes'=>$csr_notes,
+						'userProduct'=>$userProduct,
+						'states'=>$states,
+						'referrals'=>$referrals]);
+
+    }
+
 	public function newUser() {
 		
 		
