@@ -115,7 +115,7 @@ class NewUserController extends Controller
         $familyDiscount = 0;
 
         if($existingUser) {
-            $familyDiscount = self::EXISTING_USER_CHILD_DISCOUNT * 3;
+//            $familyDiscount = self::EXISTING_USER_CHILD_DISCOUNT * 3;
         }
 
 		$request->session()->put('step1', true);
@@ -395,7 +395,7 @@ class NewUserController extends Controller
 				'user'=>$user,
 				'start_date'=>$request->start_date,
 				'product'=>$product,
-                'prefilledCoupon' => $request->session()->get('existingUser') ? @$this->_existingCoupons[$product->sku] : '',
+                'prefilledCoupon' => '', //$request->session()->get('existingUser') ? @$this->_existingCoupons[$product->sku] : '',
 				]);
 		
 	}
