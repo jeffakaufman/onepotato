@@ -266,7 +266,7 @@ var_dump($response);die();
 
 //var_dump($contact);die();
         $contact_sync = $ac->api("contact/sync", $contact);
-        $this->_log(json_encode($contact_sync));
+        $this->_log($user->email.' :: '.json_encode($contact_sync));
 
         return $contact_sync;
 
