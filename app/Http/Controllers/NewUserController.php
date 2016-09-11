@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AC_Mediator;
 use App\Events\UserHasRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -75,7 +76,7 @@ class NewUserController extends Controller
 
 		//make sure zipcode is on the approved list
 		if ($request->zip != '' && !ZipcodeStates::where('zipcode',$request->zip)->first()) {
-			return view('register.badzip');
+			return view('register.badzip')->with(['data' => $request, ]);
         }
 
 
@@ -644,7 +645,21 @@ class NewUserController extends Controller
         ]);
 		
 	}
-	
+
+
+    public function SubscribeToWaitingList(Request $request) {
+        $ac = AC_Mediator::GetInstance();
+
+        try {
+            $ac->SubscribeToWaitingList($request->email, $request->firstname, $request->lastname, $request->zip);
+        } catch (\Exception $e) {
+
+        }
+
+        return view("register.waiting_list_thanks");
+    }
+
+
 	//checks validity of a coupon and returns the new price and the discount amount
 	public function CheckCoupon ($price, $coupon_code) {
 		

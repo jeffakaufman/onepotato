@@ -23,6 +23,32 @@ class AC_Mediator {
     const AUTOMATION_Welcome_Email = 2;
 
 
+    public function SubscribeToWaitingList($email, $firstName, $lastName, $zip) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+
+        $listId = self::LIST_Waiting_List;
+
+        $contact = [
+            "email" => $email,
+            "first_name" => $firstName,
+            "last_name" => $lastName,
+            "field[%ZIP_CODE%,0]" => $zip,
+
+            "p[{$listId}]" => $listId,
+            "status[{$listId}]" => 1,
+        ];
+
+//var_dump($contact);die();
+        $contact_sync = $ac->api("contact/sync", $contact);
+
+        return $contact_sync;
+    }
+
     public function PaymentFailed(User $user) {
         try {
             $customerData = $this->GetCustomerData($user);

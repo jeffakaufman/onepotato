@@ -19,7 +19,7 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default panel-form">
 
-                    <form class="form-horizontal" role="form" method="post"  action="">
+                    <form class="form-horizontal" role="form" method="post"  action="/register/waiting_list">
                     {{ csrf_field() }}
 
                         <div class="panel-body">
@@ -31,19 +31,19 @@
                                 
                                 <div class="form-row padding">
                                     <!-- E-Mail Address -->
-                                    <input type="email" class="form-control" name="email" placeholder="Your email address" autofocus>
+                                    <input type="email" class="form-control" name="email" placeholder="Your email address" value="{{$data->email}}" autofocus>
                                 </div>
                                 <div class="form-row padding">
                                     <!-- First Name -->
-                                    <input type="text" class="form-control" name="firstname" placeholder="Your first name">
+                                    <input type="text" class="form-control" name="firstname" placeholder="Your first name" value="{{$data->firstname}}">
                                 </div>
                                 <div class="form-row padding">
                                     <!-- Last Name -->
-                                    <input type="text" class="form-control" name="lastname" placeholder="Your last name">
+                                    <input type="text" class="form-control" name="lastname" placeholder="Your last name" value="{{$data->lastname}}">
                                 </div>
                                 <div class="form-row padding">
                                     <!-- Zip Code -->
-                                        <input type="text" class="form-control" name="zip" placeholder="Your zip code">
+                                        <input type="text" class="form-control" name="zip" placeholder="Your zip code" value="{{$data->zip}}">
                                 </div>
                             </div>
 

@@ -25,6 +25,7 @@ Route::post('/register/select_plan', 'NewUserController@RecordPlan');
 Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
 Route::post('/register/delivery','NewUserController@RecordDeliveryPreferences');
 Route::post('/register/payment','NewUserController@RecordPayment');
+Route::post('/register/waiting_list','NewUserController@SubscribeToWaitingList');
 
 Route::get('/register/select_plan', array('as' => 'register.select_plan', function() {
 	return view('register.select_plan');
