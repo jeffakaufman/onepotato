@@ -234,7 +234,7 @@ function stripeResponseHandler(status, response) {
 										<input type="hidden" name="user_id" value="{{$user->id}}" />
 										<input type="hidden" name="update_type" value="meals" />
                                         <div class="modal-body">
-                                            <p>Changes will only apply to deliveries scheduled on or after Thursday, July 21st.</p>
+                                            <p>Changes will only apply to deliveries scheduled on or after {{ $changeDate }}.</p>
 
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 47px"><b>Plan Type</b></div>
@@ -359,7 +359,7 @@ function stripeResponseHandler(status, response) {
 											<input type="hidden" name="user_id" value="{{$user->id}}" />
 											<input type="hidden" name="update_type" value="delivery_address" />
                                         <div class="modal-body">
-                                            <p>Changes will only apply to deliveries scheduled on or after Thursday, July 21st.</p>
+                                            <p>Changes will only apply to deliveries scheduled on or after  {{ $changeDate }}.</p>
 
                                             <div class="row padbottom">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Address</b></div>

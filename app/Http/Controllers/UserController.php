@@ -228,6 +228,17 @@ class UserController extends Controller
 			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
 			$shipments[] = $deliveryHistory;
 		}
+		
+		//get the next delivery their change will apply
+		$today = date('N');
+		if		($today == 1)	{ $changeDate = date('l, F jS', strtotime("+8 days"));  }
+		elseif	($today == 2)	{ $changeDate = date('l, F jS', strtotime("+7 days"));  }
+		elseif	($today == 3)	{ $changeDate = date('l, F jS', strtotime("+6 days"));  }
+		elseif	($today == 4)	{ $changeDate = date('l, F jS', strtotime("+12 days")); }
+		elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
+		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
+		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
+		
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -235,7 +246,8 @@ class UserController extends Controller
 							'userProduct'=>$userProduct, 
 							'states'=>$states,
 							'referrals'=>$referrals,
-							'shipments'=>$shipments]);
+							'shipments'=>$shipments,
+							'changeDate'=>$changeDate]);
 	}	
 
 	//handles all the /account/ functionality - current
