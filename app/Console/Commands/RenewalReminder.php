@@ -113,7 +113,7 @@ class RenewalReminder extends Command
                 }
 
                 try {
-                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
+//                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
                     $this->comment("DONE. Continue processing.\r\n\r\n");
                 } catch (\Exception $e) {
                     $this->comment("FAILED. ".$e->getMessage()."\r\n\r\n");
