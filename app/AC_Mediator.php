@@ -13,11 +13,12 @@ use ActiveCampaign;
 
 class AC_Mediator {
 
-    const LIST_Welcome_To_One_Potato = 3;
     const LIST_Pre_Launch = 1;
     const LIST_One_Potato_Subscribers = 2;
     const LIST_Note_On_Fried_Chicken = 7;
     const LIST_Menu_Change = 4;
+
+    const LIST_Waiting_List = 10;
 
     const AUTOMATION_Welcome_Email = 2;
 
@@ -224,8 +225,6 @@ var_dump($response);die();
         } catch (Exception $e) {
             throw new Exception("Active Campaign Connection Error");
         }
-
-//        $listId = self::LIST_Welcome_To_One_Potato;
 
         $firstName = $user->first_name;
         $lastName = $user->last_name;

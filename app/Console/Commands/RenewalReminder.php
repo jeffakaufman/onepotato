@@ -44,7 +44,7 @@ class RenewalReminder extends Command
     {
 
         $renewalDate = new \DateTime("next Wednesday");
-        $now = 'now';
+        $now = '+7 days';
         $only = false;
 
         foreach($this->argument() as $key => $a) {

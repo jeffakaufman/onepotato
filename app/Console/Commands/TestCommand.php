@@ -43,7 +43,12 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        event(new UserHasRegistered(User::where('email', 'agedgouda@gmail.com')->first()));
+//        event(new UserHasRegistered(User::where('email', 'agedgouda@gmail.com')->first()));
+        event(new UserHasRegistered(User::where('email', 'jclmeek@gmail.com')->first()));
+        event(new UserHasRegistered(User::where('email', 'vweber871@sbcglobal.net')->first()));
+        event(new UserHasRegistered(User::where('email', 'tess.rosenfeld@gmail.com')->first()));
+        event(new UserHasRegistered(User::where('email', 'karen.schach@gmail.com')->first()));
+        event(new UserHasRegistered(User::where('email', 'sarahstrayer@me.com')->first()));
 return;
         $orderDate = new \DateTime('-1 day');
         $params = [
