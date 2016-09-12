@@ -166,6 +166,11 @@ $router->group(['middleware' => 'web'], function ($router) {
     $router->post('/login', 'Auth\LoginController@login');
     $router->get('/logout', 'Auth\LoginController@logout');
 
+    $router->get('/register/select_plan', array('as' => 'register.select_plan', function() {
+        return view('register.select_plan');
+    }));
+
+
     // Two-Factor Authentication Routes...
     $router->get('/login/token', 'Auth\LoginController@showTokenForm');
     $router->post('/login/token', 'Auth\LoginController@verifyToken');

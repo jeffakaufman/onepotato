@@ -15,6 +15,16 @@ class User extends SparkUser
         return $this->hasMany('App\Subinvoice', 'user_id');
     }
 
+    public function IsSubscribed() {
+        $subscription = UserSubscription::where('user_id', '=', $this->id)
+            ->where('status', '=', 'active')
+            ->first();
+
+        if(!$subscription) return false;
+
+        return true;
+//var_dump($subscription);die();
+    }
 
     /**
      * The attributes that are mass assignable.

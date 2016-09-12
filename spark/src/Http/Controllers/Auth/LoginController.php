@@ -2,10 +2,15 @@
 
 namespace Laravel\Spark\Http\Controllers\Auth;
 
+use App\Product;
+
 use Laravel\Spark\Spark;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+
 use Laravel\Spark\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -56,15 +61,44 @@ class LoginController extends Controller
         if (Spark::usesTwoFactorAuth() && $user->uses_two_factor_auth) {
             return $this->redirectForTwoFactorAuth($request, $user);
         }
+//var_dump($request->session());
+//        die();
+
 
         $redirectPath = $this->redirectPath();
         if(Spark::admin($user->email)) {
             $redirectPath = '/admin/dashboard';
             return redirect($redirectPath);
         } else {
-            return redirect()->intended($redirectPath);
-        }
 
+            if($user->IsSubscribed()) {
+                return redirect()->intended($redirectPath);
+            } else {
+                Auth::guard($this->getGuard())->logout();
+
+                $productAdult = Product::where('sku','0202000000')->first();
+                $productFamily1 = Product::where('sku','0202010000')->first();
+
+                $adultDiscount = 0;
+                $familyDiscount = 0;
+
+var_dump("XXX");
+                $request->session()->put('step1', true);
+                $request->session()->put('firstname', $user->first_name);
+                $request->session()->put('lastname', $user->last_name);
+                $request->session()->put('user_id', $user->id);
+                $request->session()->put('zip', $user->billing_zip);
+                $request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
+                $request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
+var_dump("YYY");
+
+                Redirect::route('register.select_plan');//, array('user' => $user, 'zip' => $user->zip));
+var_dump("ZZZ");
+
+                return redirect("/register/select_plan");
+            }
+
+        }
     }
 
     /**

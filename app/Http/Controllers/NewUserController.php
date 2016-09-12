@@ -45,11 +45,20 @@ class NewUserController extends Controller
 	public function RecordNewuser (Request $request) {
 
 //	    var_dump($request->email);
-		$request->session()->put('has_registered','false');
+        $request->session()->put('has_registered', 'false');
 
-	    $existingUser = User::where('email', $request->email)->first();
+        $existingUser = User::where('email', $request->email)->first();
 
-        if($existingUser && '' == $existingUser->password) {
+        if ($existingUser && '' == $existingUser->password) {
+            $validator = Validator::make($request->all(), [
+                'firstname' => 'required|max:1000',
+                'lastname' => 'required|max:1000',
+                'email' => 'required|email|max:1000',
+                'password' => 'required|max:255|same:password_confirmation',
+                'zip' => 'required|digits:5',
+
+            ]);
+        } elseif($existingUser && !$existingUser->IsSubscribed()) {
             $validator = Validator::make($request->all(), [
                 'firstname' => 'required|max:1000',
                 'lastname' => 'required|max:1000',
@@ -102,6 +111,10 @@ class NewUserController extends Controller
 
         } else {
             $user = new User;
+            $user->first_name = $request->firstname;
+            $user->last_name = $request->lastname;
+            $user->billing_zip = $request->zip;
+
             $request->session()->put('existingUser', false);
         }
 
