@@ -143,6 +143,11 @@ function stripeResponseHandler(status, response) {
                                     <i class="icon icon-talkbubble"></i>Referrals
                                 </a>
                             </li>
+							<li role="presentation">
+                                <a href="#cancel" aria-controls="cancel" role="tab" data-toggle="tab">
+                                    <i class="icon icon-creditcard"></i>Cancel Account
+                                </a>
+                            </li>
 
                         </ul>
 
@@ -768,10 +773,44 @@ function stripeResponseHandler(status, response) {
                             </div>
                         </div>
                     </div>
+						
+						<!-- Cancel Account Information -->
+				            <div role="tabpanel" class="tab-pane fade" id="cancel">
+
+				                <h2>Cancel Account</h2>
+								<form>
+				                    <div class="row padding">
+				                        <div class="col-sm-4"><b>Name</b></div>
+				                        <div class="col-sm-8">{{$user->name}}</div>
+				                    </div>
+				                    <div class="row padding">
+				                        <div class="col-sm-4"><b>Email</b></div>
+				                        <div class="col-sm-8">{{$user->email}}</div>
+				                    </div>
+				                    <div class="row padding">
+				                        <div class="col-sm-4"><b>Password</b></div>
+				                        <div class="col-sm-8">****</div>
+				                    </div>
+								</form>
+				               
+				            </div>
+						<!--end cancel account -->
 
                 </div>
+
+
+						
+
+
             </div>
+
+		
+
         </div><!-- .row -->
+
+		 
+
+
     </div>
 </account>
 @endsection
