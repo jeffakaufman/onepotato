@@ -134,7 +134,7 @@ class DashboardController extends Controller
 				->get();
        
         //echo json_encode($subs);
-        return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','meat'=>$meat,'newSubs'=>$newSubs,'totalSubs'=>$totalSubs]);
+        return view('admin.reports')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','meat'=>$meat,'newSubs'=>$newSubs,'totalSubs'=>$totalSubs]);
     }
 
 	/**
