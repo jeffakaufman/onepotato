@@ -6,6 +6,7 @@ use App\AC_Mediator;
 use App\Recipe_ingredient;
 use App\User;
 use App\UserSubscription;
+use App\Shippingholds;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 
@@ -113,8 +114,25 @@ class RenewalReminder extends Command
                 }
 
                 try {
-                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
-                    $this->comment("DONE. Continue processing.\r\n\r\n");
+//                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
+
+                    $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
+
+                    $hold = Shippingholds::where('user_id', '=', $user->id)
+                        ->where('date_to_hold', '=', $nextDeliveryDate)
+                        ->where('status', '=', 'hold')
+                        ->first();
+
+
+                    if($hold) {
+                        $ac->AddCustomerTag($user, 'Missing-Out');
+                        $this->comment("DONE. Continue processing - Missing-Out.\r\n\r\n");
+                    } else {
+                        $ac->AddCustomerTag($user, 'Renewal');
+                        $this->comment("DONE. Continue processing - Renewal.\r\n\r\n");
+                    }
+
+
                 } catch (\Exception $e) {
                     $this->comment("FAILED. ".$e->getMessage()."\r\n\r\n");
                 }

@@ -31,6 +31,6 @@ class Kernel extends ConsoleKernel
 //                  ->everyMinute();
 
         $schedule->command('renewal:reminder')
-            ->fridays()->at('23:59');
+            ->thursdays()->at('23:59');
     }
 }
