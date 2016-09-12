@@ -351,7 +351,7 @@ class NewUserController extends Controller
 		
 		//store first and last name in User field
 		$user = User::find($request->user_id);
-		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+		$userSubscription = UserSubscription::where('user_id',$request->user_id)->orderBy('id','desc')->first();
 		$product = Product::where('id',$userSubscription->product_id)->first();
 //var_dump($product);
 		//store shipping address
