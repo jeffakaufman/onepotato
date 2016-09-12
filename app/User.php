@@ -18,6 +18,8 @@ class User extends SparkUser
     public function IsSubscribed() {
         $subscription = UserSubscription::where('user_id', '=', $this->id)
             ->where('status', '=', 'active')
+            ->where('stripe_id', '<>', '')
+            ->where('stripe_id', '<>', '0')
             ->first();
 
         if(!$subscription) return false;
