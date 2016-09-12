@@ -73,11 +73,11 @@ class AC_Mediator {
         ++$currentFailedCountValue;
 
 
-        $this->_updateCustomerFields($user, ['PAYMENT_FAIL_COUNT' => (string)$currentFailedCountValue, ]);
+        $this->UpdateCustomerFields($user, ['PAYMENT_FAIL_COUNT' => (string)$currentFailedCountValue, ]);
         $this->AddCustomerTag($user, 'CC-Fail');
     }
 
-    private function _updateCustomerFields(User $user, $fields) {
+    public function UpdateCustomerFields(User $user, $fields) {
         try {
             $ac = $this->_getConnection();
         } catch (Exception $e) {
