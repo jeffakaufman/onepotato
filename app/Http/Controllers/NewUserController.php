@@ -137,7 +137,7 @@ class NewUserController extends Controller
 		$request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
 		$request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
 
-		//return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
+		return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
 		
 	}
 	
