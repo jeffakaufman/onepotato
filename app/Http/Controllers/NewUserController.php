@@ -125,13 +125,9 @@ class NewUserController extends Controller
 
 		$productAdult = Product::where('sku','0202000000')->first();
 		$productFamily1 = Product::where('sku','0202010000')->first();
-
+    
         $adultDiscount = 0;
         $familyDiscount = 0;
-
-        if($existingUser) {
-//            $familyDiscount = self::EXISTING_USER_CHILD_DISCOUNT * 3;
-        }
 
 		$request->session()->put('step1', true);
 		$request->session()->put('firstname', $request->firstname);
@@ -141,7 +137,7 @@ class NewUserController extends Controller
 		$request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
 		$request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
 
-		return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
+		//return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
 		
 	}
 	
@@ -339,8 +335,6 @@ class NewUserController extends Controller
 		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $request->dietprefs);
 		$request->session()->put('state', $state->state);
-
-//        var_dump($user);die();
 
 		return view('register.delivery')->with(['user'=>$user])->with(['zip'=>$request->zip]);
 	}

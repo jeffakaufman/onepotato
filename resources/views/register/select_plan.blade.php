@@ -17,6 +17,7 @@ $('#register2').addClass('active');
     if (Session::has('user_id')) $user_id = Session::get('user_id');
     if (Session::has('adult_price')) $adult_price = Session::get('adult_price');
     if (Session::has('family1_price')) $family1_price = Session::get('family1_price');
+    
 ?>
     <div class="container">
         <!-- Application Dashboard -->

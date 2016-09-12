@@ -14,7 +14,7 @@ $('#register3').addClass('active');
 <?php 
     if (Session::has('children')) $children = Session::get('children');
     if (Session::has('user_id')) $user_id = Session::get('user_id');
-    if (Session::has('zip')) $zip = Session::get('zip');
+    if (Session::has('zip')) $zip = trim(Session::get('zip'));
     if (Session::has('adult_price')) $adult_price = Session::get('adult_price');
     if (Session::has('family1_price')) $family1_price = Session::get('family1_price');
     if (Session::has('omni')) $omni = Session::get('omni');
@@ -57,7 +57,8 @@ $('#register3').addClass('active');
         </div>
         <form class="form-horizontal" role="form" method="post"  action="{{ url('/register/preferences') }}">
              {{ csrf_field() }}
-                <input type="hidden" name="zip" value="{{$zip}}" />
+            <input type="hidden" name="zip" value="{{$zip}}" />
+            <input type="hidden" name="zip23" value="{{trim($zip)}}" />
             <input type="hidden" name="children" value="{{$children}}" />
             <input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
             <input type="hidden" name="adult_price" value="{{ $adult_price }}" />
