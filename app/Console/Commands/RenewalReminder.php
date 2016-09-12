@@ -114,13 +114,13 @@ class RenewalReminder extends Command
                 }
 
                 try {
-//                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
+                    $ac->UpdateRenewalDate($user, $renewalDate, $now);
 
                     $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
 
                     $hold = Shippingholds::where('user_id', '=', $user->id)
                         ->where('date_to_hold', '=', $nextDeliveryDate)
-                        ->where('status', '=', 'hold')
+                        ->where('hold_status', '=', 'hold')
                         ->first();
 
 
