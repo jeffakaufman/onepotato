@@ -1192,7 +1192,7 @@ class SubinvoiceController extends Controller
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
 		$user = User::where('id', $id)->first();
-		$user->status="inactive";
+		$user->status="inactive-cancelled";
 		
 		//retrieve stripe ID from subscriptions table
 		$userSubscription = UserSubscription::where('user_id',$id)->first();
@@ -1208,7 +1208,14 @@ class SubinvoiceController extends Controller
 		$subscription->cancel();
 		
 		$user->save();
-		$userSubscription->save();	
+		$userSubscription->save();
+		
+		$cancel = new Cancellation();
+
+		$cancel->user_id = $id;
+		$cancel->cancel_reason = "manual cancel";
+			
+		$cancel->save();	
 		
 		http_response_code(200);
 		
