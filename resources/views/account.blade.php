@@ -773,24 +773,28 @@ function stripeResponseHandler(status, response) {
                             </div>
                         </div>
                     </div>
-						
+						</form>
 						<!-- Cancel Account Information -->
 				            <div role="tabpanel" class="tab-pane fade" id="cancel">
 
 				                <h2>Cancel Account</h2>
-								<form>
+								<div><p>To cancel your account, please fill out the form below and click "Cancel Account."</p></div>
+									<form method="POST" action="/accountcancel" accept-charset="UTF-8" id="cancel">
+										{{ csrf_field() }}
+										<input type="hidden" name="user_id" value="{{$user->id}}" />
 				                    <div class="row padding">
-				                        <div class="col-sm-4"><b>Name</b></div>
-				                        <div class="col-sm-8">{{$user->name}}</div>
+				                        <div class="col-sm-4"><b>What's the primary reason for cancelling your account with us?</b></div>
+				                        <div class="col-sm-8">{!! Form::select('cancel_reason', array('other' => 'Other'), 'other', array('class' => 'form-control plan-type')) !!}</div>
 				                    </div>
 				                    <div class="row padding">
-				                        <div class="col-sm-4"><b>Email</b></div>
-				                        <div class="col-sm-8">{{$user->email}}</div>
+				                        <div class="col-sm-4"><b>Please specify:</b></div>
+				                        <div class="col-sm-8">{!! Form::text('cancel_specify', '', array('class' => 'form-control', 'placeholder' => '')) !!}</div>
 				                    </div>
 				                    <div class="row padding">
-				                        <div class="col-sm-4"><b>Password</b></div>
-				                        <div class="col-sm-8">****</div>
+				                        <div class="col-sm-4"><b>Is there anything else you want to tell us to improve?</b></div>
+				                        <div class="col-sm-8"> {!! Form::textarea('cancel_suggestions', '', array('class' => 'form-control')) !!}</div>
 				                    </div>
+									 <div class="row padding"><p>Your final delivery is scheduled for xxxx has already been processed and cannot be changed.</p><button type="submit" class="btn btn-primary">CANCEL ACCOUNT</button></div>
 								</form>
 				               
 				            </div>

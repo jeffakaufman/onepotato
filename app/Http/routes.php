@@ -66,6 +66,10 @@ Route::get('/handling', array('as' => 'static.handling', function() {
 // Account...
 Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
+Route::post('/accountcancel', [
+    'middleware' => 'auth',
+    'uses' => 'UserController@cancelUserAccount'
+]);
 
 Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
     return view('whats_cooking');

@@ -10,6 +10,7 @@ use App\Subinvoice;
 use App\Shippingholds;
 use App\Shipping_address;
 use App\Csr_note;
+use App\Cancellation;
 use App\UserSubscription;
 use App\Dietary_preference;
 use App\Order;
@@ -1179,10 +1180,50 @@ class UserController extends Controller
 
         $user = User::where('email', 'agedgouda@gmail.com')->first();
 
-$x = AC_Mediator::GetInstance();
-var_dump($x->UpdateCustomerData($user));die();
+		$x = AC_Mediator::GetInstance();
+		var_dump($x->UpdateCustomerData($user));die();
 
     }
+
+
+	public function cancelUserAccount(Request $request) {
+		
+		//permanently deactive an account
+		//mark record as cancelled in Users, Subscriptions tables
+		$user = User::where('id', $request->user_id)->first();
+		$user->status="inactive-cancelled";
+		
+		//retrieve stripe ID from subscriptions table
+		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+		$userSubscription->status = "cancelled";
+		
+		$stripe_sub_id = $userSubscription->stripe_id;
+		
+		// Set your secret key: remember to change this to your live secret key in production
+		// See your keys here https://dashboard.stripe.com/account/apikeys
+		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+				
+		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+		$subscription->cancel();
+		
+		$cancel = new Cancellation();
+		
+		$cancel->user_id = $request->user_id;
+		$cancel->cancel_reason = $request->cancel_reason;
+		$cancel->cancel_specify = $request->cancel_specify;
+		$cancel->cancel_suggestions = $request->cancel_suggestions;
+		$cancel->save();
+		
+		
+		$user->save();
+		$userSubscription->save();
+		
+		Auth::logout();
+		
+		//record cancel reason in cancellation table
+		return redirect("/logout");
+		
+	}
 
 }
 
