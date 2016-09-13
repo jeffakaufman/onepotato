@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\AC_Mediator;
 use App\Events\UserHasRegistered;
+use App\MenuAssigner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -309,6 +310,23 @@ class NewUserController extends Controller
 		//get the state for the zip code entered at the start of registration
 		$state = ZipcodeStates::where('zipcode',$request->zip)->first();
 
+
+        MenusUsers::where('users_id',$request->user_id)->delete();
+
+        $startDate = new \DateTime($request->start_date);
+        $menuAssigner = new MenuAssigner($startDate);
+        $menus = $menuAssigner->GetUserMenus($user);
+
+        foreach($menus as $_m) {
+            $newMenu = new MenusUsers;
+            $newMenu->users_id = $user->id;
+            $newMenu->menus_id = $_m->id;
+            $newMenu->delivery_date = $startDate->format('Y-m-d');
+            $newMenu->save();
+        }
+
+/*
+
 		$menus_id = $request->menus_id;
 
 		foreach ($menus_id as $ddate => $menu) {
@@ -328,7 +346,7 @@ class NewUserController extends Controller
 			    }
 			}
 		}
-
+*/
 		$request->session()->put('step3', true);
 		$request->session()->put('plantype', $plan_type);
 		$request->session()->put('zip', $request->zip);

@@ -1181,7 +1181,7 @@ class UserController extends Controller
         $user = User::where('email', 'agedgouda@gmail.com')->first();
 
 		$x = AC_Mediator::GetInstance();
-		var_dump($x->UpdateCustomerData($user));die();
+		var_dump($x->AddNewSubscriber($user));die();
 
     }
 

@@ -28,6 +28,23 @@ class User extends SparkUser
 //var_dump($subscription);die();
     }
 
+    public function GetNextDeliveryDate($after = 'now') {
+        $after = new \DateTime($after);
+
+        $startDate = new \DateTime($this->start_date);
+
+        if($startDate > $after) {
+            $nextDeliveryDate = $startDate->format('Y-m-d');
+        } else {
+            $nextDeliveryDate = MenusUsers::where('users_id', $this->id)
+                ->where('delivery_date', '>', $after->format('Y-m-d'))
+                ->min('delivery_date');
+        }
+
+        return $nextDeliveryDate;
+
+    }
+
     /**
      * The attributes that are mass assignable.
      *

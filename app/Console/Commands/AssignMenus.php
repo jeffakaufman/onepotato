@@ -2,16 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Menu;
-use App\Menus;
-use App\MenusUsers;
-use App\Product;
+use App\MenuAssigner;
 use App\User;
-use App\UserSubscription;
 use App\WhatsCookings;
-use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 use DB;
+
+
+use App\UserSubscription;
+use App\Product;
 
 class AssignMenus extends Command
 {
@@ -39,24 +38,35 @@ class AssignMenus extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
 
-        if($this->argument('date')) {
-            list($_dummy, $nextDeliveryDate) = explode('=', $this->argument('date'), 2);
+    private function _fetchDeliveryDate() {
+
+        $argumentDate = false;
+
+        foreach($this->argument() as $key => $a) {
+            if($key == 'command') continue;
+            if(!$a) continue;
+
+            list($_key, $_value) = explode('=', $a, 2);
+
+            switch($_key) {
+                case 'date':
+                    $argumentDate = $_value;
+                    break;
+
+            }
+        }
+
+
+        if($argumentDate) {
             try {
-                $theDate = new \DateTime($nextDeliveryDate);
+                $theDate = new \DateTime($argumentDate);
             } catch (\Exception $e) {
                 echo "Wrong Date";
                 return;
             }
-            $nextDeliveryDate = $theDate->format('Y-m-d');
-            $test = WhatsCookings::where('week_of', '=', $nextDeliveryDate)->first();
+            $deliveryDate = $theDate->format('Y-m-d');
+            $test = WhatsCookings::where('week_of', '=', $deliveryDate)->first();
 
             if(!$test) {
                 echo("Wrong Date");
@@ -65,113 +75,74 @@ class AssignMenus extends Command
         } else {
             $today = new \DateTime('now');
 
-            $nextDeliveryDate = WhatsCookings::where('week_of', '>', $today->format('Y-m-d'))
+            $deliveryDate = WhatsCookings::where('week_of', '>', $today->format('Y-m-d'))
                 ->min('week_of');
         }
 
-//var_dump($nextDeliveryDate);
-        $this->_fillWeekPositions($this->_getCurrentMenus($nextDeliveryDate));
+        return $deliveryDate;
+    }
 
-        DB::table('menus_users')->where('delivery_date', '=', $nextDeliveryDate)->delete();
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+
+        $deliveryDate = $this->_fetchDeliveryDate();
+
+        $menuAssigner = new MenuAssigner(new \DateTime($deliveryDate));
+
+        DB::table('menus_users')->where('delivery_date', '=', $deliveryDate)->delete();
 
         $insertArray = [];
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($nextDeliveryDate, &$insertArray) {
+        User::where('password', '<>', '')->chunk(20, function($users) use($menuAssigner, $deliveryDate, &$insertArray) {
             foreach($users as $user) {
                 /**
-                 * @var App\User $user
+                 * @var User $user
                  */
 
-                $subscription = UserSubscription::where('user_id', $user->id)->first();
-                if(!$subscription) continue;
-                /**
-                 * @var UserSubscription $subscription
-                 */
+//                $subscription = UserSubscription::where('user_id', $user->id)->first();
+//                if(!$subscription) {
+//                    echo "NO SUBSCRIPTION\r\n";
+//                    continue;
+//                }
+//                /**
+//                 * @var UserSubscription $subscription
+//                 */
 
 
-                $product = Product::find($subscription->product_id);
-                if(!$product) continue;
-                /**
-                 * @var Product $product
-                 */
+//                $product = Product::find($subscription->product_id);
+//                if(!$product) {
+//                    echo "NO PRODUCT\r\n";
+//                    continue;
+//                };
+//                /**
+//                 * @var Product $product
+//                 */
 
-
-                $menusToAssign = [];
-
-                if($this->primaryMenu) {
-                    $menusToAssign[] = $this->primaryMenu;
-                }
-
-                if($product->IsVegetarian()) {
-                    if($this->vegMenu1) {
-                        $menusToAssign[] = $this->vegMenu1;
-                    }
-                    if($this->vegMenu2) {
-                        $menusToAssign[] = $this->vegMenu2;
-                    }
-                } else { // Omnivore
-                    $replacementVegUsed = false;
-
-                    $sMask = $this->_createSubscriptionMask($subscription->getAttributes()['dietary_preferences']);
-
-                    //Process First Omnivore Meal
-                    if($this->omnMenu1) {
-                        $_replacementReason = ($sMask & $this->omnMenu1->mask) ^ $this->omnMenu1->mask;
-                        $_replacementIsNecessary = (bool)$_replacementReason;
-
-                        if($_replacementIsNecessary) {
-//echo "Replacing {$_replacementReason}\r\n";
-//printf("%06b \r\n%06b \r\n%06b \r\n%06b \r\n\r\n", $sMask, $this->omnMenu1->mask, $sMask & $this->omnMenu1->mask, ($sMask & $this->omnMenu1->mask) ^ $this->omnMenu1->mask);
-                            if($replacementVegUsed) {
-                                if($this->vegMenu2) {
-                                    $menusToAssign[] = $this->vegMenu2;
-                                }
-                            } else {
-                                if($this->vegMenu1) {
-                                    $menusToAssign[] = $this->vegMenu1;
-                                    $replacementVegUsed = true;
-                                }
-                            }
-                        } else {
-                            $menusToAssign[] = $this->omnMenu1;
-                        }
+                try {
+                    $menusToAssign = $menuAssigner->GetUserMenus($user);
+                    foreach($menusToAssign as $m) {
+                        $insertArray[] = [
+                            'menus_id' => $m->id,
+                            'users_id' => $user->id,
+                            'delivery_date' => $deliveryDate,
+                        ];
                     }
 
-                    //Process Second Omnivore Meal
-                    if($this->omnMenu2) {
-                        $_replacementReason = ($sMask & $this->omnMenu2->mask) ^ $this->omnMenu2->mask;
-                        $_replacementIsNecessary = (bool)$_replacementReason;
-
-                        if($_replacementIsNecessary) {
-//echo "Replacing {$_replacementReason}\r\n";
-//printf("%06b \r\n%06b \r\n%06b \r\n%06b \r\n\r\n", $sMask, $this->omnMenu2->mask, $sMask & $this->omnMenu2->mask, ($sMask & $this->omnMenu2->mask) ^ $this->omnMenu2->mask);
-
-                            if($replacementVegUsed) {
-                                if($this->vegMenu2) {
-                                    $menusToAssign[] = $this->vegMenu2;
-                                }
-                            } else {
-                                if($this->vegMenu1) {
-                                    $menusToAssign[] = $this->vegMenu1;
-                                    $replacementVegUsed = true;
-                                }
-                            }
-                        } else {
-                            $menusToAssign[] = $this->omnMenu2;
-                        }
-                    }
-                }
-
-                foreach($menusToAssign as $m) {
-                    $insertArray[] = [
-                        'menus_id' => $m->id,
-                        'users_id' => $user->id,
-                        'delivery_date' => $nextDeliveryDate,
-                    ];
+                } catch (\Exception $e) {
+                    continue;
                 }
 
 
-//echo $product->IsOmnivore() ? 'O' : 'V';
+
+
+//echo $user->id;
+//echo ' ';
+//echo $product->IsVegetarian() ? 'V' : 'O';
 //echo ' ';
 //foreach($menusToAssign as $m) {
 //    echo $m->isVegetarian ? "V({$m->id})" : "O({$m->id})";
@@ -184,139 +155,14 @@ class AssignMenus extends Command
 
 //echo "\r\n";
 
-
-//var_dump($product->IsOmnivore());
-//                $ac->UpdateRenewalDate($user, $renewalDate);
             }
         });
 
         DB::table("menus_users")->insert($insertArray);
+
+        return true;
     }
 
-
-    private $primaryMenu;
-    private $vegMenu1;
-    private $vegMenu2;
-    private $omnMenu1;
-    private $omnMenu2;
-
-    private function _getCurrentMenus($nextDeliveryDate) {
-
-        $menus = DB::table('menus')
-            ->join('menus_whats_cookings', 'menus.id', '=', 'menus_whats_cookings.menus_id')
-            ->join('whats_cookings', 'whats_cookings.id', '=', 'menus_whats_cookings.whats_cookings_id')
-            ->where('whats_cookings.week_of', '=', $nextDeliveryDate)
-            ->get(['menus.*']);
-
-        return $menus;
-    }
-
-    private function _fillWeekPositions($menus) {
-
-//var_dump($menus);die();
-
-        foreach($menus as $m) {
-            $m->_marked = false;
-        }
-
-        // Find Primary Menu
-        foreach($menus as $m) {
-            if($m->isVegetarian && $m->isOmnivore) {
-                $this->primaryMenu = $m;
-                $m->_marked = true;
-                break;
-            }
-        }
-
-//echo count($menus);
-        // Find Reserve Vegetarian Menu
-        foreach($menus as $m) {
-            if($m->_marked) continue;
-            if($m->isVegetarian && $m->vegetarianBackup) {
-                $this->vegMenu1 = $m;
-                $m->_marked = true;
-                break;
-            }
-        }
-        if(!$this->vegMenu1) {
-            foreach($menus as $m) {
-                if($m->_marked) continue;
-                if($m->isVegetarian) {
-                    $this->vegMenu1 = $m;
-                    $m->_marked = true;
-                    break;
-                }
-            }
-        }
-//echo count($menus);
-
-        // Find Second Vegetarian Menu
-        foreach($menus as $m) {
-            if($m->_marked) continue;
-            if($m->isVegetarian) {
-                $this->vegMenu2 = $m;
-                $m->_marked = true;
-                break;
-            }
-        }
-//echo count($menus);
-
-        //Find Primary Omnivore Menu
-        foreach($menus as $m) {
-            if($m->_marked) continue;
-            if($m->isOmnivore) {
-                $m->mask = $this->_createMenuMask($m);
-                $this->omnMenu1 = $m;
-                $m->_marked = true;
-                break;
-            }
-        }
-//echo count($menus);
-//var_dump($menus);die();
-
-
-        //Find Secondary Omnivore Menu
-        foreach($menus as $m) {
-            if($m->_marked) continue;
-            if($m->isOmnivore) {
-                $m->mask = $this->_createMenuMask($m);
-                $this->omnMenu2 = $m;
-                $m->_marked = true;
-                break;
-            }
-        }
-//echo count($menus);
-
-//        var_dump($this->omnMenu1);
-//        var_dump($this->omnMenu2);
-
-    }
-
-    private function _createMenuMask($m) {
-        $mask = 0;
-
-        if($m->hasBeef)         $mask += 1;
-        if($m->hasPoultry)      $mask += 2;
-        if($m->hasFish)         $mask += 4;
-        if($m->hasLamb)         $mask += 8;
-        if($m->hasPork)         $mask += 16;
-        if($m->hasShellfish)    $mask += 32;
-
-        return $mask;
-    }
-
-    private function _createSubscriptionMask($raw) {
-        $exploded = explode(',', $raw);
-
-        $mask = 0;
-        if(in_array('1', $exploded))        $mask += 1;
-        if(in_array('2', $exploded))        $mask += 2;
-        if(in_array('3', $exploded))        $mask += 4;
-        if(in_array('4', $exploded))        $mask += 8;
-        if(in_array('5', $exploded))        $mask += 16;
-        if(in_array('6', $exploded))        $mask += 32;
-        return $mask;
-    }
 
 }
 

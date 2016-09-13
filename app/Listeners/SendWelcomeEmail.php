@@ -70,7 +70,7 @@ class SendWelcomeEmail
             }
 
 //die();
-            $r = $ac->UpdateCustomerData($user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
+            $r = $ac->AddNewSubscriber($user, [AC_Mediator::LIST_One_Potato_Subscribers, ]);
 
 //var_dump($r);
         } catch (Exception $e) {

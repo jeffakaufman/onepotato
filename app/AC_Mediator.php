@@ -22,6 +22,8 @@ class AC_Mediator {
 
     const AUTOMATION_Welcome_Email = 2;
 
+    const DEFAULT_IMAGE = "https://beta.onepotato.com/img/foodpot.jpg";
+
 
     public function SubscribeToWaitingList($email, $firstName, $lastName, $zip) {
         try {
@@ -229,7 +231,7 @@ var_dump($response);die();
     }
 
 
-    public function UpdateCustomerData(User $user, $listsToAdd = [], $listsToRemove = []) {
+    public function AddNewSubscriber(User $user, $listsToAdd = [], $listsToRemove = []) {
         $userSubscription = UserSubscription::where('user_id',$user->id)->first();
 //var_dump($userSubscription);
         if(!$userSubscription) {
@@ -292,7 +294,7 @@ var_dump($response);die();
         $this->_log($user->email.' :: '.json_encode($contact_sync));
 
         return $contact_sync;
-
+/*
         if ((int)$contact_sync->success) {
             // successful request
             $contact_id = (int)$contact_sync->subscriber_id;
@@ -302,23 +304,14 @@ var_dump($response);die();
         }
 
         return $contact_id;
+*/
     }
 
-
-    public function GetNextDeliveryDate(User $user, $now = 'now') {
-        $today = new \DateTime($now);
-//var_dump($today);
-        $nextDeliveryDate = MenusUsers::where('users_id', $user->id)
-            ->where('delivery_date', '>', $today->format('Y-m-d'))
-            ->min('delivery_date');
-
-        return $nextDeliveryDate;
-    }
 
     private function _getNextDeliveryData(User $user, $now = "now") {
 //var_dump($nextDeliveryDate);die();
 
-        $nextDeliveryDate = $this->GetNextDeliveryDate($user, $now);
+        $nextDeliveryDate = $user->GetNextDeliveryDate($now);
 
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
 
@@ -334,7 +327,7 @@ var_dump($response);die();
             $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
         } catch(\Exception $e) {
 //echo "No Meal 1\r\n";
-            $arr['YOUR_MEAL_IMAGE'] = ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
+            $arr['YOUR_MEAL_IMAGE'] = self::DEFAULT_IMAGE; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
             $arr['YOUR_MEAL_NAME'] = ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
         }
 
@@ -344,7 +337,7 @@ var_dump($response);die();
             $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
             $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
         } catch (\Exception $e) {
-            $arr['YOUR_MEAL_IMAGE_2'] = ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
+            $arr['YOUR_MEAL_IMAGE_2'] = self::DEFAULT_IMAGE; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
             $arr['YOUR_MEAL_NAME_2'] = ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
 //echo "No Meal 2\r\n";
         }
@@ -355,7 +348,7 @@ var_dump($response);die();
             $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
             $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
         } catch (\Exception $e) {
-            $arr['YOUR_MEAL_IMAGE_3'] = ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
+            $arr['YOUR_MEAL_IMAGE_3'] = self::DEFAULT_IMAGE; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
             $arr['YOUR_MEAL_NAME_3'] = ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
 //echo "No Meal 3\r\n";
         }
@@ -402,7 +395,7 @@ var_dump($response);die();
 //        $menu2 = Menu::find($meal2);
 //        $menu3 = Menu::find($meal3);
 
-        $productInfo = $product ? $product->productDetails() : new stdClass();
+        $productInfo = $product ? $product->productDetails() : new \stdClass();
 //var_dump($productInfo);
         $arr = array();
 //        $arr['NEXT_DELIVERY_DATE'] = $nextDeliveryDate; //              [YES] Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date

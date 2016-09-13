@@ -93,6 +93,10 @@ class RenewalReminder extends Command
         $condition->chunk(20, function($users) use($ac, $renewalDate, $now) {
             foreach($users as $user) {
 
+                /**
+                 * @var User $user
+                 */
+
                 $this->comment("#{$user->id} {$user->name} {$user->email} processing started ...\r\n");
 
                 $userSubscription = UserSubscription::where('user_id',$user->id)
@@ -103,7 +107,7 @@ class RenewalReminder extends Command
                     continue;
                 }
 
-                $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
+                $nextDeliveryDate = $user->GetNextDeliveryDate($now);
                 if(!$nextDeliveryDate) {
                     $this->comment("SKIP. No next delivery date.\r\n\r\n");
                     continue;
@@ -115,8 +119,6 @@ class RenewalReminder extends Command
 
                 try {
                     $ac->UpdateRenewalDate($user, $renewalDate, $now);
-
-                    $nextDeliveryDate = $ac->GetNextDeliveryDate($user, $now);
 
                     $hold = Shippingholds::where('user_id', '=', $user->id)
                         ->where('date_to_hold', '=', $nextDeliveryDate)
