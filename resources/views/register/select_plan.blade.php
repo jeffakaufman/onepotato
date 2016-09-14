@@ -17,7 +17,7 @@ $('#register2').addClass('active');
     if (Session::has('user_id')) $user_id = Session::get('user_id');
     if (Session::has('adult_price')) $adult_price = Session::get('adult_price');
     if (Session::has('family1_price')) $family1_price = Session::get('family1_price');
-    
+
 ?>
     <div class="container">
         <!-- Application Dashboard -->
@@ -96,8 +96,8 @@ Both plans include 3 meals per week.</div>
                             <div class="plan-info col-xs-6 text-right">Number of children:</div>
                             <div class="plan-info col-xs-6 text-left field">
                                 <label class="select inline">
-                                    <select name="children" v-model="ch" type="select" class="form-control inline">
-                                        <option value="1" @if (isset($children) && $children == 1) selected @elseif (!isset($children)) selected @endif>1</option>
+                                    <select name="children" v-model="ch" type="select" class="form-control inline" id="selectNumberOfChildren">
+                                        <option value="1" @if (isset($children) && ($children == 1 || $children == 0)) selected @elseif (!isset($children)) selected @endif>1</option>
                                         <option value="2" @if (isset($children) && $children == 2) selected @endif>2</option>
                                         <option value="3" @if (isset($children) && $children == 3) selected @endif>3</option>
                                         <option value="4" @if (isset($children) && $children == 4) selected @endif>4</option>
@@ -136,4 +136,12 @@ Both plans include 3 meals per week.</div>
         </div><!-- .row -->
     </div>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        (function() {
+            var el = document.getElementById('selectNumberOfChildren');
+            console.log(el);
+        })();
+    });
+</script>
 @endsection

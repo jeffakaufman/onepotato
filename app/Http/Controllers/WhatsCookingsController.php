@@ -78,16 +78,22 @@ class WhatsCookingsController extends Controller
     {
 		//Look, I know there is a better way but this was just easier. Make an object for each product type, put them in an array
 		//json encode, hope it works for Beverly
-		$menus  = [];
+		$menus  = false;
 		
 		$whatscookings = WhatsCookings::where('week_of',$week_of)->get();
 		foreach ($whatscookings as $whatscooking) {
     		$menus = $whatscooking->menus()->get();
 		}
-    		foreach ($menus as $menu) {
-    			$menu->dietaryPreferenceNumber = $menu->getDietaryPreferencesNumber();
-    		}
-		return $menus->toJson();
+
+        if($menus) {
+            foreach ($menus as $menu) {
+                $menu->dietaryPreferenceNumber = $menu->getDietaryPreferencesNumber();
+            }
+            return $menus->toJson();
+        } else {
+            return \json_encode(false);
+        }
+
     }
 
 
