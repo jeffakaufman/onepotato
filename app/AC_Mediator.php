@@ -14,7 +14,8 @@ use ActiveCampaign;
 class AC_Mediator {
 
     const LIST_Pre_Launch = 1;
-    const LIST_One_Potato_Subscribers = 2;
+//    const LIST_One_Potato_Subscribers = 2;
+    const LIST_One_Potato_Subscribers = 13;
     const LIST_Note_On_Fried_Chicken = 7;
     const LIST_Menu_Change = 4;
 
