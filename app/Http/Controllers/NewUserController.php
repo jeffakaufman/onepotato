@@ -195,7 +195,7 @@ class NewUserController extends Controller
 		$plan_type = $request->plan_type;
 		
 		$num_kids = $request->children;	
-		
+//var_dump($num_kids);die();
 		if ($plan_type=='Vegetarian Box') {
 			$theSKU = "01";
 			$plantype = 'Vegetarian';

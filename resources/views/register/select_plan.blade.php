@@ -35,7 +35,8 @@ Both plans include 3 meals per week.</div>
         </div><!-- .row -->
 			<form class="form-horizontal" role="form" method="post"  action="{{ url('/register/select_plan') }}">
 				 {{ csrf_field() }}
-				<input type="hidden" name="children" value="{{ isset($children) ? $children : 0 }}" />
+				{{--<input type="hidden" name="children" value="{{ isset($children) ? $children : 0 }}" />--}}
+				<input type="hidden" name="children" value="0" />
 				<input type="hidden" name="user_id" value="{{ isset($user_id) ? $user_id : $user->id }}" />
 				<input type="hidden" name="zip" value="{{$zip}}" />
 
