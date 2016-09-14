@@ -197,6 +197,8 @@ class UserController extends Controller
 	public function getAccount($id = null) {
 		
 		$id = !isset($id) ? Auth::id() : $id;
+		$nextTuesday = strtotime('next tuesday');
+		$today = date('Y-m-d H:i:s'); 
 				
 		//get all the user objects and pass to the view
 		$user = User::find($id);
@@ -219,6 +221,11 @@ class UserController extends Controller
 			->orderBy('order_id','desc')
 			->get();
 		
+		$currentInvoice = Subinvoice::where('user_id',$id)
+			->where('invoice_status','sent_to_ship')
+			->orderBy('charge_date','desc')
+			->first();
+		
 		$shipments = [];
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
@@ -240,6 +247,13 @@ class UserController extends Controller
 		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
 		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
 		
+		$lastDeliveryDate = date('l, F jS',strtotime("next tuesday",strtotime($currentInvoice->charge_date)));
+		if ( $lastDeliveryDate < $today ) {
+			$cancelMessage = "Your final delivery is scheduled for ".$lastDeliveryDate." has already been processed and cannot be changed.";
+		} else {
+			$cancelMessage = "";
+		}
+		
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -248,7 +262,8 @@ class UserController extends Controller
 							'states'=>$states,
 							'referrals'=>$referrals,
 							'shipments'=>$shipments,
-							'changeDate'=>$changeDate]);
+							'changeDate'=>$changeDate,
+							'cancelMessage'=>$cancelMessage]);
 	}	
 
 	//handles all the /account/ functionality - current
