@@ -581,7 +581,6 @@ class SubinvoiceController extends Controller
 		
 		$shipXML = @file_get_contents("php://input");
 		
-		
 		$shipnotice = simplexml_load_string($shipXML);
 		$order_id = $shipnotice->OrderID;
 		
@@ -599,16 +598,17 @@ class SubinvoiceController extends Controller
 		$invoice = Subinvoice::where('order_id',$order_id)->first();
 		$invoice->invoice_status = "shipped";
 		$invoice->save();
+	
 
-
-       // $ac = AC_Mediator::GetInstance();
-       // try {
-       //     $user = User::find($invoice->user_id);
-       //     $ac->UpdateCustomerFields($user, ['TRACKING_ID' => $shipnotice->TrackingNumber, ]);
-       // } catch(\Exception $e) {
+       $ac = AC_Mediator::GetInstance();
+        try {
+            $user = User::find($invoice->user_id);
+           $ac->UpdateCustomerFields($user, ['TRACKING_ID' => $shipnotice->TrackingNumber, ]);
+        } catch(\Exception $e) {
             //TODO :: Add storing AC tracking ID
-       // }
+       }
 
+		
 		http_response_code(200); // PHP 5.4 or greater
 	}
 	
@@ -673,10 +673,11 @@ class SubinvoiceController extends Controller
 
 		</ShipNotice>';
 		
+		//echo $shipXML;
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL,            "http://http://onepotato.kidevelopment.com/shipstation/getorders" );
+		curl_setopt($ch, CURLOPT_URL,            "http://onepotato.kidevelopment.com/shipstation/getorders" );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     $shipXML);
@@ -685,7 +686,7 @@ class SubinvoiceController extends Controller
 
 			$result=curl_exec ($ch);
 
-			print_r($result);
+			//print_r($result);
 		
 	}
 	
