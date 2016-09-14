@@ -233,8 +233,23 @@ class NewUserController extends Controller
 		
 		//look up the product ID
 		$newProduct = Product::where('sku',$theSKU)->first();
-		
-		$userSubscription = new UserSubscription;
+
+        //Check if existing row for subscription exists
+        $currentSubscriptionRow = UserSubscription::where('user_id', '=', $request->user_id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if($currentSubscriptionRow) {
+            //Delete all other rows, previously created for this user
+            UserSubscription::where('user_id', '=', $request->user_id)
+                ->where('id', '<>', $currentSubscriptionRow->id)
+                ->delete();
+            $userSubscription = $currentSubscriptionRow;
+        } else {
+            $userSubscription = new UserSubscription;
+        }
+
+
 		$userSubscription->user_id = $request->user_id;
 		$userSubscription->product_id = $newProduct->id;
 		if ($request->prefs) {$userSubscription->dietary_preferences = implode(",",$request->prefs);}
