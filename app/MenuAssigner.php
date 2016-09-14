@@ -19,6 +19,34 @@ class MenuAssigner {
     }
 
 
+    public static function GetAllFutureMenusForUser(User $user, $from = 'now') {
+        $fromDate = new \DateTime($from);
+
+        if($user->start_date) {
+            $startDate = new \DateTime($user->start_date);
+            if($startDate > $fromDate) {
+                $fromDate = $startDate;
+            }
+        }
+
+        $wcList = WhatsCookings::where('week_of', '>=', $fromDate->format('Y-m-d'))
+            ->orderBy('week_of', 'asc')
+            ->get(['week_of']);
+        $dates = [];
+        foreach($wcList as $wc) {
+            $dates[] = $wc->week_of;
+        }
+
+
+        $allDates = [];
+        foreach($dates as $date) {
+            $assigner = new self(new \DateTime($date));
+            $allDates[$date] = $assigner->GetUserMenus($user);
+        }
+
+        return $allDates;
+    }
+
     public function GetUserMenus(User $user) {
         $weekMenuList = $this->weekMenuList;
 

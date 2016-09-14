@@ -313,17 +313,18 @@ class NewUserController extends Controller
 
         MenusUsers::where('users_id',$request->user_id)->delete();
 
-        $startDate = new \DateTime($request->start_date);
-        $menuAssigner = new MenuAssigner($startDate);
-        $menus = $menuAssigner->GetUserMenus($user);
+        $allMenus = MenuAssigner::GetAllFutureMenusForUser($user, $request->start_date);
 
-        foreach($menus as $_m) {
-            $newMenu = new MenusUsers;
-            $newMenu->users_id = $user->id;
-            $newMenu->menus_id = $_m->id;
-            $newMenu->delivery_date = $startDate->format('Y-m-d');
-            $newMenu->save();
+        foreach($allMenus as $_date => $dateMenus) {
+            foreach($dateMenus as $_m) {
+                $newMenu = new MenusUsers;
+                $newMenu->users_id = $user->id;
+                $newMenu->menus_id = $_m->id;
+                $newMenu->delivery_date = $_date;
+                $newMenu->save();
+            }
         }
+
 
 /*
 
