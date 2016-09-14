@@ -601,13 +601,13 @@ class SubinvoiceController extends Controller
 		$invoice->save();
 
 
-        $ac = AC_Mediator::GetInstance();
-        try {
-            $user = User::find($invoice->user_id);
-            $ac->UpdateCustomerFields($user, ['TRACKING_ID' => $shipnotice->TrackingNumber, ]);
-        } catch(\Exception $e) {
+       // $ac = AC_Mediator::GetInstance();
+       // try {
+       //     $user = User::find($invoice->user_id);
+       //     $ac->UpdateCustomerFields($user, ['TRACKING_ID' => $shipnotice->TrackingNumber, ]);
+       // } catch(\Exception $e) {
             //TODO :: Add storing AC tracking ID
-        }
+       // }
 
 		http_response_code(200); // PHP 5.4 or greater
 	}
