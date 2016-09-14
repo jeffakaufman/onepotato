@@ -676,7 +676,7 @@ class SubinvoiceController extends Controller
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL,            "http://onepotato.app/shipstation/getorders" );
+		curl_setopt($ch, CURLOPT_URL,            "http://http://onepotato.kidevelopment.com/shipstation/getorders" );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     $shipXML);
