@@ -1424,7 +1424,7 @@ class SubinvoiceController extends Controller
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL,            "http://onepotato.app/stripe/webhook" );
+		curl_setopt($ch, CURLOPT_URL,            "http://beta.onepotato.com/stripe/webhook" );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     '{

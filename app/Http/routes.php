@@ -139,7 +139,7 @@ Route::get('/admin/product_orders', 'OrdersController@show');
 
 Route::get('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice'); //TODO :: comment after, this is for testing only
 Route::post('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice');
-Route::get('/admin/services/invoice/test', 'SubinvoiceController@testStripeInvoice');
+Route::get('/stripe/test/webhook', 'SubinvoiceController@testStripeInvoice');
 Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
 Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateShippingStatus');
 
