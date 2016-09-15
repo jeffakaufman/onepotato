@@ -60,6 +60,28 @@ $(document).ready(function() {
 
     }); // Form submission
 
+    $("#cancelReasonSelect").change(function() {
+        switch($(this).val()) {
+            case 'other':
+                $("#specifyCancelReasonDiv").fadeIn();
+                break;
+
+            default:
+                $("#specifyCancelReasonDiv").fadeOut();
+                break;
+        }
+    });
+
+    switch($("#cancelReasonSelect").val()) {
+        case 'other':
+            $("#specifyCancelReasonDiv").show();
+            break;
+
+        default:
+            $("#specifyCancelReasonDiv").hide();
+            break;
+    }
+
 }); // Document ready.
 
 // Function handles the Stripe response:
@@ -784,9 +806,21 @@ function stripeResponseHandler(status, response) {
 										<input type="hidden" name="user_id" value="{{$user->id}}" />
 				                    <div class="row padding">
 				                        <div class="col-sm-4"><b>What's the primary reason for cancelling your account with us?</b></div>
-				                        <div class="col-sm-8">{!! Form::select('cancel_reason', array('other' => 'Other'), 'other', array('class' => 'form-control plan-type')) !!}</div>
+				                        <div class="col-sm-8">{!! Form::select('cancel_reason', array('Delivery Is Unreliable or Inconvenient' => 'Delivery Is Unreliable or Inconvenient'
+				                        									,'Meals Take Too Long To Prepare' => 'Meals Take Too Long To Prepare'
+				                        									,'We\'re Traveling Or Moving' => 'We\'re Traveling Or Moving'
+				                        									,'Too Much Packaging' => 'Too Much Packaging'
+				                        									,'Don\'t Have Time To Cook Right Now' => 'Don\'t Have Time To Cook Right Now'
+				                        									,'Child Portion Sizes Are Too Small' => 'Child Portion Sizes Are Too Small '
+				                        									,'We Only Want To Cook 1 Or 2 Nights A Week' => 'We Only Want To Cook 1 Or 2 Nights A Week'
+				                        									,'Too Expensive' => 'Too Expensive'
+				                        									,'Recipes Don’t Meet Our Dietary Needs (E.G. Egg Allergy, Dairy Free)' => 'Recipes Don’t Meet Our Dietary Needs (E.G. Egg Allergy, Dairy Free)'
+				                        									,'Recipes Are Too Adventurous For Our Family' => 'Recipes Are Too Adventurous For Our Family'
+				                        									,'other' => 'Other')
+				                        									, 'Delivery Is Unreliable or Inconvenient'
+				                        									, array('class' => 'form-control plan-type', 'id'=>'cancelReasonSelect')) !!}</div>
 				                    </div>
-				                    <div class="row padding">
+				                    <div class="row padding" id="specifyCancelReasonDiv" style="display:none;">
 				                        <div class="col-sm-4"><b>Please specify:</b></div>
 				                        <div class="col-sm-8">{!! Form::text('cancel_specify', '', array('class' => 'form-control', 'placeholder' => '')) !!}</div>
 				                    </div>
@@ -794,7 +828,7 @@ function stripeResponseHandler(status, response) {
 				                        <div class="col-sm-4"><b>Is there anything else you want to tell us to improve?</b></div>
 				                        <div class="col-sm-8"> {!! Form::textarea('cancel_suggestions', '', array('class' => 'form-control')) !!}</div>
 				                    </div>
-									 <div class="row padding"><p>Your final delivery is scheduled for xxxx has already been processed and cannot be changed.</p><button type="submit" class="btn btn-primary">CANCEL ACCOUNT</button></div>
+									 <div class="row padding"><p>{{ $cancelMessage }}</p><button type="submit" class="btn btn-primary">CANCEL ACCOUNT</button></div>
 								</form>
 				               
 				            </div>

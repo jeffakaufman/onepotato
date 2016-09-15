@@ -149,16 +149,17 @@ class NewUserController extends Controller
 		$user = User::find($request->user_id);
 		
 		//calculate earliest start date
+		date_default_timezone_set('America/Los_Angeles');
 		$today = date('Y-m-d H:i:s'); 
-		$nextTuesday = strtotime('next tuesday');
+		$nextWednesday = strtotime('next wednesday 4PM');
 		$dateCompare = strtotime($today);
 		
-		if (($nextTuesday-$dateCompare)/86400 < 5) { //if today's date is less than 5 days from next tuesday, go to the tuesday after
-			$startDate = date('Y-m-d', strtotime('+1 week', $nextTuesday));
-			$endDate =  date('Y-m-d', strtotime('+6 weeks', $nextTuesday));
+		if (($nextWednesday-$dateCompare)/86400 < 5) { //if today's date is less than 5 days from next tuesday, go to the tuesday after
+			$startDate = date('Y-m-d', strtotime('+1 week', $nextWednesday));
+			$endDate =  date('Y-m-d', strtotime('+6 weeks', $nextWednesday));
 		} else {
-			$startDate = date('Y-m-d', $nextTuesday);
-			$endDate =  date('Y-m-d', strtotime('+5 weeks', $nextTuesday));
+			$startDate = date('Y-m-d', $nextWednesday);
+			$endDate =  date('Y-m-d', strtotime('+5 weeks', $nextWednesday));
 		}
 
     	$upcomingDates = [];

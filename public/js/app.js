@@ -34166,7 +34166,7 @@ var MenuComponent = Vue.extend({
 				this.list = menu;
 				this.loaded = false;
 				this.clickable = true;
-				//console.log(this.list);
+				// console.log(this.list);
 			}.bind(this)).error(function (error) {
 				this.list = this.altlist;
 				this.loaded = false;
@@ -34176,8 +34176,10 @@ var MenuComponent = Vue.extend({
 	},
 	computed: {
 		filteredMenu: function filteredMenu(meal) {
-			var userMenu = [];
-			var meatDone = false;
+
+			var userMenu = [],
+			    omniDone = false,
+			    backupDone = false;
 			for (var i = 0; i < this.list.length; i++) {
 				var noNuts = false;
 				if (this.prefs.nutfree && this.list[i].hasNuts) noNuts = true;
@@ -34200,14 +34202,22 @@ var MenuComponent = Vue.extend({
 				if (this.prefs.shellfish && this.list[i].hasShellfish && !noNuts) {
 					userMenu.push(this.list[i]);
 				}
-				if (this.list[i].vegetarianBackup) {
+				if (this.list[i].isVegetarian && this.list[i].isOmnivore && !noNuts) {
 					userMenu.push(this.list[i]);
 				}
-				meatDone = true;
+				omniDone = true;
 			}
-			if (meatDone) {
+			if (omniDone && userMenu.length < 3) {
 				for (var i = 0; i < this.list.length; i++) {
-					if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup) {
+					if (this.list[i].vegetarianBackup) {
+						userMenu.push(this.list[i]);
+					}
+				}
+				backupDone = true;
+			}
+			if (omniDone && backupDone && userMenu.length < 3) {
+				for (var i = 0; i < this.list.length; i++) {
+					if (this.list[i].isVegetarian && !this.list[i].vegetarianBackup && !this.list[i].isOmnivore) {
 						userMenu.push(this.list[i]);
 					}
 				}
@@ -34263,8 +34273,9 @@ var MenusComponent = Vue.extend({
 
 		filteredMenus: function filteredMenus(meal) {
 			var userMenus = [],
-			    combined = [];
-			var meatDone = false;
+			    combined = [],
+			    omniDone = false,
+			    backupDone = false;
 
 			if (this.lists.length) {
 				for (var i = 0; i < this.lists.length; i++) {
@@ -34298,18 +34309,31 @@ var MenusComponent = Vue.extend({
 					if (this.prefs.shellfish && meals[j].hasShellfish && !noNuts) {
 						userMenus.push(meals[j]);
 					}
-					if (meals[j].vegetarianBackup) {
+					if (meals[j].isVegetarian && meals[j].isOmnivore && !noNuts) {
 						userMenus.push(meals[j]);
 					}
-					meatDone = true;
+					omniDone = true;
 				}
-				if (meatDone) {
+				if (omniDone) {
 					for (var j = 0; j < combined.length; j++) {
 
 						var meals = combined.filter(function (elem, index, self) {
 							return index == self.indexOf(elem);
 						});
-						if (meals[j].isVegetarian && !meals[j].vegetarianBackup) {
+
+						if (meals[j].vegetarianBackup) {
+							userMenus.push(meals[j]);
+						}
+					}
+					backupDone = true;
+				}
+				if (omniDone && backupDone) {
+					for (var j = 0; j < combined.length; j++) {
+
+						var meals = combined.filter(function (elem, index, self) {
+							return index == self.indexOf(elem);
+						});
+						if (meals[j].isVegetarian && !meals[j].vegetarianBackup && !meals[j].isOmnivore) {
 							userMenus.push(meals[j]);
 						}
 					}

@@ -17,8 +17,7 @@ elixir(function(mix) {
     	.styles([
 	       	'fontello.css',
 	       	'fontello-embedded.css',
-	       	'sweetalert.css',
-	       	'animate.css'
+	       	'sweetalert.css'
 	    ], 'public/css/vendor.css')
 	    .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'resources/assets/js/sweetalert.min.js')
 	    .scripts([

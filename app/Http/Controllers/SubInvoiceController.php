@@ -603,7 +603,7 @@ class SubinvoiceController extends Controller
        $ac = AC_Mediator::GetInstance();
         try {
             $user = User::find($invoice->user_id);
-           $ac->UpdateCustomerFields($user, ['TRACKING_ID' => $shipnotice->TrackingNumber, ]);
+           $ac->MenuShipped($user, $shipnotice->TrackingNumber);
         } catch(\Exception $e) {
             //TODO :: Add storing AC tracking ID
        }
