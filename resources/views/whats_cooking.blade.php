@@ -49,20 +49,20 @@ try {
                                 <h4>@{{ meal.menu_title }}</h4>
                                 @{{ meal.menu_description }}
                                 <div class="icons">
-                                    <img src="/img/beef.png" v-show="meal.hasBeef">
-                                    <img src="/img/chicken.png" v-show="meal.hasPoultry">
-                                    <img src="/img/fish.png" v-show="meal.hasFish">
-                                    <img src="/img/lamb.png" v-show="meal.hasLamb">
-                                    <img src="/img/pork.png" v-show="meal.hasPork">
-                                    <img src="/img/shrimp.png" v-show="meal.hasShellfish">
-                                    <img src="/img/no_wheat.png" class="no" v-show="meal.hasNoGluten">
-                                    <img src="/img/no_nuts.png" class="no" v-show="meal.hasNuts">
-                                    <img src="/img/no_dairy.jpg" class="no" v-show="meal.noDairy">
-                                    <img src="/img/no_eggs.png" class="no" v-show="meal.noEgg">
-                                    <img src="/img/no_soy.png" class="no" v-show="meal.noSoy">
-                                    <img src="/img/oven.png" v-show="meal.oven"> 
-                                    <img src="/img/fry_pan.png" v-show="meal.stovetop">
-                                    <img src="/img/dutch_oven.png" v-show="meal.slowcooker">
+                                    <img src="/img/beef.png" v-show="meal.hasBeef" alt="Red Meat" title="Red Meat">
+                                    <img src="/img/chicken.png" v-show="meal.hasPoultry" alt="Poultry" title="Poultry">
+                                    <img src="/img/fish.png" v-show="meal.hasFish" alt="Fish" title="Fish">
+                                    <img src="/img/lamb.png" v-show="meal.hasLamb" alt="Lamb" title="Lamb">
+                                    <img src="/img/pork.png" v-show="meal.hasPork" alt="Pork" title="Pork">
+                                    <img src="/img/shrimp.png" v-show="meal.hasShellfish" alt="Shellfish" title="Shellfish">
+                                    <img src="/img/no_wheat.png" class="no" v-show="meal.hasNoGluten" alt="Gluten Free" title alt="Gluten Free">
+                                    <img src="/img/no_nuts.png" class="no" v-show="meal.hasNuts" alt="Nut Free" title="Nut Free">
+                                    <img src="/img/no_dairy.jpg" class="no" v-show="meal.noDairy" alt="Dairy Free" title="Dairy Free">
+                                    <img src="/img/no_eggs.png" class="no" v-show="meal.noEgg" alt="Egg Free" title="Egg Free">
+                                    <img src="/img/no_soy.png" class="no" v-show="meal.noSoy" alt="Soy Free" title="Soy Free">
+                                    <img src="/img/oven.png" v-show="meal.oven" alt="Oven" title="Oven"> 
+                                    <img src="/img/fry_pan.png" v-show="meal.stovetop" alt="Stovetop" title alt="Stovetop">
+                                    <img src="/img/dutch_oven.png" v-show="meal.slowcooker" alt="Slow Cooker" title="Slow Cooker">
                                 </div>
                             </div>
 
