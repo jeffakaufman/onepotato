@@ -60,6 +60,28 @@ $(document).ready(function() {
 
     }); // Form submission
 
+    $("#cancelReasonSelect").change(function() {
+        switch($(this).val()) {
+            case 'other':
+                $("#specifyCancelReasonDiv").fadeIn();
+                break;
+
+            default:
+                $("#specifyCancelReasonDiv").fadeOut();
+                break;
+        }
+    });
+
+    switch($("#cancelReasonSelect").val()) {
+        case 'other':
+            $("#specifyCancelReasonDiv").show();
+            break;
+
+        default:
+            $("#specifyCancelReasonDiv").hide();
+            break;
+    }
+
 }); // Document ready.
 
 // Function handles the Stripe response:
@@ -796,9 +818,9 @@ function stripeResponseHandler(status, response) {
 				                        									,'Recipes Are Too Adventurous For Our Family' => 'Recipes Are Too Adventurous For Our Family'
 				                        									,'other' => 'Other')
 				                        									, 'Delivery Is Unreliable or Inconvenient'
-				                        									, array('class' => 'form-control plan-type')) !!}</div>
+				                        									, array('class' => 'form-control plan-type', 'id'=>'cancelReasonSelect')) !!}</div>
 				                    </div>
-				                    <div class="row padding">
+				                    <div class="row padding" id="specifyCancelReasonDiv" style="display:none;">
 				                        <div class="col-sm-4"><b>Please specify:</b></div>
 				                        <div class="col-sm-8">{!! Form::text('cancel_specify', '', array('class' => 'form-control', 'placeholder' => '')) !!}</div>
 				                    </div>

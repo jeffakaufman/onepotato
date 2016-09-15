@@ -1212,7 +1212,8 @@ class UserController extends Controller
 		//mark record as cancelled in Users, Subscriptions tables
 		$user = User::where('id', $request->user_id)->first();
 		$user->status="inactive-cancelled";
-		
+
+
 		//retrieve stripe ID from subscriptions table
 		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
 		$userSubscription->status = "cancelled";
@@ -1237,7 +1238,15 @@ class UserController extends Controller
 		
 		$user->save();
 		$userSubscription->save();
-		
+
+        $ac = AC_Mediator::GetInstance();
+        try {
+            $ac->AddCustomerTag($user, 'Cancellation');
+        } catch (\Exception $e) {
+            //Do Nothing
+        }
+
+
 		Auth::logout();
 		
 		//record cancel reason in cancellation table

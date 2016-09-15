@@ -20,6 +20,7 @@ class AC_Mediator {
     const LIST_Menu_Change = 4;
 
     const LIST_Waiting_List = 10;
+    const LIST_Former_Subscribers = 15;
 
     const AUTOMATION_Welcome_Email = 2;
 
@@ -175,6 +176,31 @@ class AC_Mediator {
 
     }
 
+
+    public function MenuShipped(User $user, $trackingNumber) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $contact = array(
+            "email" => $user->email,
+            "field[%TRACKING_ID%,0]" => $trackingNumber,
+        );
+
+        $contact = array_merge(
+            $contact,
+            $this->_getNextDeliveryData($user, '-1 day')
+        );
+
+        $contact_sync = $ac->api("contact/sync", $contact);
+//$contact_sync = false;
+
+        $this->AddCustomerTag($user, 'Shipping');
+
+        return $contact_sync;
+    }
 
     public function SendMessage(User $user, $campaignId, $messageId) {
         try {
