@@ -43,8 +43,13 @@ class User extends SparkUser
 
         return $nextDeliveryDate;
 
+    } 
+   
+   public function getSkips()
+    {
+        return $this->hasMany('App\Shippingholds');
     }
-
+    
     /**
      * The attributes that are mass assignable.
      *

@@ -22,22 +22,94 @@
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
+      		<div class="col-sm-5"> 
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>{{ $thisTuesday }} Subscribers</strong></div>
+                		<div class="panel-body">
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Active
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $activeThisWeek  }}
+                				</div>
+            				</div>
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Skips
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $skipsThisWeek }}
+                				</div>
+            				</div>
+            			</div>	
+      				</div>  
+      			</div> 
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '+7 days')) }} Subscribers</strong></div>
+                		<div class="panel-body">
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Active
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $activeNextWeek  }}
+                				</div>
+            				</div>
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Skips
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $skipsNextWeek }}
+                				</div>
+            				</div>
+            			</div>	
+      				</div>  
+      			</div> 
+
+
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>New Users</strong></div>
+                		<div class="panel-body">
+                		<?php 
+                	    		$oldDate = "";
+                	    ?>
+        				@foreach ($newSubs as $newSub)
+        					@if ( ($oldDate !=  $newSub->start_date))
+        					<?php $i = 0; ?>
+                	    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
+                	    		<div class="col-sm-5"> 
+                	    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
+                	    		</div>
+                	    	</div>
+                	    	@endif
+	    					<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
+            					<div class="col-sm-10">
+                					{{ $newSub->product_description }}
+                				</div>
+               					<div class="col-sm-2 text-right">
+                					{{$newSub->total}}
+                				</div>
+            				</div>	
+            				<?php
+            					$i++; 
+                    			$oldDate =$newSub->start_date;
+                    		?>
+            				@endforeach
+						</div>
+      				</div>  
+      			</div>  
+			</div>  
+
             <div class="col-md-4">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><strong>This Weeks Menus</strong></div>
+                    <div class="panel-heading"><strong>Menus for {{ $thisTuesday }}</strong></div>
                     <div class="panel-body">
-                    
-                    
-                    
                     @foreach ($menus as $menu)
-                    	@if ( ($oldDate !=  $menu->delivery_date))
-                    	@if ($menu != reset($menus)) <br /> @endif
-                    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
-                    		<div class="col-sm-5"> 
-                    			<strong>{{ $menu->delivery_date }}</strong>
-                    		</div>
-                    	</div>
-                    	@endif
                     	@if ( ($oldMenu !=  $menu->menu_title))
                     	<?php $i = 0; ?>
                     	<div class="row" style="border-bottom: black;border-width: 1px;border-style: solid;border-right: white;border-left: white;">
@@ -82,91 +154,10 @@
                     @endforeach
                 </div>
             </div>
-            </div>
-      		<div class="col-sm-5"> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>Current Users</strong></div>
-                		<div class="panel-body">
-                		<?php 
-                	    		$i = 0;
-                	    ?>
-        				@foreach ($totalSubs as $totalSub)
-	    					<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
-            					<div class="col-sm-10">
-            					{{  $totalSub->status  }}
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $totalSub->total  }}
-                				</div>
-            				</div>	
-            				<?php
-            					$i++; 
-                    		?>
-            				@endforeach
-						</div>
-      				</div>  
-      			</div> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>Upcoming Skips</strong></div>
-                		<div class="panel-body">
-                		<?php 
-                	    		$i = 0;
-                	    ?>
-        				@foreach ($skips as $skip)
-	    					<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
-            					<div class="col-sm-10">
-            					{{  date('F d, Y', strtotime($skip->date_to_hold))  }}
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $skip->total  }}
-                				</div>
-            				</div>	
-            				<?php
-            					$i++; 
-                    		?>
-            				@endforeach
-						</div>
-      				</div>  
-      			</div>
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>New Users</strong></div>
-                		<div class="panel-body">
-                		<?php 
-                	    		$oldDate = "";
-                	    ?>
-        				@foreach ($newSubs as $newSub)
-        					@if ( ($oldDate !=  $newSub->start_date))
-        					<?php $i = 0; ?>
-                	    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
-                	    		<div class="col-sm-5"> 
-                	    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
-                	    		</div>
-                	    	</div>
-                	    	@endif
-	    					<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
-            					<div class="col-sm-10">
-                					{{ $newSub->product_description }}
-                				</div>
-               					<div class="col-sm-2 text-right">
-                					{{$newSub->total}}
-                				</div>
-            				</div>	
-            				<?php
-            					$i++; 
-                    			$oldDate =$newSub->start_date;
-                    		?>
-            				@endforeach
-						</div>
-      				</div>  
-      			</div>  
-      			
-      			
-      			
-      			
-			</div>  
+        </div>
+
+
+
 		</div>
 	</div>    
 </div>               		

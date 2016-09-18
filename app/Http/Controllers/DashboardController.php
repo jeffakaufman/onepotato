@@ -30,6 +30,8 @@ class DashboardController extends Controller
      */
     public function show()
     {
+        $thisTuesday = date('Y-m-d H:i:s',strtotime('next tuesday'));
+        $nextTuesday = date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days'));
   
   		$menus = DB::table('menus_users')
 				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
@@ -37,8 +39,8 @@ class DashboardController extends Controller
 	    		->join('users','menus_users.users_id','=','users.id')
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
 	    		->join('products','subscriptions.product_id','=','products.id')
-				->where('delivery_date', ">=",date('Y-m-d H:i:s'))
-				->where('delivery_date', "<=",date('Y-m-d H:i:s', strtotime("+6 days")))
+				->where('delivery_date', "=",$thisTuesday)
+				->where('users.status', "=","active")
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
 				->orderBy('menus_id')
@@ -65,29 +67,57 @@ class DashboardController extends Controller
 				->groupBy('subscriptions.status')
 				->orderBy('subscriptions.status')
 				->get();
-        
-        $totalSubs = DB::table('users')
-				->select('subscriptions.status', DB::raw('count(*) as total'))
-	    		->join('subscriptions','subscriptions.user_id','=','users.id')
-	    		->join('products','subscriptions.product_id','=','products.id')
-				->whereNotNull('subscriptions.status')
-				->where('start_date', "<=",date('Y-m-d H:i:s'))
-				->groupBy('subscriptions.status')
-				->orderBy('subscriptions.status')
-				->get();
 				
-		
+       
+        $activeThisWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$thisTuesday)
+				->count();    
+		$skipsThisWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",$thisTuesday)
+				->count();       
+        $activeThisWeek -= $skipsThisWeek;
+        
+        $activeNextWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days')))
+				->count();    
+		$skipsNextWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days')))
+				->count();       
+        $activeNextWeek -= $skipsNextWeek;
+
+
+
+
+        
+        $nextTotalSubs = DB::table('users')
+				->select('users.status', DB::raw('count(*) as total'))
+				->leftJoin('shippingholds as shippingholds', 'shippingholds.user_id', '=', 'users.id')
+				->groupBy('users.status')
+				->orderBy('users.status')
+				->get();
         
         $skips = DB::table('users')
 				->select('date_to_hold', DB::raw('count(*) as total'))
 	    		->join('shippingholds','shippingholds.user_id','=','users.id')
 				->where('date_to_hold', ">=",date('Y-m-d H:i:s'))
+				->where('hold_status', "=",'hold')
 				->groupBy('date_to_hold')
 				->orderBy('date_to_hold')
 				->get();		
-       
-       	//echo json_encode($totalNewSubs);
-    	return view('admin.dashboard')->with(['menus'=>$menus,'oldDate'=>'','oldMenu'=>'','newSubs'=>$newSubs,'totalSubs'=>$totalSubs,'skips'=>$skips]);
+
+       	
+    	return view('admin.dashboard')
+    			->with(['menus'=>$menus
+    				,'oldDate'=>''
+    				,'oldMenu'=>''
+    				,'newSubs'=>$newSubs
+    				,'activeThisWeek'=>$activeThisWeek
+    				,'skipsThisWeek'=>$skipsThisWeek
+    				,'activeNextWeek'=>$activeNextWeek
+    				,'skipsNextWeek'=>$skipsNextWeek
+    				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
+    				,'skips'=>$skips]
+    			);
     }
     public function showReports()
     {
