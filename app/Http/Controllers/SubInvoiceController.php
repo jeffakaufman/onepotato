@@ -1316,7 +1316,7 @@ class SubinvoiceController extends Controller
 
 				$userSubscription->stripe_id = $subscription->id;
 				$userSubscription->save();
-				$user->save();*/
+				$user->save();
 
 			}
 
