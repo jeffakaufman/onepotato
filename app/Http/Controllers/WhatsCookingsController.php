@@ -108,7 +108,6 @@ class WhatsCookingsController extends Controller
 			    
     	$validator = Validator::make($whatscooking, [
 	        'menu_title' => 'required|max:255',
-		    'menu_description' => 'required|max:1000',
 	    ]);
 
 	    if ($validator->fails()) {
