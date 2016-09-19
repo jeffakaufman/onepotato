@@ -1285,7 +1285,7 @@ class SubinvoiceController extends Controller
 			//remove hold from holds table
 			$hold = Shippingholds::where('user_id', $id)
 						->where('date_to_hold', $holddate)
-						->where('hold_status', 'held')
+						->where('hold_status', 'hold')
 						->first();
 
 			//if there is a hold
@@ -1297,9 +1297,10 @@ class SubinvoiceController extends Controller
 				$user = User::where('id', $id)->first();
 				$user->status="active";
 				$customer_stripe_id = $user->stripe_id;
-				
+			
 				//retrieve stripe ID from subscriptions table
 				$userSubscription = UserSubscription::where('user_id',$id)->first();
+
 				$userSubscription->status = "active";
 				$plan_id = $userSubscription->product_id;
 
@@ -1315,7 +1316,7 @@ class SubinvoiceController extends Controller
 
 				$userSubscription->stripe_id = $subscription->id;
 				$userSubscription->save();
-				$user->save();
+				$user->save();*/
 
 			}
 
