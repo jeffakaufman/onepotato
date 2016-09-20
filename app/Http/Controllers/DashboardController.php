@@ -9,6 +9,7 @@ use App\Menus;
 use App\MenusUsers;
 use App\User;
 use App\Shippingholds;
+use App\Subinvoice;
 
 
 class DashboardController extends Controller
@@ -30,8 +31,16 @@ class DashboardController extends Controller
      */
     public function show()
     {
-        $thisTuesday = date('Y-m-d H:i:s',strtotime('next tuesday'));
-        $nextTuesday = date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days'));
+        $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
+        $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
+        $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-1 day'));           
+        $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
+        $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
+        
+        $skipsThisWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",$thisTuesday)
+				->get(); 
+		$skipIds = array_pluck($skipsThisWeek, 'user_id');
   
   		$menus = DB::table('menus_users')
 				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
@@ -40,7 +49,8 @@ class DashboardController extends Controller
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->where('delivery_date', "=",$thisTuesday)
-				->where('users.status', "=","active")
+				->where('users.status', "<>","incomplete")
+				->whereNotIn('users.id', $skipIds)
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
 				->orderBy('menus_id')
@@ -68,7 +78,16 @@ class DashboardController extends Controller
 				->orderBy('subscriptions.status')
 				->get();
 				
-       
+        $activeLastWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$lastTuesday)
+				->count();   
+        $shippedLastWeek = Subinvoice::where('invoice_status','shipped')
+				->where('period_end_date', ">=",$lastPeriodEndDate)
+				->count();    
+		$skipsLastWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",$lastTuesday)
+				->count();       
+        
         $activeThisWeek = User::whereIn('users.status',['active','inactive'])
 				->where('start_date', "<=",$thisTuesday)
 				->count();    
@@ -115,9 +134,13 @@ class DashboardController extends Controller
     				,'skipsThisWeek'=>$skipsThisWeek
     				,'activeNextWeek'=>$activeNextWeek
     				,'skipsNextWeek'=>$skipsNextWeek
+    				,'activeLastWeek'=>$activeLastWeek
+    				,'skipsLastWeek'=>$skipsLastWeek
+    				,'shippedLastWeek'=>$shippedLastWeek
     				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
     				,'skips'=>$skips]
     			);
+    			
     }
     public function showReports()
     {

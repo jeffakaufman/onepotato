@@ -35,7 +35,7 @@
             					{{  $activeThisWeek  }}
                 				</div>
             				</div>
-	    					<div class="row">
+	    					<div class="row" style="background-color:lightblue">
             					<div class="col-sm-10">
             					Skips
                 				</div>
@@ -58,12 +58,43 @@
             					{{  $activeNextWeek  }}
                 				</div>
             				</div>
-	    					<div class="row">
+	    					<div class="row" style="background-color:lightblue">
             					<div class="col-sm-10">
             					Skips
                 				</div>
                					<div class="col-sm-2 text-right">
             					{{  $skipsNextWeek }}
+                				</div>
+            				</div>
+            			</div>	
+      				</div>  
+      			</div> 
+      			<div class="row">
+        			<div class="panel panel-default">
+            			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '-7 days')) }} Subscribers</strong></div>
+                		<div class="panel-body">
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Active
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $activeLastWeek  }}
+                				</div>
+            				</div>
+	    					<div class="row" style="background-color:lightblue">
+            					<div class="col-sm-10">
+            					Skips
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $skipsLastWeek }}
+                				</div>
+            				</div>
+	    					<div class="row">
+            					<div class="col-sm-10">
+            					Shipped
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  $shippedLastWeek  }}
                 				</div>
             				</div>
             			</div>	
