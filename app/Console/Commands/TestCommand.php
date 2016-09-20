@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AC_Mediator;
+use App\Cancellation;
 use App\Events\UserHasRegistered;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
@@ -43,6 +44,13 @@ class TestCommand extends Command
      */
     public function handle()
     {
+
+//        $user = User::where('email', 'agedgouda@gmail.com')->first();
+        $user = User::where('email', 'ahhmed@mail.ru')->first();
+
+        echo Cancellation::GenerateCancelLink($user);
+
+return;
 
         $ac = AC_Mediator::GetInstance();
         $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");

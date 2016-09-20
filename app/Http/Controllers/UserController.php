@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Subinvoice;
 use App\Shippingholds;
@@ -1253,6 +1254,81 @@ class UserController extends Controller
 		return redirect("/logout");
 		
 	}
+
+
+	public function ResolveCancelLink($code) {
+
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+//        $cryptString = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, self::CRYPT_KEY, $jsonString, MCRYPT_MODE_ECB, $iv);
+//
+//        $encodedString = base64_encode($cryptString);
+
+
+        $urlDecoded = rawurldecode($code);
+        $base64Decoded = base64_decode($urlDecoded);
+        $decrypted = mcrypt_decrypt(
+            MCRYPT_RIJNDAEL_256,
+            Cancellation::CRYPT_KEY,
+            $base64Decoded,
+            MCRYPT_MODE_ECB,
+            $iv
+        );
+
+        $trimmed = trim($decrypted);
+
+        $data = json_decode($trimmed);
+
+        if(!$data) {
+            abort(404, "Invalid link");
+            exit;
+        }
+
+
+        $userId = $data->userId;
+        $email = $data->userEmail;
+        $validTo = new \DateTime($data->validTo);
+
+        $now = new \DateTime('now');
+
+        if($now > $validTo) {
+            abort(404, "Link is expired");
+        }
+
+        $user = User::find($userId);
+
+        if($user->email != $email) {
+            abort(404, 'Something wrong');
+        }
+
+
+        if(!Auth::user()) {
+            abort(404, 'Please login');
+        }
+
+        if(Auth::user()->id != $user->id) {
+            abort(404, 'Wrong user');
+        }
+
+
+//        echo "Going on";
+
+        return view('account_cancel')->with([
+            'user'=>$user,
+            'cancelMessage' => '',
+        ]);
+    }
+
+/*
+object(stdClass)[456]
+  public 'junk1' => int 347368
+  public 'userId' => int 2635
+  public 'junk2' => int 484985
+  public 'userEmail' => string 'agedgouda@gmail.com' (length=19)
+  public 'junk3' => int 28277
+  public 'validTo' => string '2016-09-20 09:31:11' (length=19)
+  public 'junk4' => int 884217
+     */
 
 }
 

@@ -66,6 +66,10 @@ Route::get('/handling', array('as' => 'static.handling', function() {
 // Account...
 Route::get('/account/{id?}', 'UserController@getAccount');
 Route::post('/account/{id}', 'UserController@editAccount');
+
+Route::get('/account/cancel/{code}', array('as' => 'cancel.account.link', 'middleware' => 'auth', 'uses' => 'UserController@ResolveCancelLink', ))->where('code', '(.*)');
+
+
 Route::post('/accountcancel', [
     'middleware' => 'auth',
     'uses' => 'UserController@cancelUserAccount'

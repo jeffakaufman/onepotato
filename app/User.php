@@ -7,6 +7,12 @@ use Laravel\Spark\User as SparkUser;
 class User extends SparkUser
 {
 
+    const STATUS_ADMIN = 'admin';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INCOMPLETE = 'incomplete';
+    const STATUS_INACTIVE_CANCELLED = 'inactive-cancelled';
+
     public function userSubscription() {
         return $this->hasOne('App\UserSubscription', 'user_id');
     }
@@ -16,17 +22,77 @@ class User extends SparkUser
     }
 
     public function IsSubscribed() {
-        $subscription = UserSubscription::where('user_id', '=', $this->id)
-            ->where('status', '=', 'active')
-            ->where('stripe_id', '<>', '')
-            ->where('stripe_id', '<>', '0')
-            ->first();
 
-        if(!$subscription) return false;
+        switch($this->status) {
+            case self::STATUS_ACTIVE:
+            case self::STATUS_INACTIVE:
+                return true;
+                break;
 
-        return true;
-//var_dump($subscription);die();
+            case self::STATUS_INACTIVE_CANCELLED:
+            case self::STATUS_ADMIN:
+            case self::STATUS_INCOMPLETE:
+                return false;
+                break;
+
+            default: // Unknown or empty status
+                $subscription = UserSubscription::where('user_id', '=', $this->id)
+                    ->where('status', '=', 'active')
+                    ->where('stripe_id', '<>', '')
+                    ->where('stripe_id', '<>', '0')
+                    ->first();
+
+                if($subscription) {
+                    return true;
+                } else {
+                    return false;
+                }
+                break;
+        }
+
     }
+
+    public function IsCancelled() {
+        switch ($this->status) {
+            case self::STATUS_INACTIVE_CANCELLED:
+                return true;
+
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function IsIncomplete() {
+        switch($this->status) {
+            case self::STATUS_ACTIVE:
+            case self::STATUS_INACTIVE:
+            case self::STATUS_INACTIVE_CANCELLED:
+            case self::STATUS_ADMIN:
+                return false;
+                break;
+
+            case self::STATUS_INCOMPLETE:
+                return true;
+                break;
+
+            default: // Unknown or empty status
+                $subscription = UserSubscription::where('user_id', '=', $this->id)
+                    ->where('status', '=', 'active')
+                    ->where('stripe_id', '<>', '')
+                    ->where('stripe_id', '<>', '0')
+                    ->first();
+
+                if($subscription) {
+                    return false;
+                } else {
+                    return true;
+                }
+
+                break;
+        }
+    }
+
 
     public function GetNextDeliveryDate($after = 'now') {
         $after = new \DateTime($after);

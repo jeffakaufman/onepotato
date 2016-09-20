@@ -58,6 +58,10 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
+
+        /**
+         * @var \App\User $user
+         */
         if (Spark::usesTwoFactorAuth() && $user->uses_two_factor_auth) {
             return $this->redirectForTwoFactorAuth($request, $user);
         }
@@ -65,41 +69,65 @@ class LoginController extends Controller
 //        die();
 
 
-        $redirectPath = $this->redirectPath();
         if(Spark::admin($user->email)) {
-            $redirectPath = '/admin/dashboard';
-            return redirect($redirectPath);
-        } else {
-
-            if($user->IsSubscribed()) {
-                return redirect()->intended($redirectPath);
-            } else {
-                Auth::guard($this->getGuard())->logout();
-
-                $productAdult = Product::where('sku','0202000000')->first();
-                $productFamily1 = Product::where('sku','0202010000')->first();
-
-                $adultDiscount = 0;
-                $familyDiscount = 0;
-
-var_dump("XXX");
-                $request->session()->put('step1', true);
-                $request->session()->put('firstname', $user->first_name);
-                $request->session()->put('lastname', $user->last_name);
-                $request->session()->put('user_id', $user->id);
-                $request->session()->put('zip', $user->billing_zip);
-                $request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
-                $request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
-var_dump("YYY");
-
-                Redirect::route('register.select_plan');//, array('user' => $user, 'zip' => $user->zip));
-var_dump("ZZZ");
-
-                return redirect("/register/select_plan");
-            }
-
+            return $this->_processAdminBehaviour($request, $user);
         }
+
+        if($user->IsIncomplete()) {
+            return $this->_processIncompleteBehaviour($request, $user);
+        }
+
+
+        if($user->IsSubscribed()) {
+            return $this->_processNormalBehaviour($request, $user);
+        }
+
+        if($user->IsCancelled()) {
+            return $this->_processCancelledBehaviour($request, $user);
+        }
+
+        die("We do not know who you are!!!");
+
     }
+
+    private function _processCancelledBehaviour(Request $request, $user) {
+        die("TO BE DONE"); //TODO: Create good behaviour
+    }
+
+    private function _processNormalBehaviour(Request $request, $user) {
+        return redirect()->intended($this->redirectPath());
+    }
+
+    private function _processAdminBehaviour(Request $request, $user) {
+        return redirect('/admin/dashboard');
+    }
+
+    private function _processIncompleteBehaviour(Request $request, $user) {
+        Auth::guard($this->getGuard())->logout();
+
+        $productAdult = Product::where('sku','0202000000')->first();
+        $productFamily1 = Product::where('sku','0202010000')->first();
+
+        $adultDiscount = 0;
+        $familyDiscount = 0;
+
+//var_dump("XXX");
+        $request->session()->put('step1', true);
+        $request->session()->put('firstname', $user->first_name);
+        $request->session()->put('lastname', $user->last_name);
+        $request->session()->put('user_id', $user->id);
+        $request->session()->put('zip', $user->billing_zip);
+        $request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
+        $request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
+//var_dump("YYY");
+
+        return Redirect::route('register.select_plan');//, array('user' => $user, 'zip' => $user->zip));
+//var_dump("ZZZ");
+
+//        return redirect("/register/select_plan");
+
+    }
+
 
     /**
      * Redirect the user for two-factor authentication.
