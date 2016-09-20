@@ -75,6 +75,11 @@ Route::post('/accountcancel', [
     'uses' => 'UserController@cancelUserAccount'
 ]);
 
+Route::post('/account_reactivate', [
+    'middleware' => 'auth',
+    'uses' => 'UserController@reactivateUserAccount'
+]);
+
 Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
     return view('whats_cooking');
 }));

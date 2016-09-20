@@ -91,7 +91,11 @@ class LoginController extends Controller
     }
 
     private function _processCancelledBehaviour(Request $request, $user) {
-        die("TO BE DONE"); //TODO: Create good behaviour
+        return view('account_cancelled')->with([
+            'user' => $user,
+            'reactivateMessage' => '',
+        ]);
+
     }
 
     private function _processNormalBehaviour(Request $request, $user) {

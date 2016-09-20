@@ -1212,7 +1212,7 @@ class UserController extends Controller
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
 		$user = User::where('id', $request->user_id)->first();
-		$user->status="inactive-cancelled";
+		$user->status = User::STATUS_INACTIVE_CANCELLED;
 
 
 		//retrieve stripe ID from subscriptions table
@@ -1223,11 +1223,16 @@ class UserController extends Controller
 		
 		// Set your secret key: remember to change this to your live secret key in production
 		// See your keys here https://dashboard.stripe.com/account/apikeys
+
+
+
+//TODO:: Uncomment live!!!!!! VERY IMPORTANT !!!!!!
+
 		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 				
 		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
 		$subscription->cancel();
-		
+
 		$cancel = new Cancellation();
 		
 		$cancel->user_id = $request->user_id;
@@ -1247,7 +1252,21 @@ class UserController extends Controller
             //Do Nothing
         }
 
+        $reactivateMessage = '';
+        if($request->lastDeliveryDate) {
+            $lastDeliveryDate = new \DateTime($request->lastDeliveryDate);
+            $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
+        }
 
+        Auth::logout();
+
+        //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method. You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQs.
+        return view('account_cancelled')->with([
+            'user' => $user,
+            'reactivateMessage' => $reactivateMessage,
+        ]);
+
+        //Old Behaviour below
 		Auth::logout();
 		
 		//record cancel reason in cancellation table
@@ -1255,6 +1274,62 @@ class UserController extends Controller
 		
 	}
 
+    public function reactivateUserAccount(Request $request) {
+        $user = User::where('id', $request->user_id)->first();
+        $user->status = User::STATUS_ACTIVE;
+
+
+        //retrieve stripe ID from subscriptions table
+        $userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+        $userSubscription->status = "active";
+
+        $stripe_sub_id = $userSubscription->stripe_id;
+
+        // Set your secret key: remember to change this to your live secret key in production
+        // See your keys here https://dashboard.stripe.com/account/apikeys
+
+
+        die("TO BE DONE!!!! Guess need to create new stripe subscription. Matt, what do you think??");
+
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+                $subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+                $subscription->cancel();
+
+        $cancel = new Cancellation();
+
+        $cancel->user_id = $request->user_id;
+        $cancel->cancel_reason = $request->cancel_reason;
+        $cancel->cancel_specify = $request->cancel_specify;
+        $cancel->cancel_suggestions = $request->cancel_suggestions;
+        $cancel->save();
+
+
+        $user->save();
+        $userSubscription->save();
+
+        $ac = AC_Mediator::GetInstance();
+        try {
+            $ac->AddCustomerTag($user, 'Cancellation');
+        } catch (\Exception $e) {
+            //Do Nothing
+        }
+
+        $reactivateMessage = '';
+        if($request->lastDeliveryDate) {
+            $lastDeliveryDate = new \DateTime($request->lastDeliveryDate);
+            $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
+        }
+
+        Auth::logout();
+
+        //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method. You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQs.
+        return view('account_cancelled')->with([
+            'user' => $user,
+            'reactivateMessage' => $reactivateMessage,
+        ]);
+
+    }
 
 	public function ResolveCancelLink($code) {
 
@@ -1298,24 +1373,52 @@ class UserController extends Controller
         $user = User::find($userId);
 
         if($user->email != $email) {
+            Auth::logout();
             abort(404, 'Something wrong');
         }
 
 
         if(!Auth::user()) {
+            Auth::logout();
             abort(404, 'Please login');
         }
 
         if(Auth::user()->id != $user->id) {
+            Auth::logout();
             abort(404, 'Wrong user');
         }
 
 
 //        echo "Going on";
 
+        $currentInvoice = Subinvoice::where('user_id',$user->id)
+            ->where('invoice_status','sent_to_ship')
+            ->orderBy('charge_date','desc')
+            ->first();
+
+        $cancelMessage = '';
+        $lastDeliveryDateText = '';
+        if (isset($currentInvoice->charge_date)) {
+
+            $chargeDate = new \DateTime($currentInvoice->charge_date);
+            $lastDeliveryDate = clone($chargeDate);
+            $lastDeliveryDate->modify("next tuesday");
+//var_dump($chargeDate);
+//var_dump($lastDeliveryDate);die();
+
+//            $lastDeliveryDate = date('l, F jS',strtotime("next tuesday",strtotime($currentInvoice->charge_date)));
+            if ( $lastDeliveryDate < $now ) {
+                $cancelMessage = "Your final delivery is scheduled for ".$lastDeliveryDate->format('l, F jS')." has already been processed and cannot be changed.";
+                $lastDeliveryDateText = $lastDeliveryDate->format('Y-m-d');
+            }
+        }
+
+
+
         return view('account_cancel')->with([
             'user'=>$user,
-            'cancelMessage' => '',
+            'cancelMessage' => $cancelMessage,
+            'lastDeliveryDate' => $lastDeliveryDateText,
         ]);
     }
 

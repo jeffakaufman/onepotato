@@ -7,59 +7,6 @@
 /*stripe code*/
 $(document).ready(function() {
 
-    // Watch for a form submission:
-    $("#payment-form").submit(function(event) {
-
-        // Flag variable:
-        //var error = false;
-
-        // disable the submit button to prevent repeated clicks:
-        $('#submitBtn').attr("disabled", "disabled");
-
-        // Get the values:
-        var ccNum = $('.card-number').val(), cvcNum = $('.card-cvc').val(), expMonth = $('.card-expiry-month').val(), expYear = $('.card-expiry-year').val();
-        
-        console.log (ccNum);
-        
-        // Validate the number:
-        if (!Stripe.card.validateCardNumber(ccNum)) {
-            error = true;
-            console.log ('The credit card number appears to be invalid.');
-        }
-
-        // Validate the CVC:
-        if (!Stripe.card.validateCVC(cvcNum)) {
-            error = true;
-            console.log ('The CVC number appears to be invalid.');
-        }
-
-        // Validate the expiration:
-        if (!Stripe.card.validateExpiry(expMonth, expYear)) {
-            error = true;
-            console.log ('The expiration date appears to be invalid.');
-        }
-
-        // Validate other form elements, if needed!
-        error = false;
-        // Check for errors:
-        if (!error) {
-
-            // Get the Stripe token:
-            Stripe.card.createToken({
-                number: ccNum,
-                cvc: cvcNum,
-                exp_month: expMonth,
-                exp_year: expYear
-            }, stripeResponseHandler);
-
-        }
-        
-        
-        // Prevent the form from submitting:
-        return false;
-
-    }); // Form submission
-
     $("#cancelReasonSelect").change(function() {
         switch($(this).val()) {
             case 'other':
@@ -141,6 +88,7 @@ function stripeResponseHandler(status, response) {
 									<form method="POST" action="/accountcancel" accept-charset="UTF-8" id="cancel">
 										{{ csrf_field() }}
 										<input type="hidden" name="user_id" value="{{$user->id}}" />
+										<input type="hidden" name="lastDeliveryDate" value="{{$lastDeliveryDate}}" />
 				                    <div class="row padding">
 				                        <div class="col-sm-4"><b>What's the primary reason for cancelling your account with us?</b></div>
 				                        <div class="col-sm-8">{!! Form::select('cancel_reason', array('Delivery Is Unreliable or Inconvenient' => 'Delivery Is Unreliable or Inconvenient'

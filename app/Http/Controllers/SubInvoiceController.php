@@ -1193,7 +1193,7 @@ class SubinvoiceController extends Controller
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
 		$user = User::where('id', $id)->first();
-		$user->status="inactive-cancelled";
+		$user->status = User::STATUS_INACTIVE_CANCELLED;
 		
 		//retrieve stripe ID from subscriptions table
 		$userSubscription = UserSubscription::where('user_id',$id)->first();
@@ -1231,7 +1231,7 @@ class SubinvoiceController extends Controller
 		//update statuses in Users, Subscriptions table
 		
 		$user = User::where('id', $id)->first();
-		$user->status="active";
+		$user->status = User::STATUS_ACTIVE;
 		$customer_stripe_id = $user->stripe_id;
 
 		//retrieve stripe ID from subscriptions table
@@ -1295,7 +1295,7 @@ class SubinvoiceController extends Controller
 				
 				//get the custoemr
 				$user = User::where('id', $id)->first();
-				$user->status="active";
+				$user->status = User::STATUS_ACTIVE;
 				$customer_stripe_id = $user->stripe_id;
 			
 				//retrieve stripe ID from subscriptions table
@@ -1331,7 +1331,7 @@ class SubinvoiceController extends Controller
 	public function CommitUnHoldSubscription ($id, $holddate) {
 		
 		$user = User::where('id', $id)->first();
-		$user->status="active";
+		$user->status = User::STATUS_ACTIVE;
 		$customer_stripe_id = $user->stripe_id;
 
 		//retrieve stripe ID from subscriptions table
@@ -1353,11 +1353,11 @@ class SubinvoiceController extends Controller
 			$hold->save();
 		
 		
-		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+		    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 		
 			$subscription = \Stripe\Subscription::create(array(
-		  	"customer" => $customer_stripe_id,
-		  	"plan" => $stripe_plan_id
+                "customer" => $customer_stripe_id,
+                "plan" => $stripe_plan_id
 			));
 		
 			$userSubscription->stripe_id = $subscription->id;

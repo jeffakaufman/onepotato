@@ -121,7 +121,7 @@ class NewUserController extends Controller
 
 		$user->email = $request->email;
 		$user->password = Hash::make($request->password);
-        $user->status = 'incomplete';
+        $user->status = User::STATUS_INCOMPLETE;
 		$user->save();
 
 		$productAdult = Product::where('sku','0202000000')->first();
@@ -660,7 +660,7 @@ class NewUserController extends Controller
 			
 			$userSubscription->save();
 
-            $user->status = 'active';
+            $user->status = User::STATUS_ACTIVE;
             $user->save();
 
 			$firstDelivery = MenusUsers::where('users_id',$request->user_id)->where('delivery_date',date('Y-m-d', strtotime($request->start_date)))->get();

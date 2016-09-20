@@ -45,8 +45,8 @@ class TestCommand extends Command
     public function handle()
     {
 
-//        $user = User::where('email', 'agedgouda@gmail.com')->first();
-        $user = User::where('email', 'ahhmed@mail.ru')->first();
+        $user = User::where('email', 'agedgouda@gmail.com')->first();
+//        $user = User::where('email', 'ahhmed@mail.ru')->first();
 
         echo Cancellation::GenerateCancelLink($user);
 
