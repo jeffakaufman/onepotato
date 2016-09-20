@@ -215,8 +215,11 @@ $router->group(['middleware' => 'admin'], function($router) {
 
 Route::get('user/test/{id}', 'UserController@showTest');
 
-Route::get('/__test__/test', function() { //TODO :: remove or comment after all debugging is done
-    \Illuminate\Support\Facades\Artisan::call('test:command');
-    echo "ok";
+Route::get('/__test__/test/{email}', function($email) { //TODO :: remove or comment after all debugging is done
+    $user = \App\User::where('email', $email)->first();
+    echo \App\Cancellation::GenerateCancelLink($user);
+
+//    \Illuminate\Support\Facades\Artisan::call('test:command');
+//    echo "ok";
 });
 
