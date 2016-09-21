@@ -1222,6 +1222,7 @@ class SubinvoiceController extends Controller
 		
 	}
 	
+
 	public function RestartSubscription ($id) {
 		
 		//create a new subscription in Stripe
@@ -1279,7 +1280,9 @@ class SubinvoiceController extends Controller
 		
 	}
 	
-	public function UnHoldSubscription ($id, $holddate) {
+	//to be run to restart a cancelled subscriber who has skipped a week
+	//and been cancelled in stripe
+	public function ProcessUnHoldSubscription ($id, $holddate) {
 		
 			
 			//remove hold from holds table
@@ -1290,7 +1293,7 @@ class SubinvoiceController extends Controller
 
 			//if there is a hold
 			if ($hold) {
-				$hold->hold_status = "released";
+				$hold->hold_status = "released-after-hold";
 				$hold->save();
 				
 				//get the custoemr
@@ -1317,6 +1320,55 @@ class SubinvoiceController extends Controller
 				$userSubscription->stripe_id = $subscription->id;
 				$userSubscription->save();
 				$user->save();
+
+			}
+
+			http_response_code(200);
+			return redirect('/delivery-schedule'); 
+		
+	}
+	
+	
+	public function UnHoldSubscription ($id, $holddate) {
+		
+			
+			//remove hold from holds table
+			$hold = Shippingholds::where('user_id', $id)
+						->where('date_to_hold', $holddate)
+						->where('hold_status', 'hold')
+						->first();
+
+			//if there is a hold
+			if ($hold) {
+				$hold->hold_status = "released";
+				$hold->save();
+				
+				//get the custoemr
+				/*
+				$user = User::where('id', $id)->first();
+				$user->status = User::STATUS_ACTIVE;
+				$customer_stripe_id = $user->stripe_id;
+			
+				//retrieve stripe ID from subscriptions table
+				$userSubscription = UserSubscription::where('user_id',$id)->first();
+
+				$userSubscription->status = "active";
+				$plan_id = $userSubscription->product_id;
+
+				$product = Product::where('id', $plan_id)->first();
+				$stripe_plan_id = $product->stripe_plan_id;
+
+				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+				$subscription = \Stripe\Subscription::create(array(
+				  "customer" => $customer_stripe_id,
+				  "plan" => $stripe_plan_id
+				));
+
+				$userSubscription->stripe_id = $subscription->id;
+				$userSubscription->save();
+				$user->save();
+				*/
 
 			}
 
