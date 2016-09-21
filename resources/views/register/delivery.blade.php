@@ -144,6 +144,7 @@ $(function() {
                                         <select name="state" type="select" class="form-control" required>
                                             <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
                                             <option value="CA" @if( $state == 'CA') selected @endif>California</option>
+                                            <option value="NV" @if( $state == 'NV') selected @endif>Nevada</option>
                                             <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
                                         </select>
                                     </label>
