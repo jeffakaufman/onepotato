@@ -19,6 +19,7 @@ Route::get('/home', 'HomeController@show');
 Route::get('/admin/coupons', 'CouponController@show');
 Route::post('/coupon', 'CouponController@saveCoupon');
 // Registration...
+Route::get('/join', 'NewUserController@DisplayUserForm');
 Route::get('/register', 'NewUserController@DisplayUserForm');
 Route::post('/register', 'NewUserController@RecordNewuser');
 Route::post('/register/select_plan', 'NewUserController@RecordPlan');
