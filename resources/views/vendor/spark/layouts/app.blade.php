@@ -88,6 +88,5 @@ src="https://www.facebook.com/tr?id=535013926685020&ev=PageView&noscript=1"
         <script src="/js/vendor_footer.js"></script>
         <script src="/js/app.js"></script>
     </div>
-
 </body>
 </html>
