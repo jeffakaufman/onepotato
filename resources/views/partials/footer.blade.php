@@ -1,7 +1,7 @@
 <div id="quote">
 	<div class="container">
 		<div class="col-md-8 col-md-offset-2">
-			 <div class="quote-text">"A great way to get my kids food thats fresh, healthy and delicious."</div>
+			 <div class="quote-text">"A great way to get my kids food that's fresh, healthy and delicious."</div>
 			<div class="quote-name">—Leslie, Los Angeles</div>
 		</div>
 	</div>
@@ -58,3 +58,4 @@
 	<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/934286261/?value=0&amp;guid=ON&amp;script=0"/>
 	</div>
 </noscript>
+
