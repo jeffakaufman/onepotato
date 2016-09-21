@@ -185,6 +185,7 @@ function checkLuhn(input) {
 							 {{ csrf_field() }}
 							<input type="hidden" name="start_date" value="{{ $start_date }}" />
 							<input type="hidden" name="user_id" value="{{ $user->id }}" />
+							<input type="hidden" name="price" value="{{ $product->cost }}" />
 
         <div class="row">
             <div class="col-md-12">

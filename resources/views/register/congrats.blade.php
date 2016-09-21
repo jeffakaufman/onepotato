@@ -42,7 +42,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading with-subtitle">
-                    <h1>Congratulations!
+                    <h1>Congratulations! {{ $price }}
                         <div class="panel-subtitle">Your first box will arrive on {{ date('F j', strtotime($start_date)) }}.<br>
                         Get ready to start cooking!</div>
                     </h1>
@@ -116,7 +116,7 @@ your account.</div>
 	var google_conversion_format = "3";
 	var google_conversion_color = "ffffff";
 	var google_conversion_label = "KAs0CJTiqmMQtafAvQM";
-	//var google_conversion_value = 20.00;
+	pvar google_conversion_value = {{ $price }};
 	var google_conversion_currency = "USD";
 	var google_remarketing_only = false;
 	/* ]]> */
