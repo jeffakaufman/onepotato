@@ -12,12 +12,7 @@
     </ol>
 @endsection
 
-
-
-
-
 @section('content')
-
 <home :recipes="recipes" inline-template>
     <div class="container">
         <!-- Application Dashboard -->
@@ -28,20 +23,42 @@
             			<div class="panel-heading"><strong>{{ $thisTuesday }} Subscribers</strong></div>
                 		<div class="panel-body">
 	    					<div class="row">
+            					<a role="button" data-toggle="collapse" href="#activeThisWeek" aria-expanded="false" aria-controls="collapseThisWeek">
             					<div class="col-sm-10">
-            					Active
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $activeThisWeek  }}
-                				</div>
+            							Active
+                					</div>
+               						<div class="col-sm-2 text-right">
+            							{{  count($activeThisWeek)  }}
+                					</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="activeThisWeek">
+            					    @foreach ($activeThisWeek as $i => $subscriber)
+            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
             				</div>
 	    					<div class="row" style="background-color:lightblue">
+            					<a role="button" data-toggle="collapse" href="#skipsThisWeek" aria-expanded="false" aria-controls="collapseSkipsThisWeek">
             					<div class="col-sm-10">
             					Skips
                 				</div>
                					<div class="col-sm-2 text-right">
-            					{{  $skipsThisWeek }}
+            					{{  count($skipsThisWeek) }}
                 				</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="skipsThisWeek">
+            					    @foreach ($skipsThisWeek as $i => $skipper)
+            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
             				</div>
             			</div>	
       				</div>  
@@ -51,20 +68,42 @@
             			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '+7 days')) }} Subscribers</strong></div>
                 		<div class="panel-body">
 	    					<div class="row">
+            					<a role="button" data-toggle="collapse" href="#activeNextWeek" aria-expanded="false" aria-controls="collapseNextWeek">
             					<div class="col-sm-10">
             					Active
                 				</div>
                					<div class="col-sm-2 text-right">
-            					{{  $activeNextWeek  }}
+            					{{  count($activeNextWeek)  }}
                 				</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="activeNextWeek">
+            					    @foreach ($activeNextWeek as $i => $subscriber)
+            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
             				</div>
 	    					<div class="row" style="background-color:lightblue">
+            					<a role="button" data-toggle="collapse" href="#skipsNextWeek" aria-expanded="false" aria-controls="collapseNextWeek">
             					<div class="col-sm-10">
             					Skips
                 				</div>
                					<div class="col-sm-2 text-right">
-            					{{  $skipsNextWeek }}
+            					{{  count($skipsNextWeek) }}
                 				</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="skipsNextWeek">
+            					    @foreach ($skipsNextWeek as $i => $skipper)
+            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
             				</div>
             			</div>	
       				</div>  
@@ -74,28 +113,42 @@
             			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '-7 days')) }} Subscribers</strong></div>
                 		<div class="panel-body">
 	    					<div class="row">
-            					<div class="col-sm-10">
-            					Active
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $activeLastWeek  }}
-                				</div>
-            				</div>
-	    					<div class="row" style="background-color:lightblue">
-            					<div class="col-sm-10">
-            					Skips
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  $skipsLastWeek }}
-                				</div>
-            				</div>
-	    					<div class="row">
+            					<a role="button" data-toggle="collapse" href="#shippedLastWeek" aria-expanded="false" aria-controls="collapseLastWeek">
             					<div class="col-sm-10">
             					Shipped
                 				</div>
                					<div class="col-sm-2 text-right">
-            					{{  $shippedLastWeek  }}
+            					{{  count($shippedLastWeek)  }}
                 				</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="shippedLastWeek">
+            					    @foreach ($activeNextWeek as $i => $subscriber)
+            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
+            				</div>
+	    					<div class="row" style="background-color:lightblue">
+            					<a role="button" data-toggle="collapse" href="#skipslastWeek" aria-expanded="false" aria-controls="collapseLastWeek">
+            					<div class="col-sm-10">
+            					Skips
+                				</div>
+               					<div class="col-sm-2 text-right">
+            					{{  count($skipsLastWeek) }}
+                				</div>
+                				</a>
+            				</div>
+            				<div class="collapse" id="skipslastWeek">
+            					    @foreach ($skipsNextWeek as $i => $skipper)
+            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
+            					    		<div class="col-sm-10 col-sm-offset-1">
+	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
+    	        					    	</div>
+            					    	</div>
+            					    @endforeach
             				</div>
             			</div>	
       				</div>  

@@ -31,16 +31,81 @@ class DashboardController extends Controller
      */
     public function show()
     {
+        // last week is the last week we have "shipped" invoices for
         $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
-        $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-1 day'));           
+        $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-1 day'));         
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
         
-        $skipsThisWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+        $shippingHoldsWeek = Shippingholds::whereIn('hold_status',['hold','held'])
 				->where('date_to_hold', "=",$thisTuesday)
 				->get(); 
-		$skipIds = array_pluck($skipsThisWeek, 'user_id');
+		$skipIdsThisWeek = array_pluck($shippingHoldsWeek, 'user_id');
+        
+        //This week
+		//yeah, i could've done this with a DB query but this seemed easier to read.
+        $skipsThisWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$thisTuesday)
+				->whereIn('id', $skipIdsThisWeek)
+				->get();
+				
+        $activeThisWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$thisTuesday)
+				->whereNotIn('id', $skipIdsThisWeek)
+				->get();  
+
+		//last week
+		$shippingHoldsWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",$lastTuesday)
+				->get(); 
+		$skipIdsLastWeek = array_pluck($shippingHoldsWeek, 'user_id');
+		
+		$skipsLastWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$lastTuesday)
+				->whereIn('id', $skipIdsLastWeek)
+				->get();
+
+        $shippedLastWeek = Subinvoice::where('invoice_status','shipped')
+				->where('period_end_date', ">=",$lastPeriodEndDate)
+				->get();    
+		$skipIdsThisWeek = array_pluck($shippedLastWeek, 'user_id');
+		
+		$shippedLastWeek = User::whereIn('id', $skipIdsThisWeek)
+				->get();
+       
+       //next week 
+		$shippingHoldsWeek = Shippingholds::whereIn('hold_status',['hold','held'])
+				->where('date_to_hold', "=",$nextTuesday)
+				->get(); 
+		$skipIdsNextWeek = array_pluck($shippingHoldsWeek, 'user_id');
+
+        $skipsNextWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$nextTuesday)
+				->whereIn('id', $skipIdsNextWeek)
+				->get();
+
+        $activeNextWeek = User::whereIn('users.status',['active','inactive'])
+				->where('start_date', "<=",$nextTuesday)
+				->whereNotIn('id', $skipIdsNextWeek)
+				->get();    
+        
+        $nextTotalSubs = DB::table('users')
+				->select('users.status', DB::raw('count(*) as total'))
+				->leftJoin('shippingholds as shippingholds', 'shippingholds.user_id', '=', 'users.id')
+				->groupBy('users.status')
+				->orderBy('users.status')
+				->get();
+        
+        $skips = DB::table('users')
+				->select('date_to_hold', DB::raw('count(*) as total'))
+	    		->join('shippingholds','shippingholds.user_id','=','users.id')
+				->where('date_to_hold', ">=",date('Y-m-d H:i:s'))
+				->where('hold_status', "=",'hold')
+				->groupBy('date_to_hold')
+				->orderBy('date_to_hold')
+				->get();		
+
   
   		$menus = DB::table('menus_users')
 				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
@@ -50,7 +115,7 @@ class DashboardController extends Controller
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->where('delivery_date', "=",$thisTuesday)
 				->where('users.status', "<>","incomplete")
-				->whereNotIn('users.id', $skipIds)
+				->whereNotIn('users.id', $skipIdsThisWeek)
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
 				->orderBy('menus_id')
@@ -77,54 +142,7 @@ class DashboardController extends Controller
 				->groupBy('subscriptions.status')
 				->orderBy('subscriptions.status')
 				->get();
-				
-        $activeLastWeek = User::whereIn('users.status',['active','inactive'])
-				->where('start_date', "<=",$lastTuesday)
-				->count();   
-        $shippedLastWeek = Subinvoice::where('invoice_status','shipped')
-				->where('period_end_date', ">=",$lastPeriodEndDate)
-				->count();    
-		$skipsLastWeek = Shippingholds::whereIn('hold_status',['hold','held'])
-				->where('date_to_hold', "=",$lastTuesday)
-				->count();       
-        
-        $activeThisWeek = User::whereIn('users.status',['active','inactive'])
-				->where('start_date', "<=",$thisTuesday)
-				->count();    
-		$skipsThisWeek = Shippingholds::whereIn('hold_status',['hold','held'])
-				->where('date_to_hold', "=",$thisTuesday)
-				->count();       
-        $activeThisWeek -= $skipsThisWeek;
-        
-        $activeNextWeek = User::whereIn('users.status',['active','inactive'])
-				->where('start_date', "<=",date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days')))
-				->count();    
-		$skipsNextWeek = Shippingholds::whereIn('hold_status',['hold','held'])
-				->where('date_to_hold', "=",date('Y-m-d H:i:s',strtotime($thisTuesday . '+7 days')))
-				->count();       
-        $activeNextWeek -= $skipsNextWeek;
 
-
-
-
-        
-        $nextTotalSubs = DB::table('users')
-				->select('users.status', DB::raw('count(*) as total'))
-				->leftJoin('shippingholds as shippingholds', 'shippingholds.user_id', '=', 'users.id')
-				->groupBy('users.status')
-				->orderBy('users.status')
-				->get();
-        
-        $skips = DB::table('users')
-				->select('date_to_hold', DB::raw('count(*) as total'))
-	    		->join('shippingholds','shippingholds.user_id','=','users.id')
-				->where('date_to_hold', ">=",date('Y-m-d H:i:s'))
-				->where('hold_status', "=",'hold')
-				->groupBy('date_to_hold')
-				->orderBy('date_to_hold')
-				->get();		
-
-       	
     	return view('admin.dashboard')
     			->with(['menus'=>$menus
     				,'oldDate'=>''
@@ -134,13 +152,12 @@ class DashboardController extends Controller
     				,'skipsThisWeek'=>$skipsThisWeek
     				,'activeNextWeek'=>$activeNextWeek
     				,'skipsNextWeek'=>$skipsNextWeek
-    				,'activeLastWeek'=>$activeLastWeek
     				,'skipsLastWeek'=>$skipsLastWeek
     				,'shippedLastWeek'=>$shippedLastWeek
     				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
     				,'skips'=>$skips]
     			);
-    			
+	
     }
     public function showReports()
     {
