@@ -69,9 +69,9 @@ class DashboardController extends Controller
         $shippedLastWeek = Subinvoice::where('invoice_status','shipped')
 				->where('period_end_date', ">=",$lastPeriodEndDate)
 				->get();    
-		$skipIdsThisWeek = array_pluck($shippedLastWeek, 'user_id');
+		$skipIdsLastWeek = array_pluck($shippedLastWeek, 'user_id');
 		
-		$shippedLastWeek = User::whereIn('id', $skipIdsThisWeek)
+		$shippedLastWeek = User::whereIn('id', $skipIdsLastWeek)
 				->get();
        
        //next week 
