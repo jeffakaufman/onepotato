@@ -116,7 +116,7 @@ your account.</div>
 	var google_conversion_format = "3";
 	var google_conversion_color = "ffffff";
 	var google_conversion_label = "KAs0CJTiqmMQtafAvQM";
-	var google_conversion_value = 20.00;
+	//var google_conversion_value = 20.00;
 	var google_conversion_currency = "USD";
 	var google_remarketing_only = false;
 	/* ]]> */
