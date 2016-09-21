@@ -274,7 +274,7 @@ function stripeResponseHandler(status, response) {
                                             </div>
                                             <div class="row padbottom">
                                                 <div class="col-sm-3"><b>Family Size</b></div>
-                                                <div class="col-sm-9">Number of children: &nbsp; {!! Form::text('children', $ChildSelect, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
+                                                <div class="col-sm-9" id="planChildrenDiv">Number of children: &nbsp; {!! Form::text('children', $ChildSelect, array('pattern' => '[0-9]*', 'class' => 'number')); !!}</div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-3" style="line-height: 42px"><b>Box Type</b></div>
@@ -329,6 +329,59 @@ function stripeResponseHandler(status, response) {
                                             <button type="submit" class="btn btn-primary">Save changes</button>
                                         </div>
                                      	</form>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $("#plan_details a.edit-link").click(function() {
+
+        function _getCurrentChildrenNumber() {
+            var _chEl = $("#planChildrenDiv input[name=children]");
+            var _curChildren = _chEl.val();
+
+            if(_curChildren < 0) {
+                _chEl.val(0);
+                _curChildren = 0;
+            }
+
+            if(_curChildren > 4) {
+                _chEl.val(4);
+                _curChildren = 4;
+            }
+
+            return _curChildren;
+        }
+
+        function _checkPlan(ch) {
+            if(0 == ch) {
+                $("#plan_details select[name=plan_size]").val('adult');
+            } else {
+                $("#plan_details select[name=plan_size]").val('family');
+            }
+        }
+
+        $("#planChildrenDiv .numButton").click(function() {
+            _checkPlan(_getCurrentChildrenNumber());
+        });
+
+        $("#planChildrenDiv input[name=children]").change(function() {
+            _checkPlan(_getCurrentChildrenNumber());
+        });
+
+
+
+        $("#plan_details select[name=plan_size]").change(function() {
+            if($(this).val() == 'adult') {
+                $("#planChildrenDiv input[name=children]").val(0);
+            } else {
+                $("#planChildrenDiv input[name=children]").val(1);
+            }
+        });
+
+    });
+
+});
+
+</script>
                                     </div><!-- /.modal-content -->
                                 </div><!-- /.modal-dialog -->
                             </div><!-- /.modal -->
