@@ -219,10 +219,9 @@ class UserController extends Controller
 
 		$invoices = Subinvoice::where('user_id',$id)
 			->where('invoice_status','shipped')
-			->whereDate('period_end_date','<=',Carbon::today()->toDateString())
 			->orderBy('order_id','desc')
 			->get();
-		
+		//removed from qyere--->whereDate('period_end_date','<=',Carbon::today()->toDateString())
 		//check for any processed orders - the order was sent to shipping for the next week's delivery
 		$currentInvoice = Subinvoice::where('user_id',$id)
 			->where('invoice_status','sent_to_ship')
