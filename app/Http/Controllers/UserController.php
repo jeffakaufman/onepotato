@@ -219,7 +219,7 @@ class UserController extends Controller
 
 		$invoices = Subinvoice::where('user_id',$id)
 			->where('invoice_status','shipped')
-			->whereDate('period_end_date','<',Carbon::today()->toDateString())
+			->whereDate('period_end_date','<=',Carbon::today()->toDateString())
 			->orderBy('order_id','desc')
 			->get();
 		
