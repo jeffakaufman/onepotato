@@ -151,7 +151,7 @@ class NewUserController extends Controller
 		//calculate earliest start date
 		date_default_timezone_set('America/Los_Angeles');
 		$today = date('Y-m-d H:i:s'); 
-		$nextWednesday = strtotime('next wednesday 4PM');
+		$nextWednesday = strtotime('next wednesday 9AM');
 		$dateCompare = strtotime($today);
 		
 		if (($nextWednesday-$dateCompare)/86400 < 5) { //if today's date is less than 5 days from next tuesday, go to the tuesday after
@@ -687,6 +687,7 @@ class NewUserController extends Controller
         	'meal1'=>$meal1,
         	'meal2'=>$meal2,
         	'meal3'=>$meal3,
+        	'price'=>$request->price,
         ]);
 		
 	}

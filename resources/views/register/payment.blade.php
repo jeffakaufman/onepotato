@@ -185,6 +185,7 @@ function checkLuhn(input) {
 							 {{ csrf_field() }}
 							<input type="hidden" name="start_date" value="{{ $start_date }}" />
 							<input type="hidden" name="user_id" value="{{ $user->id }}" />
+							<input type="hidden" name="price" value="{{ $product->cost }}" />
 
         <div class="row">
             <div class="col-md-12">
@@ -425,12 +426,6 @@ function checkLuhn(input) {
                                     <div class="col-xs-7 nosidepadding eh">{{ $product->product_description }} </div>
                                     <div class="col-xs-5 text-right nosidepadding eh bottom"> ${{ $product->cost }}</div>
                                 </div>
-                                @if ($glutenfree == 'checked')
-                                <div class="col-xs-12 col-sm-8 thinpadding">
-                                    <div class="col-xs-7 nosidepadding">Gluten free</div>
-                                    <div class="col-xs-5 nosidepadding text-right">$3.00</div>
-                                </div>
-                                @endif
                                 <div id="code" class="col-xs-12 col-sm-8 thinpadding" v-show="hasCode">
                                     <div class="col-xs-7 nosidepadding label2">Referral code</div>
                                     <div id="discount" class="col-xs-5 nosidepadding text-right discount">-$XX.XX</div>

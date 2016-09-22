@@ -814,7 +814,7 @@ $(document).ready(function() {
                                                 {!! Form::email('email', '', array('class' => 'form-control', 'placeholder' => 'EMAIL')) !!}
                                             </div>
                                             <div class="padbottom">
-                                                {!! Form::textarea('message', 'I thought you\'d love One Potato, a meal delivery service for busy families. Lorem ipsum dolor sit amet...', array('class' => 'form-control')) !!}
+                                                {!! Form::textarea('message', 'I thought you\'d love One Potato, a meal delivery service for busy families.', array('class' => 'form-control')) !!}
                                             </div>
                                             
                                             <div class="padbottom">

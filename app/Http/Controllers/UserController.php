@@ -219,10 +219,9 @@ class UserController extends Controller
 
 		$invoices = Subinvoice::where('user_id',$id)
 			->where('invoice_status','shipped')
-			->whereDate('period_end_date','<',Carbon::today()->toDateString())
 			->orderBy('order_id','desc')
 			->get();
-		
+		//removed from qyere--->whereDate('period_end_date','<=',Carbon::today()->toDateString())
 		//check for any processed orders - the order was sent to shipping for the next week's delivery
 		$currentInvoice = Subinvoice::where('user_id',$id)
 			->where('invoice_status','sent_to_ship')
@@ -242,13 +241,11 @@ class UserController extends Controller
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
 			$deliveryHistory->order_id = $invoices[$i]->order_id;
-			$order = Order::where('order_id',$invoices[$i]->order_id)->get();
-			$deliveryHistory->ship_date = date('F j, Y', strtotime($order[0]->ship_date));
+			$deliveryHistory->ship_date = date('F j, Y', strtotime($invoices[$i]->period_end_date."-1 day"));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
-			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
+			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )->get();
 			$shipments[] = $deliveryHistory;
 		}
-		
 		//get the next delivery their change will apply
 		$today = date('N');
 		if		($today == 1)	{ $changeDate = date('l, F jS', strtotime("+8 days"));  }
@@ -258,7 +255,6 @@ class UserController extends Controller
 		elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
 		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
 		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
-		
 		
 		return view('account')
 					->with(['user'=>$user, 
