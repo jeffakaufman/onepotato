@@ -231,6 +231,25 @@
 					</div>
 				@include('admin.users.csr-notes')
 			</form>
+<hr />
+<br />
+<br />
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<form action="{{ url('admin/user') }}/send_cancel_link/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure??');">
+				{{ csrf_field() }}
+				<input type="hidden" name="user_id" value="{{ $user->id }}" />
+				<div>
+					<div class="form-group">
+						<div class="col-sm-3">
+							<button type="submit" class="btn btn-default">
+								<i class="fa fa-mail"></i> Send Cancellation Link
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </home>
 @endsection

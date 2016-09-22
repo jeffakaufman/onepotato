@@ -196,6 +196,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/user/referrals/{id}', 'UserController@showReferrals');
     Route::post('/admin/user/referrals/{id}', 'UserController@sendReferral');
 
+    Route::post('/admin/user/send_cancel_link/{id}', 'UserController@sendCancelLink');
+
     Route::get('/admin/dashboard', 'DashboardController@show');
     Route::get('/admin/reports', 'DashboardController@showReports');
     Route::get('/admin/subs_products', 'ProductsController@subscriptionList');
