@@ -241,13 +241,11 @@ class UserController extends Controller
 		for ($i = 0; $i < count($invoices); $i++) {
 			$deliveryHistory = new stdClass;
 			$deliveryHistory->order_id = $invoices[$i]->order_id;
-			$order = Order::where('order_id',$invoices[$i]->order_id)->get();
-			$deliveryHistory->ship_date = date('F j, Y', strtotime($order[0]->ship_date));
+			$deliveryHistory->ship_date = date('F j, Y', strtotime($invoices[$i]->period_end_date."-1 day"));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
-			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($order[0]->ship_date)) )->get();
+			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )->get();
 			$shipments[] = $deliveryHistory;
 		}
-		
 		//get the next delivery their change will apply
 		$today = date('N');
 		if		($today == 1)	{ $changeDate = date('l, F jS', strtotime("+8 days"));  }
@@ -257,7 +255,6 @@ class UserController extends Controller
 		elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
 		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
 		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
-		
 		
 		return view('account')
 					->with(['user'=>$user, 
@@ -1009,6 +1006,26 @@ class UserController extends Controller
 			
 					
 	}
+
+	public function sendCancelLink($id, Request $request) {
+        $user = User::find($id);
+
+        $params = [
+            'user' => $user,
+            'link' => Cancellation::GenerateCancelLink($user),
+        ];
+
+        $r = Mail::send('emails.cancel_link', $params, function($m) use ($user) {
+//            $m->from('ahhmed@mail.ru', 'Aleksey Zagarov');
+            $m->to($user->email, $user->first_name.' '.$user->last_name);
+            $m->to('azagarov@mail.ru', 'Jenna');
+//            $m->bcc('agedgouda@gmail.com', 'Jenna');
+            $m->subject("Cancellation link is created for you");
+        });
+//var_dump($r);die();
+        return redirect("/admin/user_details/{$id}");
+    }
+
 
     public function recordReferral (Request $request) {
 			
