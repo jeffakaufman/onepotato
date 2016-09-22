@@ -1288,7 +1288,7 @@ class SubinvoiceController extends Controller
 			//remove hold from holds table
 			$hold = Shippingholds::where('user_id', $id)
 						->where('date_to_hold', $holddate)
-						->where('hold_status', 'hold')
+						->where('hold_status', 'held')
 						->first();
 
 			//if there is a hold
