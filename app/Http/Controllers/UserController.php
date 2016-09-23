@@ -1016,10 +1016,9 @@ class UserController extends Controller
         ];
 
         $r = Mail::send('emails.cancel_link', $params, function($m) use ($user) {
-//            $m->from('ahhmed@mail.ru', 'Aleksey Zagarov');
             $m->to($user->email, $user->first_name.' '.$user->last_name);
-            $m->to('azagarov@mail.ru', 'Jenna');
-//            $m->bcc('agedgouda@gmail.com', 'Jenna');
+//            $m->to('azagarov@mail.ru', 'Jenna');
+            $m->bcc('agedgouda@gmail.com', 'Jenna');
             $m->subject("Cancellation link is created for you");
         });
 //var_dump($r);die();
