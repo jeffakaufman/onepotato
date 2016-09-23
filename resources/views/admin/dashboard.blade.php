@@ -123,7 +123,7 @@
                 				</a>
             				</div>
             				<div class="collapse" id="shippedLastWeek">
-            					    @foreach ($activeNextWeek as $i => $subscriber)
+            					    @foreach ($shippedLastWeek as $i => $subscriber)
             					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
             					    		<div class="col-sm-10 col-sm-offset-1">
 	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>

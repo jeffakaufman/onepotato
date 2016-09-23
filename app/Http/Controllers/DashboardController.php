@@ -52,6 +52,7 @@ class DashboardController extends Controller
 				
         $activeThisWeek = User::whereIn('users.status',['active','inactive'])
 				->where('start_date', "<=",$thisTuesday)
+				->orderBy('name','asc')
 				->whereNotIn('id', $skipIdsThisWeek)
 				->get();  
 
@@ -68,10 +69,11 @@ class DashboardController extends Controller
 
         $shippedLastWeek = Subinvoice::where('invoice_status','shipped')
 				->where('period_end_date', ">=",$lastPeriodEndDate)
-				->get();    
+				->get();
 		$skipIdsLastWeek = array_pluck($shippedLastWeek, 'user_id');
 		
 		$shippedLastWeek = User::whereIn('id', $skipIdsLastWeek)
+				->orderBy('name','asc')
 				->get();
        
        //next week 
@@ -115,7 +117,6 @@ class DashboardController extends Controller
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->where('delivery_date', "=",$thisTuesday)
 				->where('users.status', "<>","incomplete")
-				->where('menus_users.menus_id', 62)
 				->whereNotIn('users.id', $skipIdsThisWeek)
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
@@ -142,7 +143,7 @@ class DashboardController extends Controller
 				->groupBy('subscriptions.status')
 				->orderBy('subscriptions.status')
 				->get();
-/*
+
     	return view('admin.dashboard')
     			->with(['menus'=>$menus
     				,'oldDate'=>''
@@ -157,7 +158,7 @@ class DashboardController extends Controller
     				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
     				,'skips'=>$skips]
     			);
-*/	
+	
     }
     public function showReports()
     {
