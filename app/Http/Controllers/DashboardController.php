@@ -115,13 +115,13 @@ class DashboardController extends Controller
 	    		->join('products','subscriptions.product_id','=','products.id')
 				->where('delivery_date', "=",$thisTuesday)
 				->where('users.status', "<>","incomplete")
+				->where('menus_users.menus_id', 62)
 				->whereNotIn('users.id', $skipIdsThisWeek)
 				->groupBy('delivery_date','menus_id','product_title')
 				->orderBy('delivery_date')
 				->orderBy('menus_id')
 				->orderBy('products.id')
-				->get();
-        
+				->get();     
         $newSubs = DB::table('users')
 				->select('start_date','products.product_description', DB::raw('count(*) as total'))
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
@@ -142,7 +142,7 @@ class DashboardController extends Controller
 				->groupBy('subscriptions.status')
 				->orderBy('subscriptions.status')
 				->get();
-
+/*
     	return view('admin.dashboard')
     			->with(['menus'=>$menus
     				,'oldDate'=>''
@@ -157,7 +157,7 @@ class DashboardController extends Controller
     				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
     				,'skips'=>$skips]
     			);
-	
+*/	
     }
     public function showReports()
     {

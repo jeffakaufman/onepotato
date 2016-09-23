@@ -120,5 +120,11 @@ $('#register1').addClass('active');
 	<div class="row">
 	    <div class="footnote pad col-md-10 col-md-offset-1">One Potato meals feature organic ingredients whenever possible. All organic ingredients are clearly labeled upon delivery.</div>
 	</div>
-</div>
+</div><script type='text/javascript'> var crthk_setup='mid_g7aOPnJz'; var crthk_cart = {}; (function() {
+    var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
+    ch.src = '//api.carthook.com/api/js/';
+    var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
+  })();
+</script>
+
 @endsection

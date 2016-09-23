@@ -116,7 +116,7 @@ your account.</div>
 	var google_conversion_format = "3";
 	var google_conversion_color = "ffffff";
 	var google_conversion_label = "KAs0CJTiqmMQtafAvQM";
-	pvar google_conversion_value = {{ $price }};
+	var google_conversion_value = {{ $price }};
 	var google_conversion_currency = "USD";
 	var google_remarketing_only = false;
 	/* ]]> */
@@ -130,4 +130,24 @@ your account.</div>
 </noscript>
 
 
+<script type='text/javascript'>
+window.crthk_cart = {
+ "price"  : {{ $price }},
+ "items"  : {
+        	"url": "https://beta.onepotato.com/register",
+        	"name": "{{  $product  }}",
+        	"totalItemCost": "{{ $price }}"
+        },
+ "carturl": "https://beta.onepotato.com/"
+};
+ 
+
+
+
+	var crthk_setup='mid_g7aOPnJz'; var crthk_complete=true; (function() {
+    var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
+    ch.src = '//api.carthook.com/api/js/';
+    var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
+  })();
+</script>
 @endsection
