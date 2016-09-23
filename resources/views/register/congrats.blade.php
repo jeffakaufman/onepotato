@@ -131,19 +131,6 @@ your account.</div>
 
 
 <script type='text/javascript'>
-window.crthk_cart = {
- "price"  : {{ $price }},
- "items"  : {
-        	"url": "https://beta.onepotato.com/register",
-        	"name": "{{  $product  }}",
-        	"totalItemCost": "{{ $price }}"
-        },
- "carturl": "https://beta.onepotato.com/"
-};
- 
-
-
-
 	var crthk_setup='mid_g7aOPnJz'; var crthk_complete=true; (function() {
     var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
     ch.src = '//api.carthook.com/api/js/';

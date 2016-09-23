@@ -688,7 +688,6 @@ class NewUserController extends Controller
         	'meal2'=>$meal2,
         	'meal3'=>$meal3,
         	'price'=>$request->price,
-        	'product'=>$userProduct->product_description,
         ]);
 		
 	}

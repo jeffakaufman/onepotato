@@ -252,6 +252,7 @@ function checkLuhn(input) {
                                     <select name="state" type="select" class="form-control" required placeholder="State*">
                                         <option value="AZ" @if( $state == 'AZ') selected @endif>Arizona</option>
                                         <option value="CA" @if( $state == 'CA') selected @endif>California</option>
+                                        <option value="CA" @if( $state == 'NV') selected @endif>Nevada</option>
                                         <option value="UT" @if( $state == 'UT') selected @endif>Utah</option>
                                     </select>
                                 </label>
@@ -481,4 +482,26 @@ $(function() {
 
 });
 </script>
+
+<script type='text/javascript'>
+crthk_cart = {
+ "price"  : "{{ $product->cost }}",
+ "items"  : {
+        	"url": "https://beta.onepotato.com/register",
+        	"name": "{{  $product->product_description  }}",
+        	"totalItemCost": "{{ $product->cost }}"
+        },
+ "carturl": "https://beta.onepotato.com/"
+};
+ 
+
+
+var crthk_setup='mid_g7aOPnJz'; var crthk_cart = {}; (function() {
+    var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
+    ch.src = '//api.carthook.com/api/js/';
+    var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
+  })();
+</script>
+
+
 @endsection
