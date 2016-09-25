@@ -597,6 +597,12 @@ class SubinvoiceController extends Controller
 		//mark subinvoice as "shipped"
 		$invoice = Subinvoice::where('order_id',$order_id)->first();
 		$invoice->invoice_status = "shipped";
+		$invoice->ship_date = $shipnotice->ShipDate;
+		$invoice->ship_carrier = $shipnotice->Carrier;
+		$invoice->ship_service = $shipnotice->Service;
+		$invoice->tracking_number = $shipnotice->TrackingNumber;
+		$invoice->ship_station_xml = $shipXML;
+		
 		$invoice->save();
 	
 
@@ -1001,59 +1007,118 @@ class SubinvoiceController extends Controller
 	public function testStripeJSON() {
 		
 		$input = '{
-		  "created": 1326853478,
-		  "livemode": false,
-		  "id": "evt_00000000000000",
-		  "type": "invoice.payment_succeeded",
+		  "id": "evt_18wKgQCEzFD8tUOqOALdV5bC",
 		  "object": "event",
-		  "request": null,
-		  "pending_webhooks": 1,
-		  "api_version": "2016-03-07",
+		  "api_version": "2016-06-15",
+		  "created": 1474502602,
 		  "data": {
 		    "object": {
-		      "id": "in_00000000000000",
+		      "id": "in_18wJkKCEzFD8tUOqBfDZYoFU",
 		      "object": "invoice",
-		      "amount_due": 1200,
+		      "amount_due": 8401,
 		      "application_fee": null,
 		      "attempt_count": 1,
 		      "attempted": true,
-		      "charge": "_00000000000000",
+		      "charge": "ch_18wKgQCEzFD8tUOqsCRnFCeQ",
 		      "closed": true,
 		      "currency": "usd",
-		      "customer": "cus_00000000000000",
-		      "date": 1467583569,
+		      "customer": "cus_99DdrELqLYjsFi",
+		      "date": 1474499000,
 		      "description": null,
 		      "discount": null,
 		      "ending_balance": 0,
 		      "forgiven": false,
 		      "lines": {
+		        "object": "list",
 		        "data": [
 		          {
-		            "id": "sub_8iBeLD4bRSABxM",
+		            "id": "ii_18w32kCEzFD8tUOqEversVLL",
 		            "object": "line_item",
-		            "amount": 1498,
+		            "amount": -1047,
+		            "currency": "usd",
+		            "description": "Unused time on Omnivore Box for 2 Adults and 2 Children after 21 Sep 2016",
+		            "discountable": false,
+		            "livemode": true,
+		            "metadata": {},
+		            "period": {
+		              "start": 1474434794,
+		              "end": 1474498800
+		            },
+		            "plan": {
+		              "id": "omn_2_adults_2_child_1",
+		              "object": "plan",
+		              "amount": 9894,
+		              "created": 1471983311,
+		              "currency": "usd",
+		              "interval": "week",
+		              "interval_count": 1,
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 2 Children",
+		              "statement_descriptor": null,
+		              "trial_period_days": null
+		            },
+		            "proration": true,
+		            "quantity": 1,
+		            "subscription": "sub_99DduOPa4vJyXp",
+		            "type": "invoiceitem"
+		          },
+		          {
+		            "id": "ii_18w32kCEzFD8tUOqAc5QtVsh",
+		            "object": "line_item",
+		            "amount": 904,
+		            "currency": "usd",
+		            "description": "Remaining time on Omnivore Box for 2 Adults and 1 Child after 21 Sep 2016",
+		            "discountable": false,
+		            "livemode": true,
+		            "metadata": {},
+		            "period": {
+		              "start": 1474434794,
+		              "end": 1474498800
+		            },
+		            "plan": {
+		              "id": "omn_2_adults_1_child_1",
+		              "object": "plan",
+		              "amount": 8544,
+		              "created": 1471983280,
+		              "currency": "usd",
+		              "interval": "week",
+		              "interval_count": 1,
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 1 Child",
+		              "statement_descriptor": null,
+		              "trial_period_days": null
+		            },
+		            "proration": true,
+		            "quantity": 1,
+		            "subscription": "sub_99DduOPa4vJyXp",
+		            "type": "invoiceitem"
+		          },
+		          {
+		            "id": "sub_99DduOPa4vJyXp",
+		            "object": "line_item",
+		            "amount": 8544,
 		            "currency": "usd",
 		            "description": null,
 		            "discountable": true,
 		            "livemode": true,
-		            "metadata": {
-		            },
+		            "metadata": {},
 		            "period": {
-		              "start": 1468187931,
-		              "end": 1468792731
+		              "start": 1474498800,
+		              "end": 1475103600
 		            },
 		            "plan": {
-		              "id": "test_plan_1",
+		              "id": "omn_2_adults_1_child_1",
 		              "object": "plan",
-		              "amount": 1000,
-		              "created": 1466701834,
+		              "amount": 8544,
+		              "created": 1471983280,
 		              "currency": "usd",
 		              "interval": "week",
 		              "interval_count": 1,
-		              "livemode": false,
-		              "metadata": {
-		              },
-		              "name": "Test Plan 1",
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 1 Child",
 		              "statement_descriptor": null,
 		              "trial_period_days": null
 		            },
@@ -1063,28 +1128,31 @@ class SubinvoiceController extends Controller
 		            "type": "subscription"
 		          }
 		        ],
-		        "total_count": 1,
-		        "object": "list",
-		        "url": "/v1/invoices/in_18TIj7CEzFD8tUOqQjZFX76H/lines"
+		        "has_more": false,
+		        "total_count": 3,
+		        "url": "/v1/invoices/in_18wJkKCEzFD8tUOqBfDZYoFU/lines"
 		      },
-		      "livemode": false,
-		      "metadata": {
-		      },
+		      "livemode": true,
+		      "metadata": {},
 		      "next_payment_attempt": null,
 		      "paid": true,
-		      "period_end": 1467583131,
-		      "period_start": 1466978331,
+		      "period_end": 1474498800,
+		      "period_start": 1473894000,
 		      "receipt_number": null,
 		      "starting_balance": 0,
 		      "statement_descriptor": null,
-		      "subscription": "sub_00000000000000",
-		      "subtotal": 1200,
+		      "subscription": "sub_99DduOPa4vJyXp",
+		      "subtotal": 8401,
 		      "tax": null,
 		      "tax_percent": null,
-		      "total": 1200,
-		      "webhooks_delivered_at": 1467583569
+		      "total": 8401,
+		      "webhooks_delivered_at": 1474499000
 		    }
-		  }
+		  },
+		  "livemode": true,
+		  "pending_webhooks": 1,
+		  "request": null,
+		  "type": "invoice.payment_succeeded"
 		}';
 		
 		$event_json = json_decode($input);
@@ -1477,63 +1545,122 @@ class SubinvoiceController extends Controller
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL,            "https://beta.onepotato.com/stripe/webhook" );
+		curl_setopt($ch, CURLOPT_URL,            "https://onepotato.kidevelopment.com/stripe/webhook" );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     '{
-		  "created": 1326853478,
-		  "livemode": false,
-		  "id": "evt_00000000000000",
-		  "type": "invoice.payment_succeeded",
+		  "id": "evt_18wKgQCEzFD8tUOqOALdV5bC",
 		  "object": "event",
-		  "request": null,
-		  "pending_webhooks": 1,
-		  "api_version": "2016-03-07",
+		  "api_version": "2016-06-15",
+		  "created": 1474502602,
 		  "data": {
 		    "object": {
-		      "id": "in_00000000000000",
+		      "id": "in_18wJkKCEzFD8tUOqBfDZYoFU",
 		      "object": "invoice",
-		      "amount_due": 1200,
+		      "amount_due": 8401,
 		      "application_fee": null,
 		      "attempt_count": 1,
 		      "attempted": true,
-		      "charge": "_00000000000000",
+		      "charge": "ch_18wKgQCEzFD8tUOqsCRnFCeQ",
 		      "closed": true,
 		      "currency": "usd",
-		      "customer": "cus_00000000000000",
-		      "date": 1467583569,
+		      "customer": "cus_99DdrELqLYjsFi",
+		      "date": 1474499000,
 		      "description": null,
 		      "discount": null,
 		      "ending_balance": 0,
 		      "forgiven": false,
 		      "lines": {
+		        "object": "list",
 		        "data": [
 		          {
-		            "id": "sub_8iBeLD4bRSABxM",
+		            "id": "ii_18w32kCEzFD8tUOqEversVLL",
 		            "object": "line_item",
-		            "amount": 1498,
+		            "amount": -1047,
+		            "currency": "usd",
+		            "description": "Unused time on Omnivore Box for 2 Adults and 2 Children after 21 Sep 2016",
+		            "discountable": false,
+		            "livemode": true,
+		            "metadata": {},
+		            "period": {
+		              "start": 1474434794,
+		              "end": 1474498800
+		            },
+		            "plan": {
+		              "id": "omn_2_adults_2_child_1",
+		              "object": "plan",
+		              "amount": 9894,
+		              "created": 1471983311,
+		              "currency": "usd",
+		              "interval": "week",
+		              "interval_count": 1,
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 2 Children",
+		              "statement_descriptor": null,
+		              "trial_period_days": null
+		            },
+		            "proration": true,
+		            "quantity": 1,
+		            "subscription": "sub_99DduOPa4vJyXp",
+		            "type": "invoiceitem"
+		          },
+		          {
+		            "id": "ii_18w32kCEzFD8tUOqAc5QtVsh",
+		            "object": "line_item",
+		            "amount": 904,
+		            "currency": "usd",
+		            "description": "Remaining time on Omnivore Box for 2 Adults and 1 Child after 21 Sep 2016",
+		            "discountable": false,
+		            "livemode": true,
+		            "metadata": {},
+		            "period": {
+		              "start": 1474434794,
+		              "end": 1474498800
+		            },
+		            "plan": {
+		              "id": "omn_2_adults_1_child_1",
+		              "object": "plan",
+		              "amount": 8544,
+		              "created": 1471983280,
+		              "currency": "usd",
+		              "interval": "week",
+		              "interval_count": 1,
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 1 Child",
+		              "statement_descriptor": null,
+		              "trial_period_days": null
+		            },
+		            "proration": true,
+		            "quantity": 1,
+		            "subscription": "sub_99DduOPa4vJyXp",
+		            "type": "invoiceitem"
+		          },
+		          {
+		            "id": "sub_99DduOPa4vJyXp",
+		            "object": "line_item",
+		            "amount": 8544,
 		            "currency": "usd",
 		            "description": null,
 		            "discountable": true,
 		            "livemode": true,
-		            "metadata": {
-		            },
+		            "metadata": {},
 		            "period": {
-		              "start": 1468187931,
-		              "end": 1468792731
+		              "start": 1474498800,
+		              "end": 1475103600
 		            },
 		            "plan": {
-		              "id": "test_plan_1",
+		              "id": "omn_2_adults_1_child_1",
 		              "object": "plan",
-		              "amount": 1000,
-		              "created": 1466701834,
+		              "amount": 8544,
+		              "created": 1471983280,
 		              "currency": "usd",
 		              "interval": "week",
 		              "interval_count": 1,
-		              "livemode": false,
-		              "metadata": {
-		              },
-		              "name": "Test Plan 1",
+		              "livemode": true,
+		              "metadata": {},
+		              "name": "Omnivore Box for 2 Adults and 1 Child",
 		              "statement_descriptor": null,
 		              "trial_period_days": null
 		            },
@@ -1543,28 +1670,31 @@ class SubinvoiceController extends Controller
 		            "type": "subscription"
 		          }
 		        ],
-		        "total_count": 1,
-		        "object": "list",
-		        "url": "/v1/invoices/in_18TIj7CEzFD8tUOqQjZFX76H/lines"
+		        "has_more": false,
+		        "total_count": 3,
+		        "url": "/v1/invoices/in_18wJkKCEzFD8tUOqBfDZYoFU/lines"
 		      },
-		      "livemode": false,
-		      "metadata": {
-		      },
+		      "livemode": true,
+		      "metadata": {},
 		      "next_payment_attempt": null,
 		      "paid": true,
-		      "period_end": 1467583131,
-		      "period_start": 1466978331,
+		      "period_end": 1474498800,
+		      "period_start": 1473894000,
 		      "receipt_number": null,
 		      "starting_balance": 0,
 		      "statement_descriptor": null,
-		      "subscription": "sub_00000000000000",
-		      "subtotal": 1200,
+		      "subscription": "sub_99DduOPa4vJyXp",
+		      "subtotal": 8401,
 		      "tax": null,
 		      "tax_percent": null,
-		      "total": 1200,
-		      "webhooks_delivered_at": 1467583569
+		      "total": 8401,
+		      "webhooks_delivered_at": 1474499000
 		    }
-		  }
+		  },
+		  "livemode": true,
+		  "pending_webhooks": 1,
+		  "request": null,
+		  "type": "invoice.payment_succeeded"
 		}' ); 
 		curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); 
 

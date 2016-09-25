@@ -431,7 +431,6 @@ class UserController extends Controller
 			}
 			
 			
-			
 			//look up the product ID
 			$newProduct = Product::where('sku',$theSKU)->first();
 
@@ -442,11 +441,21 @@ class UserController extends Controller
 		
 			$userSubscription->save();
 
+			//make sure trial_ends is set the same - 
+
 			//update STRIPE
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
 			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id);
+			
+			$period_start = $subscription->current_period_start;
+			$period_end = $subscription->current_period_end;
+			$trial_end = $subscription->trial_end;
+			
 			$subscription->plan = $newProduct->stripe_plan_id;
+			$subscription->current_period_end = $period_end;
+			$subscription->current_period_start = $period_start;
+			$subscription->trial_end = $trial_end;
 			$subscription->save();
 
 			}
