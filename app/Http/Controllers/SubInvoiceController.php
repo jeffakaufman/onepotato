@@ -587,7 +587,10 @@ class SubinvoiceController extends Controller
 		$order = Order::where('order_id',$order_id)->first();
 		
 		//convert the date
-		$order->ship_date = $shipnotice->ShipDate;
+		$ship_date = str_replace('/', '-', $shipnotice->ShipDate);
+		$ship_date_format = date('Y-m-d', strtotime($ship_date));
+		
+		$order->ship_date = $ship_date_format;
 		$order->ship_carrier = $shipnotice->Carrier;
 		$order->ship_service = $shipnotice->Service;
 		$order->tracking_number = $shipnotice->TrackingNumber;
@@ -597,7 +600,7 @@ class SubinvoiceController extends Controller
 		//mark subinvoice as "shipped"
 		$invoice = Subinvoice::where('order_id',$order_id)->first();
 		$invoice->invoice_status = "shipped";
-		$invoice->ship_date = $shipnotice->ShipDate;
+		$invoice->ship_date = $ship_date_format;
 		$invoice->ship_carrier = $shipnotice->Carrier;
 		$invoice->ship_service = $shipnotice->Service;
 		$invoice->tracking_number = $shipnotice->TrackingNumber;
