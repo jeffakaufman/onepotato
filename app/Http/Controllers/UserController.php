@@ -448,13 +448,13 @@ class UserController extends Controller
 
 			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id);
 			
-			$period_start = $subscription->current_period_start;
-			$period_end = $subscription->current_period_end;
+			//$period_start = $subscription->current_period_start;
+			//$period_end = $subscription->current_period_end;
 			$trial_end = $subscription->trial_end;
 			
 			$subscription->plan = $newProduct->stripe_plan_id;
-			$subscription->current_period_end = $period_end;
-			$subscription->current_period_start = $period_start;
+			//$subscription->current_period_end = $period_end;
+			//$subscription->current_period_start = $period_start;
 			$subscription->trial_end = $trial_end;
 			$subscription->save();
 
