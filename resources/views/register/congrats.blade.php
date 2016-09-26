@@ -138,9 +138,8 @@ your account.</div>
         var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
   })();
 </script>
-@endsection
 
-@section('scripts')
+
 <script type="text/javascript">
     ga('require', 'ecommerce');
 
@@ -164,4 +163,8 @@ your account.</div>
     ga('ecommerce:send');
 
 </script>
+
+@endsection
+
+@section('scripts')
 @endsection
