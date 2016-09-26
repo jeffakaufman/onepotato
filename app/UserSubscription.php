@@ -20,7 +20,7 @@ class UserSubscription extends Model {
 				$string_pref .= ", ";
 			}
 			if ($pref=="1") {
-				$string_pref .= "Red meat ";
+				$string_pref .= "Red Meat ";
 			}
 			if ($pref=="2") {
 				$string_pref .= "Poultry ";

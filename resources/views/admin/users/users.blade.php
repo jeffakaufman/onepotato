@@ -12,47 +12,51 @@
     </ol>
 @endsection
 @section('content')
-
+<script>
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
 	<div class="container">
 		<!-- Application Dashboard -->
-		{{--<div class="row">--}}
-			{{--<div class="col-md-10 col-md-offset-1">--}}
-				<div class="panel panel-default">
-					<div class="">
-						<div style="text-align: right;">
-							<input type="text" id="filterText" value="{{$params['filterText']}}" />
-							<button onclick="document.location.href='/admin/users/updateListParams/filterText/'+$('#filterText').val();">Filter</button>
-						</div>
-					</div>
-					<div class="panel-body">
-
-	<div class="row col-offset-1">
-		<div class="user_name col-sm-3"><strong><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></strong></div>
-		<div class="user_name col-sm-2"><strong><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></strong></div>
-		<div class="user_name col-sm-2 text-center"><strong><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></strong></div>
-		<div class="user_name col-sm-1 text-center"><strong><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></strong></div>
-		<div class="user_name col-sm-2 text-center"><strong><a href="/admin/users/updateListParams/orderBy/status">Status</a></strong></div>
-	</div>
-	@foreach ($users as $user)
-	<div class="row">
-		{{--<div class="user_name col-sm-3" ><a href="/admin/user/{{ $user->id }}">{{ $user->name }}</a></div>--}}
-		<div class="user_name col-sm-3" ><a href="/admin/user_details/{{ $user->id }}">{{ $user->name }}</a></div>
-		<div class="user_name col-sm-2">{{ $user->email }}</div>
-		<div class="user_name col-sm-2 text-center">{{ date('m/d/y', strtotime($user->start_date)) }}</div>
-		<div class="user_name col-sm-1 text-right">${{ $user->revenue }}</div>
-		<div class="user_name col-sm-2 text-center">
-			@if ($user->status == 'active')
-			<strong><span class="label label-success">Active</span></strong>
-			@elseif ($user->status == 'cancelled')
-			<strong><span class="label label-danger">Cancelled</span></strong>
-			@endif
-		</div>
-	</div>
-	@endforeach
-
-					</div>
-				{{--</div>--}}
-			{{--</div>--}}
-		</div>
+		<table id="example" class="table table-striped table-hover" width="100%" cellspacing="0">
+			<thead> 
+				<tr>
+        	    	<th style="width:20%"><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></th>
+					<th style="width:10%"><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></th>
+					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></th>
+					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></th>
+					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/status">Status</a></th>
+				</tr> 
+			</thead>
+			<tfoot> 
+				<tr style="width:10%">
+        	    	<th><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></th>
+					<th><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></th>
+					<th><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></th>
+					<th><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></th>
+					<th><a href="/admin/users/updateListParams/orderBy/status">Status</a></th>
+				</tr> 
+			</tfoot>
+			<tbody>
+			@foreach ($users as $user)
+				<tr class='clickable-row'  data-href='/admin/user_details/{{ $user->id }}' style="cursor:pointer">
+					<td>{{ $user->name }}</td>
+					<td>{{ $user->email }}</td>
+					<td class="text-center">{{ date('m/d/y', strtotime($user->start_date)) }}</td>
+					<td class="text-right">${{ $user->revenue }}</td>
+					<td>
+						@if ($user->status == 'active')
+						<p class="bg-success text-center" style="color:darkgreen">Active</p>
+						@elseif ($user->status == 'cancelled')
+						<p class="bg-danger text-center" style="color:darkred">Cancelled</p>
+						@endif
+					</td>
+				</tr>
+			@endforeach
+			</tbody>
+		</table>
 	</div>
 @endsection

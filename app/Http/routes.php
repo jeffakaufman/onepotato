@@ -186,7 +186,7 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/users/updateListParams/{type}/{value?}', 'UserController@updateListParams');
 
     Route::get('/admin/user/{id}', 'UserController@showUser');
-    Route::get('/admin/user_details/{id}', 'UserController@showUserDetails');
+    Route::get('/admin/user_details/{id}', 'DashboardController@showUserDetails');
     Route::post('/admin/user/{id}', 'UserController@updateUser');
     Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
     Route::post('/admin/user/payment/{id}', 'UserController@savePayment');
