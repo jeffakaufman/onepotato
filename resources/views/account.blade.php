@@ -165,12 +165,6 @@ function stripeResponseHandler(status, response) {
                                     <i class="icon icon-talkbubble"></i>Referrals
                                 </a>
                             </li>
-							<li role="presentation">
-                                <a href="#cancel" aria-controls="cancel" role="tab" data-toggle="tab">
-                                    <i class="icon icon-creditcard"></i>Cancel Account
-                                </a>
-                            </li>
-
                         </ul>
 
                     </div>

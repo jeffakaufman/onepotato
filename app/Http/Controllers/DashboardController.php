@@ -186,8 +186,7 @@ class DashboardController extends Controller
 						->where('date_to_hold','>=',date('Y-m-d'))
 						->whereNotIn('date_to_hold',$weeksMenusDates)
 						->get();
-echo $upcomingSkipsNoMenu;
-/*
+
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
 						'shippingAddress'=>$shippingAddress,
@@ -199,7 +198,7 @@ echo $upcomingSkipsNoMenu;
 						'weeksMenus'=>$weeksMenus,
 						'upcomingSkipsNoMenu'=>$upcomingSkipsNoMenu,
 						]);
-*/
+
     }
 
 
