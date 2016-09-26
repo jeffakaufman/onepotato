@@ -418,7 +418,7 @@ class UserController extends Controller
 				if ($num_kids=="1") {$theSKU .= "01";}
 				if ($num_kids=="2") {$theSKU .= "02";}
 				if ($num_kids=="3") {$theSKU .= "03";}
-				if ($num_kids=="0") {$theSKU .= "04";}
+				if ($num_kids=="4") {$theSKU .= "04";}
 
 			}else{
 				$theSKU .= "00";
