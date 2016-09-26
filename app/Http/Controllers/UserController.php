@@ -221,7 +221,7 @@ class UserController extends Controller
 			->where('invoice_status','shipped')
 			->orderBy('order_id','desc')
 			->get();
-		//removed from qyere--->whereDate('period_end_date','<=',Carbon::today()->toDateString())
+		//removed from query--->whereDate('period_end_date','<=',Carbon::today()->toDateString())
 		//check for any processed orders - the order was sent to shipping for the next week's delivery
 		$currentInvoice = Subinvoice::where('user_id',$id)
 			->where('invoice_status','sent_to_ship')
@@ -418,7 +418,7 @@ class UserController extends Controller
 				if ($num_kids=="1") {$theSKU .= "01";}
 				if ($num_kids=="2") {$theSKU .= "02";}
 				if ($num_kids=="3") {$theSKU .= "03";}
-				if ($num_kids=="0") {$theSKU .= "04";}
+				if ($num_kids=="4") {$theSKU .= "04";}
 
 			}else{
 				$theSKU .= "00";

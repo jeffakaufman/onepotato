@@ -139,3 +139,29 @@ your account.</div>
   })();
 </script>
 @endsection
+
+@section('scripts')
+<script type="text/javascript">
+    ga('require', 'ecommerce');
+
+    ga('ecommerce:addTransaction', {
+        'id': '{{$user->stripe_id}}',
+        'affiliation': 'One Potato',
+        'revenue': '{{$product->cost}}',
+        'shipping': '0',
+        'tax': '0'
+    });
+
+    ga('ecommerce:addItem', {
+        'id': '{{$user->stripe_id}}',
+        'name': '{{$product->product_description}}',
+        'sku': '{{$product->sku}}',
+        'category': 'Food',
+        'price': '{{$product->cost}}',
+        'quantity': '1'
+    });
+
+    ga('ecommerce:send');
+
+</script>
+@endsection

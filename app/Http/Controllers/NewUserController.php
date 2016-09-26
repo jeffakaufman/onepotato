@@ -536,7 +536,7 @@ class NewUserController extends Controller
 						$valid_coupon = 0;
 					
 						
-					} catch (Exception $e) {
+					} catch (\Exception $e) {
 					  
 					}
 					
@@ -699,6 +699,8 @@ class NewUserController extends Controller
         	'meal2'=>$meal2,
         	'meal3'=>$meal3,
         	'price'=>$request->price,
+
+            'product' => $userProduct,
         ]);
 		
 	}

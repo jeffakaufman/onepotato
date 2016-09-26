@@ -213,7 +213,7 @@ function stripeResponseHandler(status, response) {
 							}
 							$prefs = $userSubscription->dietary_preferences;
                             
-							if (strpos($prefs, 'Red meat') !== false) $redmeat = true; else $redmeat = false;
+							if (strpos($prefs, 'Red Meat') !== false) $redmeat = true; else $redmeat = false;
                             if (strpos($prefs, 'Poultry') !== false) $poultry = true; else $poultry = false;
                             if (strpos($prefs, 'Fish') !== false) $fish = true; else $fish = false;
                             if (strpos($prefs, 'Lamb') !== false) $lamb = true; else $lamb = false;
