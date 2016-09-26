@@ -45,6 +45,56 @@ class TestCommand extends Command
     public function handle()
     {
 
+        $shipDay = 'tuesday';
+        $dayLimit = 'wednesday';
+        $timeLimit = '9:00';
+
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
+
+
+
+//        $dayLimit = 'wednesday';
+//        $timeLimit = '9:00';
+
+//        $dayLimit = 'wednesday';
+//        $dayLimit = 'saturday';
+//        $timeLimit = '5:42';
+
+
+        $theDay = new \DateTime($dayLimit);
+        $limit = new \DateTime("{$dayLimit} {$timeLimit}");
+
+        if(($today == $theDay) && ($now > $limit)) {
+            $limit->modify("+1 week");
+        }
+
+        $firstDate = (clone $limit)->modify("next {$shipDay}");
+        $lastDate = (new \DateTime("next {$shipDay}"))->modify("+6 weeks");
+
+//        var_dump($now);
+//        var_dump($today);
+//        var_dump($theDay);
+//        var_dump($limit);
+//        if($now > $limit) {
+//            $firstDate->modify("+1 week");
+//        }
+
+//var_dump($now);
+//var_dump($limit);
+
+echo $now->format("m/d/Y H:i:s")."\r\n";
+echo $limit->format("m/d/Y H:i:s")."\r\n";
+echo $firstDate->format("m/d/Y")." - ".$lastDate->format("m/d/Y")."\r\n\r\n";
+        //Before 9AM on Wednesday, the start date should be the next Tuesday.
+        // After 9AM on wednesday, it should be a week from that Tuesday.
+        // For example, if you sign up on 9/21 before 9AM Pacific. the earliest start date should be 9/27.
+        // If you sign up after 9:00AM it should be 10/4.
+        // I can’ t get the date to work right, can you fix my mess?
+
+
+return;
+
         $user = User::where('email', 'agedgouda@gmail.com')->first();
 //        $user = User::where('email', 'ahhmed@mail.ru')->first();
 

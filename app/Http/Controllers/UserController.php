@@ -431,7 +431,6 @@ class UserController extends Controller
 			}
 			
 			
-			
 			//look up the product ID
 			$newProduct = Product::where('sku',$theSKU)->first();
 
@@ -442,11 +441,21 @@ class UserController extends Controller
 		
 			$userSubscription->save();
 
+			//make sure trial_ends is set the same - 
+
 			//update STRIPE
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
 			$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id);
+			
+			//$period_start = $subscription->current_period_start;
+			//$period_end = $subscription->current_period_end;
+			$trial_end = $subscription->trial_end;
+			
 			$subscription->plan = $newProduct->stripe_plan_id;
+			//$subscription->current_period_end = $period_end;
+			//$subscription->current_period_start = $period_start;
+			$subscription->trial_end = $trial_end;
 			$subscription->save();
 
 			}
@@ -1108,8 +1117,11 @@ class UserController extends Controller
 	}
 	
 	public function showDeliverySchedule () {
-		
-		$id =  Auth::id();
+
+        $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
+        date_default_timezone_set($tz);
+
+        $id =  Auth::id();
 		$user = User::find($id);
 		$userSubscription = UserSubscription::where('user_id',$id)->firstOrFail();
 		$sub = Dietary_preference::where('user_id',$id)->firstOrFail();
@@ -1121,8 +1133,12 @@ class UserController extends Controller
 		//$startDate = date('Y-m-d H:i:s', strtotime("+1 week"));
     	$endDate = date('Y-m-d H:i:s', strtotime("+6 weeks"));
     	$noWeekMenu = [];
+        $weeksMenus = [];
 
-    	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
+
+        $now = new \DateTime('now');
+
+        for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
 			if (date('N', $i) == 2) {//Tuesday == 2
     			$deliverySchedule = new stdClass;
 				$whatscooking = WhatsCookings::where('week_of',date('Y-m-d', $i))->first();
@@ -1155,23 +1171,27 @@ class UserController extends Controller
 						->where('date_to_hold', date('Y-m-d', $i))
 						->where('hold_status', 'hold')
 						->get();
-				if (count($hold) > 0) $deliverySchedule->hold = true;
-				else $deliverySchedule->hold = false;
 
-				$tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
-				
-				$dt = new \DateTime( date('Y-m-d', $i) );
-				$dt->setTimezone(new \DateTimeZone($tz));
-				$dt->setTime(9, 00);
-				$dt->sub(new \DateInterval('P5D'));
-				$dt->format('Y-m-d H:i');
+				if (count($hold) > 0) {
+				    $deliverySchedule->hold = true;
+                } else {
+                    $deliverySchedule->hold = false;
+                }
 
-                $now = new \DateTime();
-                $now->setTimezone(new \DateTimeZone($tz));
-                $now->format('Y-m-d H:i');
 
-                if ($dt->format('Y-m-d H:i') < $now->format('Y-m-d H:i')) $deliverySchedule->changeable = 'no';
-                else $deliverySchedule->changeable = 'yes';
+                // the code is supposed to not let the user change skip a week
+                // if it is after 9AM on Wednesday the week before it is due to go out.
+                // For example, you can’t skip the 9/27 delivery after 9AM on 9/21.
+                // Can you make sure that code is working?
+
+
+				$dt = (new \DateTime( date('Y-m-d', $i) ))->modify("last wednesday 9:00");
+
+                if ($dt < $now) {
+                    $deliverySchedule->changeable = 'no';
+                } else {
+                    $deliverySchedule->changeable = 'yes';
+                }
 
                 $deliverySchedule->deadline = $dt->format('l, M jS');
 

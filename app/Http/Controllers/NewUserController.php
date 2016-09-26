@@ -147,28 +147,39 @@ class NewUserController extends Controller
 		//send the plan data straight to the view
 		$numChildren = $request->children;
 		$user = User::find($request->user_id);
-		
-		//calculate earliest start date
+
+        //Before 9AM on Wednesday, the start date should be the next Tuesday.
+        // After 9AM on wednesday, it should be a week from that Tuesday.
+        // For example, if you sign up on 9/21 before 9AM Pacific. the earliest start date should be 9/27.
+        // If you sign up after 9:00AM it should be 10/4.
+        // I can’ t get the date to work right, can you fix my mess?
+
+
+        //calculate earliest start date
 		date_default_timezone_set('America/Los_Angeles');
-		$today = date('Y-m-d H:i:s'); 
-		$nextWednesday = strtotime('next wednesday 9AM');
-		$dateCompare = strtotime($today);
-		
-		if (($nextWednesday-$dateCompare)/86400 < 5) { //if today's date is less than 5 days from next tuesday, go to the tuesday after
-			$startDate = date('Y-m-d', strtotime('+1 week', $nextWednesday));
-			$endDate =  date('Y-m-d', strtotime('+6 weeks', $nextWednesday));
-		} else {
-			$startDate = date('Y-m-d', $nextWednesday);
-			$endDate =  date('Y-m-d', strtotime('+5 weeks', $nextWednesday));
-		}
+
+        $shipDay = 'tuesday';
+        $dayLimit = 'wednesday';
+        $timeLimit = '9:00';
+
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
+
+        $theDay = new \DateTime($dayLimit);
+        $limit = new \DateTime("{$dayLimit} {$timeLimit}");
+
+        if(($today == $theDay) && ($now > $limit)) {
+            $limit->modify("+1 week");
+        }
+
+        $firstDate = (clone $limit)->modify("next {$shipDay}");
+        $lastDate = (new \DateTime("next {$shipDay}"))->modify("+6 weeks");
 
     	$upcomingDates = [];
+        for($tmpDate = clone($firstDate); $tmpDate <= $lastDate; $tmpDate->modify("+1 week")) {
+            $upcomingDates[$tmpDate->format("m/d/y")] = $tmpDate->format("F j, Y");
+        }
 
-    	for ($i = strtotime($startDate); $i <= strtotime($endDate); $i = strtotime('+1 day', $i)) {
-			if (date('N', $i) == 2) {//Tuesday == 2 {
-				$upcomingDates[date('m/d/y', $i)] = date('F j, Y', strtotime(date('m/d/y', $i)));
-			}   
-    	}
     	$request->session()->put('step2', true);
     	$request->session()->put('children', $numChildren);
     	$request->session()->put('upcoming_dates', $upcomingDates);

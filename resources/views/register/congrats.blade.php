@@ -131,10 +131,11 @@ your account.</div>
 
 
 <script type='text/javascript'>
-	var crthk_setup='mid_g7aOPnJz'; var crthk_complete=true; (function() {
-    var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
-    ch.src = '//api.carthook.com/api/js/';
-    var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
+	var crthk_setup='mid_g7aOPnJz'; var crthk_complete=true;
+    (function() {
+        var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
+        ch.src = '//api.carthook.com/api/js/';
+        var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
   })();
 </script>
 @endsection

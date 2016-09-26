@@ -484,11 +484,12 @@ $(function() {
 </script>
 
 <script type='text/javascript'>
-crthk_cart = {
+var crthk_cart = {
  "price"  : "{{ $product->cost }}",
  "items"  : {
         	"url": "https://beta.onepotato.com/register",
         	"name": "{{  $product->product_description  }}",
+        	"eachItemCost": "{{ $product->cost }}",
         	"totalItemCost": "{{ $product->cost }}"
         },
  "carturl": "https://beta.onepotato.com/"
@@ -496,7 +497,10 @@ crthk_cart = {
  
 
 
-var crthk_setup='mid_g7aOPnJz'; var crthk_cart = {}; (function() {
+var crthk_setup='mid_g7aOPnJz';
+//var crthk_cart = {};
+
+(function() {
     var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
     ch.src = '//api.carthook.com/api/js/';
     var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);

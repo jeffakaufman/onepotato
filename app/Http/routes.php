@@ -151,7 +151,7 @@ Route::get('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice'); //TOD
 Route::post('/stripe/webhook', 'SubinvoiceController@recordStripeInvoice');
 Route::get('/stripe/test/webhook', 'SubinvoiceController@testStripeInvoice');
 Route::get('/admin/services/invoice/testjson', 'SubinvoiceController@testStripeJSON');
-Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@updateShippingStatus');
+Route::get('/admin/services/invoice/testshipxml', 'SubinvoiceController@testShippingStatus');
 
 //ship station routes
 Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
