@@ -1042,7 +1042,7 @@ class UserController extends Controller
 			$newuserid = $request->u;
 			
 			//record that the user has subscribed--this is stubbed in for now
-			$referral = Referral::where('id',$newuserid)->firstorfailfs();
+			$referral = Referral::where('id',$newuserid)->first();
 			$referral->did_subscribe = 1;
 			$referral->save();
 			
