@@ -39,7 +39,7 @@ class NewUserController extends Controller
        
     }
 
-	public function DisplayUserForm () {
+	public function DisplayUserForm ($referralId = null) {
 		return view('register-1');
 	}
 	

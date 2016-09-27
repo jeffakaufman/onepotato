@@ -21,6 +21,7 @@ Route::post('/coupon', 'CouponController@saveCoupon');
 // Registration...
 Route::get('/join', 'NewUserController@DisplayUserForm');
 Route::get('/register', 'NewUserController@DisplayUserForm');
+Route::get('/register/{referralId}', 'NewUserController@DisplayUserForm');
 Route::post('/register', 'NewUserController@RecordNewuser');
 Route::post('/register/select_plan', 'NewUserController@RecordPlan');
 Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
