@@ -1047,7 +1047,7 @@ class UserController extends Controller
 			$referral->save();
 			
 			//return "test";
-			return redirect('/login' . $referrerid);
+			return redirect('/register/' . $referrerid);
 		
 	}
 
