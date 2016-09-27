@@ -194,7 +194,13 @@ class AC_Mediator {
             $this->_getNextDeliveryData($user, '-1 day')
         );
 
+//var_dump($contact);
+//die();
         $contact_sync = $ac->api("contact/sync", $contact);
+
+//var_dump($contact);
+//var_dump($contact_sync);
+//die();
 //$contact_sync = false;
 
         $this->AddCustomerTag($user, 'Shipping');
@@ -339,7 +345,6 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDeliveryDate = $user->GetNextDeliveryDate($now);
-
         $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
 
         $arr = [];
