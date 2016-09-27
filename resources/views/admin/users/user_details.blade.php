@@ -23,7 +23,6 @@
 		    	<div class="panel panel-default ">
 		       		<div class="panel-heading"><strong>{{ $userProduct->product_description }}<br />{{ $userSubscription->dietary_preferences }}</strong></div>
 					<div class="panel-body">
-					{{ json_encode($upcomingSkipsNoMenu) }}
 						<h3>Upcoming Deliveries</h3>
 						<div class="row">
 							@foreach ( $weeksMenus as $i => $weeksMenu)
