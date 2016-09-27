@@ -329,7 +329,7 @@ class UserController extends Controller
 
 					Mail::send('emailtest', $data , function($message) use ($to_send)
 					{
-						    $message->from('Onepotato Mailing System <noreply@onepotato.com>');
+						    $message->from('noreply@onepotato.com');
 						    $message->to($to_send, '')->subject('A Message from a Friend at One Potato!');
 					});
 				
