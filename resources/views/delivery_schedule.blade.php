@@ -41,9 +41,9 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
      if ($dayOfWeek > 0 && $dateComponents['mon'] != (int)date('n')) { 
         $calendar .= '</tr><tr>';
         $calendar .= '<td colspan="'.$dayOfWeek.'">&nbsp;</td>'; 
-     } else {
-        $calendar .= '</tr>';
-     }
+     } //else {
+     //    $calendar .= '</tr>';
+     // }
      
      $month = str_pad($month, 2, '0', STR_PAD_LEFT);
 
@@ -66,9 +66,6 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
             // var_dump(date('Y-m-d H:i:s', strtotime('+2 days', strtotime($date))));
             if (strtotime('this week') < strtotime('+2 days', strtotime($date)) && !isset($shortmonth))
                 $calendar .= '</tr><tr>';
-            else
-                $calendar .= '</tr>';
-
         }
 
         $tz = isset($_REQUEST['tz']) ? $_REQUEST['tz'] : 'America/Los_Angeles';
