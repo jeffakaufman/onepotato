@@ -94,7 +94,8 @@ function stripeResponseHandler(status, response) {
 								<div><p>Your account is currently closed. {{ $reactivateMessage }}
                                         If you’d like to resume your deliveries, click “Reactivate Account” below."</p></div>
 
-									<form method="POST" action="/account_reactivate" accept-charset="UTF-8" id="cancel">
+									{{--<form method="POST" action="/account_reactivate" accept-charset="UTF-8" id="cancel">--}}
+                                    <form method="GET" action="/cancel/restart/{{$user->id}}" accept-charset="UTF-8" id="cancel">
 										{{ csrf_field() }}
 										<input type="hidden" name="user_id" value="{{$user->id}}" />
 									 <div class="row padding"><button type="submit" class="btn btn-primary">REACTIVATE ACCOUNT</button></div>

@@ -1313,55 +1313,34 @@ class UserController extends Controller
         $user->status = User::STATUS_ACTIVE;
 
 
+        $user->status = User::STATUS_ACTIVE;
+        $customer_stripe_id = $user->stripe_id;
+
         //retrieve stripe ID from subscriptions table
-        $userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+        $userSubscription = UserSubscription::where('user_id',$id)->first();
         $userSubscription->status = "active";
+        $plan_id = $userSubscription->product_id;
 
-        $stripe_sub_id = $userSubscription->stripe_id;
+        $product = Product::where('id', $plan_id)->first();
+        $stripe_plan_id = $product->stripe_plan_id;
 
-        // Set your secret key: remember to change this to your live secret key in production
-        // See your keys here https://dashboard.stripe.com/account/apikeys
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
+        $trial_ends_date = $this->GetTrialEndsDate();
 
-        die("TO BE DONE!!!! Guess need to create new stripe subscription. Matt, what do you think??");
+        $subscription = \Stripe\Subscription::create(array(
+            "customer" => $customer_stripe_id,
+            "plan" => $stripe_plan_id,
+            "trial_end" => $trial_ends_date,
+        ));
 
-                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-                $subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
-                $subscription->cancel();
-
-        $cancel = new Cancellation();
-
-        $cancel->user_id = $request->user_id;
-        $cancel->cancel_reason = $request->cancel_reason;
-        $cancel->cancel_specify = $request->cancel_specify;
-        $cancel->cancel_suggestions = $request->cancel_suggestions;
-        $cancel->save();
-
-
-        $user->save();
+        $userSubscription->stripe_id = $subscription->id;
         $userSubscription->save();
+        $user->save();
 
-        $ac = AC_Mediator::GetInstance();
-        try {
-            $ac->AddCustomerTag($user, 'Cancellation');
-        } catch (\Exception $e) {
-            //Do Nothing
-        }
+        Auth::login($user, true);
 
-        $reactivateMessage = '';
-        if($request->lastDeliveryDate) {
-            $lastDeliveryDate = new \DateTime($request->lastDeliveryDate);
-            $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
-        }
-
-        Auth::logout();
-
-        //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method. You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQs.
-        return view('account_cancelled')->with([
-            'user' => $user,
-            'reactivateMessage' => $reactivateMessage,
-        ]);
+        return redirect("/account");
 
     }
 
@@ -1455,6 +1434,87 @@ class UserController extends Controller
             'lastDeliveryDate' => $lastDeliveryDateText,
         ]);
     }
+
+    public function GetTrialEndsDate() {
+
+
+
+        //use start date - find the previous Wednesday at 16:00:00
+
+
+
+
+        //figure out date logic for trial period -
+        // - mist be UNIX timestamp
+
+        $trial_ends = "";
+
+        //time of day cutoff for orders
+        $cutOffTime = "16:00:00";
+        $cutOffDay = "Wednesday";
+
+        //change dates to WEDNESDAY
+        //cutoff date is the last date to change or to signup for THIS week
+        $cutOffDate = new \DateTime();
+        $cutOffDate->setTimeZone(new \DateTimeZone('America/Los_Angeles'));
+        $cutOffDate->modify('this ' . $cutOffDay . ' ' . $cutOffTime);
+
+        //get today's date
+        $todaysDate = new \DateTime();
+        $todaysDate->setTimeZone(new \DateTimeZone('America/Los_Angeles'));
+        $currentDay = date_format($todaysDate, "l");
+        $currentTime = date_format($todaysDate, "H:is");
+
+        //echo "Today is " . $currentDay . "<br />";
+
+        //echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
+        //echo "Current time: " . $todaysDate->format('Y-m-d H:i:s') . "<br />";
+
+
+        //THIS IS ALL OLD CODE _ SINCE WE KNOW THE START DATE, we can just use that as the
+        //check to see if today is the same day as the cutoff day
+        if ($currentDay==$cutOffDay) {
+
+            //check to see if it's BEFORE the cutoff tine. If so, then this is a special case
+            if ($currentTime < $cutOffTime) {
+
+                //ok, so it's the day of the cutoff, but before time has expired
+                //SET the trial_ends date to $cutOffDate - no problem
+                //echo "You have JUST beat the cutoff period <br /> Setting the trial_ends to today";
+                $trial_ends = $cutOffDate;
+
+            }else{
+
+                //the cutoff tiem has just ended
+                //now, set the date to NEXT $cutOffDate
+                $trial_ends = new \DateTime();
+                $trial_ends->setTimeZone(new \DateTimeZone('America/Los_Angeles'));
+                $trial_ends->modify('next ' . $cutOffDay . ' ' . $cutOffTime);
+                //echo "You have missed the cutoff period <br /> Setting the trial_ends to next week";
+
+
+            }
+
+        }else{
+
+            //today is not the same as the trial ends date, so simply set the date to the next cutoff
+            $trial_ends = $cutOffDate;
+
+        }
+
+
+        return ($trial_ends->getTimestamp());
+
+        //echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
+
+        //echo "UNIX version of timestamp: " . $trial_ends->getTimestamp() . "<br />";
+
+        $TestDate = new \DateTime('@1470463200');
+        $TestDate->setTimeZone(new \DateTimeZone('America/Los_Angeles'));
+        //echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
+
+    }
+
 
 /*
 object(stdClass)[456]
