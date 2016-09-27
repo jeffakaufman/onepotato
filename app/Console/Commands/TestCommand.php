@@ -5,11 +5,14 @@ namespace App\Console\Commands;
 use App\AC_Mediator;
 use App\Cancellation;
 use App\Events\UserHasRegistered;
+use App\MenuAssigner;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 use App\User;
 
 use Illuminate\Support\Facades\Mail;
+
+use DB;
 
 class TestCommand extends Command
 {
@@ -45,6 +48,84 @@ class TestCommand extends Command
     public function handle()
     {
 
+        $emailsList = array(
+            '2nadarskis@cox.net',
+            'alecrucci@hotmail.com',
+            'aliwoodsrn@gmail.com',
+            'amyamsterdam@gmail.com',
+            'carley.preble@gmail.com',
+            'chloelmyers@yahoo.com',
+            'ejcavalcanti@yahoo.com',
+            'hali.pickett@gmail.com',
+            'hollysoliday@gmail.com',
+            'hstobo2@gmail.com',
+            'ilanit927@gmail.com',
+            'jenniferkconnolly@gmail.com',
+            'jes.leggett@gmail.com',
+            'jessicakwatts@gmail.com',
+            'kacollins2@att.net',
+            'kelly.j.mclaughlin@gmail.com',
+            'ksbokenkamp@yahoo.com',
+            'lafamiliaburke@gmail.com',
+            'laura.mitchelle27@gmail.com',
+            'lauraclark@ymail.com',
+            'lilmommagould@hotmail.com',
+            'marc.berkman@gmail.com',
+            'mis1217@sbcglobal.net',
+            'missbee1234@gmail.com',
+            'mparlapanides@gmail.com',
+            'tami@skookumh2o.com',
+            'tmrado@yahoo.com',
+            'tonjatav@hotmail.com',
+            'weetchey@yahoo.com',
+            'wendybabramson@yahoo.com',
+        );
+
+        $insertArray = [];
+
+        foreach($emailsList as $email) {
+            echo "Start processing {$email}:\r\n";
+
+            $user = User::where('email', $email)->first();
+
+            if(!$user) {
+                echo "Not found!!!\r\n\r\n";
+                continue;
+            }
+            echo "Current Start Date : {$user->start_date} \r\n";
+
+            $menus = MenuAssigner::GetAllFutureMenusForUser($user);
+            foreach($menus as $date => $dMenus) {
+                foreach($dMenus as $m) {
+                    echo "{$date}: {$m->menu_title} {$m->menu_description}\r\n";
+                }
+            }
+
+            echo "Setting start_date to 10/04/2016\r\n";
+            $user->start_date = "2016-10-04";
+            $user->save();
+
+            DB::table('menus_users')->where('users_id', '=', $user->id)->delete();
+
+            $menus = MenuAssigner::GetAllFutureMenusForUser($user);
+            foreach($menus as $date => $dMenus) {
+                foreach($dMenus as $m) {
+                    echo "{$date}: {$m->menu_title} {$m->menu_description}\r\n";
+
+                    $insertArray[] = [
+                        'menus_id' => $m->id,
+                        'users_id' => $user->id,
+                        'delivery_date' => $date,
+                    ];
+
+                }
+            }
+
+            echo "\r\n";
+        }
+        DB::table("menus_users")->insert($insertArray);
+
+return;
         $shipDay = 'tuesday';
         $dayLimit = 'wednesday';
         $timeLimit = '9:00';
