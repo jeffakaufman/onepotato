@@ -36,13 +36,13 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
      foreach($daysOfWeek as $day) {
           $calendar .= '<td class="day_name">'.$day.'</td>';
      } 
+     $weekNum = date("W") - date("W", strtotime(date("Y-m-01", time()))) + 1;
 
-     $currentDay = 1;
-
-     $calendar .= '</tr><tr class="blank">';
-
-     if ($dayOfWeek > 0) { 
-          $calendar .= '<td colspan="'.$dayOfWeek.'">&nbsp;</td>'; 
+     if ($dayOfWeek > 0 && $dateComponents['mon'] != (int)date('n')) { 
+        $calendar .= '</tr><tr>';
+        $calendar .= '<td colspan="'.$dayOfWeek.'">&nbsp;</td>'; 
+     } else {
+        $calendar .= '</tr>';
      }
      
      $month = str_pad($month, 2, '0', STR_PAD_LEFT);
@@ -50,17 +50,21 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
      //$today = date('Y-m-d');
 
      $active = '';
-  
+     $currentDay = 1;
+
      while ($currentDay <= $numberDays) {
 
         $currentDayRel = str_pad($currentDay, 2, '0', STR_PAD_LEFT);
-          
         $date = $year.'-'.$month.'-'.$currentDayRel;
-
+        if (strtotime($date) == strtotime("+4 days", strtotime(end($deliveryDates))) ) 
+            $shortmonth = true;
+        
         if ($dayOfWeek == 7) {
 
             $dayOfWeek = 0;
-            if (strtotime('this week') < strtotime('+2 days', strtotime($date)))
+            // var_dump(date('Y-m-d H:i:s', strtotime('this week')));
+            // var_dump(date('Y-m-d H:i:s', strtotime('+2 days', strtotime($date))));
+            if (strtotime('this week') < strtotime('+2 days', strtotime($date)) && !isset($shortmonth))
                 $calendar .= '</tr><tr>';
             else
                 $calendar .= '</tr>';
@@ -78,10 +82,10 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
         $marker = '';
         if (in_array($date,$deliveryDates) && in_array($date,$skipDates)) $marker = '<div class="fa fa-times-circle" aria-hidden="true"></div>';
         else if (in_array($date,$deliveryDates)) $marker = '<div class="fa fa-check-circle" aria-hidden="true"></div>';
-        
+        // var_dump(date('Y-m-d', strtotime("+4 days", strtotime(end($deliveryDates)))) );
         if (in_array($date,$deliveryDates))
             $calendar .= '<td class="day delivery '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
-        else if (strtotime('this week') < strtotime('+2 days', strtotime($date)))
+        else if (strtotime('this week') < strtotime('+2 days', strtotime($date)) && strtotime($date) <= strtotime("+4 days", strtotime(end($deliveryDates))) )
             $calendar .= '<td class="day '.$active.'" title="'.$date.'">'.$currentDay.$marker.'</td>';
         
         $currentDay++;
@@ -89,7 +93,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
 
      }
 
-     if ($dayOfWeek != 7) { 
+     if ($dayOfWeek != 7 && !isset($shortmonth)) { 
           $remainingDays = 7 - $dayOfWeek;
             $calendar .= "<td colspan='$remainingDays'>&nbsp;</td>"; 
      }
@@ -138,22 +142,30 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
             <?php
 
                 $dateComponents = getdate();
+                // $now = date('Y-m-d H:i:s');
+                // $cutoff = date('Y-m-d H:i:s', strtotime('Wednesday this week 09:00:00'));
+                // var_dump($now);
+                // var_dump($cutoff);
+                // if ($now > $cutoff) $weeks = 7;
+                // else $weeks = 6;
                 $deliveryDates = [];
                 $skipDates = [];
                 foreach ($weeksMenus as $weeksMenu) {
                     array_push($deliveryDates, $weeksMenu->date2);
                     if ($weeksMenu->hold) array_push($skipDates, $weeksMenu->date2);
                 }
-                //var_dump($skipDates);
-                $month = $dateComponents['mon'];                
-                $year = $dateComponents['year'];
-                $month2 = $dateComponents['mon'] + 1;    
-                if ($month == 12)            
-                    $year2 = $dateComponents['year'] + 1;
-                else $year2 = $year;
-
-                echo build_calendar($month,$year,$deliveryDates,$skipDates);
-                echo build_calendar($month2,$year2,$deliveryDates,$skipDates);
+                // var_dump($deliveryDates);
+                $month = [];
+                $year = [];
+                for ($i=0; $i<count($deliveryDates); $i++) {
+                    $ddate=strtotime($deliveryDates[$i]);
+                    $m = date('n',$ddate);
+                    $y = date('Y',$ddate);
+                    if (!in_array(date('n',$ddate), $month)) {
+                        array_push($month, $m);
+                        echo build_calendar($m,$y,$deliveryDates,$skipDates);
+                    }
+                }
 
             ?>
         </div>
