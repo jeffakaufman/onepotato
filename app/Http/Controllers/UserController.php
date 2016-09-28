@@ -1268,6 +1268,8 @@ class UserController extends Controller
 		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
 		$subscription->cancel();
 
+
+
 		$cancel = new Cancellation();
 		
 		$cancel->user_id = $request->user_id;
@@ -1281,21 +1283,27 @@ class UserController extends Controller
 		$userSubscription->save();
 
         $ac = AC_Mediator::GetInstance();
+
+        $lastDeliveryDate = new \DateTime($request->lastDeliveryDate);
+
         try {
+            $ac->UpdateCustomerFields($user, ['FINAL_DELIVERY_DATE' => $lastDeliveryDate->format('l, F jS')]);
             $ac->AddCustomerTag($user, 'Cancellation');
         } catch (\Exception $e) {
             //Do Nothing
         }
 
         $reactivateMessage = '';
-        if($request->lastDeliveryDate) {
-            $lastDeliveryDate = new \DateTime($request->lastDeliveryDate);
+        $today = new \DateTime('today');
+        if($lastDeliveryDate >= $today) {
             $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
         }
 
         Auth::logout();
 
-        //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method. You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response, on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQs.
+        //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method.
+        // You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response,
+        // on or before the “Changeable By” date reflected in your Account Settings. For more information see our Terms of Use and FAQs.
         return view('account_cancelled')->with([
             'user' => $user,
             'reactivateMessage' => $reactivateMessage,
@@ -1345,8 +1353,7 @@ class UserController extends Controller
 
     }
 
-	public function ResolveCancelLink($code) {
-
+    private function _decodeCancelCode($code) {
         $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
         $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 //        $cryptString = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, self::CRYPT_KEY, $jsonString, MCRYPT_MODE_ECB, $iv);
@@ -1368,6 +1375,13 @@ class UserController extends Controller
 
         $data = json_decode($trimmed);
 
+        return $data;
+    }
+
+	public function ResolveCancelLink($code) {
+
+
+	    $data = $this->_decodeCancelCode($code);
         if(!$data) {
             abort(404, "Invalid link");
             exit;
@@ -1405,29 +1419,39 @@ class UserController extends Controller
 
 //        echo "Going on";
 
-        $currentInvoice = Subinvoice::where('user_id',$user->id)
-            ->where('invoice_status','sent_to_ship')
-            ->orderBy('charge_date','desc')
-            ->first();
+        $shipDay = 'tuesday';
+        $dayLimit = 'wednesday';
+        $timeLimit = '9:00';
 
-        $cancelMessage = '';
-        $lastDeliveryDateText = '';
-        if (isset($currentInvoice->charge_date)) {
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
 
-            $chargeDate = new \DateTime($currentInvoice->charge_date);
-            $lastDeliveryDate = clone($chargeDate);
-            $lastDeliveryDate->modify("next tuesday");
-//var_dump($chargeDate);
-//var_dump($lastDeliveryDate);die();
+        $theDay = new \DateTime($dayLimit);
+        $limit = new \DateTime("{$dayLimit} {$timeLimit}");
 
-//            $lastDeliveryDate = date('l, F jS',strtotime("next tuesday",strtotime($currentInvoice->charge_date)));
-            if ( $lastDeliveryDate < $now ) {
-                $cancelMessage = "Your final delivery is scheduled for ".$lastDeliveryDate->format('l, F jS')." has already been processed and cannot be changed.";
-                $lastDeliveryDateText = $lastDeliveryDate->format('Y-m-d');
-            }
+        if(($today == $theDay) && ($now > $limit)) {
+            $limit->modify("+1 week");
         }
 
+        $lastDeliveryDate = (clone $limit)->modify("last {$shipDay}");
 
+//echo $now->format("Y-m-d H:i:s")."<br />";
+//echo $limit->format("Y-m-d H:i:s")."<br />";
+//echo $processedDate->format("Y-m-d");die();
+
+/*
+        $currentInvoice = Subinvoice::where('user_id',$user->id)
+            ->where('invoice_status', 'sent_to_ship')
+            ->orderBy('charge_date','desc')
+            ->first();
+*/
+
+        $cancelMessage = '';
+        $lastDeliveryDateText = $lastDeliveryDate->format('Y-m-d');
+
+        if($lastDeliveryDate > $today) {
+            $cancelMessage = "Your final delivery is scheduled for ".$lastDeliveryDate->format('l, F jS')." has already been processed and cannot be changed.";
+        }
 
         return view('account_cancel')->with([
             'user'=>$user,

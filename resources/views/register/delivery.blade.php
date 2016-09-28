@@ -225,3 +225,12 @@ $(function() {
     </div>
 </delivery>
 @endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        fbq('track', 'AddToCart', {
+            value: {{$product->cost ?? 0}},
+            currency: 'USD'
+        });
+    </script>
+@endsection

@@ -382,7 +382,7 @@ class NewUserController extends Controller
 		$request->session()->put('dietprefs', $request->dietprefs);
 		$request->session()->put('state', $state->state);
 
-		return view('register.delivery')->with(['user'=>$user])->with(['zip'=>$request->zip]);
+		return view('register.delivery')->with(['user'=>$user, 'product' => $newProduct, 'zip'=>$request->zip]);
 	}
 
 

@@ -125,7 +125,7 @@ your account.</div>
 </script>
 <noscript>
 	<div style="display:inline;">
-		<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/934286261/?value=20.00&amp;currency_code=USD&amp;label=KAs0CJTiqmMQtafAvQM&amp;guid=ON&amp;script=0"/>
+		<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/934286261/?value={{ $price }}&amp;currency_code=USD&amp;label=KAs0CJTiqmMQtafAvQM&amp;guid=ON&amp;script=0"/>
 	</div>
 </noscript>
 
@@ -163,5 +163,18 @@ your account.</div>
 
     ga('ecommerce:send');
 
+</script>
+
+<script type="text/javascript">
+    fbq('track', 'AddPaymentInfo');
+    fbq('track', 'Purchase', {
+        value: {{$product->cost ?? 0}},
+        currency: 'USD'
+    });
+
+    fbq('track', 'Lead', {
+        value: {{$product->cost ?? 0}},
+        currency: 'USD'
+    });
 </script>
 @endsection

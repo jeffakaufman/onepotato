@@ -507,5 +507,11 @@ var crthk_setup='mid_g7aOPnJz';
   })();
 </script>
 
+@endsection
 
+
+@section('scripts')
+<script type="text/javascript">
+    fbq('track', 'InitiateCheckout');
+</script>
 @endsection
