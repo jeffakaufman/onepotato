@@ -41,10 +41,13 @@ class CheckAbandoned extends Command
      */
     public function handle()
     {
-        $limit = new \DateTime('-1 hour');
+        $highLimit = new \DateTime('-1 hour');
+        $lowLimit = new \DateTime("-24 hours");
+
         $users = User::where('status', User::STATUS_INCOMPLETE)
-            ->where('email', 'azagarov@mail.ru') //TODO: remove this testing filter
-            ->where('updated_at', '<', $limit->format('Y-m-d H:i:s'))
+//            ->where('email', 'azagarov@mail.ru') //TODO: remove this testing filter
+            ->where('updated_at', '<', $highLimit->format('Y-m-d H:i:s'))
+//            ->where('updated_at', '>', $lowLimit->format('Y-m-d H:i:s'))
             ->get();
 
         $ac = AC_Mediator::GetInstance();
@@ -87,10 +90,15 @@ AbandonedCart
                     $action = "skip";
                 } else {
                     $inWaitingList = false;
+                    $inActiveList = false;
                     foreach((array)$acUser->lists as $listId => $list) {
                         switch ($listId) {
                             case AC_Mediator::LIST_Waiting_List:
                                 $inWaitingList = true;
+                                break;
+
+                            case AC_Mediator::LIST_One_Potato_Subscribers:
+                                $inActiveList = true;
                                 break;
 
                             default:
@@ -100,14 +108,10 @@ AbandonedCart
                     }
 
                     $this->comment($inWaitingList ? "Is in waiting List" : "Not in Waiting List");
-                    if($inWaitingList) {
+                    if($inWaitingList || $inActiveList) {
                         $action = "skip";
                     } else {
-                        if(false) { // TODO: Some conditions based on existing lists to determine if user has to be skipped
-                            $action = "skip";
-                        } else {
-                            $action = "add_tag";
-                        }
+                        $action = "add_tag";
                     }
 
                 }
