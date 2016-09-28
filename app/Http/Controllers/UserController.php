@@ -424,7 +424,7 @@ class UserController extends Controller
 				$theSKU .= "00";
 			}
 			
-			if ($gluten_free == "1") {
+			if ($request->prefs && in_array('9', $request->prefs)) {
 				$theSKU .= "0100";
 			}else{
 				$theSKU .= "0000";
