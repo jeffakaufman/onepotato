@@ -13,6 +13,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use App\Order;
+use App\Cancellation;
 use DateTime;
 use Date;
 use App\Shippingholds;
@@ -1385,10 +1386,13 @@ class SubinvoiceController extends Controller
 				$stripe_plan_id = $product->stripe_plan_id;
 
 				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+				
+				$trial_ends_date = $this->GetTrialEndsDate();
 
 				$subscription = \Stripe\Subscription::create(array(
 				  "customer" => $customer_stripe_id,
-				  "plan" => $stripe_plan_id
+				  "plan" => $stripe_plan_id,
+				  "trial_end" => $trial_ends_date,
 				));
 
 				$userSubscription->stripe_id = $subscription->id;
