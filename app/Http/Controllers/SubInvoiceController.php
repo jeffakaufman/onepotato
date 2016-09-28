@@ -13,6 +13,7 @@ use App\UserSubscription;
 use App\Product;
 use App\Referral;
 use App\Order;
+use App\Cancellation;
 use DateTime;
 use Date;
 use App\Shippingholds;
