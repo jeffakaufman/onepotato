@@ -67,8 +67,8 @@ class DashboardController extends Controller
 
     private function _getListParams() {
         $params = [
-            'orderBy' => 'start_date',
-            'orderDir' => 'desc',
+            'orderBy' => 'name',
+            'orderDir' => 'asc',
 
             'filterText' => '',
         ];

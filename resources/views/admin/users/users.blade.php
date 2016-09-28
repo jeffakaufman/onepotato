@@ -18,26 +18,36 @@ jQuery(document).ready(function($) {
         window.document.location = $(this).data("href");
     });
 });
+$(document).ready( function () {
+    $('#users').DataTable({
+  "pageLength": 25
+});
+} );
+
+$('#users').DataTable( {
+  "pageLength": 5
+} );
+
 </script>
 	<div class="container">
 		<!-- Application Dashboard -->
-		<table id="example" class="table table-striped table-hover" width="100%" cellspacing="0">
+		<table id="users" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
 			<thead> 
 				<tr>
-        	    	<th style="width:20%"><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></th>
-					<th style="width:10%"><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></th>
-					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></th>
-					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></th>
-					<th class="text-center"><a href="/admin/users/updateListParams/orderBy/status">Status</a></th>
+        	    	<th style="width:20%">User Name</th>
+					<th style="width:10%">Email Address</th>
+					<th class="text-center">First Delivery Date</th>
+					<th class="text-center">Revenue</th>
+					<th class="text-center">Status</th>
 				</tr> 
 			</thead>
 			<tfoot> 
-				<tr style="width:10%">
-        	    	<th><a href="/admin/users/updateListParams/orderBy/userName">User Name</a></th>
-					<th><a href="/admin/users/updateListParams/orderBy/email">Email Address</a></th>
-					<th><a href="/admin/users/updateListParams/orderBy/startDate">First Delivery Date</a></th>
-					<th><a href="/admin/users/updateListParams/orderBy/revenue">Revenue</a></th>
-					<th><a href="/admin/users/updateListParams/orderBy/status">Status</a></th>
+				<tr>
+        	    	<th style="width:20%">User Name</th>
+					<th style="width:10%">Email Address</th>
+					<th class="text-center">First Delivery Date</th>
+					<th class="text-center">Revenue</th>
+					<th class="text-center">Status</th>
 				</tr> 
 			</tfoot>
 			<tbody>
