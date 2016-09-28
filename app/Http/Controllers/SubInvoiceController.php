@@ -1330,7 +1330,7 @@ class SubinvoiceController extends Controller
 		$user->save();
 		
 		//http_response_code(200);
-		return redirect('/account'); 
+		return redirect('/login'); 
 		
 	}
 	
