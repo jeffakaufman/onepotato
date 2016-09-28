@@ -1388,7 +1388,8 @@ class SubinvoiceController extends Controller
 
 				$subscription = \Stripe\Subscription::create(array(
 				  "customer" => $customer_stripe_id,
-				  "plan" => $stripe_plan_id
+				  "plan" => $stripe_plan_id,
+				  "trial_end" => $trial_ends_date,
 				));
 
 				$userSubscription->stripe_id = $subscription->id;

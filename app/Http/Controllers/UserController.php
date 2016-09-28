@@ -455,7 +455,10 @@ class UserController extends Controller
 			$subscription->plan = $newProduct->stripe_plan_id;
 			//$subscription->current_period_end = $period_end;
 			//$subscription->current_period_start = $period_start;
-			$subscription->trial_end = $trial_end;
+			if (isset($trial_end)) {
+				$subscription->trial_end = $trial_end;
+			}
+			
 			$subscription->save();
 
 			}
