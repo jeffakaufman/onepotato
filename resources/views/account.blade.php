@@ -561,6 +561,13 @@ $(document).ready(function() {
                                                 @if ($shipment->cost != 0) Order Total: ${{ number_format( $shipment->cost, 2 ) }} @endif
                                                 <span class="promo_note">Credit Card</span>
                                             </div>
+
+                                            @if($shipment->tracking_number)
+                                                <div class="subtitle" style="margin-right:20px;">
+                                                    <a target="_blank" href="https://www.ontrac.com/tracking.asp?trackingres=submit&tracking_number={{$shipment->tracking_number}}">Track me</a>
+                                                    &nbsp;
+                                                </div>
+                                            @endif
                                         </h4>
                                         <div class="row">
                                             

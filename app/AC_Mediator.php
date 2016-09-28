@@ -102,6 +102,85 @@ class AC_Mediator {
 
     }
 
+    public function AddUser(User $user, $extraFields = [], $listsToAdd = [], $tagsToAdd = []) {
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $firstName = $user->first_name;
+        $lastName = $user->last_name;
+
+        try {
+            @list($_firstName, $_lastName) = explode(' ', $user->name, 3);
+        } catch (Exception $e) {
+            $_firstName = '';
+            $_lastName = '';
+        }
+        $firstName = $firstName ?: $_firstName;
+        $lastName = $lastName ?: $_lastName;
+
+        $contact = array(
+            "email" => $user->email,
+            "first_name" => $firstName,
+            "last_name" => $lastName,
+            'phone' => $user->phone,
+            'tags' => implode(',', $tagsToAdd),
+        );
+
+//            "p[{$listId}]" => $listId,
+//            "status[{$listId}]" => 1, // "Active" status
+
+        foreach($listsToAdd as $listId) {
+            $contact["p[{$listId}]"] = $listId;
+            $contact["status[{$listId}]"] = 1;
+        }
+
+
+        $arr = array();
+        $arr['STATUS'] = $user->status; //        Status	Text Input	%STATUS%
+        $arr['ZIP_CODE'] = $user->billing_zip; //Zip Code	Text Input	%ZIP_CODE%
+        $arr['STATE'] = $user->billing_state; //State	Text Input	%STATE%
+
+        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+        $product = null;
+        if($userSubscription) {
+            $arr['REFERENCE_ID'] = $userSubscription->stripe_id; //        Reference ID	Text Input	%REFERENCE_ID%
+            $arr['SUBSCRIPTION_STATUS'] = $userSubscription->status; //Subscription Status	Text Input	%SUBSCRIPTION_STATUS%
+
+            $product = Product::find($userSubscription->product_id);
+            if($product) {
+                $productInfo = $product ? $product->productDetails() : new \stdClass();
+
+                $arr['PRODUCT'] = $product ? $product->product_description : ''; //        Product	Text Input	%PRODUCT%	ex: One Potato Box, 2 Adults, 2 Children
+                $arr['BOX_TYPE'] = $productInfo->BoxType; //Box Type	Text Input	%BOX_TYPE%
+
+                $arr['PRICE'] = $product ? $product->cost : ''; //        Price	Text Input	%PRICE%
+            }
+        }
+
+
+        foreach($arr as $key => $value) {
+            $contact[urlencode("field[%{$key}%,0]")] = $value;
+        }
+
+        if($userSubscription && $product) {
+            $contact = array_merge($contact, $this->_getNextDeliveryData($user));
+        }
+
+        foreach($extraFields as $key => $value) {
+            $contact[urlencode("field[%{$key}%,0]")] = $value;
+        }
+
+
+//var_dump($contact);die();
+        $contact_sync = $ac->api("contact/sync", $contact);
+        $this->_log($user->email.'(By add) :: '.json_encode($contact_sync));
+
+        return $contact_sync;
+    }
+
     public function AddCustomerTag(User $user, $tags) {
         try {
             $ac = $this->_getConnection();
@@ -516,6 +595,7 @@ var_dump($response);die();
         );
 //var_dump($this->connection->credentials_test());
         if ($this->connection->credentials_test()) {
+            $this->connectionIsOk = true;
             return $this->connection;
         } else {
             throw new \Exception("Can't connect to Active Campaign");

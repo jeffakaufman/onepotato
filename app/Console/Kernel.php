@@ -17,6 +17,8 @@ class Kernel extends ConsoleKernel
          Commands\RenewalReminder::class,
          Commands\AssignMenus::class,
          Commands\TestCommand::class,
+         Commands\CheckAbandoned::class,
+         Commands\CronTest::class,
     ];
 
     /**
@@ -27,6 +29,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
+        $schedule->command("cron:test")->dailyAt('13:00');
+
 //         $schedule->command('inspire')
 //                  ->everyMinute();
 

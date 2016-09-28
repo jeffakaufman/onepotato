@@ -64,6 +64,8 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
+
+            'modes' => [],
         ],
 
         'pgsql' => [

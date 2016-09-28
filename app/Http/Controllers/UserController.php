@@ -244,6 +244,15 @@ class UserController extends Controller
 			$deliveryHistory->ship_date = date('F j, Y', strtotime($invoices[$i]->period_end_date."-1 day"));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
 			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )->get();
+
+            $deliveryHistory->tracking_number = false;
+
+            $order = Order::where('order_id', $invoices[$i]->order_id)->first();
+
+            if($order) {
+                $deliveryHistory->tracking_number = $order->tracking_number;
+            }
+
 			$shipments[] = $deliveryHistory;
 		}
 		//get the next delivery their change will apply
