@@ -1231,7 +1231,7 @@ class SubinvoiceController extends Controller
 										->get();
 			
 				
-				if ($credit instanceof Credit) {
+				if ($credit) {
 					
 					echo "Credit Found for user " . $user->id;
 					
