@@ -1296,37 +1296,7 @@ class SubinvoiceController extends Controller
 							$credit->save();
 							http_response_code(200);
 					
-					} catch (Stripe_InvalidRequestError $e) {
-						  // Invalid parameters were supplied to Stripe's API
-							$credit->date_applied = date("Y-m-d H:i:s");  
-							$credit->credit_status = 'stripe_error_not_applied';
-							$credit->stripe_xml = json_encode($event_json);
-							$credit->save();
-							http_response_code(500);
-					} catch (Stripe_AuthenticationError $e) {
-						  // Authentication with Stripe's API failed
-						  // (maybe you changed API keys recently)
-							$credit->date_applied = date("Y-m-d H:i:s");  
-							$credit->credit_status = 'stripe_error_not_applied';
-							$credit->stripe_xml = json_encode($event_json);
-							$credit->save();
-							http_response_code(500);
-					} catch (Stripe_ApiConnectionError $e) {
-						  // Network communication with Stripe failed
-							$credit->date_applied = date("Y-m-d H:i:s");  
-							$credit->credit_status = 'stripe_error_not_applied';
-							$credit->stripe_xml = json_encode($event_json);
-							$credit->save();
-							http_response_code(500);
-					} catch (Stripe_Error $e) {
-						  // Display a very generic error to the user, and maybe send
-						  // yourself an email
-						// Something else happened, completely unrelated to Stripe
-							$credit->date_applied = date("Y-m-d H:i:s");  
-							$credit->credit_status = 'stripe_error_not_applied';
-							$credit->stripe_xml = json_encode($event_json);
-							$credit->save();
-							http_response_code(500);
+					
 					} catch (Exception $e) {
 						  // Something else happened, completely unrelated to Stripe
 							$credit->date_applied = date("Y-m-d H:i:s");  
