@@ -1242,7 +1242,7 @@ class SubinvoiceController extends Controller
 					echo "Invoice amount: " . $invoice_amount;
 					
 					//figure out the amount - 
-					$credit_amount = $credit->credit_amount;
+					$credit_amount = 0;
 					$credit_percent = $credit->credit_percent;
 					
 					if (!empty($credit_amount)) {
@@ -1253,7 +1253,7 @@ class SubinvoiceController extends Controller
 					
 					if (!empty($credit_percent)) {
 						//there is a value in $credit percent overrides credit_amount
-						$apply_credit_amount = $credit_ammount*$credit_percent;
+						$apply_credit_amount = $credit_ammount * $credit_percent;
 						
 					}
 					
