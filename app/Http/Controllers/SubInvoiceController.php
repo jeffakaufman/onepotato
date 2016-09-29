@@ -1278,20 +1278,26 @@ class SubinvoiceController extends Controller
 					  "description" => "One-time setup fee"
 					));
 					*/
-					
+				
 					//record CREDIT in Stripe via discount
-					\Stripe\InvoiceItem::create(array(
-					  "customer" => $customer_id,
-					  "invoice" => $invoice_id,
-					  "amount" => $apply_credit_amount,
-					  "currency" => "usd",
-					  "description" => $credit->credit_description
-					));
 					
-					$credit->date_applied = date("Y-m-d H:i:s");  
-					$credit->credit_status = 'applied';
-					$credit->save();
-			
+					try {
+						\Stripe\InvoiceItem::create(array(
+					  		"customer" => $customer_id,
+					  		"invoice" => $invoice_id,
+					  		"amount" => $apply_credit_amount,
+					  		"currency" => "usd",
+					  		"description" => $credit->credit_description
+								));
+					
+							$credit->date_applied = date("Y-m-d H:i:s");  
+							$credit->credit_status = 'applied';
+					
+					} catch (Exception $e) {
+						  // Something else happened, completely unrelated to Stripe
+							$credit->date_applied = date("Y-m-d H:i:s");  
+							$credit->credit_status = 'stripe_error_not_applied';
+					}
 			
 				}//end if there is a credit
 			
