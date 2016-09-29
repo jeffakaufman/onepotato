@@ -1296,9 +1296,19 @@ class SubinvoiceController extends Controller
 							$credit->save();
 							http_response_code(200);
 					
+					}catch (Stripe\Error\Base $e) {
+							  // Code to do something with the $e exception object when an error occurs
 					
+							$credit->date_applied = date("Y-m-d H:i:s");  
+							$credit->credit_status = 'stripe_error_not_applied';
+							$credit->stripe_xml = json_encode($event_json);
+							$credit->save();
+						
+							echo($e->getMessage());
+							http_response_code(500);
+							
 					} catch (Exception $e) {
-						  // Something else happened, completely unrelated to Stripe
+						  	// Something else happened, completely unrelated to Stripe
 							$credit->date_applied = date("Y-m-d H:i:s");  
 							$credit->credit_status = 'stripe_error_not_applied';
 							$credit->stripe_xml = json_encode($event_json);
