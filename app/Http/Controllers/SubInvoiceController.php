@@ -1242,7 +1242,7 @@ class SubinvoiceController extends Controller
 					echo "Invoice amount: " . $invoice_amount;
 					
 					//figure out the amount - 
-					$credit_amount = 0;
+					$credit_amount = $credit->credit_amount;
 					$credit_percent = $credit->credit_percent;
 					
 					if (!empty($credit_amount)) {
