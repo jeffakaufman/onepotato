@@ -1292,11 +1292,15 @@ class SubinvoiceController extends Controller
 					
 							$credit->date_applied = date("Y-m-d H:i:s");  
 							$credit->credit_status = 'applied';
+							$credit->stripe_xml = json_encode($event_json);
+							$credit->save();
 					
 					} catch (Exception $e) {
 						  // Something else happened, completely unrelated to Stripe
 							$credit->date_applied = date("Y-m-d H:i:s");  
 							$credit->credit_status = 'stripe_error_not_applied';
+							$credit->stripe_xml = json_encode($event_json);
+							$credit->save();
 					}
 			
 				}//end if there is a credit
