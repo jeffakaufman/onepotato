@@ -130,6 +130,7 @@ your account.</div>
 </noscript>
 
 
+{{--
 <script type='text/javascript'>
 	var crthk_setup='mid_g7aOPnJz'; var crthk_complete=true;
     (function() {
@@ -138,6 +139,7 @@ your account.</div>
         var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
   })();
 </script>
+--}}
 @endsection
 
 @section('scripts')
