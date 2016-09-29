@@ -1227,7 +1227,7 @@ class SubinvoiceController extends Controller
 				//use the user id to see if there is a record in credits table
 				//if there is a credit in the database with status 'recorded', apply it via stripe
 				$credit = Credit::where('user_id', $user->id)
-										->where('credit_status', 'recorded')
+										->where('credit_status', 'recorded_not_applied')
 										->first();
 			
 				
@@ -1291,7 +1291,7 @@ class SubinvoiceController extends Controller
 								));
 					
 							$credit->date_applied = date("Y-m-d H:i:s");  
-							$credit->credit_status = 'applied';
+							$credit->credit_status = 'credit_applied';
 							$credit->stripe_xml = json_encode($event_json);
 							$credit->save();
 							http_response_code(200);
