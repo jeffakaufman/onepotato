@@ -179,12 +179,15 @@ class DashboardController extends Controller
                              $join->on('shippingholds.user_id','=','menus_users.users_id');
                              $join->on('shippingholds.date_to_hold','=','menus_users.delivery_date');
                     	})
+						->Orderby('delivery_date')
 					->get();
-		$weeksMenusDates = array_pluck($weeksMenus,'date_to_hold');
+		$weeksMenusDates = array_pluck($weeksMenus,'delivery_date');
+
 
 		$upcomingSkipsNoMenu = App\Shippingholds::where('user_id',$id)
 						->where('date_to_hold','>=',date('Y-m-d'))
 						->whereNotIn('date_to_hold',$weeksMenusDates)
+						->Orderby('date_to_hold')
 						->get();
 
 		return view('admin.users.user_details')
