@@ -1239,6 +1239,8 @@ class SubinvoiceController extends Controller
 					$customer_id = $event_json->data->object->customer;
 					$invoice_amount = $event_json->data->object->amount_due;
 					
+					echo "Invoice amount: " . $invoice_amount;
+					
 					//figure out the amount - 
 					$credit_amount = $credit->credit_amount;
 					$credit_percent = $credit->credit_percent;
@@ -1264,6 +1266,8 @@ class SubinvoiceController extends Controller
 						//there is no recorded credit amount
 						$apply_credit_amount = 0;
 					}
+					
+					echo "Credit Amount: " . $apply_credit_amount;
 					
 					/* example: 
 					\Stripe\InvoiceItem::create(array(
