@@ -1361,7 +1361,6 @@ class UserController extends Controller
         $user->save();
 
         Auth::login($user, true);
-
         return redirect("/account");
 
     }
