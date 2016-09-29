@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Subinvoice;
 
 use App\User;
+use App\Credit;
 use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
@@ -1204,6 +1205,92 @@ class SubinvoiceController extends Controller
 			
 		}
 		
+		
+	}
+	
+	//handle credits - check for a credit when invoice created is called from STRIPE
+	
+	public function checkForCredits () {
+		
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+			// Retrieve the request's body and parse it as JSON
+			$input = @file_get_contents("php://input");
+			$event_json = json_decode($input);
+			
+			//get the user record based on the 
+			$user = $this->_getUser($event_json);
+
+	        if($user instanceof User) {
+	            	
+				//When invoice is created, check to see if there's an unapplied credit
+				//use the user id to see if there is a record in credits table
+				//if there is a credit in the database with status 'recorded', apply it via stripe
+				$credit = Credit::where('user_id', $user->id)
+										->where('credit_status', 'recorded')
+										->get();
+										
+				if ($credit instanceof Credit) {
+					
+					
+	        		$invoice_id = $event_json->data->object->id;
+					$customer_id = $event_json->data->object->customer;
+					$invoice_amount = $event_json->data->object->amount_due;
+					
+					//figure out the amount - 
+					$credit_amount = $credit->credit_amount;
+					$credit_percent = $credit->credit_percent;
+					
+					if (!empty($credit_amount)) {
+						//there is a value in $credit_amount in CENTS - that's the negative invoice amount
+						$apply_credit_amount = $credit_ammount;
+						
+					}
+					
+					if (!empty($credit_percent)) {
+						//there is a value in $credit percent overrides credit_amount
+						$apply_credit_amount = $credit_ammount*$credit_percent;
+						
+					}
+					
+					if (isset($apply_credit_amount)) {
+						
+						//make apply credit amount negative
+						$apply_credit_amount = -1 * abs($apply_credit_amount);
+						
+					}else{
+						//there is no recorded credit amount
+						$apply_credit_amount = 0;
+					}
+					
+					/* example: 
+					\Stripe\InvoiceItem::create(array(
+					  "customer" => "cus_3R1W8PG2DmsmM9",
+					  "invoice" => "in_3ZClIXPhhwkNsp",
+					  "amount" => 1000,
+					  "currency" => "usd",
+					  "description" => "One-time setup fee"
+					));
+					*/
+					
+					//record CREDIT in Stripe via discount
+					\Stripe\InvoiceItem::create(array(
+					  "customer" => $customer_id,
+					  "invoice" => $invoice_id,
+					  "amount" => $apply_credit_amount,
+					  "currency" => "usd",
+					  "description" => $credit->credit_description
+					));
+					
+					$credit->date_applied = date("Y-m-d H:i:s");  
+					$credit->credit_status = 'applied';
+					$credit->save();
+			
+			
+				}//end if there is a credit
+			
+			
+			}  //end if $user
 		
 	}
 	
