@@ -1229,10 +1229,11 @@ class SubinvoiceController extends Controller
 				$credit = Credit::where('user_id', $user->id)
 										->where('credit_status', 'recorded')
 										->get();
-				print_r($credit);
+			
 				
 				if ($credit instanceof Credit) {
 					
+					echo "Credit Found for user " . $user->id;
 					
 	        		$invoice_id = $event_json->data->object->id;
 					$customer_id = $event_json->data->object->customer;
