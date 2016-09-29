@@ -1228,7 +1228,7 @@ class SubinvoiceController extends Controller
 				//if there is a credit in the database with status 'recorded', apply it via stripe
 				$credit = Credit::where('user_id', $user->id)
 										->where('credit_status', 'recorded')
-										->get();
+										->first();
 			
 				
 				if ($credit) {
