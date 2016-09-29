@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\AC_Mediator;
+use App\ZipcodeStates;
 use Illuminate\Console\Command;
 
 use App\User;
@@ -69,7 +70,9 @@ AbandonedCart
              * @var User $u
              */
 
-            $this->comment($u->email);
+            $this->comment($u->email . ' '.($u->billing_zip ? $u->billing_zip : "no_zip"));
+
+            $zipCode = $u->billing_zip;
 
             try {
                 $acUser = $ac->GetCustomerData($u);
@@ -86,11 +89,26 @@ AbandonedCart
                 $tagIsAlreadySet = in_array(self::ABANDONED_TAG, (array)$acUser->tags);
 
                 if($tagIsAlreadySet) {
-                    $this->comment("The Tag is already set");
+                    $this->comment("The Tag is already set :: Skipping");
                     $action = "skip";
                 } else {
                     $inWaitingList = false;
                     $inActiveList = false;
+
+                    if(!$zipCode) {
+                        foreach((array)$acUser->fields as $fId => $f) {
+                            switch($f->perstag) {
+                                case 'ZIP_CODE':
+                                    $zipCode = $f->val;
+                                    break;
+
+                                default:
+                                    //Do Nothing
+                                    break;
+                            }
+                        }
+                        $this->comment("AC ZipCode = {$zipCode}");
+                    }
                     foreach((array)$acUser->lists as $listId => $list) {
                         switch ($listId) {
                             case AC_Mediator::LIST_Waiting_List:
@@ -107,12 +125,28 @@ AbandonedCart
                         }
                     }
 
-                    $this->comment($inWaitingList ? "Is in waiting List" : "Not in Waiting List");
-                    if($inWaitingList || $inActiveList) {
+                    if($inActiveList) {
+                        $this->comment("Is in Active List :: Skipping");
                         $action = "skip";
                     } else {
-                        $action = "add_tag";
+
+                        if($zipCode) {
+                            $zipRow = ZipcodeStates::where('zipcode', $zipCode)->first();
+                            if($zipRow) {
+                                $this->comment("Zip is in the sending area :: Adding Tag");
+                                $action = "add_tag";
+                            } else {
+                                $this->comment("Zip is out of the sending area :: Skipping");
+                                $action = "skip";
+                            }
+                        } else {
+                            $this->comment("No Zip Code :: Adding Tag");
+                            $action = "add_tag";
+                        }
                     }
+
+
+//                    $this->comment($inWaitingList ? "Is in waiting List" : "Not in Waiting List");
 
                 }
             }
@@ -144,6 +178,7 @@ AbandonedCart
                     break;
             }
 
+            $this->comment("--------------------------------------------");
 //            var_dump($acUser);
 //            print_r($acUser);
 //            echo "{$u->id} {$u->email} {$u->status} {$u->updated_at}\r\n";

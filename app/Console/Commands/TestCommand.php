@@ -48,7 +48,7 @@ class TestCommand extends Command
     public function handle()
     {
         $ac = AC_Mediator::GetInstance();
-        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");
+        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "D10010997424018");
 //        $ac->MenuShipped(User::where('email', 'roshannabaron@yahoo.com')->first(), "TEST_TRACKING_NUMBER");
 
 return;
