@@ -1241,19 +1241,19 @@ class SubinvoiceController extends Controller
 					
 					echo "Invoice amount: " . $invoice_amount;
 					
-					//figure out the amount - 
-					$credit_amount = $credit->credit_amount;
-					$credit_percent = $credit->credit_percent;
+					//figure out the amount  
+					$creditAmount = $credit->credit_amount;
+					$creditPercent = $credit->credit_percent;
 					
-					if (!empty($credit_amount)) {
-						//there is a value in $credit_amount in CENTS - that's the negative invoice amount
-						$apply_credit_amount = $credit_ammount;
+					if (!empty($creditAmount)) {
+						//there is a value in $creditAmount in CENTS - that's the negative invoice amount
+						$apply_credit_amount = $creditAmount;
 						
 					}
 					
-					if (!empty($credit_percent)) {
+					if (!empty($creditPercent)) {
 						//there is a value in $credit percent overrides credit_amount
-						$apply_credit_amount = $credit_ammount * $credit_percent;
+						$apply_credit_amount = $invoice_amount * $credit_percent;
 						
 					}
 					
