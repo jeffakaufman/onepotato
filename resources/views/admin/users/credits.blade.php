@@ -29,12 +29,14 @@
 				</div>
 			
 			<div class="old_credits">
+			
 			<table>	
 				<tr><td width="150"><strong>Date Applied</strong></td><td width="100"><strong>Amount</strong></td><td width="100"><strong>Percent</strong></td><td width="200"><strong>Description</strong></td></tr>
 				@foreach ($credits as $credit)
 				<tr><td>{{ $credit->date_applied}}</td><td>{{ number_format($credit->credit_amount / 100,2) }}</td><td>{{ $credit->credit_percent }}</td><td>{{ $credit->credit_description}}
 				@endforeach
 			</table>
+			
 			</div>
 			
 			</form>
