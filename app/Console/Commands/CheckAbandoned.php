@@ -48,7 +48,7 @@ class CheckAbandoned extends Command
         $users = User::where('status', User::STATUS_INCOMPLETE)
 //            ->where('email', 'azagarov@mail.ru') //TODO: remove this testing filter
             ->where('updated_at', '<', $highLimit->format('Y-m-d H:i:s'))
-//            ->where('updated_at', '>', $lowLimit->format('Y-m-d H:i:s'))
+            ->where('updated_at', '>', $lowLimit->format('Y-m-d H:i:s'))
             ->get();
 
         $ac = AC_Mediator::GetInstance();
