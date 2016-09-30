@@ -1917,21 +1917,20 @@ class SubinvoiceController extends Controller
 
         // - must be UNIX timestamp
 
-        $trial_ends = "";
-
         //time of day cutoff for orders
         $cutOffTime = "16:00:00";
         $cutOffDay = "Wednesday";
 
         //change dates to WEDNESDAY
         //cutoff date is the last date to change or to signup for THIS week
-        $cutOffDate = new \DateTime("this {$cutOffDay} {$cutOffTime}");
+        $cutOffFull = new \DateTime("this {$cutOffDay} {$cutOffTime}");
+        $cutOffDate = new \DateTime("this {$cutOffDay}");
 
         //get today's date
-        $today = new \DateTime('now');
-        $currentDay = $today->format("l");
-        $currentTime = $today->format("H:is");
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
 
+        $triadEnds = (clone($cutOffDate))->modify('this tuesday');
         //echo "Today is " . $currentDay . "<br />";
 
         //echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
@@ -1939,26 +1938,29 @@ class SubinvoiceController extends Controller
 
         //THIS IS ALL OLD CODE _ SINCE WE KNOW THE START DATE, we can just use that as the
         //check to see if today is the same day as the cutoff day
-        if ($currentDay == $cutOffDay) {
+        if ($today == $cutOffDate) {
 
             //check to see if it's BEFORE the cutoff tine. If so, then this is a special case
-            if ($currentTime < $cutOffTime) {
+            if ($now < $cutOffFull) {
                 //ok, so it's the day of the cutoff, but before time has expired
                 //SET the trial_ends date to $cutOffDate - no problem
                 //echo "You have JUST beat the cutoff period <br /> Setting the trial_ends to today";
-                $trial_ends = $cutOffDate;
+
+                //DO NOTHING
             } else {
-                //the cutoff tiem has just ended
+                //the cutoff time has just ended
                 //now, set the date to NEXT $cutOffDate
-                $trial_ends = new \DateTime("next {$cutOffDay} {$cutOffTime}");
                 //echo "You have missed the cutoff period <br /> Setting the trial_ends to next week";
+
+                $triadEnds->modify("+1 week");
             }
         } else {
             //today is not the same as the trial ends date, so simply set the date to the next cutoff
-            $trial_ends = $cutOffDate;
+
+            //DO NOTHING
         }
 
-        return ($trial_ends->getTimestamp());
+        return ($triadEnds->getTimestamp());
 
         //echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
 
