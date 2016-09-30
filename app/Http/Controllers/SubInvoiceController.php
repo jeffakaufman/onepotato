@@ -1208,6 +1208,85 @@ class SubinvoiceController extends Controller
 		
 	}
 	
+	
+	//issues a line itme for a credit 
+	public function issueCredit ($request) {
+		
+		//get the business 
+		$id = $request->user_id;
+		$credit_amount = $request->credit_amount;
+		$credit_type = $request->credit_type;
+		$credit_description = $request->credit_description;
+		$apply_credit_amount = 0;
+		
+		//get user 
+		$user = User::where('id', $id)->first();
+	
+		
+        if(!$user) {
+	
+			$stripe_customer_id = $user->stripe_id;
+			
+			
+			//figure out amount to credit 
+			if ($credit_type=="amount") {
+				
+				//make it a negative amount 
+				$apply_credit_amount = -1 * abs($credit_amount);
+				
+			}
+			
+			if ($credit_type=="percent") {
+				
+				//get the user's subscription 
+				$userSubscription = UserSubscription::where('user_id',$id)
+													->where('status', 'active')
+													->first();
+													
+				$productID = $userSubscription->product_id;
+				
+				$userProduct = Product::where('id', $productID)->first();
+				
+				//figure out monthly value
+				$product_price = $userProduct->cost;
+				
+				//apply percentage 
+				$apply_credit_amount = $product_price * $credit_amount;
+				
+				//make it a negative amount 
+				$apply_credit_amount = -1 * abs($credit_amount);
+				
+			}
+			
+			//issue credit
+			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+			
+			\Stripe\InvoiceItem::create(array(
+		  		"customer" => $stripe_customer_id,
+		  		"amount" => $apply_credit_amount,
+		  		"currency" => "usd",
+		  		"description" => $credit_description
+			));
+			
+			//record credit in database
+			$credit = new Credit;
+			$credit->user_id = $id;
+			if ($credit_type=="amount") {
+				$credit->credit_amount = $credit_amount;
+			}
+			if ($credit_type=="percent") {
+				$credit->credit_percent = $credit_amount;
+				$credit->credit_amount = $apply_credit_amount;
+			}
+			$credit->description = $credit->credit_description;
+			$credit->credit_status = "applied_to_stripe";
+			$credit->save();			
+           
+        }	
+		
+}
+	
+	
 	//handle credits - check for a credit when invoice created is called from STRIPE
 	
 	public function checkForCredits () {
