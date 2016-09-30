@@ -122,6 +122,7 @@ $('#register1').addClass('active');
 	</div>
 </div>
 
+{{--
 <script type='text/javascript'>
 	var crthk_setup='mid_g7aOPnJz';
 	var crthk_cart = {};
@@ -131,5 +132,6 @@ $('#register1').addClass('active');
     	var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
   })();
 </script>
+--}}
 
 @endsection

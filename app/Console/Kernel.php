@@ -32,11 +32,13 @@ class Kernel extends ConsoleKernel
 
         $schedule->command("cron:test")->dailyAt('13:00');
 
+        //Completed automation on 09/29/2016 at 06:01
+
 //         $schedule->command('inspire')
 //                  ->everyMinute();
 
-//        $schedule->command('renewal:reminder')
+        $schedule->command('renewal:reminder')
 //            ->thursdays()->at('23:59');
-//            ->fridays()->at('19:00');
+            ->fridays()->at('19:00');
     }
 }

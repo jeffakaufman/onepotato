@@ -483,6 +483,7 @@ $(function() {
 });
 </script>
 
+{{--
 <script type='text/javascript'>
 var crthk_cart = {
  "price"  : "{{ $product->cost }}",
@@ -506,6 +507,7 @@ var crthk_setup='mid_g7aOPnJz';
     var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
   })();
 </script>
+--}}
 
 @endsection
 
