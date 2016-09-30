@@ -1217,7 +1217,7 @@ class SubinvoiceController extends Controller
 		//get the business 
 		
 		//adjust to pennies
-		$credit_amount = $request->credit_amount * 100;
+		$credit_amount = $request->credit_amount;
 		$credit_type = $request->credit_type;
 		$credit_description = $request->credit_description;
 		$apply_credit_amount = 0;
@@ -1237,7 +1237,7 @@ class SubinvoiceController extends Controller
 			if ($credit_type=="amount") {
 				
 				//make it a negative amount 
-				$apply_credit_amount = -1 * abs($credit_amount);
+				$apply_credit_amount = -1 * abs($credit_amount*100);
 				
 			}
 			
@@ -1259,7 +1259,7 @@ class SubinvoiceController extends Controller
 				$apply_credit_amount = $product_price * ($credit_amount/100);
 				
 				//make it a negative amount 
-				$apply_credit_amount = -1 * abs($apply_credit_amount);
+				$apply_credit_amount = -1 * abs($apply_credit_amount * 100);
 				
 			}
 			
