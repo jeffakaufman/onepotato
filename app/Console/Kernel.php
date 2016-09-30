@@ -40,11 +40,11 @@ class Kernel extends ConsoleKernel
 //         $schedule->command('inspire')
 //                  ->everyMinute();
 
-        $schedule->command('renewal:reminder')
+//        $schedule->command('renewal:reminder')
 //            ->thursdays()->at('23:59');
-            ->fridays()->at('19:00')
-            ->sendOutputTo("../../storage/logs/renewalReminder.log")
-            ->emailOutputTo('ahhmed@mail.ru');
+//            ->fridays()->at('19:00')
+//            ->sendOutputTo("../../storage/logs/renewalReminder.log")
+ //           ->emailOutputTo('ahhmed@mail.ru');
 
         $schedule->command('check:abandoned')
             ->cron("*/15 * * * *")->withoutOverlapping()
