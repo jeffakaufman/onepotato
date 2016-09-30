@@ -1212,11 +1212,12 @@ class SubinvoiceController extends Controller
 	
 	
 	//issues a line itme for a credit 
-	public function issueCredit ($request) {
+	public function issueCredit ($id, Request $request) {
 		
 		//get the business 
-		$id = $request->user_id;
-		$credit_amount = $request->credit_amount;
+		
+		//adjust to pennies
+		$credit_amount = $request->credit_amount * 100;
 		$credit_type = $request->credit_type;
 		$credit_description = $request->credit_description;
 		$apply_credit_amount = 0;
@@ -1225,8 +1226,10 @@ class SubinvoiceController extends Controller
 		$user = User::where('id', $id)->first();
 	
 		
-        if(!$user) {
+        if($user) {
 	
+			echo "test";
+			
 			$stripe_customer_id = $user->stripe_id;
 			
 			
@@ -1285,6 +1288,8 @@ class SubinvoiceController extends Controller
 			$credit->save();			
            
         }	
+
+		return redirect("/admin/user_details/" . $id);
 		
 }
 	

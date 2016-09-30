@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Menus;
 use App\MenusUsers;
+use App\Credit;
 use App\User;
 use App\Shippingholds;
 use App\Subinvoice;
@@ -189,6 +190,8 @@ class DashboardController extends Controller
 						->whereNotIn('date_to_hold',$weeksMenusDates)
 						->Orderby('date_to_hold')
 						->get();
+						
+		$credits = App\Credit::where('user_id',$id)->get();
 
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
@@ -200,6 +203,7 @@ class DashboardController extends Controller
 						'referrals'=>$referrals,
 						'weeksMenus'=>$weeksMenus,
 						'upcomingSkipsNoMenu'=>$upcomingSkipsNoMenu,
+						'credits'=>$credits,
 						]);
 
     }
