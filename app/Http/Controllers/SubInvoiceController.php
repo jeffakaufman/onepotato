@@ -1283,7 +1283,7 @@ class SubinvoiceController extends Controller
 				$credit->credit_percent = $credit_amount;
 				$credit->credit_amount = $apply_credit_amount;
 			}
-			$credit->description = $credit->credit_description;
+			$credit->credit_description = $credit_description;
 			$credit->credit_status = "applied_to_stripe";
 			$credit->save();			
            
