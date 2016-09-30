@@ -1228,7 +1228,6 @@ class SubinvoiceController extends Controller
 		
         if($user) {
 	
-			echo "test";
 			
 			$stripe_customer_id = $user->stripe_id;
 			
@@ -1256,7 +1255,7 @@ class SubinvoiceController extends Controller
 				$product_price = $userProduct->cost;
 				
 				//apply percentage 
-				$apply_credit_amount = ($product_price * ($credit_amount/100)) * 100;
+				$apply_credit_amount = round(($product_price * ($credit_amount/100)) * 100);
 				
 				//make it a negative amount 
 				$apply_credit_amount = -1 * abs($apply_credit_amount);
