@@ -1279,7 +1279,7 @@ class SubinvoiceController extends Controller
 				$credit->credit_amount = abs($apply_credit_amount);
 			}
 			if ($credit_type=="percent") {
-				$credit->credit_percent = $credit_amount*100;
+				$credit->credit_percent = $credit_amount;
 				$credit->credit_amount = abs($apply_credit_amount);
 			}
 			$credit->credit_description = $credit_description;
