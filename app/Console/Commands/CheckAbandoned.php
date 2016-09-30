@@ -48,7 +48,7 @@ class CheckAbandoned extends Command
         $users = User::where('status', User::STATUS_INCOMPLETE)
 //            ->where('email', 'azagarov@mail.ru') //TODO: remove this testing filter
             ->where('updated_at', '<', $highLimit->format('Y-m-d H:i:s'))
-//            ->where('updated_at', '>', $lowLimit->format('Y-m-d H:i:s'))
+            ->where('updated_at', '>', $lowLimit->format('Y-m-d H:i:s'))
             ->get();
 
         $ac = AC_Mediator::GetInstance();
@@ -156,7 +156,7 @@ AbandonedCart
             switch($action) {
                 case 'add_tag':
                     try {
-//                        $ac->AddCustomerTag($u, self::ABANDONED_TAG);
+                        $ac->AddCustomerTag($u, self::ABANDONED_TAG);
                         $this->comment("Tag added");
                     } catch (\Exception $e) {
                         $this->warn($e->getMessage());
@@ -165,7 +165,7 @@ AbandonedCart
 
                 case 'add_user':
                     try {
-//                        $ac->AddUser($u, [], [], [self::ABANDONED_TAG]);
+                        $ac->AddUser($u, [], [], [self::ABANDONED_TAG]);
                         $this->comment("The user added");
                     } catch (\Exception $e) {
                         $this->warn($e->getMessage());

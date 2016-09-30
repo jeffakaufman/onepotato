@@ -30,7 +30,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
-        $schedule->command("cron:test")->dailyAt('13:00');
+        $schedule->command("cron:test")
+            ->dailyAt('13:00')
+            ->sendOutputTo("../../storage/logs/cronTest.log")
+            ->emailOutputTo("ahhmed@mail.ru");
 
         //Completed automation on 09/29/2016 at 06:01
 
@@ -39,6 +42,13 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('renewal:reminder')
 //            ->thursdays()->at('23:59');
-            ->fridays()->at('19:00');
+            ->fridays()->at('19:00')
+            ->sendOutputTo("../../storage/logs/renewalReminder.log")
+            ->emailOutputTo('ahhmed@mail.ru');
+
+        $schedule->command('check:abandoned')
+            ->cron("*/15 * * * *")->withoutOverlapping()
+            ->sendOutputTo("../../storage/logs/checkAbandoned.log")
+            ->emailOutputTo("ahhmed@mail.ru");
     }
 }
