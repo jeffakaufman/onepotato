@@ -23,7 +23,7 @@
 <strong>{{ $userProduct->product_description }} {{ $userSubscription->dietary_preferences }}</strong>
 <br>	
 		<div class="row">
-		<!-- Row 1 ---!>
+		<!-- Row 1 -->
 	    	<div class="col-md-7">
 		    	<div class="panel panel-default ">
 		       		<div class="panel-heading"><h4>Upcoming Deliveries</h4></div>
@@ -97,8 +97,16 @@
            				
         			</div>
         		</div> 
+
+					<!-- credits panel-->
+					@include('admin.users.credits')
+					
+
         	</div> 
-		    <div class="col-md-3"><!-- Shipping Address ---!>
+			
+		
+		    
+			<div class="col-md-3"><!-- Shipping Address -->
 		       	<div class="panel panel-default ">
 		           	<div class="panel-heading"><strong>Shipping Address</strong></div>
 					<div class="panel-body">
@@ -153,11 +161,13 @@
 		</div>
 	</div>
 </div> 
-			<!-- Row 1 End ---!>
-
-			<!-- Row 2 ---!>
+			<!-- Row 1 End -->
+			
+	
+		
+			<!-- Row 2 -->
 			<div class="row">
-           		<div class="col-md-6"><!--Referrals ---!>
+           		<div class="col-md-6"><!--Referrals -->
            			<div class="row">
 					@include('admin.users.csr-notes')
 					</div>
