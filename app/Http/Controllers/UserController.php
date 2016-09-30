@@ -1084,30 +1084,35 @@ class UserController extends Controller
 
     public function recordReferral (Request $request) {
 			
-			//http://onepotato.app/referral/subscribe/?u=mattkirkpatrick@yahoo.com&f=1
-			//$id = $request->f;
-			$referrerid = $request->f;
-			$newuserid = $request->u;
+        //http://onepotato.app/referral/subscribe/?u=mattkirkpatrick@yahoo.com&f=1
+        //$id = $request->f;
+        $referrerid = $request->f;
+        $newuserid = $request->u;
 			
-			//record that the user has subscribed--this is stubbed in for now
-			$referral = Referral::where('id',$newuserid)->first();
-			$referral->did_subscribe = 1;
-			$referral->referral_applied = date('Y-m-d');
-			$referral->save();
-			
-			//return "test";
-			return redirect('/register/' . $referrerid);
+        //record that the user has subscribed--this is stubbed in for now
+        $referral = Referral::where('id',$newuserid)->first();
+        $referral->did_subscribe = 1;
+        $referral->referral_applied = date('Y-m-d');
+        $referral->save();
+
+        // The user receiving the email goes to the site,
+        // and the referral table is checked to make sure that email address was referred by that users.id.
+        // If not, the order processes like any other one, there shouldn’t be an error.
+        // If the email DOES match the ID sent out, then referrals should track that the user started a sign up.
+
+        //return "test";
+        return redirect('/register/' . $referrerid);
 		
 	}
 
 	public function showPayment ($id, Request $request) {
 		
-			$user = User::find($id);
-			$csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
+        $user = User::find($id);
+        $csr_notes = Csr_note::where('user_id',$id)->orderBy('created_at', 'desc')->get();
 			
 		
-			//return "test";
-			return view('admin/users/payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
+        //return "test";
+        return view('admin/users/payment')->with(['user'=>$user, 'csr_notes'=>$csr_notes]);
 		
 	}
 	

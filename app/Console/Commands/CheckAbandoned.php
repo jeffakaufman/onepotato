@@ -156,7 +156,7 @@ AbandonedCart
             switch($action) {
                 case 'add_tag':
                     try {
-//                        $ac->AddCustomerTag($u, self::ABANDONED_TAG);
+                        $ac->AddCustomerTag($u, self::ABANDONED_TAG);
                         $this->comment("Tag added");
                     } catch (\Exception $e) {
                         $this->warn($e->getMessage());
@@ -165,7 +165,7 @@ AbandonedCart
 
                 case 'add_user':
                     try {
-//                        $ac->AddUser($u, [], [], [self::ABANDONED_TAG]);
+                        $ac->AddUser($u, [], [], [self::ABANDONED_TAG]);
                         $this->comment("The user added");
                     } catch (\Exception $e) {
                         $this->warn($e->getMessage());
