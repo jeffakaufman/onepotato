@@ -1259,7 +1259,7 @@ class SubinvoiceController extends Controller
 				$apply_credit_amount = $product_price * ($credit_amount/100);
 				
 				//make it a negative amount 
-				$apply_credit_amount = -1 * abs($credit_amount);
+				$apply_credit_amount = -1 * abs($apply_credit_amount);
 				
 			}
 			
