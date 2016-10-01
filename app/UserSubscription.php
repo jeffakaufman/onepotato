@@ -21,11 +21,11 @@ class UserSubscription extends Model {
 				$string_pref .= ", ";
 			}
 		
-			if ($pref=="Nut Free ") {
-				$string_pref .= "Nut Free test";
+			if ($pref=="Nut Free") {
+				$string_pref .= "Nut Free ";
 			}
 		
-			if ($pref=="Gluten Free ") {
+			if ($pref=="Gluten Free") {
 				$string_pref .= "Gluten Free ";
 			}
 		}
