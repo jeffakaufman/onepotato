@@ -22,7 +22,7 @@ class UserSubscription extends Model {
 			}
 		
 			if ($pref=="Nut Free ") {
-				$string_pref .= "Nut Free ";
+				$string_pref .= "Nut Free test";
 			}
 		
 			if ($pref=="Gluten Free ") {
