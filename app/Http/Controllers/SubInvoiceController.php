@@ -1215,8 +1215,6 @@ class SubinvoiceController extends Controller
 	public function issueCredit ($id, Request $request) {
 		
 		//get the business 
-		
-		//adjust to pennies
 		$credit_amount = $request->credit_amount;
 		$credit_type = $request->credit_type;
 		$credit_description = $request->credit_description;
@@ -1236,6 +1234,7 @@ class SubinvoiceController extends Controller
 			if ($credit_type=="amount") {
 				
 				//make it a negative amount 
+				//adjust to pennies
 				$apply_credit_amount = -1 * abs($credit_amount*100);
 				
 			}
@@ -1254,7 +1253,8 @@ class SubinvoiceController extends Controller
 				//figure out monthly value
 				$product_price = $userProduct->cost;
 				
-				//apply percentage 
+				//apply percentage
+				//adjust to pennies
 				$apply_credit_amount = round(($product_price * ($credit_amount/100)) * 100);
 				
 				//make it a negative amount 
@@ -2053,6 +2053,205 @@ class SubinvoiceController extends Controller
 //			$TestDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 			//echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
 
+	}
+	
+	
+	public TestOrderXMLUser ($invoiceID) {
+		
+			/****
+			gets order XML for a particular SubInvoice Row for testing purposes
+
+			****/
+			
+			
+		//get date ranges
+		//get today's date
+		$todaysDate = new DateTime();
+		$todaysDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+		$todaysDate_format = date_format($todaysDate, "Y-m-d H:i:s");
+		
+		
+		$ship_xml = '<?xml version="1.0" encoding="utf-8"?><Orders>';
+		
+		//retrieve all orders with status of "charged_not_shipped" from invoice table
+		$subinvoices = Subinvoice::where('id',$invoiceID)->get();
+		
+		//loop over the invoices to create Order records
+		
+		foreach ($subinvoices as $invoice) {
+			
+			//if this is a 0 dollar invoice and doesn't have coupon ForeverFreeX8197 OR has an amount > 0 
+			
+			$amountCharged = $invoice->charge_amount;
+			
+		
+																								
+			if ( ($amountCharged != '0') || ($amountCharged=='0' && $invoice->coupon_code=='ForeverFreeX8197') ) {
+			
+			
+				//use the user_id field to get the User and Current Shipping Address from user, usersubscriptions, and shipping_addresses
+				$id = $invoice->user_id;
+				$stripe_id = $invoice->stripe_sub_id;			
+
+				$user = User::where('id', $id)->first();
+			
+				if ($user) {	
+					$shippingAddress = Shipping_address::where('user_id',$id)->where('is_current', '1')->first();
+				}
+			
+			
+				//figure out the user's preferences - 
+			
+				//figure out this week's menus - 
+			
+				//check to see if there's a shipping address - if not, create an order exception
+			
+				if ($shippingAddress) {
+					//create a new record in the Orders table
+					//$order = new Order;
+				    // $order->save();
+
+					//get the OrderID from the order table
+					//add arbitrary number to the primary key to obfuscate order ids
+
+					//$order_id = $order->id + 11565;
+					//$order->order_id = $order_id;
+					// $order->save();
+					
+					//fake order ID for testing	
+					$order_id = "12345";
+			
+					//add a batch ID so that we can easily get all the orders sent to ship station
+			
+					$charge_date = new DateTime($invoice->charge_date);
+					$charge_date_formatted = $charge_date->format('m/d/Y H:i:s');	
+				
+					$subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+				
+					if ($subscriber) {
+							$product = Product::where('id',$subscriber->product_id)->first();
+				
+							$ship_xml .= "<Order>";
+
+							$ship_xml .= "<OrderID><![CDATA[" . $order_id . "]]></OrderID>";
+							$ship_xml .= "<OrderNumber><![CDATA[" . $order_id . "]]></OrderNumber>";
+							$ship_xml .= "<OrderDate>" . $charge_date_formatted . "</OrderDate>";
+							$ship_xml .= "<OrderStatus><![CDATA[paid]]></OrderStatus>";
+							$ship_xml .= "<LastModified>" . $charge_date_formatted . "</LastModified>";
+							$ship_xml .= "<ShippingMethod><![CDATA[OnTrac]]></ShippingMethod>";
+							$ship_xml .= "<PaymentMethod><![CDATA[Credit Card]]></PaymentMethod>";
+							$ship_xml .= "<OrderTotal>" . $invoice->charge_amount / 100 . "</OrderTotal>";
+							$ship_xml .= "<TaxAmount>0.00</TaxAmount>";
+							$ship_xml .= "<ShippingAmount>0.00</ShippingAmount>";
+							$ship_xml .= "<CustomerNotes><![CDATA[Add Note from User field!]]></CustomerNotes>";
+							$ship_xml .= "<InternalNotes><![CDATA[]]></InternalNotes>";
+							$ship_xml .= "<Gift>false</Gift>";
+				
+				
+							//GET menu titles for this user
+							$menu_titles = $this->getMenuTitles($id);
+							
+							if (isset($subscriber->dietary_preferences)) {
+								$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+							} else {
+								$dietary_prefs_string = "";
+							}
+							
+							$ship_xml .= "<CustomField1><![CDATA[" . $menu_titles . "]]></CustomField1>";
+							$ship_xml .= "<CustomField2><![CDATA[" . $dietary_prefs_string . "]]></CustomField2>";
+							$ship_xml .= "<CustomField3><![CDATA[" . $shippingAddress->delivery_instructions . "]]></CustomField3>";
+			
+			
+			
+							//create the customer data
+							$ship_xml .= "<Customer>";
+							$ship_xml .= "";
+			
+							$ship_xml .= "<CustomerCode><![CDATA[" . $user->email . "]]></CustomerCode>";
+							$ship_xml .= "<BillTo>";
+							$ship_xml .= "<Name><![CDATA[" .$user->name . "]]></Name>";
+							$ship_xml .= "<Company></Company>";
+							$ship_xml .= "<Phone><![CDATA[" . $user->phone . "]]></Phone>";
+							$ship_xml .= "<Email><![CDATA[" . $user->email . "]]></Email>";
+							$ship_xml .= "</BillTo>";
+			
+							$ship_xml .= "<ShipTo>";
+							$ship_xml .= "<Name><![CDATA[" . $shippingAddress->shipping_first_name . " " . $shippingAddress->shipping_last_name . "]]></Name>";
+							$ship_xml .= "<Company><![CDATA[]]></Company>";
+							$ship_xml .= "<Address1><![CDATA[" . $shippingAddress->shipping_address . "]]></Address1>";
+							$ship_xml .= "<Address2>" . $shippingAddress->shipping_address_2 . "</Address2>";
+							$ship_xml .= "<City><![CDATA[" . $shippingAddress->shipping_city . "]]></City>";
+							$ship_xml .= "<State><![CDATA[" . $shippingAddress->shipping_state . "]]></State>";
+							$ship_xml .= "<PostalCode><![CDATA[" . $shippingAddress->shipping_zip . "]]></PostalCode>";
+							$ship_xml .= "<Country><![CDATA[US]]></Country>";
+							$ship_xml .= "<Phone><![CDATA[" . $shippingAddress->phone1 . "]]></Phone>";
+							$ship_xml .= "</ShipTo>";
+
+							$ship_xml .= "</Customer>";
+
+
+
+							$ship_xml .= "<Items><Item>";
+
+							$ship_xml .= "<SKU><![CDATA[" . $product->sku ."]]></SKU>";
+							$ship_xml .= "<Name><![CDATA[" . $product->product_description . "]]></Name>";
+							$ship_xml .= "<ImageUrl></ImageUrl>";
+							$ship_xml .= "<Weight>0</Weight>";
+							$ship_xml .= "<WeightUnits></WeightUnits>";
+							$ship_xml .= "<Quantity>1</Quantity>";
+							$ship_xml .= "<UnitPrice>" . $product->cost . "</UnitPrice>";
+							$ship_xml .= "<Location></Location>";
+
+							$ship_xml .= "<Options>";
+
+							$ship_xml .= "<Option>";
+
+							$ship_xml .= "<Name><![CDATA[]]></Name>";
+							$ship_xml .= "<Value><![CDATA[]]></Value>";
+							$ship_xml .= "<Weight>0</Weight>";
+
+							$ship_xml .= "</Option>";
+
+							$ship_xml .= "<Option>";
+
+							$ship_xml .= "<Name><![CDATA[]]></Name>";
+							$ship_xml .= "<Value></Value>";
+							$ship_xml .= "<Weight>0</Weight>";
+
+							$ship_xml .= "</Option>";
+
+							$ship_xml .= "</Options>";
+
+							$ship_xml .= "</Item></Items>";
+
+							$invoice->invoice_status = "sent_to_ship";
+							$invoice->order_id = $order_id;
+							$invoice->save();
+
+
+							$ship_xml .= "</Order>";
+						}
+					}
+				
+					}else{
+						//update the status
+						$invoice->invoice_status = "does_not_ship";
+						//$invoice->save();
+						
+					}//end if
+				} //end foreach
+		
+		$ship_xml .= '</Orders>';
+			
+		//update invoices table
+		//update orders table
+	
+		//record XML in log table
+		
+		
+		//echo XML
+		return $ship_xml;
+		
 	}
 
 }

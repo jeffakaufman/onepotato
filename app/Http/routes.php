@@ -160,6 +160,7 @@ Route::get('/shipstation/teststatus','SubinvoiceController@testShippingStatus');
 Route::get('/shipstation/getorders','SubinvoiceController@getOrderXML');
 Route::get('/shipstation/test','SubinvoiceController@getOrderXMLTest');
 Route::post('/shipstation/getorders','SubinvoiceController@updateShippingStatus');
+Route::get('/shipstation/test/invoice/{invoiceid}', 'SubinvoiceController@TestOrderXMLUser');
 
 //cancellation, reactivation, hold routes
 Route::get('/cancel/{id}', 'SubinvoiceController@CancelSubscription');
