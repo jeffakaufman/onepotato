@@ -2156,6 +2156,7 @@ class SubinvoiceController extends Controller
 								
 								//$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
 								$dietary_prefs_string = $subscriber->getNutFreeOrGlutenFree();
+								$dietary_prefs_string = $subscriber->dietary_preferences;
 							} else {
 								$dietary_prefs_string = "";
 							}

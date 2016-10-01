@@ -16,8 +16,6 @@ class UserSubscription extends Model {
 		$string_pref = "";
 	
 		foreach ($prefs as $pref) {
-	
-			
 		
 			if ($pref=="Nut Free ") {
 				if ($string_pref != "") {
