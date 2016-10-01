@@ -2150,9 +2150,11 @@ class SubinvoiceController extends Controller
 				
 							//GET menu titles for this user
 							$menu_titles = $this->getMenuTitles($id);
-							echo "SUBCRIBER PREFS: " . $subscriber->dietary_preferences;
+							//echo "SUBCRIBER PREFS: " . $subscriber->dietary_preferences;
 							if (isset($subscriber->dietary_preferences)) {
-								$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+								
+								//$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+								$dietary_prefs_string = $subscriber->dietary_preferences;
 							} else {
 								$dietary_prefs_string = "";
 							}
