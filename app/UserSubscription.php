@@ -15,16 +15,16 @@ class UserSubscription extends Model {
 		$prefs = explode(",",$this->dietary_preferences);
 		$string_pref = "";
 	
-		foreach ($prefs as trim($pref)) {
+		foreach ($prefs as $pref) {
 		
-			if ($pref=="Nut Free") {
+			if (trim($pref)=="Nut Free") {
 				if ($string_pref != "") {
 					$string_pref .= ", ";
 				}
 				$string_pref .= "Nut Free ";
 			}
 		
-			if ($pref=="Gluten Free") {
+			if (trim($pref)=="Gluten Free") {
 				if ($string_pref != "") {
 					$string_pref .= ", ";
 				}
