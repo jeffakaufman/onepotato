@@ -17,15 +17,19 @@ class UserSubscription extends Model {
 	
 		foreach ($prefs as $pref) {
 	
-			if ($string_pref != "") {
-				$string_pref .= ", ";
-			}
+			
 		
-			if ($pref=="Nut Free") {
+			if ($pref=="Nut Free ") {
+				if ($string_pref != "") {
+					$string_pref .= ", ";
+				}
 				$string_pref .= "Nut Free ";
 			}
 		
-			if ($pref=="Gluten Free") {
+			if ($pref=="Gluten Free ") {
+				if ($string_pref != "") {
+					$string_pref .= ", ";
+				}
 				$string_pref .= "Gluten Free ";
 			}
 		}
