@@ -2250,7 +2250,7 @@ class SubinvoiceController extends Controller
 		
 		
 		//echo XML
-		return $ship_xml;
+		echo $ship_xml;
 		
 	}
 
