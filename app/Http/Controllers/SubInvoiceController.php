@@ -2056,7 +2056,7 @@ class SubinvoiceController extends Controller
 	}
 	
 	
-	public TestOrderXMLUser ($invoiceid) {
+	public function TestOrderXMLUser ($invoiceid) {
 		
 			/****
 			gets order XML for a particular SubInvoice Row for testing purposes
