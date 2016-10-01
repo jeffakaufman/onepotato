@@ -446,7 +446,8 @@ class SubinvoiceController extends Controller
 							$menu_titles = $this->getMenuTitles($id);
 							
 							if (isset($subscriber->dietary_preferences)) {
-								$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+								//$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
+								$dietary_prefs_string = $subscriber->dietary_preferences;
 							} else {
 								$dietary_prefs_string = "";
 							}
@@ -2154,7 +2155,7 @@ class SubinvoiceController extends Controller
 							if (isset($subscriber->dietary_preferences)) {
 								
 								//$dietary_prefs_string = $subscriber->getDietaryPreferencesAttribute($subscriber->dietary_preferences);
-								$dietary_prefs_string = $subscriber->dietary_preferences;
+								$dietary_prefs_string = $subscriber->getNutFreeOrGlutenFree();
 							} else {
 								$dietary_prefs_string = "";
 							}

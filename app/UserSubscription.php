@@ -9,6 +9,29 @@ class UserSubscription extends Model {
 	protected $table = 'subscriptions';
 	
 	public $timestamps = true;
+	
+	public function getNutFreeOrGlutenFree() {
+		
+		$prefs = explode(",",$this->dietary_preferences);
+		$string_pref = "";
+	
+		foreach ($prefs as $pref) {
+	
+			if ($string_pref != "") {
+				$string_pref .= ", ";
+			}
+		
+			if ($pref=="Nut Free ") {
+				$string_pref .= "Nut Free ";
+			}
+		
+			if ($pref=="Gluten Free ") {
+				$string_pref .= "Gluten Free ";
+			}
+		}
+		return $string_pref;
+		
+	}
 	public function getDietaryPreferencesAttribute($value)
     {
     	$prefs = explode(",",$value);
