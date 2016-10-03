@@ -406,8 +406,10 @@ class DashboardController extends Controller
 		//and if the id's are sorted correctly we should be ok. I am a little worried about it
 		$standardOmnivore = $menus->where('menu',$omnivoreMealsID);
 		$standardVegetarian = $menus->where('menu',$vegetarianMealsID);
+		$bob = array_merge(array_pluck($standardOmnivore,'user_id'),array_pluck($standardVegetarian,'user_id'));
 		
-		echo json_encode(array_pluck($standardOmnivore,'user_id'))."<br>";
+		
+		echo json_encode($bob)."<br>";
 		die;
 				
 				
