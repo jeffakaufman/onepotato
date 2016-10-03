@@ -5,10 +5,14 @@ namespace App\Console\Commands;
 use App\AC_Mediator;
 use App\Cancellation;
 use App\Events\UserHasRegistered;
+use App\Menu;
 use App\MenuAssigner;
+use App\Product;
+use App\UserSubscription;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 use App\User;
+use App\MenusUsers;
 
 use Illuminate\Support\Facades\Mail;
 
@@ -47,6 +51,103 @@ class TestCommand extends Command
      */
     public function handle()
     {
+
+        $users = User::all();
+
+        foreach($users as $u) {
+            /**
+             * @var User $u
+             */
+
+            switch($u->status) {
+                case User::STATUS_INCOMPLETE:
+                case User::STATUS_ADMIN:
+                case User::STATUS_INACTIVE_CANCELLED:
+                    continue;
+                    break;
+            }
+
+            $sub = UserSubscription::where('user_id', $u->id)->first();
+            if(!$sub) {
+                continue;
+            }
+
+            $p = Product::find($sub->product_id);
+            /**
+             * @var Product $p
+             */
+            if(!$p){
+                continue;
+            }
+
+//            $this->comment("#{$u->id} {$u->email} {$u->name}");
+
+            $logged = false;
+            $supposed = MenuAssigner::GetAllFutureMenusForUser($u);
+
+            foreach($supposed as $date => $dMenus) {
+
+                $menus = MenusUsers::where('users_id', $u->id)
+                ->where('delivery_date', $date)
+                    ->get();
+
+                $rids = [];
+                $ridsT = [];
+                foreach($menus as $_m) {
+                    $menu = Menu::find($_m->menus_id);
+                    /**
+                     * @var Menu $menu
+                     */
+                    $rids[] = $_m->menus_id;
+                    $ridsT[] = $_m->menus_id."(".($menu->isVegetarian && $menu->isOmnivore ? 'B' : ($menu->isOmnivore ? 'O' : 'V')).")";
+                }
+
+                sort($rids);
+
+                $idsT = "Real : [".implode(',', $ridsT)."]";
+
+                $tids = [];
+                $tidsT = [];
+                foreach($dMenus as $_m) {
+                    $tids[] = $_m->id;
+                    $tidsT[] = $_m->id."(".($_m->isVegetarian && $_m->isOmnivore ? 'B' : ($_m->isOmnivore ? 'O' : 'V')).")";
+                }
+                sort($tids);
+
+                $idsT .= "      Theo : [".implode(',', $tidsT)."]";
+
+                if($rids != $tids) {
+                    if(!$logged) {
+                        $this->comment("#{$u->id} {$u->email} {$u->name} ".($p->IsOmnivore() ? "OMNI" : "VEG")."          ".$sub->dietary_preferences);
+                        $logged = true;
+                    }
+                    $this->comment("{$date} {$idsT}");
+                }
+
+//                var_dump($menus);
+            }
+
+            if($logged) {
+                $this->comment('-----------------------------------------------------------------------------------------');
+            }
+//            $udp = $sub->getOriginal('dietary_preferences');
+
+//            $m = $whatscooking->menus()->get();
+        }
+
+return;
+
+        //Somehow user id 2384 was assigned menus.id 64, which has beef although they don’t have beef as a dietary preference.
+
+
+
+
+        $user = User::find(2384);
+
+        $menus = MenuAssigner::GetAllFutureMenusForUser($user);
+
+var_dump($menus);
+return;
         $ac = AC_Mediator::GetInstance();
         $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "D10010997424018");
 //        $ac->MenuShipped(User::where('email', 'roshannabaron@yahoo.com')->first(), "TEST_TRACKING_NUMBER");
