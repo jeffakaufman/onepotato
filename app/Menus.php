@@ -42,4 +42,10 @@ class Menus extends Model
     {
         return $this->belongsToMany('App\WhatsCookings');
     }
+    
+    public function users()
+    {
+        return $this->belongsToMany('App\User','menus_users','menus_id','users_id');
+    }
+    
 }

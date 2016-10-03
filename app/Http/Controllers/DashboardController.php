@@ -265,11 +265,13 @@ class DashboardController extends Controller
         // last week is the last week we have "shipped" invoices for
         $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
-        $lastPeriodEndDate = '2016-10-04';
+        $lastPeriodEndDate = '2016-10-11';
         $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-7 day'));         
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
         
+		
+		
         $shippingHoldsWeek = Shippingholds::whereIn('hold_status',['hold','held'])
 				->where('date_to_hold', "=",$thisTuesday)
 				->get(); 
@@ -355,6 +357,60 @@ class DashboardController extends Controller
 				->orderBy('menus_id')
 				->orderBy('products.id')
 				->get();     
+				
+				
+		$omnivoreMeals = App\WhatsCookings::where('week_of',$thisTuesday)
+			->first()
+			->getOmnivoreMeals()
+			->orderBy('id')
+			->get();
+		$omnivoreMealsID = array_pluck($omnivoreMeals, 'id');
+		
+		$vegetarianMeals = App\WhatsCookings::where('week_of',$thisTuesday)
+			->first()
+			->getVegetarianMeals()
+			->orderBy('id')
+			->get();
+		$vegetarianMealsID = array_pluck($vegetarianMeals, 'id');
+		
+		
+		//get all the menus being sent out this week to active users
+		$menusRaw = App\MenusUsers::where('delivery_date',$thisTuesday)
+			->whereNotIn('users_id', $skipIdsThisWeek)
+			->whereHas('users',function($q) {
+				$q->whereIn('status',['active','inactive']);
+			})
+			->orderBy('users_id')
+			->orderBy('menus_id')
+			->get();
+
+		$menus = [];
+		$menuPivotRow = new stdClass();
+		
+		//I TOTALLY cheat here. Each user should only have 3 menus, and I have sorted
+		//the menu by user and menu id, so i know every third record is a new row.
+		//the new collection is {[user_id, [_menunumber_:menu_id]]}		
+		foreach ($menusRaw as $i => $menu) {
+				$menuPivotRow->user_id = $menu->users_id;
+				$menuPivotRow->menu[$i%3] = $menu->menus_id;
+				if ($i%3 == 2) {
+					array_push($menus,$menuPivotRow);
+					$menuPivotRow = new stdClass();
+				}
+		}
+		
+		//turn the new menus table into a laravel collection
+		$menus = collect($menus);
+		
+		$total = $menus->count();
+		//and if the id's are sorted correctly we should be ok. I am a little worried about it
+		$standardOmnivore = $menus->where('menu',$omnivoreMealsID);
+		$standardVegetarian = $menus->where('menu',$vegetarianMealsID);
+		
+		echo json_encode(array_pluck($standardOmnivore,'user_id'))."<br>";
+		die;
+				
+				
         $newSubs = DB::table('users')
 				->select('start_date','products.product_description', DB::raw('count(*) as total'))
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')

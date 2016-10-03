@@ -14,4 +14,12 @@ class WhatsCookings extends Model
     {
         return $this->belongsToMany('App\Menus')->withTimestamps();
     }
+    
+    public function getOmnivoreMeals() {
+		return $this->menus()->where('isOmnivore',1);
+	}
+	public function getVegetarianMeals() {
+		return $this->menus()->where('isVegetarian',1);
+	}
+    
 }

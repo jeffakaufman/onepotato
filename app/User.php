@@ -115,7 +115,12 @@ class User extends SparkUser
     {
         return $this->hasMany('App\Shippingholds');
     }
-    
+
+    public function menus() {
+        return $this->belongsToMany('App\Menus','menus_users','users_id','menus_id')
+        			->withPivot('delivery_date');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
