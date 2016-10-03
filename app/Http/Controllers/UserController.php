@@ -1223,7 +1223,7 @@ class UserController extends Controller
 
 				$hold = Shippingholds::where('user_id',$id)
 						->where('date_to_hold', date('Y-m-d', $i))
-						->where('hold_status', 'hold')
+						->whereIn('hold_status', ['hold','held'])
 						->get();
 
 				if (count($hold) > 0) {
