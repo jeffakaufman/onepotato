@@ -87,7 +87,7 @@ class TestCommand extends Command
 
             foreach($supposed as $date => $dMenus) {
 
-                if($date != '2016-10-18') continue;
+//                if($date != '2016-10-18') continue;
 
                 $menus = MenusUsers::where('users_id', $u->id)
                 ->where('delivery_date', $date)
@@ -110,15 +110,25 @@ class TestCommand extends Command
 
                 $tids = [];
                 $tidsT = [];
+
+                $_rep = '';
+
                 foreach($dMenus as $_m) {
                     $tids[] = $_m->id;
+
+                    if(count($_m->replacements)) {
+                        $_rep .= " Replacements done :: ";
+                        foreach($_m->replacements as $_r) {
+                            $_rep .= sprintf("%06b ", $_r);
+                        }
+                    }
                     $tidsT[] = $_m->id."(".($_m->isVegetarian && $_m->isOmnivore ? 'B' : ($_m->isOmnivore ? 'O' : 'V')).")";
                 }
                 sort($tids);
 
-                $idsT .= "      Theo : [".implode(',', $tidsT)."]";
+                $idsT .= "      Theo : [".implode(',', $tidsT)."]".$_rep;
 
-                if($rids != $tids) {
+                if(true || $rids != $tids) {
                     if(!$logged) {
                         $this->comment("#{$u->id} {$u->email} {$u->name} ".($p->IsOmnivore() ? "OMNI" : "VEG")."          ".$sub->dietary_preferences);
                         $logged = true;

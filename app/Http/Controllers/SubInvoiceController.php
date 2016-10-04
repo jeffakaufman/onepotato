@@ -1382,7 +1382,7 @@ class SubinvoiceController extends Controller
 							$credit->save();
 							http_response_code(200);
 					
-					}catch (Stripe\Error\Base $e) {
+					} catch (\Stripe\Error\Base $e) {
 							  // Code to do something with the $e exception object when an error occurs
 					
 							$credit->date_applied = date("Y-m-d H:i:s");  
@@ -1393,7 +1393,7 @@ class SubinvoiceController extends Controller
 							echo($e->getMessage());
 							http_response_code(500);
 							
-					} catch (Exception $e) {
+					} catch (\Exception $e) {
 						  	// Something else happened, completely unrelated to Stripe
 							$credit->date_applied = date("Y-m-d H:i:s");  
 							$credit->credit_status = 'stripe_error_not_applied';
