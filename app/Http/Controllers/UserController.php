@@ -196,7 +196,7 @@ class UserController extends Controller
 
 	//get data for the accounts page - current
 
-	public function getAccount($id = null) {
+	public function getAccount($tab = null) {
 		
 		$id = !isset($id) ? Auth::id() : $id;
 		$nextTuesday = strtotime('next tuesday');
@@ -265,7 +265,14 @@ class UserController extends Controller
 		elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
 		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
 		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
-		
+
+
+		$tab = isset($tab) ? $tab : 'plan_details';
+        $allowedTabs = ['plan_details', 'delivery_info', 'delivery_history', 'account_info', 'payment_info', 'referrals', ];
+        if(!in_array($tab, $allowedTabs)) {
+            $tab = 'plan_details';
+        }
+
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -275,7 +282,9 @@ class UserController extends Controller
 							'referrals'=>$referrals,
 							'shipments'=>$shipments,
 							'changeDate'=>$changeDate,
-							'cancelMessage'=>$cancelMessage]);
+							'cancelMessage'=>$cancelMessage,
+                            'tab' => $tab,
+                    ]);
 	}	
 
 	//handles all the /account/ functionality - current

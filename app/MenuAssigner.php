@@ -13,6 +13,79 @@ use DB;
 
 class MenuAssigner {
 
+    public static function ReassignAllForDate(\DateTime $deliveryDate) {
+        $menuAssigner = new self($deliveryDate);
+
+
+
+        $insertArray = [];
+        $deliveryDateText = $deliveryDate->format('Y-m-d');
+
+        User::where('password', '<>', '')->chunk(20, function($users) use($menuAssigner, $deliveryDateText, &$insertArray) {
+            foreach($users as $user) {
+                /**
+                 * @var User $user
+                 */
+
+//                $subscription = UserSubscription::where('user_id', $user->id)->first();
+//                if(!$subscription) {
+//                    echo "NO SUBSCRIPTION\r\n";
+//                    continue;
+//                }
+//                /**
+//                 * @var UserSubscription $subscription
+//                 */
+
+
+//                $product = Product::find($subscription->product_id);
+//                if(!$product) {
+//                    echo "NO PRODUCT\r\n";
+//                    continue;
+//                };
+//                /**
+//                 * @var Product $product
+//                 */
+
+                try {
+                    $menusToAssign = $menuAssigner->GetUserMenus($user);
+                    foreach($menusToAssign as $m) {
+                        $insertArray[] = [
+                            'menus_id' => $m->id,
+                            'users_id' => $user->id,
+                            'delivery_date' => $deliveryDateText,
+                        ];
+                    }
+
+                } catch (\Exception $e) {
+                    continue;
+                }
+
+
+
+
+//echo $user->id;
+//echo ' ';
+//echo $product->IsVegetarian() ? 'V' : 'O';
+//echo ' ';
+//foreach($menusToAssign as $m) {
+//    echo $m->isVegetarian ? "V({$m->id})" : "O({$m->id})";
+//}
+
+//$current = MenusUsers::where('users_id', $user->id)->where('delivery_date', '=', $nextDeliveryDate)->get();
+//foreach($current as $ass) {
+//    echo $ass->menus_id.' ';
+//}
+
+//echo "\r\n";
+
+            }
+        });
+
+        DB::table('menus_users')->where('delivery_date', '=', $deliveryDateText)->delete();
+        DB::table("menus_users")->insert($insertArray);
+
+    }
+
     public function __construct(\DateTime $deliveryDate) {
         $this->deliveryDate = $deliveryDate;
         $this->weekMenuList = $this->_getWeekMenuList($this->_getCurrentMenus($deliveryDate));

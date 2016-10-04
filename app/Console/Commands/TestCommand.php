@@ -87,6 +87,8 @@ class TestCommand extends Command
 
             foreach($supposed as $date => $dMenus) {
 
+                if($date != '2016-10-18') continue;
+
                 $menus = MenusUsers::where('users_id', $u->id)
                 ->where('delivery_date', $date)
                     ->get();

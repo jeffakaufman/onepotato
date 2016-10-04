@@ -7,6 +7,18 @@
 /*stripe code*/
 $(document).ready(function() {
 
+    //Set default tab ::
+    $(".sidebar .panel-body ul.nav li").removeClass('active');
+    $(".sidebar .panel-body ul.nav li a[aria-controls='{{ $tab }}']").attr("aria-expanded", "true").parent().addClass('active');
+
+    $(".tab-content .tab-pane").removeClass("active").addClass("fade");
+    $(".tab-content #{{ $tab }}.tab-pane").removeClass("fade").addClass("active");
+
+    $(".sidebar .panel-body ul.nav li a").click(function(e) {
+        var _tab = $(this).attr('aria-controls');
+        history.pushState(null, null, '/account/'+_tab);
+    });
+
     // Watch for a form submission:
     $("#payment-form").submit(function(event) {
 
@@ -135,7 +147,7 @@ function stripeResponseHandler(status, response) {
 
                         <ul class="nav nav-sidebar spark-settings-stacked-tabs" role="tablist">
                                 
-                            <li role="presentation" class="active">
+                            <li role="presentation">
                                 <a href="#plan_details" aria-controls="plan_details" role="tab" data-toggle="tab">
                                     <i class="icon icon-silverware"></i>Plan Details
                                 </a>
