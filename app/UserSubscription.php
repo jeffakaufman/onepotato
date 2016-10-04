@@ -75,4 +75,11 @@ class UserSubscription extends Model {
 		}
 		return $string_pref;
 	}
+	
+	public function product()
+    {
+        return $this->belongsTo('App\Product');
+    }
+
+	
 }
