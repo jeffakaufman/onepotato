@@ -1466,8 +1466,9 @@ class SubinvoiceController extends Controller
 		
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
-		$user = User::where('id', $id)->first();
-		$user->status = User::STATUS_INACTIVE_CANCELLED;
+		//leaving the users active JK 10/2/2016
+		//$user = User::where('id', $id)->first();
+		//$user->status = User::STATUS_INACTIVE_CANCELLED;
 		
 		//retrieve stripe ID from subscriptions table
 		$userSubscription = UserSubscription::where('user_id',$id)->first();
