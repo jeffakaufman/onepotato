@@ -12,7 +12,22 @@ namespace App;
 class ReferralManager {
 
     public static function TestReferral(User $user, $email) {
+        $existingUser = User::where('email', $email)
+            ->first();
 
+        if($existingUser) {
+            return 'user_exists';
+        }
+
+        $existingReferral = Referral::where('referral_email', $email)
+            ->where('referrer_user_id', $user->id)
+            ->first();
+
+        if($existingReferral) {
+            return 'referral_exists';
+        }
+
+        return false;
     }
 
     public static function ReferralIsSent(User $user) {

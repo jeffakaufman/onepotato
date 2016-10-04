@@ -307,7 +307,6 @@ class UserController extends Controller
         $referral->did_subscribe = 0;
         $referral->referrer_user_id = $request->user_id;
 
-
         $referral->save();
 
 
