@@ -428,6 +428,7 @@ var_dump($response);die();
 
         $arr = [];
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
+        $arr['DELIVERY_SKIP_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
         $arr['DELIVERY_DAY'] = $this->_formatDate($nextDeliveryDate); //        Delivery Day	Text Input	%DELIVERY_DAY%	Delivery Day
 
 

@@ -119,13 +119,19 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             @endfor
                         Tracking Number: {{ $trackingNumber }}
                     @else
-                        Your next scheduled delivery is 
+                        <?php $nextDeliveryText = false; ?>
                         @for ($i = 0; $i < count($weeksMenus); $i++)
                             @if (!$weeksMenus[$i]->hold && strtotime($weeksMenus[$i]->date2) >= strtotime($startDate))
-                                {{ $weeksMenus[$i]->date}}.
+                                <?php $nextDeliveryText = $weeksMenus[$i]->date; ?>
                                 @break
                             @endif
                         @endfor
+
+                        @if($nextDeliveryText)
+                            Your next scheduled delivery is {{$nextDeliveryText}}.
+                        @else
+                            You don’t have a scheduled delivery
+                        @endif
                     @endif
                 </div>
             </h1>

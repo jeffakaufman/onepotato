@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\MenuAssigner;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -104,9 +105,9 @@ class WhatsCookingsController extends Controller
      */
     public function updateWhatsCooking(Request $request)
     {
-		$whatscooking = $request->all();
+		$whatsCooking = $request->all();
 			    
-    	$validator = Validator::make($whatscooking, [
+    	$validator = Validator::make($whatsCooking, [
 	        'menu_title' => 'required|max:255',
 	    ]);
 
@@ -120,9 +121,9 @@ class WhatsCookingsController extends Controller
      	$test = WhatsCookings::where('week_of', $request->week_of)
      			->first();
      			
-     	$id = isset($test) ? $test->id : WhatsCookings::Create($whatscooking)->id;			
+     	$id = isset($test) ? $test->id : WhatsCookings::Create($whatsCooking)->id;
 
-    	if (array_key_exists('image', $whatscooking)) {
+    	if (array_key_exists('image', $whatsCooking)) {
     		$image = $request->file('image');
     	}   
     	//echo $id;
@@ -164,7 +165,12 @@ class WhatsCookingsController extends Controller
      		$menu->whatscookings()->attach($id);
      		$menu->whatscookings()->detach($request->whatscooking_id);
      	}
-      	    	
+
+        $weeksMenuCount = WhatsCookings::where('week_of', $whatsCooking['week_of'])->first()->menus()->get()->count();
+        if(4 < $weeksMenuCount) { //at least 5 menus exist for updated cooking date
+            MenuAssigner::ReassignAllForDate(new \DateTime($whatsCooking['week_of']));
+        }
+
 	    return redirect('/admin/whatscooking/'.$id); 
     }
 
