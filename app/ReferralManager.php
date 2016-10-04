@@ -34,6 +34,36 @@ class ReferralManager {
 
     }
 
+    public static function GetReferral($referralId) {
+        return Referral::find($referralId);
+    }
+
+    public static function CheckIfReferralEmailIsCorrect($referralId, $email) {
+        $r = self::GetReferral($referralId);
+        if($r) {
+            return ($r->referral_email == $email);
+        } else {
+            return false;
+        }
+    }
+
+    public static function ProcessReferralApplied($referralId, User $user) {
+        $referral = self::GetReferral($referralId);
+        if(!$referral) return;
+
+        $now = new \DateTime('now');
+        $referral->did_subscribe = 1;
+        $referral->redeemed_by_user_id = $user->id;
+        $referral->referral_applied = $now->format('Y-m-d');
+        $referral->save();
+
+        self::ProcessCrediting($referral->referrer_user_id);
+    }
+
+
+    public static function ProcessCrediting($userId) {
+
+    }
 }
 
 // 1. User sends link out from /account. If a link is resent, a second record should not be added to referrals.

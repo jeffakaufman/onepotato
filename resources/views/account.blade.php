@@ -767,16 +767,20 @@ $(document).ready(function() {
 					$outstanding_count = 0;
 					$new_sub_count = 0;
 					foreach ($referrals as $ref) {
-					
-						if ($ref->did_subscribe==1) {
+						if ($ref->did_subscribe == 1) {
 							$new_sub_count++;
 						}else{
 							$outstanding_count++;
 						}
-						
 					}
-					
-					
+
+                    if($outstanding_count > 3) {
+                        $outstanding_count = $outstanding_count % 3;
+                        if($outstanding_count == 0) {
+                            $outstanding_count = 3;
+                        }
+                    }
+
 					?>
 
 
