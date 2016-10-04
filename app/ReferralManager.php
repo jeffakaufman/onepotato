@@ -57,11 +57,73 @@ class ReferralManager {
         $referral->referral_applied = $now->format('Y-m-d');
         $referral->save();
 
-        self::ProcessCrediting($referral->referrer_user_id);
+
+        $appliedCount = Referral::where('referrer_user_id', $userId)
+            ->where('did_subscribe', '1')
+            ->count();
+
+        if(0 == $appliedCount) {
+            $skip = true;
+        } else {
+            $skip = (($appliedCount % 3) != 0);
+        }
+        if($skip) return;
+
+        try {
+            self::ProcessCrediting($referral->referrer_user_id);
+        } catch (\Exception $e) {
+
+        }
     }
 
 
     public static function ProcessCrediting($userId) {
+        $user = User::find($userId);
+        if(!$user) throw new \Exception("User Not Found");
+
+        switch($user->status) {
+            case User::STATUS_ACTIVE:
+            case User::STATUS_INACTIVE:
+                //Do Nothing - Everything is OK
+                break;
+
+            default:
+                throw new \Exception("User is not Active at this moment", 1);
+                break;
+        }
+
+        $sub = UserSubscription::where('user_id',$id)
+            ->where('status', 'active')
+            ->first();
+
+        if(!$sub) throw new \Exception("Active subscription not found", 2);
+
+        $productId = $sub->product_id;
+        $product = Product::find($productId);
+
+        if(!$product) throw new \Exception("Product not found", 3);
+
+        $price = $product->cost;
+
+        $creditAmount = -1 * abs($price*100);
+
+        //issue credit
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        \Stripe\InvoiceItem::create(array(
+            "customer" => $user->stripe_id,
+            "amount" => $creditAmount,
+            "currency" => "usd",
+            "description" => "Referral system credit",
+        ));
+
+        //record credit in database
+        $credit = new Credit;
+        $credit->user_id = $userId;
+        $credit->credit_amount = abs($creditAmount);
+        $credit->credit_description = $credit_description;
+        $credit->credit_status = "applied_to_stripe";
+        $credit->save();
 
     }
 }
