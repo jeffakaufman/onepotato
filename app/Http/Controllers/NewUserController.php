@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\AC_Mediator;
 use App\Events\UserHasRegistered;
 use App\MenuAssigner;
+use App\ReferralManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -40,6 +41,16 @@ class NewUserController extends Controller
     }
 
 	public function DisplayUserForm ($referralId = null) {
+        $request = request();
+
+	    $referralId = session('referralId');
+        if($referralId) {
+            if($r = ReferralManager::GetReferral($referralId)) {
+                $email = $r->referral_email;
+                $request->merge(['email' => $email]);
+                $request->flashOnly('email');
+            }
+        }
 		return view('register-1');
 	}
 	
@@ -69,6 +80,7 @@ class NewUserController extends Controller
 
             ]);
         } else {
+
             $validator = Validator::make($request->all(), [
             	'firstname' => 'required|max:1000',
                 'lastname' => 'required|max:1000',
@@ -88,7 +100,6 @@ class NewUserController extends Controller
 		if ($request->zip != '' && !ZipcodeStates::where('zipcode',$request->zip)->first()) {
 			return view('register.badzip')->with(['data' => $request, ]);
         }
-
 
 		if ($validator->fails()) {
 		        return redirect('/register')
@@ -481,8 +492,7 @@ class NewUserController extends Controller
 
 
 	public function RecordPayment (Request $request) {
-		
-		
+
 			if ($request->session()->get('has_registered') == "true") {
 				
 				//redirect them to the account page
@@ -685,13 +695,23 @@ class NewUserController extends Controller
 				$meal3 = '0';
 			}
 
+        $referralId = $request->session()->get('referralId');
+        if($referralId) {
+            if(ReferralManager::CheckIfReferralEmailIsCorrect($referralId, $user->email)) {
+                ReferralManager::ProcessReferralApplied($referralId, $user);
+            }
+        }
+
+
 		$request->session()->flush();
 
         event(new UserHasRegistered($user));
         Auth::login($user, true);
 
 		$request->session()->put('has_registered','true');
-		
+
+
+
         return view('register.congrats')->with([
         	'user'=>$user,
         	'start_date'=>$request->start_date,

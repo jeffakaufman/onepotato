@@ -8,7 +8,15 @@ try {
 } catch (e) {}
 // use tz and pass it to php via ajax or in a hidden field
 // index.php?tz=America/Toronto
+
+var _defaultWhatsCookingWeek = false;
 </script>
+
+@if($defaultWeek)
+<script type="text/javascript">
+    _defaultWhatsCookingWeek = '{{$defaultWeek}}';
+</script>
+@endif
 @endsection
 
 @section('content')

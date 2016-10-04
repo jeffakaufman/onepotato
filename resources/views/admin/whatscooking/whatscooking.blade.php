@@ -252,12 +252,12 @@
 </div>
 <script>
 $('#menuEditModal').on('show.bs.modal', function(e) {
-    
+
     Date.prototype.addDays = function(days) {
     var dat = new Date(this.valueOf())
     	dat.setDate(dat.getDate() + days);
     	return dat;
-	}
+	};
 
 	function getAllDays() {
 	    var s = new Date();
@@ -289,7 +289,9 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	//Create and append select list
 	var week_of = document.createElement("select");
 	
-    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate()+1);
+//    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate()+1);
+    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate());
+
 	week_of.id = "week_of";
 	week_of.className += "form-control" 
 	week_of.setAttribute("name", "week_of");

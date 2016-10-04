@@ -2,7 +2,11 @@ var MenuComponent = Vue.extend({
 	name: 'menu',
     template: '#menu-template',
     ready: function() {
-    	this.fetchMenu();
+		if(_defaultWhatsCookingWeek) {
+			this.fetchMenu(new Date(_defaultWhatsCookingWeek));
+		} else {
+			this.fetchMenu();
+		}
     },
     data: function () {
 	    return {
@@ -12,13 +16,14 @@ var MenuComponent = Vue.extend({
     },
     methods: {
     	fetchMenu: function(week) {
-    		
     		var date, date2, today, year, m, month, d, day, input;
     		var tuesday = '';
 	        if (week  === undefined) {
 	        	today = new Date();
 	        	var daysUntilTuesday = 9 - today.getDay();
 	        	tuesday = moment().add(daysUntilTuesday, 'days');
+			} else if(week.getDay) {
+				tuesday = week;
 	        } else {
 	        	today = new Date();
 	        	var parts = this.currentDate.match(/(\d+)/g);
@@ -35,6 +40,7 @@ var MenuComponent = Vue.extend({
 	        		$('.weekNav.prev').removeClass('disabled').addClass('active');
 	        		var http = new XMLHttpRequest();
 		        	var testjson = '/whatscooking/'+nextnextDeliveryWeek.format('YYYY-MM-DD');
+
 				    http.open('HEAD', testjson, false);
 				    http.send();
 				    if(http.status>200) {
