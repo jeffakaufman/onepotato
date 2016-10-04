@@ -84,7 +84,11 @@ Route::post('/account_reactivate', [
 ]);
 
 Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
-    return view('whats_cooking');
+    return view('whats_cooking')->with(['defaultWeek' => false]);
+}));
+
+Route::get('/whats-cooking/{date}', array('as' => 'whats_cooking', function($date) {
+    return view('whats_cooking')->with(['defaultWeek' => $date]);
 }));
 
 // Delivery Schedule...
