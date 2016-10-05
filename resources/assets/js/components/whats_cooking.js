@@ -3,7 +3,8 @@ var MenuComponent = Vue.extend({
     template: '#menu-template',
     ready: function() {
 		if(_defaultWhatsCookingWeek) {
-			this.fetchMenu(new Date(_defaultWhatsCookingWeek));
+			var dp = _defaultWhatsCookingWeek.match(/(\d+)/g);
+			this.fetchMenu(new Date(dp[0], dp[1]-1, dp[2]));
 		} else {
 			this.fetchMenu();
 		}
@@ -16,6 +17,7 @@ var MenuComponent = Vue.extend({
     },
     methods: {
     	fetchMenu: function(week) {
+
     		var date, date2, today, year, m, month, d, day, input;
     		var tuesday = '';
 	        if (week  === undefined) {
@@ -62,7 +64,7 @@ var MenuComponent = Vue.extend({
 	        		if ($(this).hasClass('active')) filter = $(this).attr('id');
 	        	});
 		        date = new Date(tuesday);
-
+		        
 		        year = date.getFullYear();
 		        if (year <= 1999) year = year + 100;
 		        m = date.getMonth();
