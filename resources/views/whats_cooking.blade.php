@@ -13,8 +13,9 @@ var _defaultWhatsCookingWeek = false;
 </script>
 
 @if($defaultWeek)
+<?php $redodate = date('F j', strtotime($defaultWeek)); ?>
 <script type="text/javascript">
-    _defaultWhatsCookingWeek = '{{$defaultWeek}}';
+    _defaultWhatsCookingWeek = '{{$redodate}}';
 </script>
 @endif
 @endsection
