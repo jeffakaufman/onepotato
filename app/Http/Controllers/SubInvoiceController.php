@@ -1571,15 +1571,7 @@ class SubinvoiceController extends Controller
 	
 	public function UnHoldHoldsForDate($holddate) {
 		
-		$holds = Shippingholds::where('date_to_hold', $holddate)
-					->where('hold_status', 'held')
-					->get();
-					
-		foreach ($holds as $hold) {
-			echo $hold->$user_id . "<br />";
-		//	$this->ProcessUnHoldSubscription_Stripe ($hold->user_id, $holddate);
-			
-		}
+		echo "test";
 		
 	}
 	
