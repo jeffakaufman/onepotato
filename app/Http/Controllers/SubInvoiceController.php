@@ -1673,7 +1673,7 @@ class SubinvoiceController extends Controller
 			}
 
 			http_response_code(200);
-			return redirect('/delivery-schedule'); 
+			//return redirect('/delivery-schedule'); 
 		
 	}
 	
