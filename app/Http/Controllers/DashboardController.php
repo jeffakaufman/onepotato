@@ -262,6 +262,25 @@ class DashboardController extends Controller
 	
     public function showReports()
     {
+    
+    
+    	function pivotMenus($menusRaw) {
+		//I TOTALLY cheat here. Each user should only have 3 menus, and I have sorted
+		//the menu by user and menu id, so i know every third record is a new row.
+		//the new collection is {[user_id, [_menunumber_:menu_id]]}		
+			$menuPivotRow = new stdClass();
+			$menus = [];
+    		foreach ($menusRaw as $i => $menu) {
+				$menuPivotRow->user_id = $menu->users_id;
+				$menuPivotRow->menu[$i%3] = $menu->menus_id;
+				if ($i%3 == 2) {
+					array_push($menus,$menuPivotRow);
+					$menuPivotRow = new stdClass();
+				}
+			}
+			return $menus;
+    	}
+    
         // last week is the last week we have "shipped" invoices for
         $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
@@ -384,33 +403,90 @@ class DashboardController extends Controller
 			->orderBy('menus_id')
 			->get();
 
-		$menus = [];
-		$menuPivotRow = new stdClass();
-		
-		//I TOTALLY cheat here. Each user should only have 3 menus, and I have sorted
-		//the menu by user and menu id, so i know every third record is a new row.
-		//the new collection is {[user_id, [_menunumber_:menu_id]]}		
-		foreach ($menusRaw as $i => $menu) {
-				$menuPivotRow->user_id = $menu->users_id;
-				$menuPivotRow->menu[$i%3] = $menu->menus_id;
-				if ($i%3 == 2) {
-					array_push($menus,$menuPivotRow);
-					$menuPivotRow = new stdClass();
-				}
-		}
-		
 		//turn the new menus table into a laravel collection
-		$menus = collect($menus);
+		$menus = collect(pivotMenus($menusRaw));
 		
 		$total = $menus->count();
 		//and if the id's are sorted correctly we should be ok. I am a little worried about it
 		$standardOmnivore = $menus->where('menu',$omnivoreMealsID);
 		$standardVegetarian = $menus->where('menu',$vegetarianMealsID);
 		
-		echo json_encode(array_pluck($standardOmnivore,'user_id'))."<br>";
-		die;
+		$omnivoreSubscribers = array_pluck($standardOmnivore,'user_id');
+		$vegetarianSubscribers = array_pluck($standardVegetarian,'user_id');
+		
+		//now get everybody who didn't get a standard box...
+		$everybodyElseRaw = App\MenusUsers::where('delivery_date',$thisTuesday)
+			->whereNotIn('users_id', $skipIdsThisWeek)
+			->whereNotIn('users_id', array_merge($omnivoreSubscribers,$vegetarianSubscribers))
+			->whereHas('users',function($q) {
+				$q->whereIn('status',['active','inactive']);
+			})
+			->orderBy('users_id')
+			->orderBy('menus_id')
+			->get();
+
+		$everybodyElse = pivotMenus($everybodyElseRaw);
+		$everybodyElseIds = array_pluck($everybodyElse,'user_id');
+		$everybodyElseMenus = array_pluck($everybodyElse,'menu');
+		sort($everybodyElseMenus);
+		//...and and remove duplicate values from the array
+		$everybodyElseMenus = array_values (array_unique($everybodyElseMenus, SORT_REGULAR));
+		
+		$thisWeeksStandardOmnivore = App\Product::
+			whereHas('subscriptions',function($q) use ($omnivoreSubscribers) {
+				$q->whereIn('user_id',$omnivoreSubscribers);
+			})
+			->get();
+		
+		
+		$thisWeeksStandardOmnivore = DB::table('products')
+				->select('products.product_title',DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.product_id','=','products.id')
+	    		->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
+				->whereIn('subscriptions.user_id', $omnivoreSubscribers)
+				->whereIn('menus_users.menus_id',$omnivoreMealsID)
+				->groupBy('product_title')
+				->orderBy('product_title')
+				->get();   
+		$thisWeeksStandardOmnivoreMenus = Menus::whereIn('id',$omnivoreMealsID)->get();
+		$standardOmnivoreBoxes = new stdClass();
+		$standardOmnivoreBoxes -> counts = $thisWeeksStandardOmnivore;
+		$standardOmnivoreBoxes -> names = Menus::whereIn('id',$omnivoreMealsID)->get()->pluck('menu_title');
+		
 				
-				
+		$thisWeeksStandardVegetarian = DB::table('products')
+				->select('products.product_title',DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.product_id','=','products.id')
+	    		->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
+				->whereIn('subscriptions.user_id', $vegetarianSubscribers)
+				->whereIn('menus_users.menus_id',$vegetarianMealsID)
+				->groupBy('product_title')
+				->orderBy('product_title')
+				->get();    
+		$thisWeeksStandardVegetarianMenus = Menus::whereIn('id',$vegetarianMealsID)->get();
+		$vegetarianBoxes = new stdClass();
+		$vegetarianBoxes -> counts = $thisWeeksStandardVegetarian;
+		$vegetarianBoxes -> names = Menus::whereIn('id',$vegetarianMealsID)->get()->pluck('menu_title');
+		
+		$otherBoxCounts = [];
+		$otherBoxes = [];	
+		foreach ($everybodyElseMenus as $i=>$everybodyElseMenu)	 {
+			$otherBoxCounts[$i] = DB::table('products')
+					->select('products.product_title',DB::raw('count(*) as total'))
+	    			->join('subscriptions','subscriptions.product_id','=','products.id')
+	    			->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
+					->whereIn('subscriptions.user_id', $everybodyElseIds)
+					->whereIn('menus_users.menus_id', $everybodyElseMenus[$i])
+					->where('menus_users.delivery_date',$thisTuesday)
+					->groupBy('product_title')
+					->orderBy('product_title')
+					->get();
+			$boxScore = new stdClass();
+			$boxScore -> counts = $otherBoxCounts[$i];
+			$boxScore -> names = Menus::whereIn('id',$everybodyElseMenus[$i])->get()->pluck('menu_title');
+			$otherBoxes[$i] = $boxScore;
+		}
+		
         $newSubs = DB::table('users')
 				->select('start_date','products.product_description', DB::raw('count(*) as total'))
 	    		->join('subscriptions','subscriptions.user_id','=','users.id')
@@ -432,7 +508,7 @@ class DashboardController extends Controller
 				->orderBy('subscriptions.status')
 				->get();
 
-    	return view('admin.dashboard')
+    	return view('admin.reports')
     			->with(['menus'=>$menus
     				,'oldDate'=>''
     				,'oldMenu'=>''
@@ -444,8 +520,17 @@ class DashboardController extends Controller
     				,'skipsLastWeek'=>$skipsLastWeek
     				,'shippedLastWeek'=>$shippedLastWeek
     				,'thisTuesday'=>date('F d', strtotime($thisTuesday)) 
+    				,'otherBoxes'=>$otherBoxes
+    				,'vegetarianBoxes'=>$vegetarianBoxes
+    				,'standardOmnivoreBoxes'=>$standardOmnivoreBoxes
     				,'skips'=>$skips]
     			);
 	
+    
+    
+    
     }
+    
+    
+    
 }

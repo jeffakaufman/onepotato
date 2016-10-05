@@ -66,7 +66,8 @@ Route::get('/handling', array('as' => 'static.handling', function() {
 }));
 
 // Account...
-Route::get('/account/{id?}', array('middleware' => 'auth', 'uses' => 'UserController@getAccount'));
+//Route::get('/account/{id?}', array('middleware' => 'auth', 'uses' => 'UserController@getAccount'));
+Route::get('/account/{tab?}', array('middleware' => 'auth', 'uses' => 'UserController@getAccount'));
 Route::post('/account/{id}', 'UserController@editAccount');
 
 Route::get('/account/cancel/{code}', array('as' => 'cancel.account.link', 'middleware' => 'auth', 'uses' => 'UserController@ResolveCancelLink', ))->where('code', '(.*)');
@@ -83,7 +84,11 @@ Route::post('/account_reactivate', [
 ]);
 
 Route::get('/whats-cooking', array('as' => 'whats_cooking', function() {
-    return view('whats_cooking');
+    return view('whats_cooking')->with(['defaultWeek' => false]);
+}));
+
+Route::get('/whats-cooking/{date}', array('as' => 'whats_cooking', function($date) {
+    return view('whats_cooking')->with(['defaultWeek' => $date]);
 }));
 
 // Delivery Schedule...

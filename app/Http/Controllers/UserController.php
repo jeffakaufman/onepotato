@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ReferralManager;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -195,7 +196,7 @@ class UserController extends Controller
 
 	//get data for the accounts page - current
 
-	public function getAccount($id = null) {
+	public function getAccount($tab = null) {
 		
 		$id = !isset($id) ? Auth::id() : $id;
 		$nextTuesday = strtotime('next tuesday');
@@ -264,7 +265,14 @@ class UserController extends Controller
 		elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
 		elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
 		elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
-		
+
+
+		$tab = isset($tab) ? $tab : 'plan_details';
+        $allowedTabs = ['plan_details', 'delivery_info', 'delivery_history', 'account_info', 'payment_info', 'referrals', ];
+        if(!in_array($tab, $allowedTabs)) {
+            $tab = 'plan_details';
+        }
+
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -274,7 +282,9 @@ class UserController extends Controller
 							'referrals'=>$referrals,
 							'shipments'=>$shipments,
 							'changeDate'=>$changeDate,
-							'cancelMessage'=>$cancelMessage]);
+							'cancelMessage'=>$cancelMessage,
+                            'tab' => $tab,
+                    ]);
 	}	
 
 	//handles all the /account/ functionality - current
@@ -295,35 +305,42 @@ class UserController extends Controller
         }
         */
 
+
         //send email
         $to_send = $request->email;
-        $custom_message = $request->message;
-        $friendname = $request->name;
 
-        //record a new referral in the referral table
-        $referral = new Referral;
-        $referral->friend_name = $friendname;
-        $referral->referral_email = $to_send;
-        $referral->did_subscribe = 0;
-        $referral->referrer_user_id = $request->user_id;
+        $checkErrors = ReferralManager::TestReferral($user, $to_send);
+
+        if(false === $checkErrors) {
+
+            $custom_message = $request->message;
+            $friendName = $request->name;
+
+            //record a new referral in the referral table
+            $referral = new Referral;
+            $referral->friend_name = $friendName;
+            $referral->referral_email = $to_send;
+            $referral->did_subscribe = 0;
+            $referral->referrer_user_id = $request->user_id;
+
+            $referral->save();
 
 
-        $referral->save();
+            $data = [
+                'friendname' => $user->name,
+                'custommessage' => $custom_message,
+                'to_send' => $to_send,
+                'friendid' => $request->user_id,
+                'referralid' => $referral->id
+            ];
 
+            Mail::send('emailtest', $data , function($message) use ($to_send, $friendName)
+            {
+                $message->from('noreply@onepotato.com');
+                $message->to($to_send, $friendName)->subject('A Message from a Friend at One Potato!');
+            });
+        }
 
-        $data = [
-            'friendname' => $user->name,
-            'custommessage' => $custom_message,
-            'to_send' => $to_send,
-            'friendid' => $request->user_id,
-            'referralid' => $referral->id
-        ];
-
-        Mail::send('emailtest', $data , function($message) use ($to_send)
-        {
-            $message->from('noreply@onepotato.com');
-            $message->to($to_send, '')->subject('A Message from a Friend at One Potato!');
-        });
 
     }
 
@@ -1086,22 +1103,18 @@ class UserController extends Controller
 			
         //http://onepotato.app/referral/subscribe/?u=mattkirkpatrick@yahoo.com&f=1
         //$id = $request->f;
-        $referrerid = $request->f;
-        $newuserid = $request->u;
-			
+        $referrerId = $request->f; //The user, who sent referral
+        $referralId = $request->u; // Referral Record ID
+
+
         //record that the user has subscribed--this is stubbed in for now
-        $referral = Referral::where('id',$newuserid)->first();
-        $referral->did_subscribe = 1;
-        $referral->referral_applied = date('Y-m-d');
-        $referral->save();
+        $referral = Referral::find($referralId);
 
-        // The user receiving the email goes to the site,
-        // and the referral table is checked to make sure that email address was referred by that users.id.
-        // If not, the order processes like any other one, there shouldn’t be an error.
-        // If the email DOES match the ID sent out, then referrals should track that the user started a sign up.
+        if($referral) {
+            $request->session()->put('referralId', $referralId);
+        }
 
-        //return "test";
-        return redirect('/register/' . $referrerid);
+        return redirect('/register');
 		
 	}
 
@@ -1223,7 +1236,7 @@ class UserController extends Controller
 
 				$hold = Shippingholds::where('user_id',$id)
 						->where('date_to_hold', date('Y-m-d', $i))
-						->where('hold_status', 'hold')
+						->whereIn('hold_status', ['hold','held'])
 						->get();
 
 				if (count($hold) > 0) {
