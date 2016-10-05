@@ -172,12 +172,12 @@ Route::get('/cancel/{id}', 'SubinvoiceController@CancelSubscription');
 Route::get('/cancel/restart/{id}', 'SubinvoiceController@RestartSubscription');
 Route::get('/hold/{id}/{holddate}', 'SubinvoiceController@HoldSubscription');
 Route::get('/hold/restart/{id}/{holddate}', 'SubinvoiceController@UnHoldSubscription');
-Route::get('/restart/held/{holddate}', 'SubinvoiceController@UnHoldHoldsForDate');
 Route::get('/hold/restart/stripe/{id}/{holddate}', 'SubinvoiceController@ProcessUnHoldSubscription');
 Route::get('/hold/check/{id}/{holddate}', 'SubinvoiceController@CheckForHold');
 Route::get("/test/date/", 'SubinvoiceController@TestDate');
 Route::get('/hold/checkall/', 'SubinvoiceController@CheckHolds');
 Route::get('/test/menucontent/', 'SubinvoiceController@testMenus');
+Route::get('/restart/held/{holddate}', 'SubinvoiceController@ReleaseAllHoldsByDate');
 
 //coupon checker
 Route::get('/coupon/getamount/{price}/{couponcode}', 'NewUserController@CheckCoupon');

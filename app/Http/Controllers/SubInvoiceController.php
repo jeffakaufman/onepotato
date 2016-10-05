@@ -1569,11 +1569,20 @@ class SubinvoiceController extends Controller
 		
 	}
 	
-	public function UnHoldHoldsForDate($holddate) {
+	
+	
+	public function ReleaseAllHoldsByDate ($holddate) {
 		
-		echo "test";
+			$holds = Shippingholds::where('date_to_hold', $holddate)
+						->where('hold_status', 'held')
+						->get();
+						
+			foreach ($holds as $hold) {
+				echo "UserId" . $hold->user_id . "<br />";
+			}
 		
 	}
+	
 	
 	
 	//to be run to restart a cancelled subscriber who has skipped a week
