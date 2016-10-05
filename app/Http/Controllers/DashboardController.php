@@ -526,7 +526,7 @@ class DashboardController extends Controller
 				})
 	    		->groupBy('users.id')
 				->pluck('id');
-		
+		echo json_encode(customBoxUserIds);die;
 				$otherBoxCounts[$i] = DB::table('products')
 					->select('products.product_title',DB::raw('count(*) as total'))
 	    			->join('subscriptions','subscriptions.product_id','=','products.id')
