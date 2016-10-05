@@ -1635,6 +1635,7 @@ class SubinvoiceController extends Controller
 	
 	//to be run to restart a cancelled subscriber who has skipped a week
 	//and been cancelled in stripe
+	//returns user to delivery schedule
 	public function ProcessUnHoldSubscription ($id, $holddate) {
 		
 			
