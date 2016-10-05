@@ -1244,9 +1244,7 @@ class SubinvoiceController extends Controller
 			if ($credit_type=="percent") {
 				
 				//get the user's subscription 
-				$userSubscription = UserSubscription::where('user_id',$id)
-													->where('status', 'active')
-													->first();
+				$userSubscription = UserSubscription::where('user_id',$id)->first();
 													
 				$productID = $userSubscription->product_id;
 				
