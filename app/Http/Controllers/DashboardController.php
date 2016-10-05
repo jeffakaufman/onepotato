@@ -376,15 +376,62 @@ class DashboardController extends Controller
 				->orderBy('menus_id')
 				->orderBy('products.id')
 				->get();     
-				
+	/***************************************************************************************
+	*
+	*	Standard Omnivore Meals
+	*
+	*****************************************************************************************/			
 				
 		$omnivoreMeals = App\WhatsCookings::where('week_of',$thisTuesday)
 			->first()
 			->getOmnivoreMeals()
 			->orderBy('id')
 			->get();
+			
 		$omnivoreMealsID = array_pluck($omnivoreMeals, 'id');
 		
+		$omnivoreUsersID =  DB::table('users')
+				->select('users.id')
+	    		->join('menus_users','menus_users.users_id','=','users.id')
+	    		->where('start_date','<=',"2016-10-11")
+	    		->whereNotIn('users.id',$skipIdsThisWeek)
+	    		->whereIn('users.status',['active','inactive'])
+	    		->whereIn('users_id',function($q) use ($omnivoreMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$omnivoreMealsID[0]);
+				})
+				->whereIn('users_id',function($q) use ($omnivoreMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$omnivoreMealsID[1]);
+				})
+				->whereIn('users_id',function($q) use ($omnivoreMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$omnivoreMealsID[2]);
+				})
+	    		->groupBy('users.id')
+				->pluck('id');
+
+		$thisWeeksStandardOmnivore = DB::table('products')
+				->select('products.product_title',DB::raw('count(*) as total'))
+	    		->join('subscriptions','subscriptions.product_id','=','products.id')
+				->whereIn('subscriptions.user_id', $omnivoreUsersID)
+				->groupBy('product_title')
+				->orderBy('product_title')
+				->get();   
+		
+		$standardOmnivoreBoxes = new stdClass();
+		$standardOmnivoreBoxes -> counts = $thisWeeksStandardOmnivore;
+		$standardOmnivoreBoxes -> names = array_pluck($omnivoreMeals,'menu_title');
+
+	/***************************************************************************************
+	*
+	*	Standard Vegetarian Meals
+	*
+	*****************************************************************************************/				
+
 		$vegetarianMeals = App\WhatsCookings::where('week_of',$thisTuesday)
 			->first()
 			->getVegetarianMeals()
@@ -392,86 +439,95 @@ class DashboardController extends Controller
 			->get();
 		$vegetarianMealsID = array_pluck($vegetarianMeals, 'id');
 		
-		
-		//get all the menus being sent out this week to active users
-		$menusRaw = App\MenusUsers::where('delivery_date',$thisTuesday)
-			->whereNotIn('users_id', $skipIdsThisWeek)
-			->whereHas('users',function($q) {
-				$q->whereIn('status',['active','inactive']);
-			})
-			->orderBy('users_id')
-			->orderBy('menus_id')
-			->get();
+		$vegetarianUsersID =  DB::table('users')
+				->select('users.id')
+	    		->join('menus_users','menus_users.users_id','=','users.id')
+	    		->where('start_date','<=',"2016-10-11")
+	    		->whereNotIn('users.id',$skipIdsThisWeek)
+	    		->whereIn('users.status',['active','inactive'])
+	    		->whereIn('users_id',function($q) use ($vegetarianMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$vegetarianMealsID[0]);
+				})
+				->whereIn('users_id',function($q) use ($vegetarianMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$vegetarianMealsID[1]);
+				})
+				->whereIn('users_id',function($q) use ($vegetarianMealsID) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$vegetarianMealsID[2]);
+				})
+	    		->groupBy('users.id')
+				->pluck('id');
 
-		//turn the new menus table into a laravel collection
-		$menus = collect(pivotMenus($menusRaw));
-		
-		$total = $menus->count();
-		//and if the id's are sorted correctly we should be ok. I am a little worried about it
-		$standardOmnivore = $menus->where('menu',$omnivoreMealsID);
-		$standardVegetarian = $menus->where('menu',$vegetarianMealsID);
-		
-		$omnivoreSubscribers = array_pluck($standardOmnivore,'user_id');
-		$vegetarianSubscribers = array_pluck($standardVegetarian,'user_id');
-		
-		//now get everybody who didn't get a standard box...
-		$everybodyElseRaw = App\MenusUsers::where('delivery_date',$thisTuesday)
-			->whereNotIn('users_id', $skipIdsThisWeek)
-			->whereNotIn('users_id', array_merge($omnivoreSubscribers,$vegetarianSubscribers))
-			->whereHas('users',function($q) {
-				$q->whereIn('status',['active','inactive']);
-			})
-			->orderBy('users_id')
-			->orderBy('menus_id')
-			->get();
-
-		$everybodyElse = pivotMenus($everybodyElseRaw);
-		$everybodyElseIds = array_pluck($everybodyElse,'user_id');
-		$everybodyElseMenus = array_pluck($everybodyElse,'menu');
-		sort($everybodyElseMenus);
-		//...and and remove duplicate values from the array
-		$everybodyElseMenus = array_values (array_unique($everybodyElseMenus, SORT_REGULAR));
-		
-		$thisWeeksStandardOmnivore = App\Product::
-			whereHas('subscriptions',function($q) use ($omnivoreSubscribers) {
-				$q->whereIn('user_id',$omnivoreSubscribers);
-			})
-			->get();
-		
-		
-		$thisWeeksStandardOmnivore = DB::table('products')
-				->select('products.product_title',DB::raw('count(*) as total'))
-	    		->join('subscriptions','subscriptions.product_id','=','products.id')
-	    		->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
-				->whereIn('subscriptions.user_id', $omnivoreSubscribers)
-				->whereIn('menus_users.menus_id',$omnivoreMealsID)
-				->groupBy('product_title')
-				->orderBy('product_title')
-				->get();   
-		$thisWeeksStandardOmnivoreMenus = Menus::whereIn('id',$omnivoreMealsID)->get();
-		$standardOmnivoreBoxes = new stdClass();
-		$standardOmnivoreBoxes -> counts = $thisWeeksStandardOmnivore;
-		$standardOmnivoreBoxes -> names = Menus::whereIn('id',$omnivoreMealsID)->get()->pluck('menu_title');
-		
-				
 		$thisWeeksStandardVegetarian = DB::table('products')
 				->select('products.product_title',DB::raw('count(*) as total'))
 	    		->join('subscriptions','subscriptions.product_id','=','products.id')
-	    		->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
-				->whereIn('subscriptions.user_id', $vegetarianSubscribers)
-				->whereIn('menus_users.menus_id',$vegetarianMealsID)
+				->whereIn('subscriptions.user_id', $vegetarianUsersID)
 				->groupBy('product_title')
 				->orderBy('product_title')
-				->get();    
+				->get(); 
+				  
 		$thisWeeksStandardVegetarianMenus = Menus::whereIn('id',$vegetarianMealsID)->get();
 		$vegetarianBoxes = new stdClass();
 		$vegetarianBoxes -> counts = $thisWeeksStandardVegetarian;
 		$vegetarianBoxes -> names = Menus::whereIn('id',$vegetarianMealsID)->get()->pluck('menu_title');
+
+	/***************************************************************************************
+	*
+	*	All other combinations
+	*
+	*****************************************************************************************/	
+	
+		//now get everybody who didn't get a standard box...
+		$everybodyElseRaw = App\MenusUsers::where('delivery_date',$thisTuesday)
+			->whereNotIn('users_id', $skipIdsThisWeek)
+			->whereNotIn('users_id', array_merge($omnivoreUsersID,$vegetarianUsersID))
+			->whereHas('users',function($q) use ($thisTuesday) {
+				$q->whereIn('status',['active','inactive'])
+				->where('start_date','<=',$thisTuesday);
+			})
+			->orderBy('users_id')
+			->orderBy('menus_id')
+			->get();
+		//...create an array if everybody else in the system and their combination of menus for the week
+		$everybodyElse = pivotMenus($everybodyElseRaw);
+		$everybodyElseIds = array_pluck($everybodyElse,'user_id');
+		$everybodyElseMenus = array_pluck($everybodyElse,'menu');
+		sort($everybodyElseMenus);
+		//...and and remove duplicate values from the array to get the other menu combinations
+		$everybodyElseMenus = array_values (array_unique($everybodyElseMenus, SORT_REGULAR));
 		
 		$otherBoxCounts = [];
 		$otherBoxes = [];	
 		foreach ($everybodyElseMenus as $i=>$everybodyElseMenu)	 {
-			$otherBoxCounts[$i] = DB::table('products')
+				
+				$customBoxUserIds =  DB::table('users')
+				->select('users.id')
+	    		->join('menus_users','menus_users.users_id','=','users.id')
+	    		->whereIn('users.id',$everybodyElseIds)
+	    		->whereIn('users_id',function($q) use ($everybodyElseMenu) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$everybodyElseMenu[0]);
+				})
+				->whereIn('users_id',function($q) use ($everybodyElseMenu) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$everybodyElseMenu[1]);
+				})
+				->whereIn('users_id',function($q) use ($everybodyElseMenu) {
+					$q->from('menus_users')
+					->selectRaw('users_id')
+					->where('menus_id',$everybodyElseMenu[2]);
+				})
+	    		->groupBy('users.id')
+				->pluck('id');
+		
+				$otherBoxCounts[$i] = DB::table('products')
 					->select('products.product_title',DB::raw('count(*) as total'))
 	    			->join('subscriptions','subscriptions.product_id','=','products.id')
 	    			->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
@@ -481,10 +537,11 @@ class DashboardController extends Controller
 					->groupBy('product_title')
 					->orderBy('product_title')
 					->get();
-			$boxScore = new stdClass();
-			$boxScore -> counts = $otherBoxCounts[$i];
-			$boxScore -> names = Menus::whereIn('id',$everybodyElseMenus[$i])->get()->pluck('menu_title');
-			$otherBoxes[$i] = $boxScore;
+				
+				$boxScore = new stdClass();
+				$boxScore -> counts = $otherBoxCounts[$i];
+				$boxScore -> names = Menus::whereIn('id',$everybodyElseMenus[$i])->get()->pluck('menu_title');
+				$otherBoxes[$i] = $boxScore;
 		}
 		
         $newSubs = DB::table('users')

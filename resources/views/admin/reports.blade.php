@@ -16,7 +16,7 @@
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Standard Omnivore</strong></div>
                     <div class="panel-body">
@@ -28,7 +28,7 @@
                     	@endforeach
                     	</strong>
                     	</div>
-                    	<table id="boxes" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
+                    	<table id="boxes" class="table table-striped table-hover table-order-column" width="80%" cellspacing="0">
                     	@foreach ($standardOmnivoreBoxes->counts as $count)
                     		<tr>
                     			<td>{{$count->product_title}}</td>
@@ -41,7 +41,7 @@
         	</div>
 		</div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Other Omnivore Boxes</strong></div>
                     <div class="panel-body">
@@ -64,8 +64,10 @@
                     @endforeach
                 	</div>
             	</div>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-heading"><strong>Standard Vegetarian</strong></div>
                     <div class="panel-body">
