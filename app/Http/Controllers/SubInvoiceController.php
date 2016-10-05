@@ -1482,7 +1482,7 @@ class SubinvoiceController extends Controller
 		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
 		$subscription->cancel();
 		
-		$user->save();
+		//$user->save();
 		$userSubscription->save();
 		
 		$cancel = new Cancellation();
