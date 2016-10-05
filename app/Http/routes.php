@@ -172,6 +172,7 @@ Route::get('/cancel/{id}', 'SubinvoiceController@CancelSubscription');
 Route::get('/cancel/restart/{id}', 'SubinvoiceController@RestartSubscription');
 Route::get('/hold/{id}/{holddate}', 'SubinvoiceController@HoldSubscription');
 Route::get('/hold/restart/{id}/{holddate}', 'SubinvoiceController@UnHoldSubscription');
+Route::get('/hold/restart/all/{holddate}', 'SubinvoiceController@UnHoldHoldsForDate');
 Route::get('/hold/restart/stripe/{id}/{holddate}', 'SubinvoiceController@ProcessUnHoldSubscription');
 Route::get('/hold/check/{id}/{holddate}', 'SubinvoiceController@CheckForHold');
 Route::get("/test/date/", 'SubinvoiceController@TestDate');

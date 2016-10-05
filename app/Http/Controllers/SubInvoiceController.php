@@ -1569,6 +1569,70 @@ class SubinvoiceController extends Controller
 		
 	}
 	
+	public function UnHoldHoldsForDate($holddate) {
+		
+		$holds = Shippingholds::where('date_to_hold', $holddate)
+					->where('hold_status', 'held')
+					->get();
+					
+		foreach ($holds as $hold) {
+			echo $hold->$user_id . "<br />";
+			$this->ProcessUnHoldSubscription_Stripe ($hold->user_id, $holddate);
+			
+		}
+		
+	}
+	
+	
+	//to be run to restart a cancelled subscriber who has skipped a week
+	//and been cancelled in stripe
+	public function ProcessUnHoldSubscription_Stripe ($id, $holddate) {
+		
+			
+			//remove hold from holds table
+			$hold = Shippingholds::where('user_id', $id)
+						->where('date_to_hold', $holddate)
+						->where('hold_status', 'held')
+						->first();
+
+			//if there is a hold
+			if ($hold) {
+				$hold->hold_status = "released-after-hold";
+				$hold->save();
+				
+				//get the custoemr
+				$user = User::where('id', $id)->first();
+				$user->status = User::STATUS_ACTIVE;
+				$customer_stripe_id = $user->stripe_id;
+			
+				//retrieve stripe ID from subscriptions table
+				$userSubscription = UserSubscription::where('user_id',$id)->first();
+
+				$userSubscription->status = "active";
+				$plan_id = $userSubscription->product_id;
+
+				$product = Product::where('id', $plan_id)->first();
+				$stripe_plan_id = $product->stripe_plan_id;
+
+				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+				
+				$trial_ends_date = $this->GetTrialEndsDate();
+
+				$subscription = \Stripe\Subscription::create(array(
+				  "customer" => $customer_stripe_id,
+				  "plan" => $stripe_plan_id,
+				  "trial_end" => $trial_ends_date,
+				));
+
+				$userSubscription->stripe_id = $subscription->id;
+				$userSubscription->save();
+				$user->save();
+
+			}
+
+		
+	}
+	
 	//to be run to restart a cancelled subscriber who has skipped a week
 	//and been cancelled in stripe
 	public function ProcessUnHoldSubscription ($id, $holddate) {
