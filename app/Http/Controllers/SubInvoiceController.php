@@ -1577,7 +1577,7 @@ class SubinvoiceController extends Controller
 					
 		foreach ($holds as $hold) {
 			echo $hold->$user_id . "<br />";
-			$this->ProcessUnHoldSubscription_Stripe ($hold->user_id, $holddate);
+		//	$this->ProcessUnHoldSubscription_Stripe ($hold->user_id, $holddate);
 			
 		}
 		
