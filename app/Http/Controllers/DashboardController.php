@@ -263,24 +263,6 @@ class DashboardController extends Controller
     public function showReports()
     {
     
-    
-    	function pivotMenus($menusRaw) {
-		//I TOTALLY cheat here. Each user should only have 3 menus, and I have sorted
-		//the menu by user and menu id, so i know every third record is a new row.
-		//the new collection is {[user_id, [_menunumber_:menu_id]]}		
-			$menuPivotRow = new stdClass();
-			$menus = [];
-    		foreach ($menusRaw as $i => $menu) {
-				$menuPivotRow->user_id = $menu->users_id;
-				$menuPivotRow->menu[$i%3] = $menu->menus_id;
-				if ($i%3 == 2) {
-					array_push($menus,$menuPivotRow);
-					$menuPivotRow = new stdClass();
-				}
-			}
-			return $menus;
-    	}
-    
         // last week is the last week we have "shipped" invoices for
         $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
@@ -385,7 +367,7 @@ class DashboardController extends Controller
 		$omnivoreMeals = App\WhatsCookings::where('week_of',$thisTuesday)
 			->first()
 			->getOmnivoreMeals()
-			->orderBy('id')
+			->orderBy('menu_title')
 			->get();
 			
 		$omnivoreMealsID = array_pluck($omnivoreMeals, 'id');
@@ -435,7 +417,7 @@ class DashboardController extends Controller
 		$vegetarianMeals = App\WhatsCookings::where('week_of',$thisTuesday)
 			->first()
 			->getVegetarianMeals()
-			->orderBy('id')
+			->orderBy('menu_title')
 			->get();
 		$vegetarianMealsID = array_pluck($vegetarianMeals, 'id');
 		
@@ -494,11 +476,22 @@ class DashboardController extends Controller
 			->orderBy('menus_id')
 			->get();
 		//...create an array if everybody else in the system and their combination of menus for the week
-		$everybodyElse = pivotMenus($everybodyElseRaw);
+		$menuPivotRow = new stdClass();
+		$everybodyElse = [];
+   		foreach ($everybodyElseRaw as $i => $menu) {
+			$menuPivotRow->user_id = $menu->users_id;
+			$menuPivotRow->menu[$i%3] = $menu->menus_id;
+			if ($i%3 == 2) {
+				array_push($everybodyElse,$menuPivotRow);
+				$menuPivotRow = new stdClass();
+			}
+		}
+
 		$everybodyElseIds = array_pluck($everybodyElse,'user_id');
 		$everybodyElseMenus = array_pluck($everybodyElse,'menu');
 		sort($everybodyElseMenus);
-		//...and and remove duplicate values from the array to get the other menu combinations
+		
+		//...and remove duplicate values from the array to get the other menu combinations
 		$everybodyElseMenus = array_values (array_unique($everybodyElseMenus, SORT_REGULAR));
 		
 		$otherBoxCounts = [];
@@ -526,21 +519,17 @@ class DashboardController extends Controller
 				})
 	    		->groupBy('users.id')
 				->pluck('id');
-		echo json_encode(customBoxUserIds);die;
 				$otherBoxCounts[$i] = DB::table('products')
 					->select('products.product_title',DB::raw('count(*) as total'))
 	    			->join('subscriptions','subscriptions.product_id','=','products.id')
-	    			->join('menus_users','menus_users.users_id','=','subscriptions.user_id')
-					->whereIn('subscriptions.user_id', $everybodyElseIds)
-					->whereIn('menus_users.menus_id', $everybodyElseMenus[$i])
-					->where('menus_users.delivery_date',$thisTuesday)
+					->whereIn('subscriptions.user_id', $customBoxUserIds)
 					->groupBy('product_title')
 					->orderBy('product_title')
 					->get();
 				
 				$boxScore = new stdClass();
 				$boxScore -> counts = $otherBoxCounts[$i];
-				$boxScore -> names = Menus::whereIn('id',$everybodyElseMenus[$i])->get()->pluck('menu_title');
+				$boxScore -> names = Menus::whereIn('id',$everybodyElseMenus[$i])->orderBy('menu_title')->get()->pluck('menu_title');
 				$otherBoxes[$i] = $boxScore;
 		}
 		
