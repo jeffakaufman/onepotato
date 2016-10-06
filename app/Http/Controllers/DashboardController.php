@@ -262,7 +262,6 @@ class DashboardController extends Controller
 	
     public function showReports()
     {
-    
         // last week is the last week we have "shipped" invoices for
         $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
@@ -270,8 +269,6 @@ class DashboardController extends Controller
         $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-7 day'));         
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
-        
-		
 		
         $shippingHoldsWeek = Shippingholds::whereIn('hold_status',['hold','held'])
 				->where('date_to_hold', "=",$thisTuesday)
@@ -343,21 +340,6 @@ class DashboardController extends Controller
 				->orderBy('date_to_hold')
 				->get();		
 
-  
-  		$menus = DB::table('menus_users')
-				->select('delivery_date','menu_title','products.product_title','hasBeef','hasPoultry','hasFish','hasLamb','hasPork','hasShellfish',DB::raw('count(*) as total'))
-	    		->join('menus','menus_users.menus_id','=','menus.id')
-	    		->join('users','menus_users.users_id','=','users.id')
-	    		->join('subscriptions','subscriptions.user_id','=','users.id')
-	    		->join('products','subscriptions.product_id','=','products.id')
-				->where('delivery_date', "=",$thisTuesday)
-				->where('users.status', "<>","incomplete")
-				->whereNotIn('users.id', $skipIdsThisWeek)
-				->groupBy('delivery_date','menus_id','product_title')
-				->orderBy('delivery_date')
-				->orderBy('menus_id')
-				->orderBy('products.id')
-				->get();     
 	/***************************************************************************************
 	*
 	*	Standard Omnivore Meals
@@ -555,8 +537,7 @@ class DashboardController extends Controller
 				->get();
 
     	return view('admin.reports')
-    			->with(['menus'=>$menus
-    				,'oldDate'=>''
+    			->with(['oldDate'=>''
     				,'oldMenu'=>''
     				,'newSubs'=>$newSubs
     				,'activeThisWeek'=>$activeThisWeek

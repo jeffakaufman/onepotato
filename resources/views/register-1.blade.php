@@ -86,7 +86,7 @@ $('#register1').addClass('active');
 						    <div class="clearfix">
 					            <div class="col-sm-7 disclaimer">By clicking GET STARTED you are agreeing to our <a href="/terms" target="_blank" style="color: #a8a8a8; text-decoration: underline;">Terms of Use and Privacy Policy</a>.</div>
 					            <div class="col-sm-5 nosidepadding text-right reg-button">
-					            	<button class="btn btn-primary">Continue</button>
+					            	<button class="btn btn-primary">GET STARTED</button>
 					            </div>
 						    </div>
 						{!! Form::close() !!}
