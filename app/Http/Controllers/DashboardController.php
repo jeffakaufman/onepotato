@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $params = $this->_getListParams();
 //var_dump($params);die();
         $query = DB::table('users')
-            ->select('users.id','users.email','users.name', 'users.start_date', 'subscriptions.status', DB::raw('sum(subinvoices.charge_amount/100) as revenue'))
+            ->select('users.id','users.email','users.name', 'users.start_date', 'users.status', DB::raw('sum(subinvoices.charge_amount/100) as revenue'))
             ->join('subscriptions','users.id','=','subscriptions.user_id')
             ->join('subinvoices','users.id','=','subinvoices.user_id')
             ->where('subscriptions.stripe_id', '<>', '')

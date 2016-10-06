@@ -60,7 +60,7 @@ $('#users').DataTable( {
 					<td>
 						@if ($user->status == 'active')
 						<p class="bg-success text-center" style="color:darkgreen">Active</p>
-						@elseif ($user->status == 'cancelled')
+						@elseif ($user->status == 'inactive-cancelled')
 						<p class="bg-danger text-center" style="color:darkred">Cancelled</p>
 						@endif
 					</td>
