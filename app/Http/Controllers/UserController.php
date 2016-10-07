@@ -1335,10 +1335,18 @@ class UserController extends Controller
 
 //TODO:: Uncomment live!!!!!! VERY IMPORTANT !!!!!!
 
+		//try to cancel in Stripe - this will not always work, if the user is being 'held' then this will throw an error
+
 		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-				
-		$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
-		$subscription->cancel();
+		
+		try {
+			$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+		}
+		
+		if (isset($subscription)) {
+			$subscription->cancel();
+		}
+	
 
 
 

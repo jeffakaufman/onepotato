@@ -2141,7 +2141,7 @@ class SubinvoiceController extends Controller
 		
 		$ship_xml = '<?xml version="1.0" encoding="utf-8"?><Orders>';
 		
-		//retrieve all orders with status of "charged_not_shipped" from invoice table
+		//retrieve all orders with status of "<strong>charged_not_shipped</strong>" from invoice table
 		$subinvoices = Subinvoice::where('id',$invoiceid)->get();
 		
 		//loop over the invoices to create Order records
