@@ -1339,11 +1339,11 @@ class UserController extends Controller
 
 		\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 		
-		//try {
+		try {
 			$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
-		//} catch (\Exception $e) {
+		} catch (\Exception $e) {
             //Do Nothing
-      //  }
+        }
 		
 		if (isset($subscription)) {
 			$subscription->cancel();
