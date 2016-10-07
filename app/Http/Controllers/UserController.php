@@ -1341,14 +1341,13 @@ class UserController extends Controller
 		
 		try {
 			$subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
-		}
+		} catch (\Exception $e) {
+            //Do Nothing
+        }
 		
 		if (isset($subscription)) {
 			$subscription->cancel();
 		}
-	
-
-
 
 		$cancel = new Cancellation();
 		
