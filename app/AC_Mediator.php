@@ -22,10 +22,84 @@ class AC_Mediator {
     const LIST_Waiting_List = 10;
     const LIST_Former_Subscribers = 15;
 
+    const LIST_Customer_Referrals = 19;
+
     const AUTOMATION_Welcome_Email = 2;
 
     const DEFAULT_IMAGE = "https://beta.onepotato.com/img/foodpot.jpg";
 
+
+    public function AddReferralUser(User $referrer, Referral $ref) {
+//        $referral->friend_name = $friendName;
+//        $referral->referral_email = $to_send;
+
+        try {
+            $ac = $this->_getConnection();
+        } catch (Exception $e) {
+            throw new Exception("Active Campaign Connection Error");
+        }
+
+        $_splitName = explode(' ', $ref->friend_name,  2);
+
+        if(1 == count($_splitName)) {
+            $firstName = $_splitName[0];
+            $lastName = '';
+        } else {
+            list($firstName, $lastName) = $_splitName;
+        }
+
+        $contact = array(
+            "email" => $ref->referral_email,
+            "first_name" => $firstName,
+            "last_name" => $lastName,
+//            'phone' => $user->phone,
+//            'tags' => implode(',', $tagsToAdd),
+        );
+
+        $listsToAdd = [self::LIST_Customer_Referrals];
+        foreach($listsToAdd as $listId) {
+            $contact["p[{$listId}]"] = $listId;
+            $contact["status[{$listId}]"] = 1;
+        }
+
+        $arr = array();
+        $arr['REFERRERID'] = $ref->id;
+        $arr['REFERRER_NAME'] = $referrer->first_name.' '.$referrer->last_name;
+        $arr['REFERRER_EMAIL'] = $referrer->email;
+
+        $now = new \DateTime('now');
+        $wc = WhatsCookings::whereDate('week_of', '>', $now->format('Y-m-d'))
+            ->orderBy('week_of', 'ASC')
+            ->first();
+
+//        $wcm = MenuWha
+
+        $oIdx = 1;
+        $vIdx = 1;
+        foreach($wc->menus()->get() as $_m) {
+            if($_m->isVegetarian) {
+                if(3 < $vIdx) continue;
+                $arr["VEGETARIAN{$vIdx}IMAGE"] = $_m->image;
+                $arr["VEGETARIAN{$vIdx}NAME"] = $_m->menu_title;
+                ++$vIdx;
+            } else {
+                if(3 < $oIdx) continue;
+                $arr["OMNIVORE{$oIdx}IMAGE"] = $_m->image;
+                $arr["OMNIVORE{$oIdx}NAME"] = $_m->menu_title;
+                ++$oIdx;
+            }
+        }
+
+        foreach($arr as $key => $value) {
+            $contact[urlencode("field[%{$key}%,0]")] = $value;
+        }
+
+
+        $contact_sync = $ac->api("contact/sync", $contact);
+        $this->_log($ref->referral_email.'(Added as Referral) :: '.json_encode($contact_sync));
+
+        return $contact_sync;
+    }
 
     public function SubscribeToWaitingList($email, $firstName, $lastName, $zip) {
         try {

@@ -263,7 +263,7 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	    var s = new Date();
 	    var e = new Date(s);
 	    var a = [];
-    
+
     	e.setDate(e.getDay() +126);
 
     	while(s < e) {
@@ -307,7 +307,10 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	    option.value = array[i].getFullYear()+"-"+(array[i].getMonth()+1)+"-"+array[i].getDate();
 	    option.text = (array[i].getMonth()+1)+"/"+array[i].getDate()+"/"+array[i].getFullYear();
 	    week_of.appendChild(option);
+//console.log(option.value);
 	}
+
+//console.log(weekOfCompare);
 	
     $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );

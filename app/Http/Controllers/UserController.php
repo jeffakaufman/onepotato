@@ -290,6 +290,7 @@ class UserController extends Controller
 	//handles all the /account/ functionality - current
 
     private function _processReferralSending(Request $request) {
+
         $user = User::find($request->user_id);
 
         //validate form
@@ -326,6 +327,10 @@ class UserController extends Controller
             $referral->save();
 
 
+            $ac = AC_Mediator::GetInstance();
+            $ac->AddReferralUser($user, $referral);
+
+/*
             $data = [
                 'friendname' => $user->name,
                 'custommessage' => $custom_message,
@@ -339,6 +344,7 @@ class UserController extends Controller
                 $message->from('noreply@onepotato.com');
                 $message->to($to_send, $friendName)->subject('A Message from a Friend at One Potato!');
             });
+*/
         }
 
 
