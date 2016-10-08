@@ -1398,12 +1398,10 @@ class UserController extends Controller
         $user = User::where('id', $request->user_id)->first();
         $user->status = User::STATUS_ACTIVE;
 
-
-        $user->status = User::STATUS_ACTIVE;
         $customer_stripe_id = $user->stripe_id;
 
         //retrieve stripe ID from subscriptions table
-        $userSubscription = UserSubscription::where('user_id',$id)->first();
+        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
         $userSubscription->status = "active";
         $plan_id = $userSubscription->product_id;
 

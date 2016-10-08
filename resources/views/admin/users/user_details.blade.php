@@ -21,6 +21,7 @@
 @section('content')
 <home :menu="menu" inline-template>
 <strong>{{ $userProduct->product_description }} {{ $userSubscription->dietary_preferences }}</strong>
+<span style="padding-left:30px;"><a href="#" id="productEditLink">Edit</a></span>
 <br>	
 		<div class="row">
 		<!-- Row 1 -->
@@ -100,21 +101,31 @@
         	
         	<div class="col-md-3"><!-- Shipping Address -->
 		       	<div class="panel panel-default ">
-		           	<div class="panel-heading"><strong>Shipping Address</strong></div>
+		           	<div class="panel-heading">
+						<div style="float:left;"><strong>Shipping Address</strong></div>
+						<div style="float:right;" id="shippingAddressEditLinkContainer"><a href="#" id="editShippingAddressLink">Edit</a></div>
+						<div style="float:right;display:none;" id="shippingAddressEditCancelLinkContainer" ><a href="#" id="cancelEditShippingAddressLink">Cancel</a></div>
+						<div style="clear:both"></div>
+					</div>
 					<div class="panel-body">
-						<div class="col-sm-12">
+						<div class="col-sm-12" id="shippingAddressContainer">
 					    	<address>
 					        	{{ $shippingAddress->shipping_address }}<br />
 					            @if ($shippingAddress->shipping_address_2)
-					            {{ $shippingAddress->shipping_address_2 }}<br />
+					            	{{ $shippingAddress->shipping_address_2 }}<br />
 					            @endif
-					            {{ $shippingAddress->shipping_city }}, {{ $shippingAddress->shipping_state }} {{ $shippingAddress->shipping_zip}}<br />
+								{{ $shippingAddress->shipping_city }}, {{ $shippingAddress->shipping_state }} {{ $shippingAddress->shipping_zip}}<br />
 					            <a href="mailto:{{ $user->email}}">{{ $user->email }}</a>
-					            </address>
-						</div>										
+							</address>
+						</div>
+
+						<div class="col-sm-12" id="shippingAddressEditContainer" style="display:none;">
+							Yo
+						</div>
+
 					</div>	
 				</div>
-				@if ($user->status == "inactive" || $user->status == "active" )
+			@if ($user->status == "inactive" || $user->status == "active" )
 				<div class="row">
 					<div class="col-md-10 ">
 					<form action="{{ url('admin/user') }}/send_cancel_link/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to send a cancellation link?');">
@@ -130,7 +141,7 @@
 					</div>
 					</form>
 				</div>
-				@elseif ($user->status == 'inactive-cancelled')
+			@elseif ($user->status == 'inactive-cancelled')
 			
 				<div class="row">
 					<div class="col-md-10 ">
@@ -179,4 +190,67 @@
 </div>
 
 </home>
+
+<script type="text/javascript">
+var _userId = '{{$user->id}}';
+var _shippingAddressId = '{{$shippingAddress->id}}'
+
+$(document).ready(function() {
+	$("#editShippingAddressLink").click(function(e) {
+		e.preventDefault();
+
+		$.get(
+			"/admin/user_details/"+_userId+"/edit_shipping_address/"+_shippingAddressId,
+			function(data) {
+				var $_token = "{{ csrf_token() }}";
+
+				$("#shippingAddressEditContainer").html(data).show();
+				$("#shippingAddressContainer").hide();
+
+				$("#shippingAddressEditLinkContainer").hide();
+				$("#shippingAddressEditCancelLinkContainer").show();
+
+				$(".shipping-address-form .save-button").click(function() {
+					$.post(
+						"/admin/user_details/"+_userId+"/edit_shipping_address/"+_shippingAddressId,
+						{
+							_token: $_token,
+							address1: $(".shipping-address-form input[name=address1]").val(),
+							address2: $(".shipping-address-form input[name=address2]").val(),
+							city: $(".shipping-address-form input[name=city]").val(),
+							state: $(".shipping-address-form select[name=state]").val(),
+							zip: $(".shipping-address-form input[name=zip]").val(),
+						},
+						function(data) {
+							$("#shippingAddressContainer").html(data).show();
+							$("#shippingAddressEditContainer").hide();
+
+							$("#shippingAddressEditLinkContainer").show();
+							$("#shippingAddressEditCancelLinkContainer").hide();
+						}
+					);
+				});
+			}
+		);
+
+	});
+
+	$("#cancelEditShippingAddressLink").click(function(e) {
+		e.preventDefault();
+
+		$("#shippingAddressEditContainer").hide();
+		$("#shippingAddressContainer").show();
+
+		$("#shippingAddressEditLinkContainer").show();
+		$("#shippingAddressEditCancelLinkContainer").hide();
+
+	});
+
+
+	$("#productEditLink").click(function(e) {
+		e.preventDefault();
+		alert("TBD");
+	});
+});
+</script>
 @endsection
