@@ -681,7 +681,6 @@ class DashboardController extends Controller
         //get today's date
         $now = new \DateTime('now');
         $today = new \DateTime('today');
-
         $triadEnds = (clone($cutOffDate))->modify('this tuesday');
         //echo "Today is " . $currentDay . "<br />";
 
