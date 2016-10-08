@@ -196,6 +196,11 @@ $router->group(['middleware' => 'admin'], function($router) {
 
     Route::get('/admin/user/{id}', 'UserController@showUser');
     Route::get('/admin/user_details/{id}', 'DashboardController@showUserDetails');
+    Route::get('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@EditShippingAddress');
+    Route::post('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@SaveShippingAddress');
+
+
+
     Route::post('/admin/user/{id}', 'UserController@updateUser');
     Route::get('/admin/user/payment/{id}', 'UserController@showPayment');
     Route::post('/admin/user/payment/{id}', 'UserController@savePayment');
@@ -209,6 +214,8 @@ $router->group(['middleware' => 'admin'], function($router) {
 	Route::post('/admin/user_details/credit/{id}', 'SubinvoiceController@issueCredit');
 
     Route::post('/admin/user/send_cancel_link/{id}', 'UserController@sendCancelLink');
+    Route::post('/admin/user/cancel/restart/{id}', 'DashboardController@RestartSubscription');
+
 
     Route::get('/admin/dashboard', 'DashboardController@show');
     Route::get('/admin/reports', 'DashboardController@showReports');

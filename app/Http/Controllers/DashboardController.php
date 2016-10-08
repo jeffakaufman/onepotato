@@ -11,6 +11,9 @@ use App\Credit;
 use App\User;
 use App\Shippingholds;
 use App\Subinvoice;
+use App\Shipping_address;
+use App\UserSubscription;
+use App\Product;
 use CountryState;
 use App;
 use stdClass;
@@ -558,6 +561,126 @@ class DashboardController extends Controller
     
     }
     
-    
-    
+
+
+    public function EditShippingAddress($userId, $shId) {
+        $shippingAddress = Shipping_address::find($shId);
+        return view("admin.users.parts.shipping_address")->with(["shippingAddress" => $shippingAddress]);
+    }
+
+    public function SaveShippingAddress($userId, $shId) {
+        $request = request();
+        $sh = Shipping_address::find($shId);
+        $sh->shipping_address = $request->address1;
+        $sh->shipping_address_2 = $request->address2;
+        $sh->shipping_city = $request->city;
+        $sh->shipping_state = $request->state;
+        $sh->shipping_zip = $request->zip;
+        $sh->save();
+
+        $user = User::find($userId);
+        return view("admin.users.parts.shipping_address_view")->with(["shippingAddress" => $sh, 'user' => $user]);
+    }
+
+
+    public function RestartSubscription($userId) {
+//        $request = request();
+
+        $user = User::find($userId);
+        $user->status = User::STATUS_ACTIVE;
+        $customer_stripe_id = $user->stripe_id;
+
+        //retrieve stripe ID from subscriptions table
+        $userSubscription = UserSubscription::where('user_id',$userId)->first();
+        $userSubscription->status = "active";
+        $plan_id = $userSubscription->product_id;
+
+        $product = Product::where('id', $plan_id)->first();
+        $stripe_plan_id = $product->stripe_plan_id;
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $trial_ends_date = $this->_getTrialEndsDateForRestart();
+
+        $subscription = \Stripe\Subscription::create(array(
+            "customer" => $customer_stripe_id,
+            "plan" => $stripe_plan_id,
+            "trial_end" => $trial_ends_date,
+        ));
+
+        $userSubscription->stripe_id = $subscription->id;
+
+        $userSubscription->save();
+        $user->save();
+
+        return redirect("/admin/user_details/{$userId}");
+
+    }
+
+
+    private function _getTrialEndsDateForRestart() {
+
+// 4) For reactivation, the start date should be Tuesday if it is before midnight on Wednesday.
+// If it is after midnight, it should be a week from Tuesday.
+// The credit cards are processed at Midnight on Wednesdays, so this starts them the first week.
+
+        date_default_timezone_set('America/Los_Angeles');
+
+        // - must be UNIX timestamp
+
+        //time of day cutoff for orders
+        $cutOffTime = "16:00:00";
+        $cutOffDay = "Wednesday";
+
+        //change dates to WEDNESDAY
+        //cutoff date is the last date to change or to signup for THIS week
+        $cutOffFull = new \DateTime("this {$cutOffDay} {$cutOffTime}");
+        $cutOffDate = new \DateTime("this {$cutOffDay}");
+
+        //get today's date
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
+
+        $triadEnds = (clone($cutOffDate))->modify('this tuesday');
+        //echo "Today is " . $currentDay . "<br />";
+
+        //echo "Cut off date: " . $cutOffDate->format('Y-m-d H:i:s') . "<br />";
+        //echo "Current time: " . $todaysDate->format('Y-m-d H:i:s') . "<br />";
+
+        //THIS IS ALL OLD CODE _ SINCE WE KNOW THE START DATE, we can just use that as the
+        //check to see if today is the same day as the cutoff day
+        if ($today == $cutOffDate) {
+
+            //check to see if it's BEFORE the cutoff tine. If so, then this is a special case
+            if ($now < $cutOffFull) {
+                //ok, so it's the day of the cutoff, but before time has expired
+                //SET the trial_ends date to $cutOffDate - no problem
+                //echo "You have JUST beat the cutoff period <br /> Setting the trial_ends to today";
+
+                //DO NOTHING
+            } else {
+                //the cutoff time has just ended
+                //now, set the date to NEXT $cutOffDate
+                //echo "You have missed the cutoff period <br /> Setting the trial_ends to next week";
+
+                $triadEnds->modify("+1 week");
+            }
+        } else {
+            //today is not the same as the trial ends date, so simply set the date to the next cutoff
+
+            //DO NOTHING
+        }
+
+        return ($triadEnds->getTimestamp());
+
+        //echo "Trial Ends: " . $trial_ends->format('Y-m-d H:i:s')  . "<br />";
+
+        //echo "UNIX version of timestamp: " . $trial_ends->getTimestamp() . "<br />";
+
+//			$TestDate = new DateTime('@1470463200');
+//			$TestDate->setTimeZone(new DateTimeZone('America/Los_Angeles'));
+        //echo "Converted back:" . $TestDate->format('Y-m-d H:i:s') . "<br />";
+
+    }
+
 }
