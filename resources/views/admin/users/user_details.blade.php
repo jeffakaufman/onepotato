@@ -42,15 +42,18 @@
 									<th></th>
 								</tr> 
 							</thead>
-							<tbody> 
+							<tbody>
 							@foreach ($weeksMenus as $weekMenus)
+							<?php
+								$hold_status = isset($weekMenus->skipStatus->hold_status) ? $weekMenus->skipStatus->hold_status : "";
+							?>
 								<tr>
 									<td class="text-center"><strong>{{ date('n/j',strtotime($weekMenus->delivery_date)) }}</strong></td>
-									@if ($weekMenus->skipStatus->hold_status == 'held') 
+									@if ($hold_status == 'held') 
 									<td class="bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
-									@elseif ($weekMenus->skipStatus->hold_status == 'hold') 
+									@elseif ($hold_status == 'hold') 
 									<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td> 
-									@elseif ($weekMenus->skipStatus == 'released') 
+									@elseif ($hold_status == 'released') 
 									<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@else
 									<td ></td> 
@@ -58,9 +61,9 @@
 									@foreach($weekMenus->weekMenu as $weekMenu)
 									<td>{{ $weekMenu }}</strong></td>
 									@endforeach
-									@if ($weekMenus->skipStatus->hold_status == 'hold') 
+									@if ($hold_status == 'hold') 
 									<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
-									@elseif ($weekMenus->skipStatus->hold_status == 'released' || $weekMenus->skipStatus->hold_status == NULL) 
+									@elseif ($hold_status == 'released' || $hold_status == NULL) 
 									<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
 									@else
 									<td></td>
