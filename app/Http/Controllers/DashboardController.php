@@ -149,8 +149,7 @@ class DashboardController extends Controller
 
     public function showUserDetails($id)
     {
-
-		$user = User::find($id);
+    	$user = User::find($id);
 		$states = CountryState::getStates('US');
 		$shippingAddress = App\Shipping_address::where('user_id',$id)
 							->where('is_current', 1)
@@ -168,8 +167,36 @@ class DashboardController extends Controller
 
 		$referrals = App\Referral::where('referrer_user_id',$id)->get();
 		
-		$weeksMenus = App\MenusUsers::where('users_id',$id)->get();
+		$upcomingMenus = $user->menus()->where('delivery_date','>',date('Y-m-d'))->orderBy('delivery_date')->get();
+		$upcomingDeliveries = new stdClass;
+		$weeksMenus = [] ;
+		$oldDate = "";
+
 		
+		foreach ($upcomingMenus as $i => $upcomingMenu) {
+			if ($upcomingMenu->pivot->delivery_date <> $oldDate) {
+				$upcomingDeliveries->delivery_date = $upcomingMenu->pivot->delivery_date;
+				$upcomingDeliveries->weekMenu[0] = $upcomingMenu->menu_title;
+				$upcomingDeliveries->skipStatus = $user->getSkips()->where('date_to_hold',$upcomingDeliveries->delivery_date)->first();
+				$oldDate = $upcomingMenu->pivot->delivery_date;
+			} else {
+				$upcomingDeliveries->weekMenu[$i%3] = $upcomingMenu->menu_title;
+			}
+			if ($i%3 == 2) {
+				array_push($weeksMenus,$upcomingDeliveries);
+				$upcomingDeliveries = new stdClass();
+			}
+		}
+		
+		$upcomingSkipsNoMenu = $user->getSkips()
+				->where('date_to_hold','>',date('Y-m-d'))
+				->whereNotIn('date_to_hold',array_pluck($weeksMenus,'delivery_date'))
+				->orderBy('date_to_hold')
+				->get();
+
+/*		
+		
+		$weeksMenus = App\MenusUsers::where('users_id',$id)->get();
 		$weeksMenus = DB::table('menus_users')
 					->select( DB::raw('DISTINCT delivery_date, hold_status,menu_title') )
 					->where('menus_users.users_id',$id)
@@ -185,11 +212,25 @@ class DashboardController extends Controller
 		$weeksMenusDates = array_pluck($weeksMenus,'delivery_date');
 
 
+		$menuPivotRow = new stdClass();
+		$everybodyElse = [];
+   		foreach ($everybodyElseRaw as $i => $menu) {
+			$menuPivotRow->user_id = $menu->users_id;
+			$menuPivotRow->menu[$i%3] = $menu->menus_id;
+			if ($i%3 == 2) {
+				array_push($everybodyElse,$menuPivotRow);
+				$menuPivotRow = new stdClass();
+			}
+		}
 		$upcomingSkipsNoMenu = App\Shippingholds::where('user_id',$id)
 						->where('date_to_hold','>=',date('Y-m-d'))
 						->whereNotIn('date_to_hold',$weeksMenusDates)
 						->Orderby('date_to_hold')
 						->get();
+*/
+
+
+
 						
 		$credits = App\Credit::where('user_id',$id)->get();
 

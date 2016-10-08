@@ -24,7 +24,7 @@
 <br>	
 		<div class="row">
 		<!-- Row 1 -->
-	    	<div class="col-md-7">
+	    	<div class="col-md-8">
 		    	<div class="panel panel-default ">
 		       		<div class="panel-heading"><h4>Upcoming Deliveries</h4></div>
 					<div class="panel-body">
@@ -37,76 +37,68 @@
 									<th>Menu #1</th>
 									<th>Menu #2</th>
 									<th>Menu #3</th>
+									<th></th>
+									<th></th>
 								</tr> 
 							</thead>
 							<tbody> 
+							@foreach ($weeksMenus as $weekMenus)
 								<tr>
-								@foreach ( $weeksMenus as $i => $weeksMenu)
-								<?php
-									if ($i == 0) {
-										$delivery_date = $weeksMenu->delivery_date;
-								?>
-								<td class="text-center"><strong>{{ date('n/j',strtotime($weeksMenu->delivery_date)) }}</strong></td>
-								@if ($weeksMenu->hold_status == 'held') 
-								<td class="bg-danger text-danger text-center">SKIPPED</td>
-								@elseif ($weeksMenu->hold_status == 'hold') 
-								<td class="bg-warning text-warning text-center">SKIP</td>  
-								@elseif ($weeksMenu->hold_status == 'released') 
-								<td class="bg-success text-success text-center">RELEASED</td>
-								@else
-								<td ></td> 
-								@endif	
-							<?php	} ?>
-							<?php	if ($delivery_date != $weeksMenu->delivery_date) {
-							?>
-							</tr>
-							<tr> 
-								<td class="text-center"><strong>{{ date('n/j',strtotime($weeksMenu->delivery_date)) }}</strong></td>
-								@if ($weeksMenu->hold_status == 'held') 
-								<td class="bg-danger text-danger text-center">SKIPPED</td>
-								@elseif ($weeksMenu->hold_status == 'hold') 
-								<td class="bg-warning text-warning text-center">SKIP</td> 
-								@elseif ($weeksMenu->hold_status == 'released') 
-								<td class="bg-success text-success text-center">RELEASED</td>
-								@else
-								<td></td>
-								@endif	
-							<?php	} ?>	
-								<td >{{ $weeksMenu->menu_title }}	</td>						
-							<?php $delivery_date = $weeksMenu->delivery_date ?>						
+									<td class="text-center"><strong>{{ date('n/j',strtotime($weekMenus->delivery_date)) }}</strong></td>
+									@if ($weekMenus->skipStatus->hold_status == 'held') 
+									<td class="bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+									@elseif ($weekMenus->skipStatus->hold_status == 'hold') 
+									<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td> 
+									@elseif ($weekMenus->skipStatus == 'released') 
+									<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+									@else
+									<td ></td> 
+									@endif
+									@foreach($weekMenus->weekMenu as $weekMenu)
+									<td>{{ $weekMenu }}</strong></td>
+									@endforeach
+									@if ($weekMenus->skipStatus->hold_status == 'hold') 
+									<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
+									@elseif ($weekMenus->skipStatus->hold_status == 'released' || $weekMenus->skipStatus->hold_status == NULL) 
+									<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
+									@else
+									<td></td>
+									@endif
+									<td><button type="button" class="btn btn-primary">Change Menus</button></strong></td>
+								</tr>
 							@endforeach
-           					</tr>
-           					@foreach ($upcomingSkipsNoMenu as $upcomingSkipNoMenu)
-           					<tr>
-           						<td class="text-center"><strong>{{ date('n/j',strtotime($upcomingSkipNoMenu->date_to_hold)) }}</strong></td>
-								@if ($upcomingSkipNoMenu->hold_status == 'held') 
-								<td class="bg-danger text-danger text-center">SKIPPED</td>
-								@elseif ($upcomingSkipNoMenu->hold_status == 'hold') 
-								<td class="bg-warning text-warning text-center">SKIP</td>  
-								@elseif ($upcomingSkipNoMenu->hold_status == 'released') 
-								<td class="bg-success text-success text-center">RELEASED</td>
-								@else
-								<td ></td> 
-								@endif
-           						<td></td>
-           						<td></td>
-           						<td></td>
-           					</tr>
+							@foreach ($upcomingSkipsNoMenu as $upcomingSkipNoMenu)
+           						<tr>
+           							<td class="text-center"><strong>{{ date('n/j',strtotime($upcomingSkipNoMenu->date_to_hold)) }}</strong></td>
+									@if ($upcomingSkipNoMenu->hold_status == 'held') 
+									<td class="bg-danger text-danger text-center">SKIPPED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
+									@elseif ($upcomingSkipNoMenu->hold_status == 'hold') 
+									<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>  
+									@elseif ($upcomingSkipNoMenu->hold_status == 'released') 
+									<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
+									@else
+									<td ></td> 
+									@endif
+           							<td></td>
+           							<td></td>
+           							<td></td>
+           							@if ($upcomingSkipNoMenu->hold_status == 'hold') 
+									<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
+									@elseif ($upcomingSkipNoMenu->hold_status == 'released') 
+									<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
+									@else
+									<td></td>
+									@endif
+									<td></td>
+           						</tr>
            					@endforeach
            				</table>
            				
         			</div>
         		</div> 
-
-					<!-- credits panel-->
-					@include('admin.users.credits')
-					
-
         	</div> 
-			
-		
-		    
-			<div class="col-md-3"><!-- Shipping Address -->
+        	
+        	<div class="col-md-3"><!-- Shipping Address -->
 		       	<div class="panel panel-default ">
 		           	<div class="panel-heading"><strong>Shipping Address</strong></div>
 					<div class="panel-body">
@@ -156,23 +148,35 @@
 					</form>
 				</div>
 			@endif
-			
-			
+			</div>
+		</div>
+	</div> 
+</div> 
+<!-- Row 1 End -->
+<!-- Row 2 -->
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default ">
+			<div class="panel-heading"><h4>Past Deliveries</h4></div>
+			<div class="panel-body">
+				<div class="col-sm-12">
+				</div>										
+			</div>	
 		</div>
 	</div>
-</div> 
-			<!-- Row 1 End -->
-			
-	
-		
-			<!-- Row 2 -->
-			<div class="row">
-           		<div class="col-md-6"><!--Referrals -->
-           			<div class="row">
-					@include('admin.users.csr-notes')
-					</div>
-				</div>
-			</div>
+</div>
+<!-- Row 2 -->
+<div class="row">
+	<div class="col-md-6">
+		<!-- credits panel-->
+		@include('admin.users.credits')
+	</div>
+    <div class="col-md-6">
+    	<div class="row">
+			@include('admin.users.csr-notes')
+		</div>
+	</div>
+</div>
 
 </home>
 @endsection
