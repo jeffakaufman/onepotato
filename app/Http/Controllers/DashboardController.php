@@ -623,6 +623,112 @@ class DashboardController extends Controller
         return view("admin.users.parts.shipping_address_view")->with(["shippingAddress" => $sh, 'user' => $user]);
     }
 
+    public function EditUserProduct($userId, Request $request) {
+        $user = User::find($userId);
+
+        $userSubscription = UserSubscription::where('user_id',$userId)->first();
+        $userSubscription->status = "active";
+        $plan_id = $userSubscription->product_id;
+
+        $product = Product::where('id', $plan_id)->first();
+
+        return view("admin.users.parts.edit_product")->with([
+            "user" => $user,
+            "userProduct" => $product,
+            "userSubscription" => $userSubscription,
+            'changeDate' => $this->_getChangeDate(),
+        ]);
+    }
+
+    public function SaveUserProduct($userId) {
+        $request = request();
+
+        $userSubscription = UserSubscription::where('user_id',$userId)->first();
+
+        $plan_type = $request->plan_type;
+        $plan_size = $request->plan_size;
+        $num_kids = $request->children;
+        $gluten_free = $request->gluten_free;
+        $theSKU = '';
+
+
+        if ($plan_type=='Vegetarian Box') {
+            $theSKU = "01";
+        }
+        if ($plan_type=='Omnivore Box') {
+            $theSKU = "02";
+        }
+
+        //num adults defaults to 02
+        $theSKU .= "02";
+
+        if ($plan_size=="family") {
+
+            if ($num_kids=="0") {$theSKU .= "00";}
+            if ($num_kids=="1") {$theSKU .= "01";}
+            if ($num_kids=="2") {$theSKU .= "02";}
+            if ($num_kids=="3") {$theSKU .= "03";}
+            if ($num_kids=="4") {$theSKU .= "04";}
+
+        }else{
+            $theSKU .= "00";
+        }
+
+        if ($request->prefs && in_array('9', $request->prefs)) {
+            $theSKU .= "0100";
+        }else{
+            $theSKU .= "0000";
+        }
+
+
+        //look up the product ID
+        $newProduct = Product::where('sku',$theSKU)->first();
+
+        $userSubscription->product_id = $newProduct->id;
+        if (isset($request->prefs)) {
+            $userSubscription->dietary_preferences = implode(",",$request->prefs);
+        }
+
+        $userSubscription->save();
+
+        //make sure trial_ends is set the same -
+/*
+        //update STRIPE
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id);
+
+        //$period_start = $subscription->current_period_start;
+        //$period_end = $subscription->current_period_end;
+        $trial_end = $subscription->trial_end;
+
+        $subscription->plan = $newProduct->stripe_plan_id;
+        $subscription->prorate = false;
+        //$subscription->current_period_end = $period_end;
+        //$subscription->current_period_start = $period_start;
+        if (isset($trial_end)) {
+            $subscription->trial_end = $trial_end;
+        }
+
+        $subscription->save();
+*/
+        return redirect("/admin/user_details/{$userId}");
+
+    }
+
+    private function _getChangeDate() {
+        $changeDate = '';
+        $today = date('N');
+        if		($today == 1)	{ $changeDate = date('l, F jS', strtotime("+8 days"));  }
+        elseif	($today == 2)	{ $changeDate = date('l, F jS', strtotime("+7 days"));  }
+        elseif	($today == 3)	{ $changeDate = date('l, F jS', strtotime("+6 days"));  }
+        elseif	($today == 4)	{ $changeDate = date('l, F jS', strtotime("+12 days")); }
+        elseif	($today == 5)	{ $changeDate = date('l, F jS', strtotime("+11 days")); }
+        elseif	($today == 6)	{ $changeDate = date('l, F jS', strtotime("+10 days")); }
+        elseif	($today == 7)	{ $changeDate = date('l, F jS', strtotime("+9 days"));  }
+        return $changeDate;
+    }
+
 
     public function RestartSubscription($userId) {
 //        $request = request();

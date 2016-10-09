@@ -198,6 +198,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/user_details/{id}', 'DashboardController@showUserDetails');
     Route::get('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@EditShippingAddress');
     Route::post('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@SaveShippingAddress');
+    Route::get('/admin/user_details/{id}/edit_product', 'DashboardController@EditUserProduct');
+    Route::post('/admin/user_details/{id}/save_product', 'DashboardController@SaveUserProduct');
 
 
 
