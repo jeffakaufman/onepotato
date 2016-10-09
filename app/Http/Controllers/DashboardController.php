@@ -692,7 +692,7 @@ class DashboardController extends Controller
         $userSubscription->save();
 
         //make sure trial_ends is set the same -
-/*
+
         //update STRIPE
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
@@ -711,7 +711,7 @@ class DashboardController extends Controller
         }
 
         $subscription->save();
-*/
+
         return redirect("/admin/user_details/{$userId}");
 
     }
