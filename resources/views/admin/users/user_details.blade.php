@@ -50,25 +50,25 @@
 								<tr>
 									<td class="text-center"><strong>{{ date('n/j',strtotime($weekMenus->delivery_date)) }}</strong></td>
 									@if ($hold_status == 'held') 
-									<td class="bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+										<td class="bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@elseif ($hold_status == 'hold') 
-									<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td> 
+										<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@elseif ($hold_status == 'released') 
-									<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+										<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@else
-									<td ></td> 
+										<td ></td>
 									@endif
 									@foreach($weekMenus->weekMenu as $weekMenu)
-									<td>{{ $weekMenu }}</strong></td>
+										<td>{{ $weekMenu }}</strong></td>
 									@endforeach
 									@if ($hold_status == 'hold') 
-									<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
+										<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
 									@elseif ($hold_status == 'released' || $hold_status == NULL) 
-									<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
+										<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
 									@else
-									<td></td>
+										<td></td>
 									@endif
-									<td><button type="button" class="btn btn-primary">Change Menus</button></strong></td>
+									<td><button type="button" class="btn btn-primary change-menu" value="{{$weekMenus->delivery_date}}">Change Menus</button></strong></td>
 								</tr>
 							@endforeach
 							@foreach ($upcomingSkipsNoMenu as $upcomingSkipNoMenu)
@@ -279,6 +279,17 @@ $(document).ready(function() {
 				$("#myModal .modal-content").html(data);
 				$("#myModal").modal('show');
 			}
+		);
+	});
+
+	$("button.change-menu").click(function(e) {
+		var _date = $(this).val();
+		$.get(
+				"/admin/user_details/"+_userId+"/edit_menus/"+_date,
+				function(data) {
+					$("#myModal .modal-content").html(data);
+					$("#myModal").modal('show');
+				}
 		);
 	});
 });

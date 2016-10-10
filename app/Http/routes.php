@@ -199,8 +199,10 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@EditShippingAddress');
     Route::post('/admin/user_details/{id}/edit_shipping_address/{shId}', 'DashboardController@SaveShippingAddress');
     Route::get('/admin/user_details/{id}/edit_product', 'DashboardController@EditUserProduct');
-    Route::post('/admin/user_details/{id}/save_product', 'DashboardController@SaveUserProduct');
+    Route::post('/admin/user_details/{id}/edit_product', 'DashboardController@SaveUserProduct');
 
+    Route::get('/admin/user_details/{id}/edit_menus/{dDate}', 'DashboardController@EditMenus');
+    Route::post('/admin/user_details/{id}/edit_menus/{dDate}', 'DashboardController@SaveMenus');
 
 
     Route::post('/admin/user/{id}', 'UserController@updateUser');

@@ -36,7 +36,7 @@ if (strpos($prefs, 'Nut Free') !== false) $nutfree = true; else $nutfree = false
 if (strpos($prefs, 'Gluten Free') !== false) $glutenfree = true; else $glutenfree = false;
 ?>
 
-<form method="POST" action="/admin/user_details/{{ $user->id }}/save_product" accept-charset="UTF-8" class="meals">
+<form method="POST" action="/admin/user_details/{{ $user->id }}/edit_product" accept-charset="UTF-8" class="meals">
     {{ csrf_field() }}
     <input type="hidden" name="user_id" value="{{$user->id}}" />
 

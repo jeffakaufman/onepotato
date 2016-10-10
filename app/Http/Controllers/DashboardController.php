@@ -829,4 +829,47 @@ class DashboardController extends Controller
 
     }
 
+
+    public function EditMenus($userId, $deliveryDate) {
+
+        $menus = DB::table('menus')
+            ->join('menus_whats_cookings', 'menus.id', '=', 'menus_whats_cookings.menus_id')
+            ->join('whats_cookings', 'whats_cookings.id', '=', 'menus_whats_cookings.whats_cookings_id')
+            ->leftJoin('menus_users', function($join) use($userId, $deliveryDate) {
+                $join->on('menus.id', '=', 'menus_users.menus_id')
+                    ->where('menus_users.users_id', '=', $userId)
+                    ->where('menus_users.delivery_date', '=', $deliveryDate);
+            })
+            ->where('whats_cookings.week_of', '=', $deliveryDate)
+            ->get(['menus.*', 'menus_users.id as mu_id']);
+//var_dump($menus);die();
+
+        $user = User::find($userId);
+        return view("admin.users.parts.edit_menus")->with([
+            "user" => $user,
+            'deliveryDate' => $deliveryDate,
+            'menus' => $menus,
+        ]);
+    }
+
+    public function SaveMenus($userId, $deliveryDate) {
+        $request = request();
+
+        DB::table('menus_users')
+            ->where('users_id', '=', $userId)
+            ->where('delivery_date', '=', $deliveryDate)
+            ->delete();
+
+        $insertArray = [];
+        foreach((array)$request->menu_id as $menuId) {
+            $insertArray[] = [
+                'menus_id' => $menuId,
+                'users_id' => $userId,
+                'delivery_date' => $deliveryDate,
+            ];
+        }
+        DB::table("menus_users")->insert($insertArray);
+
+        return redirect("/admin/user_details/{$userId}");
+    }
 }
