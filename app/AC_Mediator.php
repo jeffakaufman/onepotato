@@ -351,6 +351,8 @@ class AC_Mediator {
 //die();
         $contact_sync = $ac->api("contact/sync", $contact);
 
+        $this->_log($user->email.'[Shipping update] :: '.json_encode($contact_sync));
+
 //var_dump($contact);
 //var_dump($contact_sync);
 //die();
@@ -498,7 +500,9 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDeliveryDate = $user->GetNextDeliveryDate($now);
-        $nextDelivery = MenusUsers::where('users_id',$user->id)->where('delivery_date',$nextDeliveryDate)->get();
+        $nextDelivery = MenusUsers::where('users_id',$user->id)
+            ->where('delivery_date',$nextDeliveryDate)
+            ->get();
 
         $arr = [];
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
