@@ -582,7 +582,6 @@ $(document).ready(function() {
                                             @endif
                                         </h4>
                                         <div class="row">
-                                            
                                             @foreach ($shipment->menus as $menu)
                                             <div class="col-xs-4">
                                                 @if($menu->menu()->first()->image)

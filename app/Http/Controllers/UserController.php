@@ -244,7 +244,12 @@ class UserController extends Controller
 			$deliveryHistory->order_id = $invoices[$i]->order_id;
 			$deliveryHistory->ship_date = date('F j, Y', strtotime($invoices[$i]->period_end_date."-1 day"));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
-			$deliveryHistory->menus = MenusUsers::where('users_id',$id)->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )->get();
+			$deliveryHistory->menus = MenusUsers::where('users_id',$id)
+			->where( function($q) use ($invoices, $i){		
+						$q->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )
+						->orWhere('delivery_date', date('Y-m-d', strtotime($invoices[$i]->ship_date."+1 day")) );
+			})
+			->get();
 
             $deliveryHistory->tracking_number = false;
 
@@ -1398,10 +1403,12 @@ class UserController extends Controller
         $user = User::where('id', $request->user_id)->first();
         $user->status = User::STATUS_ACTIVE;
 
+
+        $user->status = User::STATUS_ACTIVE;
         $customer_stripe_id = $user->stripe_id;
 
         //retrieve stripe ID from subscriptions table
-        $userSubscription = UserSubscription::where('user_id',$user->id)->first();
+        $userSubscription = UserSubscription::where('user_id',$id)->first();
         $userSubscription->status = "active";
         $plan_id = $userSubscription->product_id;
 
