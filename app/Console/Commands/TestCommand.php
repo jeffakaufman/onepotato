@@ -8,6 +8,8 @@ use App\Events\UserHasRegistered;
 use App\Menu;
 use App\MenuAssigner;
 use App\Product;
+use App\Referral;
+use App\ReferralManager;
 use App\UserSubscription;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
@@ -56,6 +58,18 @@ class TestCommand extends Command
 //        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");
 //return;
 
+
+        $ac = AC_Mediator::GetInstance();
+
+        $referrals = Referral::where('id', '>=', 81)
+            ->where('id', '<=', 86)
+            ->get();
+
+        foreach($referrals as $referral) {
+            $user = User::find($referral->referrer_user_id);
+            $ac->AddReferralUser($user, $referral);
+        }
+return;
         $users = User::all();
 
         foreach($users as $u) {
