@@ -63,7 +63,7 @@ class AC_Mediator {
         }
 
         $arr = array();
-        $arr['REFERRERID'] = $ref->id;
+        $arr['REFERRER_ID'] = $ref->id;
         $arr['REFERRER_NAME'] = $referrer->first_name.' '.$referrer->last_name;
         $arr['REFERRER_EMAIL'] = $referrer->email;
 
@@ -79,13 +79,13 @@ class AC_Mediator {
         foreach($wc->menus()->get() as $_m) {
             if($_m->isVegetarian) {
                 if(3 < $vIdx) continue;
-                $arr["VEGETARIAN{$vIdx}IMAGE"] = $_m->image;
-                $arr["VEGETARIAN{$vIdx}NAME"] = $_m->menu_title;
+                $arr["VEGETARIAN_{$vIdx}_IMAGE"] = $_m->image;
+                $arr["VEGETARIAN_{$vIdx}_NAME"] = $_m->menu_title;
                 ++$vIdx;
             } else {
                 if(3 < $oIdx) continue;
-                $arr["OMNIVORE{$oIdx}IMAGE"] = $_m->image;
-                $arr["OMNIVORE{$oIdx}NAME"] = $_m->menu_title;
+                $arr["OMNIVORE_{$oIdx}_IMAGE"] = $_m->image;
+                $arr["OMNIVORE_{$oIdx}_NAME"] = $_m->menu_title;
                 ++$oIdx;
             }
         }

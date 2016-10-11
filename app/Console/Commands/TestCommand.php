@@ -52,6 +52,10 @@ class TestCommand extends Command
     public function handle()
     {
 
+//        $ac = AC_Mediator::GetInstance();
+//        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");
+//return;
+
         $users = User::all();
 
         foreach($users as $u) {
@@ -299,9 +303,6 @@ return;
         echo Cancellation::GenerateCancelLink($user);
 
 return;
-
-        $ac = AC_Mediator::GetInstance();
-        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");
 
 //        event(new UserHasRegistered(User::where('email', 'agedgouda@gmail.com')->first()));
 //        event(new UserHasRegistered(User::where('email', 'jclmeek@gmail.com')->first()));
