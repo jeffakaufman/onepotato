@@ -204,6 +204,9 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/user_details/{id}/edit_menus/{dDate}', 'DashboardController@EditMenus');
     Route::post('/admin/user_details/{id}/edit_menus/{dDate}', 'DashboardController@SaveMenus');
 
+    Route::get('/admin/user_details/{id}/skip_delivery/{dDate}', 'DashboardController@SkipDelivery');
+    Route::get('/admin/user_details/{id}/unskip_delivery/{dDate}', 'DashboardController@UnskipDelivery');
+
 
     Route::post('/admin/user/{id}', 'UserController@updateUser');
     Route::get('/admin/user/payment/{id}', 'UserController@showPayment');

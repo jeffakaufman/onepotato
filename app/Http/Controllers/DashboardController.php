@@ -153,6 +153,11 @@ class DashboardController extends Controller
     public function showUserDetails($id)
     {
     	$user = User::find($id);
+
+        /**
+         * @var User $user
+         */
+
 		$states = CountryState::getStates('US');
 		$shippingAddress = App\Shipping_address::where('user_id',$id)
 							->where('is_current', 1)
@@ -871,5 +876,30 @@ class DashboardController extends Controller
         DB::table("menus_users")->insert($insertArray);
 
         return redirect("/admin/user_details/{$userId}");
+    }
+
+
+    public function SkipDelivery($userId, $deliveryDate) {
+        $dm = App\DeliveryManager::GetInstance();
+
+        $response = new \stdClass();
+        $response->ok = false;
+
+        $dm->SkipDelivery(User::find($userId), new \DateTime($deliveryDate));
+        $response->ok = true;
+
+        return json_encode($response);
+    }
+
+    public function UnskipDelivery($userId, $deliveryDate) {
+        $dm = App\DeliveryManager::GetInstance();
+
+        $response = new \stdClass();
+        $response->ok = false;
+
+        $dm->UnskipDelivery(User::find($userId), new \DateTime($deliveryDate));
+        $response->ok = true;
+
+        return json_encode($response);
     }
 }
