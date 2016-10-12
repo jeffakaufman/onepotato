@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AC_Mediator;
+use App\DeliveryManager;
 use Illuminate\Http\Request;
 use App\Subinvoice;
 
@@ -1725,51 +1726,13 @@ class SubinvoiceController extends Controller
 	}
 	
 	
-	public function UnHoldSubscription ($id, $holddate) {
-		
-			
-			//remove hold from holds table
-			$hold = Shippingholds::where('user_id', $id)
-						->where('date_to_hold', $holddate)
-						->where('hold_status', 'hold')
-						->first();
+	public function UnHoldSubscription ($id, $holdDate) {
 
-			//if there is a hold
-			if ($hold) {
-				$hold->hold_status = "released";
-				$hold->save();
-				
-				//get the custoemr
-				/*
-				$user = User::where('id', $id)->first();
-				$user->status = User::STATUS_ACTIVE;
-				$customer_stripe_id = $user->stripe_id;
-			
-				//retrieve stripe ID from subscriptions table
-				$userSubscription = UserSubscription::where('user_id',$id)->first();
+	    $dm = DeliveryManager::GetInstance();
+        $dm->UnskipDelivery(User::find($id), new \DateTime($holdDate));
 
-				$userSubscription->status = "active";
-				$plan_id = $userSubscription->product_id;
-
-				$product = Product::where('id', $plan_id)->first();
-				$stripe_plan_id = $product->stripe_plan_id;
-
-				\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-
-				$subscription = \Stripe\Subscription::create(array(
-				  "customer" => $customer_stripe_id,
-				  "plan" => $stripe_plan_id
-				));
-
-				$userSubscription->stripe_id = $subscription->id;
-				$userSubscription->save();
-				$user->save();
-				*/
-
-			}
-
-			http_response_code(200);
-			return redirect('/delivery-schedule'); 
+        http_response_code(200);
+        return redirect('/delivery-schedule');
 		
 	}
 	
@@ -1819,18 +1782,12 @@ class SubinvoiceController extends Controller
 		
 	}
 	
-	public function HoldSubscription ($id,$holddate) {
-		
-		//Record a Hold in the Database
-		
-		$hold = new Shippingholds;
-		$hold->user_id = $id;
-		$hold->date_to_hold = $holddate;
-		$hold->hold_status = "hold";
-		$hold->save();
-		
-		//if not, create one
-		return redirect('/delivery-schedule'); 
+	public function HoldSubscription ($id, $holdDate) {
+
+	    $dm = DeliveryManager::GetInstance();
+        $dm->SkipDelivery(User::find($id), new \DateTime($holdDate));
+
+		return redirect('/delivery-schedule');
 	}
 	
 	

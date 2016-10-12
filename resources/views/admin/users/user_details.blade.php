@@ -50,21 +50,21 @@
 								<tr>
 									<td class="text-center"><strong>{{ date('n/j',strtotime($weekMenus->delivery_date)) }}</strong></td>
 									@if ($hold_status == 'held') 
-										<td class="bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+										<td class="skip-status bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@elseif ($hold_status == 'hold') 
-										<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+										<td class="skip-status bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@elseif ($hold_status == 'released') 
-										<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
+										<td class="skip-status bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($weekMenus->skipStatus->updated_at)) }}</span></td>
 									@else
-										<td ></td>
+										<td class="skip-status text-center"></td>
 									@endif
 									@foreach($weekMenus->weekMenu as $weekMenu)
 										<td>{{ $weekMenu }}</strong></td>
 									@endforeach
 									@if ($hold_status == 'hold') 
-										<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
+										<td><button type="button" class="btn btn-success unskip-delivery" value="{{$weekMenus->delivery_date}}">UNSKIP</button></strong></td>
 									@elseif ($hold_status == 'released' || $hold_status == NULL) 
-										<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
+										<td><button type="button" class="btn btn-danger skip-delivery" value="{{$weekMenus->delivery_date}}">SKIP</button></strong></td>
 									@else
 										<td></td>
 									@endif
@@ -75,23 +75,23 @@
            						<tr>
            							<td class="text-center"><strong>{{ date('n/j',strtotime($upcomingSkipNoMenu->date_to_hold)) }}</strong></td>
 									@if ($upcomingSkipNoMenu->hold_status == 'held') 
-									<td class="bg-danger text-danger text-center">SKIPPED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
+										<td class="skip-status bg-danger text-danger text-center">SKIPPED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
 									@elseif ($upcomingSkipNoMenu->hold_status == 'hold') 
-									<td class="bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>  
+										<td class="skip-status bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
 									@elseif ($upcomingSkipNoMenu->hold_status == 'released') 
-									<td class="bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
+										<td class="skip-status bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($upcomingSkipNoMenu->updated_at)) }}</span></td>
 									@else
-									<td ></td> 
+										<td class="skip-status text-center"></td>
 									@endif
            							<td></td>
            							<td></td>
            							<td></td>
            							@if ($upcomingSkipNoMenu->hold_status == 'hold') 
-									<td><button type="button" class="btn btn-success">UNSKIP</button></strong></td>
+										<td><button type="button" class="btn btn-success unskip-delivery" value="{{$upcomingSkipNoMenu->date_to_hold}}">UNSKIP</button></strong></td>
 									@elseif ($upcomingSkipNoMenu->hold_status == 'released') 
-									<td><button type="button" class="btn btn-danger">SKIP</button></strong></td>
+										<td><button type="button" class="btn btn-danger skip-delivery" value="{{$upcomingSkipNoMenu->date_to_hold}}">SKIP</button></strong></td>
 									@else
-									<td></td>
+										<td></td>
 									@endif
 									<td></td>
            						</tr>
@@ -291,6 +291,68 @@ $(document).ready(function() {
 					$("#myModal").modal('show');
 				}
 		);
+	});
+
+	$("#users").on("click", "button.skip-delivery", function(e) {
+		if(confirm("Are you sure ?")) {
+			var _date = $(this).val();
+			var _this = $(this);
+			$.get(
+					"/admin/user_details/"+_userId+"/skip_delivery/"+_date,
+					function(data) {
+						if(data.ok == true) {
+							_this.removeClass('skip-delivery').removeClass('btn-danger').addClass('btn-success').addClass('unskip-delivery').html('UNSKIP');
+							_this.off('click');
+
+							var _statusTd = _this.parent().parent().find("td.skip-status");
+							var _now = new Date();
+							var _nowText = (1+_now.getMonth()) + '/' + _now.getDate();
+							_statusTd.removeClass('bg-success')
+									.removeClass('text-success')
+									.removeClass('bg-danger')
+									.removeClass('text-danger')
+									.addClass('bg-warning')
+									.addClass('text-warning')
+									.html('SKIP<br/><span style="font-size:x-small">set '+_nowText+'</span>');
+						} else {
+							alert("Something wrong");
+						}
+					},
+					'json'
+			);
+
+		}
+	});
+
+	$("#users").on("click", "button.unskip-delivery", function(e) {
+		if(confirm("Are you sure ?")) {
+			var _date = $(this).val();
+			var _this = $(this);
+			$.get(
+					"/admin/user_details/"+_userId+"/unskip_delivery/"+_date,
+					function(data) {
+						if(data.ok == true) {
+							_this.removeClass('unskip-delivery').removeClass('btn-success').addClass('btn-danger').addClass('skip-delivery').html('SKIP');
+							_this.off('click');
+							var _statusTd = _this.parent().parent().find("td.skip-status");
+							var _now = new Date();
+							var _nowText = (1+_now.getMonth()) + '/' + _now.getDate();
+							_statusTd.removeClass('bg-warning')
+									.removeClass('text-warning')
+									.removeClass('bg-danger')
+									.removeClass('text-danger')
+									.addClass('bg-success')
+									.addClass('text-success')
+									.html('RELEASED<br/><span style="font-size:x-small">set '+_nowText+'</span>');
+
+						} else {
+							alert("Something wrong");
+						}
+					},
+					'json'
+			);
+
+		}
 	});
 });
 </script>
