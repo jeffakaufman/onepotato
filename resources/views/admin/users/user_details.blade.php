@@ -169,7 +169,7 @@
 <!-- Row 1 End -->
 <!-- Row 2 -->
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-8">
 		<div class="panel panel-default ">
 			<div class="panel-heading"><h4>Past Deliveries</h4></div>
 			<div class="panel-body">
@@ -181,11 +181,11 @@
 </div>
 <!-- Row 2 -->
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-7">
 		<!-- credits panel-->
 		@include('admin.users.credits')
 	</div>
-    <div class="col-md-6">
+    <div class="col-md-5">
     	<div class="row">
 			@include('admin.users.csr-notes')
 		</div>
