@@ -82,8 +82,9 @@ class WhatsCookingsController extends Controller
 		$menus  = false;
 		
 		$whatscookings = WhatsCookings::where('week_of',$week_of)->get();
+
 		foreach ($whatscookings as $whatscooking) {
-    		$menus = $whatscooking->menus()->get();
+    		$menus = $whatscooking->menus()->orderBy('isOmnivore','desc')->orderBy('menu_title')->get();
 		}
 
         if($menus) {
