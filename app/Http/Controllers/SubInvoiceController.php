@@ -1091,23 +1091,23 @@ class SubinvoiceController extends Controller
 	public function testStripeJSON() {
 		
 		$input = '{
-		  "id": "evt_18wKgQCEzFD8tUOqOALdV5bC",
+		  "id": "evt_191LMQCEzFD8tUOqTv1akbxh",
 		  "object": "event",
 		  "api_version": "2016-06-15",
-		  "created": 1474502602,
+		  "created": 1475696846,
 		  "data": {
 		    "object": {
-		      "id": "in_18wJkKCEzFD8tUOqBfDZYoFU",
+		      "id": "in_191KQ8CEzFD8tUOqxIFnZW4O",
 		      "object": "invoice",
-		      "amount_due": 8401,
+		      "amount_due": 5478,
 		      "application_fee": null,
 		      "attempt_count": 1,
 		      "attempted": true,
-		      "charge": "ch_18wKgQCEzFD8tUOqsCRnFCeQ",
+		      "charge": "ch_191LMPCEzFD8tUOqg4igBwRz",
 		      "closed": true,
 		      "currency": "usd",
-		      "customer": "cus_99DdrELqLYjsFi",
-		      "date": 1474499000,
+		      "customer": "cus_93vW7IKx9vTa9H",
+		      "date": 1475693232,
 		      "description": null,
 		      "discount": null,
 		      "ending_balance": 0,
@@ -1116,93 +1116,86 @@ class SubinvoiceController extends Controller
 		        "object": "list",
 		        "data": [
 		          {
-		            "id": "ii_18w32kCEzFD8tUOqEversVLL",
+		            "id": "ii_18zxnRCEzFD8tUOq8ncdzQrx",
 		            "object": "line_item",
-		            "amount": -1047,
+		            "amount": -1000,
 		            "currency": "usd",
-		            "description": "Unused time on Omnivore Box for 2 Adults and 2 Children after 21 Sep 2016",
+		            "description": "test",
 		            "discountable": false,
 		            "livemode": true,
 		            "metadata": {},
 		            "period": {
-		              "start": 1474434794,
-		              "end": 1474498800
+		              "start": 1475367937,
+		              "end": 1475367937
 		            },
-		            "plan": {
-		              "id": "omn_2_adults_2_child_1",
-		              "object": "plan",
-		              "amount": 9894,
-		              "created": 1471983311,
-		              "currency": "usd",
-		              "interval": "week",
-		              "interval_count": 1,
-		              "livemode": true,
-		              "metadata": {},
-		              "name": "Omnivore Box for 2 Adults and 2 Children",
-		              "statement_descriptor": null,
-		              "trial_period_days": null
-		            },
-		            "proration": true,
-		            "quantity": 1,
-		            "subscription": "sub_99DduOPa4vJyXp",
+		            "plan": null,
+		            "proration": false,
+		            "quantity": null,
+		            "subscription": null,
 		            "type": "invoiceitem"
 		          },
 		          {
-		            "id": "ii_18w32kCEzFD8tUOqAc5QtVsh",
+		            "id": "ii_18zZ69CEzFD8tUOqHKFktfMH",
 		            "object": "line_item",
-		            "amount": 904,
+		            "amount": -500,
 		            "currency": "usd",
-		            "description": "Remaining time on Omnivore Box for 2 Adults and 1 Child after 21 Sep 2016",
+		            "description": "Test Amount",
 		            "discountable": false,
 		            "livemode": true,
 		            "metadata": {},
 		            "period": {
-		              "start": 1474434794,
-		              "end": 1474498800
+		              "start": 1475272997,
+		              "end": 1475272997
 		            },
-		            "plan": {
-		              "id": "omn_2_adults_1_child_1",
-		              "object": "plan",
-		              "amount": 8544,
-		              "created": 1471983280,
-		              "currency": "usd",
-		              "interval": "week",
-		              "interval_count": 1,
-		              "livemode": true,
-		              "metadata": {},
-		              "name": "Omnivore Box for 2 Adults and 1 Child",
-		              "statement_descriptor": null,
-		              "trial_period_days": null
-		            },
-		            "proration": true,
-		            "quantity": 1,
-		            "subscription": "sub_99DduOPa4vJyXp",
+		            "plan": null,
+		            "proration": false,
+		            "quantity": null,
+		            "subscription": null,
 		            "type": "invoiceitem"
 		          },
 		          {
-		            "id": "sub_99DduOPa4vJyXp",
+		            "id": "ii_18zZ1dCEzFD8tUOqCweEmI7r",
 		            "object": "line_item",
-		            "amount": 8544,
+		            "amount": -216,
+		            "currency": "usd",
+		            "description": "Test",
+		            "discountable": false,
+		            "livemode": true,
+		            "metadata": {},
+		            "period": {
+		              "start": 1475272717,
+		              "end": 1475272717
+		            },
+		            "plan": null,
+		            "proration": false,
+		            "quantity": null,
+		            "subscription": null,
+		            "type": "invoiceitem"
+		          },
+		          {
+		            "id": "sub_9EjBiCNeulD9J6",
+		            "object": "line_item",
+		            "amount": 7194,
 		            "currency": "usd",
 		            "description": null,
 		            "discountable": true,
 		            "livemode": true,
 		            "metadata": {},
 		            "period": {
-		              "start": 1474498800,
-		              "end": 1475103600
+		              "start": 1475693155,
+		              "end": 1476297955
 		            },
 		            "plan": {
-		              "id": "omn_2_adults_1_child_1",
+		              "id": "omn_2_adults_1",
 		              "object": "plan",
-		              "amount": 8544,
-		              "created": 1471983280,
+		              "amount": 7194,
+		              "created": 1471983233,
 		              "currency": "usd",
 		              "interval": "week",
 		              "interval_count": 1,
 		              "livemode": true,
 		              "metadata": {},
-		              "name": "Omnivore Box for 2 Adults and 1 Child",
+		              "name": "Omnivore Box for 2 Adults",
 		              "statement_descriptor": null,
 		              "trial_period_days": null
 		            },
@@ -1213,24 +1206,24 @@ class SubinvoiceController extends Controller
 		          }
 		        ],
 		        "has_more": false,
-		        "total_count": 3,
-		        "url": "/v1/invoices/in_18wJkKCEzFD8tUOqBfDZYoFU/lines"
+		        "total_count": 4,
+		        "url": "/v1/invoices/in_191KQ8CEzFD8tUOqxIFnZW4O/lines"
 		      },
 		      "livemode": true,
 		      "metadata": {},
 		      "next_payment_attempt": null,
 		      "paid": true,
-		      "period_end": 1474498800,
-		      "period_start": 1473894000,
+		      "period_end": 1475693155,
+		      "period_start": 1475088355,
 		      "receipt_number": null,
 		      "starting_balance": 0,
 		      "statement_descriptor": null,
-		      "subscription": "sub_99DduOPa4vJyXp",
-		      "subtotal": 8401,
+		      "subscription": "sub_9EjBiCNeulD9J6",
+		      "subtotal": 5478,
 		      "tax": null,
 		      "tax_percent": null,
-		      "total": 8401,
-		      "webhooks_delivered_at": 1474499000
+		      "total": 5478,
+		      "webhooks_delivered_at": 1475693232
 		    }
 		  },
 		  "livemode": true,
@@ -1240,43 +1233,12 @@ class SubinvoiceController extends Controller
 		}';
 		
 		$event_json = json_decode($input);
-		echo "Created: " . $event_json->created;
-		echo "<br />";
-		echo "LiveMode: " . $event_json->livemode;
-		echo "<br />";
-		echo "**ID: " . $event_json->id;
-		echo "<br />";
-		echo "type: " . $event_json->type;
-		echo "<br />";
-		echo "object: " . $event_json->object;
-		echo "<br />";
-		echo "request: " . $event_json->request;
-		echo "<br />";
-		echo ("** data->object->date: " . date("l M j, Y",$event_json->data->object->date));
-		echo "<br />";
-		echo ("** data->object->id: " .  $event_json->data->object->id);
-		echo "<br />";
-		echo ("** data->object->customer: " .  $event_json->data->object->customer);
-		echo "<br />";
-		echo ("** data->object->date: " .  date("Y-m-d H:i:s", $event_json->data->object->date));
-		echo "<br />";
-		echo ("data->object->period_start: " .  $event_json->data->object->period_start);
-		echo "<br />";
-		echo ("data->object->period_end: " .  $event_json->data->object->period_start);
-		echo "<br />";
-		echo ("** data->object->lines->data[0]->id: " .  $event_json->data->object->lines->data[0]->id);
-		echo "<br />";
-		echo ("** data->object->lines->data[0]->amount: " .  $event_json->data->object->lines->data[0]->amount);
-		echo "<br />";
-		echo ("data->object->lines->data[0]->period->start: " .  $event_json->data->object->lines->data[0]->period->start);
-		echo "<br />";
-		echo ("data->object->lines->data[0]->period->end: " .  $event_json->data->object->lines->data[0]->period->end);
-		echo "<br />";
-		echo ("data->object->lines->data[0]->period->end: " .  $event_json->data->object->lines->data[0]->period->end);
-		echo "<br />";
-		echo ("** data->object->lines->data[0]->plan->id: " .  $event_json->data->object->lines->data[0]->plan->id);
 		
+			//*** new code to get the last item in the array
+			$invoiceitemCount = $event_json->data->object->lines->total_count;
+			$lastItem = $invoiceitemCount - 1;
 		
+		echo $event_json->data->object->lines->data[$lastItem]->id;
 		
 		foreach ($event_json as $obj) {
 			//echo ($obj->created);
