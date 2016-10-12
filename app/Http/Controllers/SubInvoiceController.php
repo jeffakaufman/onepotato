@@ -904,7 +904,11 @@ class SubinvoiceController extends Controller
         //link user_id
 
         $subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
-        $subinvoice->user_id = $subscriber->user_id;
+
+		if($subscriber) { 
+			$subinvoice->user_id = $subscriber->user_id; 
+		}
+       
 
         $subinvoice->save();
     }
