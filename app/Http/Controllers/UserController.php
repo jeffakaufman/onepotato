@@ -335,6 +335,8 @@ class UserController extends Controller
             $ac = AC_Mediator::GetInstance();
             $ac->AddReferralUser($user, $referral);
 
+            return redirect('/account/referrals')->with('referralsMessage', 'Thank you for referring a friend!  Get your next box free when three of your friends sign up!');
+
 /*
             $data = [
                 'friendname' => $user->name,
@@ -350,6 +352,20 @@ class UserController extends Controller
                 $message->to($to_send, $friendName)->subject('A Message from a Friend at One Potato!');
             });
 */
+        } else {
+            switch($checkErrors) {
+                case 'user_exists':
+                    return redirect('/account/referrals')->with('referralsMessage', '<span style="color:red;">The user with this email address already exists in our system</span>');
+                    break;
+
+                case 'referral_exists':
+                    return redirect('/account/referrals')->with('referralsMessage', '<span style="color:red;">You have already sent an invitation to this email address</span>');
+                    break;
+
+                default:
+                    return redirect('/account/referrals')->with('referralsMessage', '<span style="color:red;">Something went wrong</span>');
+                    break;
+            }
         }
 
 
@@ -496,10 +512,12 @@ class UserController extends Controller
 
         $update_type = $request->update_type;
 
+        $response = false;
+
         switch($update_type) {
 
             case 'referrals':
-                $this->_processReferralSending($request);
+                $response = $this->_processReferralSending($request);
                 break;
 
             case 'delivery_address':
@@ -523,7 +541,11 @@ class UserController extends Controller
                 break;
         }
 
-        return redirect('/account/' . $request->user_id);
+        if($response) {
+            return $response;
+        } else {
+            return redirect('/account');
+        }
 
 
 			//get all the user objects and pass to the view

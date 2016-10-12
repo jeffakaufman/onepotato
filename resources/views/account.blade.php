@@ -808,7 +808,12 @@ $(document).ready(function() {
                                 <div class="col-xs-4 nosidepadding item @if ($new_sub_count > 1) on @endif"><span><i class="icon icon-pot"></i><p>2</p></span></div>
                                 <div class="col-xs-4 nosidepadding item last @if ($new_sub_count > 2) on @endif"><span><i class="icon icon-pot"></i><p>3</p></span></div>
                             </div>
-                            
+
+                        @if(session('referralsMessage'))
+                            <div class="row">
+                                <div class="col-md-10">{!! session('referralsMessage') !!}</div>
+                            </div>
+                        @endif
                             <div class="row">
 
                                 <div class="col-md-4">
