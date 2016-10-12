@@ -769,7 +769,82 @@ class SubinvoiceController extends Controller
         return $user;
     }
 
-    private function _invoicePaymentSucceeded($event_json) {
+	private function _invoicePaymentSucceeded($event_json) {
+		
+        //date function here is pesky
+        $subinvoice = new Subinvoice;
+
+        $subinvoice->stripe_event_id = $event_json->id;
+
+        $timeStamp = $event_json->data->object->date;
+        $dtStr = date("c", $timeStamp);
+        $charge_date = new DateTime($dtStr);
+
+        //$charge_date = new DateTime();
+        //$charge_date_formatted = $charge_date->format("Y-m-d H:i:s");
+
+        //store trialing days
+
+        //store period_start_date, period_end_date
+
+        $charge_date_formatted = date_format($charge_date,"Y-m-d H:i:s");
+
+
+        $subinvoice->charge_date = $charge_date_formatted;
+        $subinvoice->stripe_customer_id = $event_json->data->object->customer;
+
+        if (isset($event_json->data->object->charge)) {
+            $subinvoice->stripe_charge_code = $event_json->data->object->charge;
+        }
+
+		//*** new code to get the last item in the array
+		$invoiceitemCount = $event_json->data->object->lines->total_count;
+		$lastItem = $invoiceitemCount - 1;
+
+        $subinvoice->stripe_sub_id = $event_json->data->object->lines->data[$lastItem]->id;
+
+        $period_start_date_unix = $event_json->data->object->lines->data[$lastItem]->period->start;
+        $period_end_date_unix = $event_json->data->object->lines->data[$lastItem]->period->end;
+
+        $period_start_date_str = date("c", $period_start_date_unix);
+        $period_start_date = new DateTime($period_start_date_str);
+        $period_start_date_formatted = date_format($period_start_date,"Y-m-d H:i:s");
+
+        $period_end_date_str = date("c", $period_end_date_unix);
+        $period_end_date = new DateTime($period_end_date_str);
+        $period_end_date_formatted = date_format($period_end_date,"Y-m-d H:i:s");
+
+        $subinvoice->period_start_date = $period_start_date_formatted;
+        $subinvoice->period_end_date = $period_end_date_formatted;
+
+        $stripe_id = $event_json->data->object->lines->data[$lastItem]->id;
+
+        //coupon code (may not exist)
+        if (isset($event_json->data->object->discount->coupon->id)) {
+            $subinvoice->coupon_code = $event_json->data->object->discount->coupon->id;
+        }
+
+
+        $subinvoice->charge_amount = $event_json->data->object->lines->data[$lastItem]->amount;
+        $subinvoice->plan_id = $event_json->data->object->lines->data[$lastItem]->plan->id;
+
+
+
+        $subinvoice->invoice_status = "charged_not_shipped";
+        $subinvoice->raw_json = json_encode($event_json);
+
+
+        //link user_id
+
+        $subscriber = UserSubscription::where('stripe_id',$stripe_id)->first();
+        $subinvoice->user_id = $subscriber->user_id;
+
+        $subinvoice->save();
+    }
+
+
+
+    private function _invoicePaymentSucceeded_old($event_json) {
         //date function here is pesky
         $subinvoice = new Subinvoice;
 
