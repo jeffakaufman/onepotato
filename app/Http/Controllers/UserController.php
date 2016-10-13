@@ -1372,7 +1372,7 @@ class UserController extends Controller
 		} catch (\Exception $e) {
             //Do Nothing
         }
-	
+
 
 		$cancel = new Cancellation();
 		
@@ -1486,6 +1486,8 @@ class UserController extends Controller
 
 	    $data = $this->_decodeCancelCode($code);
         if(!$data) {
+
+            die("Invalid Link");
             abort(404, "Invalid link");
             exit;
         }
@@ -1498,12 +1500,15 @@ class UserController extends Controller
         $now = new \DateTime('now');
 
         if($now > $validTo) {
+//            die("Link is expired");
+
             abort(404, "Link is expired");
         }
 
         $user = User::find($userId);
 
         if($user->email != $email) {
+//            die("Wrong email");
             Auth::logout();
             abort(404, 'Something wrong');
         }
@@ -1511,12 +1516,12 @@ class UserController extends Controller
 
         if(!Auth::user()) {
             Auth::logout();
-            abort(404, 'Please login');
+            return redirect()->refresh();
         }
 
         if(Auth::user()->id != $user->id) {
             Auth::logout();
-            abort(404, 'Wrong user');
+            return redirect()->refresh();
         }
 
 
