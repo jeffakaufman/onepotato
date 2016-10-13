@@ -692,6 +692,8 @@ class DashboardController extends Controller
         $userSubscription->product_id = $newProduct->id;
         if (isset($request->prefs)) {
             $userSubscription->dietary_preferences = implode(",",$request->prefs);
+        } else {
+            $userSubscription->dietary_preferences = '';
         }
 
         $userSubscription->save();
