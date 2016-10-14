@@ -209,13 +209,14 @@ class DashboardController extends Controller
 
 		$oldMenus = $user->menus()
 				->where('delivery_date','<',date('Y-m-d',strtotime($deliveryHistory[0]->charge_date.'+1 week')))
-				->where('delivery_date','>','2016-9-28')
+				->where('delivery_date','>','2016-10-4')
 				->orderBy('delivery_date','desc')
 				->get();
 		$oldDeliveries = new stdClass;
 		$invoiceMenus = [] ;
 		$oldDate = "";
 		$invoiceIndex = 0;
+
 
 		
 		foreach ($oldMenus as $i => $oldMenu) {
