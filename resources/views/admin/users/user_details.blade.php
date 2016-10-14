@@ -202,9 +202,11 @@
 							@endif
 							<td>{{ $invoice->tracking_number }}</td>
 							<td style="font-size:smaller">
+							@if (isset($invoice->menus))
 								@foreach ($invoice->menus as $menu)
-								{{ $menu }}<br>
+								{{ $menu  }}<br>
 								@endforeach
+							@endif
 							</td>
 							<?php
 								$hold_status = isset($invoice->skipStatus->hold_status) ? $invoice->skipStatus->hold_status : "";
