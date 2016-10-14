@@ -174,6 +174,55 @@
 			<div class="panel-heading"><h4>Past Deliveries</h4></div>
 			<div class="panel-body">
 				<div class="col-sm-12">
+					<table id="invoices" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
+						<tr>
+							<th>Charge Date</th>
+							<th>Amount</th>
+							<th>Status</th>
+							<th>Coupon</th>
+							<th>Ship Date</th>
+							<th>Tracking Number</th>
+							<th>Menus</th>
+							<th>Status</th>
+						</tr>
+						@foreach($deliveryHistory as $invoice)
+						<tr>
+							<td>{{ date('n/j',strtotime($invoice->charge_date)) }}</td>
+							<td>${{ $invoice->charge_amount/100 }}</td>
+							@if ($invoice->invoice_status == 'sent_to_ship')
+							<td>At Fulfillment</td>
+							@else
+							<td>{{ ucfirst($invoice->invoice_status) }}</td>
+							@endif
+							<td>{{ $invoice->coupon_code }}</td>
+							@if ($invoice->ship_date)
+							<td>{{ date('n/j',strtotime($invoice->ship_date)) }}</td>
+							@else
+							<td></td>
+							@endif
+							<td>{{ $invoice->tracking_number }}</td>
+							<td style="font-size:smaller">
+								@foreach ($invoice->menus as $menu)
+								{{ $menu }}<br>
+								@endforeach
+							</td>
+							<?php
+								$hold_status = isset($invoice->skipStatus->hold_status) ? $invoice->skipStatus->hold_status : "";
+							?>
+							@if ($hold_status == 'held') 
+							<td class="skip-status bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>
+							elseif ($hold_status == 'hold') 
+							<td class="skip-status bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>
+							@elseif ($hold_status == 'released') 
+							<td class="skip-status bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>
+							@else
+							<td class="skip-status text-center"></td>
+							@endif
+						</tr>
+						@endforeach
+					</table>
+				
+				
 				</div>										
 			</div>	
 		</div>

@@ -202,44 +202,41 @@ class DashboardController extends Controller
 				->orderBy('date_to_hold')
 				->get();
 
-/*		
+		$deliveryHistory = App\Subinvoice::where('user_id',$id)
+				->where('charge_date','>','2016-9-28')
+				->orderBy('charge_date','desc')
+				->get();
+
+		$oldMenus = $user->menus()
+				->where('delivery_date','<',date('Y-m-d',strtotime($deliveryHistory[0]->charge_date.'+1 week')))
+				->where('delivery_date','>','2016-9-28')
+				->orderBy('delivery_date','desc')
+				->get();
+		$oldDeliveries = new stdClass;
+		$invoiceMenus = [] ;
+		$oldDate = "";
+		$invoiceIndex = 0;
+
 		
-		$weeksMenus = App\MenusUsers::where('users_id',$id)->get();
-		$weeksMenus = DB::table('menus_users')
-					->select( DB::raw('DISTINCT delivery_date, hold_status,menu_title') )
-					->where('menus_users.users_id',$id)
-					->where('delivery_date','>',date('Y-m-d'))
-					->join('menus','menus.id','=','menus_users.menus_id')
-					->leftJoin('shippingholds', function($join)
-                        {
-                             $join->on('shippingholds.user_id','=','menus_users.users_id');
-                             $join->on('shippingholds.date_to_hold','=','menus_users.delivery_date');
-                    	})
-						->Orderby('delivery_date')
-					->get();
-		$weeksMenusDates = array_pluck($weeksMenus,'delivery_date');
-
-
-		$menuPivotRow = new stdClass();
-		$everybodyElse = [];
-   		foreach ($everybodyElseRaw as $i => $menu) {
-			$menuPivotRow->user_id = $menu->users_id;
-			$menuPivotRow->menu[$i%3] = $menu->menus_id;
+		foreach ($oldMenus as $i => $oldMenu) {
+			if ($oldMenu->pivot->delivery_date <> $oldDate) {
+				$oldDeliveries->delivery_date = $oldMenu->pivot->delivery_date;
+				$oldDeliveries->weekMenu[0] = $oldMenu->menu_title;
+				$oldDeliveries->skipStatus = $user->getSkips()->where('date_to_hold',$oldDeliveries->delivery_date)->first();
+				$oldDate = $oldMenu->pivot->delivery_date;
+			} else {
+				$oldDeliveries->weekMenu[$i%3] = $oldMenu->menu_title;
+			}
 			if ($i%3 == 2) {
-				array_push($everybodyElse,$menuPivotRow);
-				$menuPivotRow = new stdClass();
+				$deliveryHistory[$invoiceIndex]->menus = $oldDeliveries->weekMenu;
+				$hold_status = isset($weekMenus->skipStatus->hold_status) ? $weekMenus->skipStatus->hold_status : "";
+				$deliveryHistory[$invoiceIndex]->skipStatus = isset($oldDeliveries->skipStatus) ? $oldDeliveries->skipStatus : "";
+				array_push($invoiceMenus,$oldDeliveries);
+				$oldDeliveries = new stdClass();
+				$invoiceIndex++;
 			}
 		}
-		$upcomingSkipsNoMenu = App\Shippingholds::where('user_id',$id)
-						->where('date_to_hold','>=',date('Y-m-d'))
-						->whereNotIn('date_to_hold',$weeksMenusDates)
-						->Orderby('date_to_hold')
-						->get();
-*/
 
-
-
-						
 		$credits = App\Credit::where('user_id',$id)->get();
 
 		return view('admin.users.user_details')
@@ -253,6 +250,7 @@ class DashboardController extends Controller
 						'weeksMenus'=>$weeksMenus,
 						'upcomingSkipsNoMenu'=>$upcomingSkipsNoMenu,
 						'credits'=>$credits,
+						'deliveryHistory'=>$deliveryHistory,
 						]);
 
     }
