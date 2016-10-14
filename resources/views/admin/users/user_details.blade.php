@@ -191,7 +191,7 @@
 							<td>${{ $invoice->charge_amount/100 }}</td>
 							@if ($invoice->invoice_status == 'sent_to_ship')
 							<td>At Fulfillment</td>
-							@elseif ($invoice->invoice_status == 'Does_not_ship')
+							@elseif ($invoice->invoice_status == 'does_not_ship')
 							<td>Not Shipped</td>
 							@else
 							<td>{{ ucfirst($invoice->invoice_status) }}</td>
