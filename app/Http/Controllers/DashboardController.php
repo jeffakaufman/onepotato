@@ -311,9 +311,11 @@ class DashboardController extends Controller
     public function showReports()
     {
         // last week is the last week we have "shipped" invoices for
-        $lastPeriodEndDate = Subinvoice::where('invoice_status','shipped')->max('period_end_date');
-        $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate));           
-        $lastPeriodEndDate = '2016-10-18';
+        $lastPeriodEndDate = Subinvoice::max('ship_date');
+        $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate."+8 days"));
+        
+        
+        
         $lastTuesday = date('Y-m-d',strtotime($lastPeriodEndDate.'-7 day'));         
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
