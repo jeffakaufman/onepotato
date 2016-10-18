@@ -6,6 +6,7 @@ use App\AC_Mediator;
 use App\Events\UserHasRegistered;
 use App\MenuAssigner;
 use App\ReferralManager;
+use App\SubscriptionManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -885,54 +886,17 @@ class NewUserController extends Controller
 			
 	}
 	
-	public function ChangeRatePlan ($id, $num_children, $weekof) {
-		
-			//record $id, $num_children, $weekof in the plan_changes table with status "to_change"
-			$plan_change = new Plan_change;
-			$plan_change->user_id = $id;
-			$plan_change->date_to_change = $weekof;
-			$plan_change->status = "to_change";
-			
-			//look up the product ID
+	public function ChangeRatePlan ($userId, $num_children, $weekof) {
 
-			$userSubscription = UserSubscription::where('user_id',$id)->first();
-			$current_product_id = $userSubscription->product_id;
 
-			//lookup the SKU
+	    SubscriptionManager::RegisterPlanChange(
+	        User::find($userId),
+            new \DateTime($weekof),
+            $num_children
+        );
 
-			$currentProduct = Product::where('id', $current_product_id)->first();
-			$current_sku = $currentProduct->sku;
-			
-			$plan_change->old_sku = $current_sku;
-
-			//update the sku - 
-			$sku_array = str_split($current_sku, 2);
-
-			//update the third position (2) to new number of children
-			$sku_array[2] = "0" . $num_children;
-
-			$new_sku = implode ("",$sku_array);
-			
-			$change_exists = Plan_change::where('user_id',$id)
-										->where('date_to_change',$weekof)
-										->where('status','to_change')
-										->first();
-
-			$plan_change->sku_to_change = $new_sku;
-			
-			if (count($change_exists) == 0) $plan_change->save();
-			else {
-				$change_exists->old_sku = $change_exists->sku_to_change;
-				$change_exists->sku_to_change = $new_sku;
-				$change_exists->save();
-			}
-					
-			//return success code
-			http_response_code(200);
-			return redirect('/delivery-schedule'); 
-			
+        //return success code
+        http_response_code(200);
+        return redirect('/delivery-schedule');
 	}
-
-
-
 }

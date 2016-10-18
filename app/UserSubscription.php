@@ -81,5 +81,9 @@ class UserSubscription extends Model {
         return $this->belongsTo('App\Product');
     }
 
-	
+
+    public static function GetByUserId($userId) {
+        return self::where('user_id', $userId)->first();
+    }
+
 }

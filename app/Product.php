@@ -63,5 +63,10 @@ class Product extends Model {
         return str_split($this->attributes['sku'],2);
     }
 
+
+
+    public static function GetBySku($sku) {
+        return self::where('sku', $sku)->first();
+    }
 	
 }

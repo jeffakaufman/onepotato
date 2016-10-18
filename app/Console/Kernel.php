@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
          Commands\TestCommand::class,
          Commands\CheckAbandoned::class,
          Commands\CronTest::class,
+         Commands\ProcessPlanChange::class,
+         Commands\ProcessPlanBack::class,
     ];
 
     /**
@@ -56,6 +58,16 @@ class Kernel extends ConsoleKernel
             ->cron("*/15 * * * *")
             ->withoutOverlapping()
             ->sendOutputTo("{$logsFolder}/checkAbandoned.log")
+            ->emailOutputTo("ahhmed@mail.ru");
+
+        $schedule->command('plan:change')
+            ->wednesdays()->at('19:00')
+            ->sendOutputTo("{$logsFolder}/planChange.log")
+            ->emailOutputTo("ahhmed@mail.ru");
+
+        $schedule->command('plan:back')
+            ->thursdays()->at('19:00')
+            ->sendOutputTo("{$logsFolder}/planChange.log")
             ->emailOutputTo("ahhmed@mail.ru");
     }
 }
