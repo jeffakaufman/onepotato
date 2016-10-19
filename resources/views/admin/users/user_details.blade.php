@@ -133,7 +133,7 @@
 
 			@if ($user->status == "inactive" || $user->status == "active" )
 				<div class="row">
-					<div class="col-md-2 ">
+					<div class="col-md-12 ">
 					<form action="{{ url('admin/user') }}/send_cancel_link/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to send a cancellation link?');">
 						{{ csrf_field() }}
 						<input type="hidden" name="user_id" value="{{ $user->id }}" />
@@ -145,11 +145,18 @@
 							</div>
 						</div>
 					</form>
+
+						@if($lastCancelLinkSent)
+							<div style="padding:0 0 10px 40px;">
+								Last one was sent: {{$lastCancelLinkSent}}
+							</div>
+						@endif
+
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-12">
 					<form action="{{ url('admin/user') }}/cancel_now/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to cancel user\'s subscription?');">
 						{{ csrf_field() }}
 						<input type="hidden" name="user_id" value="{{ $user->id }}" />
@@ -166,7 +173,7 @@
 			@elseif ($user->status == 'inactive-cancelled')
 			
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-12">
 					<form action="{{ url('admin/user') }}/cancel/restart/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to restart this subscription?');">
 						{{ csrf_field() }}
 						<input type="hidden" name="user_id" value="{{ $user->id }}" />

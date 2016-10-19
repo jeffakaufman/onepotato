@@ -240,6 +240,17 @@ class DashboardController extends Controller
 
 		$credits = App\Credit::where('user_id',$id)->get();
 
+        $lastCancelLinkSent = '';
+
+        $lastCancelLinkRecord = App\CancelLink::where('user_id', $id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
+        if($lastCancelLinkRecord) {
+            $linkSent = new \DateTime($lastCancelLinkRecord->created_at);
+            $lastCancelLinkSent = $linkSent->format("m/d/Y @ H:i");
+        }
+
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
 						'shippingAddress'=>$shippingAddress,
@@ -252,6 +263,7 @@ class DashboardController extends Controller
 						'upcomingSkipsNoMenu'=>$upcomingSkipsNoMenu,
 						'credits'=>$credits,
 						'deliveryHistory'=>$deliveryHistory,
+                        'lastCancelLinkSent' => $lastCancelLinkSent,
 						]);
 
     }

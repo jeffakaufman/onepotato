@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CancelLink;
 use App\ReferralManager;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
@@ -1127,6 +1128,12 @@ class UserController extends Controller
 //        $m->bcc('jeffkaufman@kaufmaninternational.com', 'Jenna');
         $m->subject("Cancellation link is created for you");
         });
+
+        $cl = new CancelLink();
+        $cl->user_id = $id;
+        $cl->admin_id = Auth::user()->id;
+        $cl->save();
+
 //var_dump($r);die();
         return redirect("/admin/user_details/{$id}");
     }
