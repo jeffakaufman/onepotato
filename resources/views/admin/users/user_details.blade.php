@@ -22,15 +22,15 @@
 <home :menu="menu" inline-template>
 <strong>{{ $userProduct->product_description }} {{ $userSubscription->dietary_preferences }}</strong>
 <span style="padding-left:30px;"><a href="#" id="productEditLink">Edit</a></span>
-<br>	
-		<div class="row">
-		<!-- Row 1 -->
-	    	<div class="col-md-8">
-		    	<div class="panel panel-default ">
-		       		<div class="panel-heading"><h4>Upcoming Deliveries</h4></div>
-					<div class="panel-body">
+<br />
+	<div class="row">
+	<!-- Row 1 -->
+		<div class="col-md-8">
+			<div class="panel panel-default ">
+				<div class="panel-heading"><h4>Upcoming Deliveries</h4></div>
+				<div class="panel-body">
 					
-						<table id="users" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
+					<table id="users" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
 							<thead> 
 								<tr>
         	    					<th class="text-center">Date</th>
@@ -98,62 +98,80 @@
            					@endforeach
            				</table>
            				
-        			</div>
-        		</div> 
-        	</div> 
-        	
-        	<div class="col-md-3"><!-- Shipping Address -->
-		       	<div class="panel panel-default ">
-		           	<div class="panel-heading">
-						<div style="float:left;"><strong>Shipping Address</strong></div>
-						<div style="float:right;" id="shippingAddressEditLinkContainer"><a href="#" id="editShippingAddressLink">Edit</a></div>
-						<div style="float:right;display:none;" id="shippingAddressEditCancelLinkContainer" ><a href="#" id="cancelEditShippingAddressLink">Cancel</a></div>
-						<div style="clear:both"></div>
-					</div>
-					<div class="panel-body">
-						<div class="col-sm-12" id="shippingAddressContainer">
-					    	<address>
-					        	{{ $shippingAddress->shipping_address }}<br />
-					            @if ($shippingAddress->shipping_address_2)
-					            	{{ $shippingAddress->shipping_address_2 }}<br />
-					            @endif
-								{{ $shippingAddress->shipping_city }}, {{ $shippingAddress->shipping_state }} {{ $shippingAddress->shipping_zip}}<br />
-					            <a href="mailto:{{ $user->email}}">{{ $user->email }}</a>
-							</address>
-						</div>
-
-						<div class="col-sm-12" id="shippingAddressEditContainer" style="display:none;">
-							Yo
-						</div>
-
-					</div>	
 				</div>
+			</div>
+		</div>
+        	
+		<div class="col-md-3"><!-- Shipping Address -->
+			<div class="panel panel-default ">
+				<div class="panel-heading">
+					<div style="float:left;"><strong>Shipping Address</strong></div>
+					<div style="float:right;" id="shippingAddressEditLinkContainer"><a href="#" id="editShippingAddressLink">Edit</a></div>
+					<div style="float:right;display:none;" id="shippingAddressEditCancelLinkContainer" ><a href="#" id="cancelEditShippingAddressLink">Cancel</a></div>
+					<div style="clear:both"></div>
+				</div>
+				<div class="panel-body">
+					<div class="col-sm-12" id="shippingAddressContainer">
+						<address>
+							{{ $shippingAddress->shipping_address }}<br />
+							@if ($shippingAddress->shipping_address_2)
+								{{ $shippingAddress->shipping_address_2 }}<br />
+							@endif
+							{{ $shippingAddress->shipping_city }}, {{ $shippingAddress->shipping_state }} {{ $shippingAddress->shipping_zip}}<br />
+							<a href="mailto:{{ $user->email}}">{{ $user->email }}</a>
+						</address>
+					</div>
+
+					<div class="col-sm-12" id="shippingAddressEditContainer" style="display:none;">
+						Yo
+					</div>
+
+				</div>
+			</div>
+
+			<div class="panel panel-default ">
+
 			@if ($user->status == "inactive" || $user->status == "active" )
 				<div class="row">
-					<div class="col-md-10 ">
+					<div class="col-md-2 ">
 					<form action="{{ url('admin/user') }}/send_cancel_link/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to send a cancellation link?');">
 						{{ csrf_field() }}
 						<input type="hidden" name="user_id" value="{{ $user->id }}" />
-					<div>
-					<div class="form-group">
-						<div class="col-sm-3">
-							<button type="submit" class="btn btn-danger">
-								<i class="fa fa-mail"></i> Send Cancellation Link
-							</button>
+						<div class="form-group">
+							<div class="col-sm-3" style="padding: 10px 0 0 30px;">
+								<button type="submit" class="btn btn-danger">
+									<i class="fa fa-mail"></i> Send Cancellation Link
+								</button>
+							</div>
 						</div>
-					</div>
 					</form>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-2">
+					<form action="{{ url('admin/user') }}/cancel_now/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to cancel user\'s subscription?');">
+						{{ csrf_field() }}
+						<input type="hidden" name="user_id" value="{{ $user->id }}" />
+						<div class="form-group">
+							<div class="col-sm-3" style="padding: 0 0 0 30px;">
+								<button type="submit" class="btn btn-danger">
+									<i class="fa fa-mail"></i> Cancel Now
+								</button>
+							</div>
+						</div>
+					</form>
+					</div>
 				</div>
 			@elseif ($user->status == 'inactive-cancelled')
 			
 				<div class="row">
-					<div class="col-md-10 ">
+					<div class="col-md-2">
 					<form action="{{ url('admin/user') }}/cancel/restart/{{ $user->id }}" method="POST" class="form-horizontal" onsubmit="return confirm('Are you sure you would like to restart this subscription?');">
 						{{ csrf_field() }}
 						<input type="hidden" name="user_id" value="{{ $user->id }}" />
-					<div>
 					<div class="form-group">
-						<div class="col-sm-3">
+						<div class="col-sm-3" style="padding: 10px 30px;">
 							<button type="submit" class="btn btn-primary">
 								<i class="fa fa-mail"></i> Restart Subscription
 							</button>
@@ -161,11 +179,11 @@
 					</div>
 					</form>
 				</div>
+					</div>
 			@endif
 			</div>
 		</div>
 	</div> 
-</div> 
 <!-- Row 1 End -->
 <!-- Row 2 -->
 <div class="row">

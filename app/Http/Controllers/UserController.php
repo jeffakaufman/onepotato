@@ -1131,6 +1131,79 @@ class UserController extends Controller
         return redirect("/admin/user_details/{$id}");
     }
 
+    public function CancelNow($id, Request $request) {
+        $user = User::find($id);
+        $user->status = User::STATUS_INACTIVE_CANCELLED;
+
+
+        //retrieve stripe ID from subscriptions table
+        $userSubscription = UserSubscription::GetByUserId($id);
+        $userSubscription->status = "cancelled";
+
+        $stripe_sub_id = $userSubscription->stripe_id;
+
+        // Set your secret key: remember to change this to your live secret key in production
+        // See your keys here https://dashboard.stripe.com/account/apikeys
+
+
+        //try to cancel in Stripe - this will not always work, if the user is being 'held' then this will throw an error
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        try {
+            $subscription = \Stripe\Subscription::retrieve($stripe_sub_id);
+            $subscription->cancel();
+        } catch (\Exception $e) {
+            //Do Nothing
+        }
+
+
+        $cancel = new Cancellation();
+
+        $cancel->user_id = $id;
+        $cancel->cancel_reason = "Cancelled By Admin";
+        $cancel->cancel_specify = '';
+        $cancel->cancel_suggestions = '';
+        $cancel->save();
+
+
+        $user->save();
+        $userSubscription->save();
+
+        $ac = AC_Mediator::GetInstance();
+
+        $shipDay = 'tuesday';
+        $dayLimit = 'wednesday';
+        $timeLimit = '9:00';
+
+        $now = new \DateTime('now');
+        $today = new \DateTime('today');
+
+        $theDay = new \DateTime($dayLimit);
+        $limit = new \DateTime("{$dayLimit} {$timeLimit}");
+
+        if(($today == $theDay) && ($now > $limit)) {
+            $limit->modify("+1 week");
+        }
+
+        $lastDeliveryDate = (clone $limit)->modify("last {$shipDay}");
+
+        try {
+            $ac->UpdateCustomerFields($user, ['FINAL_DELIVERY_DATE' => $lastDeliveryDate->format('l, F jS')]);
+            $ac->AddCustomerTag($user, 'Cancellation');
+        } catch (\Exception $e) {
+            //Do Nothing
+        }
+
+//        $reactivateMessage = '';
+//        $today = new \DateTime('today');
+//        if($lastDeliveryDate >= $today) {
+//            $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
+//        }
+
+        return redirect("/admin/user_details/{$id}");
+    }
+
 
     public function recordReferral (Request $request) {
 			

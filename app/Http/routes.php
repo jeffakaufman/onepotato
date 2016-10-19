@@ -222,6 +222,7 @@ $router->group(['middleware' => 'admin'], function($router) {
 
     Route::post('/admin/user/send_cancel_link/{id}', 'UserController@sendCancelLink');
     Route::post('/admin/user/cancel/restart/{id}', 'DashboardController@RestartSubscription');
+    Route::post('/admin/user/cancel_now/{id}', 'UserController@CancelNow');
 
 
     Route::get('/admin/dashboard', 'DashboardController@show');

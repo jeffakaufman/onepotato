@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
          Commands\CronTest::class,
          Commands\ProcessPlanChange::class,
          Commands\ProcessPlanBack::class,
+         Commands\SendWeeklyReport::class,
     ];
 
     /**
