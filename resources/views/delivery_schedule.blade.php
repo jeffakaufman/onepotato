@@ -280,7 +280,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             </div>
                             <div class="modal-body">
                                 
-                                <change-menu :fulllist="fulllist"></change-menu>
+                                <change-menu v-bind:fulllist="fulllist" is="change-menu"></change-menu>
 
                                 <template id="change-template">
                                     <h5 class="delivery_date padbottom"></h5>
