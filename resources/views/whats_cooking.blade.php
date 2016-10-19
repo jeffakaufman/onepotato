@@ -13,7 +13,6 @@ var _defaultWhatsCookingWeek = false;
 </script>
 
 @if($defaultWeek)
-<?php $redodate = date('Y-m-d', strtotime($defaultWeek)); ?>
 <script type="text/javascript">
     _defaultWhatsCookingWeek = '{{$defaultWeek}}';
 </script>
@@ -40,7 +39,7 @@ var _defaultWhatsCookingWeek = false;
         
         <menu v-ref:menu transition="fade"></menu>
 
-        <template id="menu-template">
+        <script type="x/templates" id="menu-template">
                                 
             <div id="menu">
                 <div class="col-xs-12">
@@ -96,7 +95,7 @@ var _defaultWhatsCookingWeek = false;
                 </div>
             </div>
             
-        </template>
+        </script>
 
     </div><!-- .row -->
 
