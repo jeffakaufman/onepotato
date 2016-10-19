@@ -280,9 +280,9 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                             </div>
                             <div class="modal-body">
                                 
-                                <change-menu v-bind:fulllist="fulllist" is="change-menu"></change-menu>
+                                <change-menu :fulllist="fulllist" is="change-menu"></change-menu>
 
-                                <template id="change-template">
+                                <script type="x/templates" id="change-template">
                                     <h5 class="delivery_date padbottom"></h5>
                                     <div class="row">
                                         <div class="col-sm-4 meal text-center" v-bind:class="[meal.isNotAvailable ? '' : 'avail']" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
@@ -298,7 +298,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                                     <input name="menu_id[]" class="menu_id menu_id-0" type="hidden" value="">
                                     <input name="menu_id[]" class="menu_id menu_id-1" type="hidden" value="">
                                     <input name="menu_id[]" class="menu_id menu_id-2" type="hidden" value="">
-                                </template>
+                                </script>
 
                             </div>
                             <div class="modal-footer">
