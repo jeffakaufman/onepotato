@@ -132,7 +132,7 @@ $('#register3').addClass('active');
                                 
                             </div>
     
-                            <template id="menu-template">
+                            <script type="x/templates" id="menu-template">
                                 
                                 <div id="menu" class="col-xs-12 extrapadding">
     
@@ -163,14 +163,14 @@ $('#register3').addClass('active');
                                     
                                 </div>
                                 
-                            </template>
+                            </script>
 
                             <all-menus v-ref:all-menus :prefs="prefs"></all-menus>
 
-                            <template id="menus-template">
+                            <script type="x/templates" id="menus-template">
                                 <input type="hidden" name="menus_id[@{{ meal.menu_delivery_date }}][]" value="@{{ meal.id }}" v-for="meal in filteredMenus" track-by="$index" />
                                 <!-- <input type="hidden" name="menus_id[]" value="" v-for="meal in filteredMenus" /> -->
-                            </template>
+                            </script>
                         </div>
                     </div>
                     <div class="row">
