@@ -285,7 +285,7 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                                 <template id="change-template">
                                     <h5 class="delivery_date padbottom"></h5>
                                     <div class="row">
-                                        <div class="col-sm-4 meal text-center" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
+                                        <div class="col-sm-4 meal text-center" v-bind:class="[meal.isNotAvailable ? '' : 'avail']" data-id="@{{ meal.id }}" v-for="meal in fullMenu">
                                             <div v-if="meal.isNotAvailable == 1" class="not_avail">No longer available</div>
                                             <img :src="meal.image" v-if="meal.image" alt="@{{ meal.menu_title }}">
                                             <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">
