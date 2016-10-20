@@ -19,6 +19,7 @@ class CreateCustomRegisterPageTable extends Migration
             $table->string('title', 255)->nullable();
             $table->string('subtitle', 500)->nullable();
             $table->tinyInteger('status');
+
         });
     }
 
