@@ -252,3 +252,10 @@ Route::get('/__test__/test/{email}', function($email) { //TODO :: remove or comm
 //    echo "ok";
 });
 
+
+$_customRegisterPages = App\CustomRegisterPage::where('status', 1)->get();
+foreach($_customRegisterPages as $_crp) {
+    Route::get('/'.$_crp->route, ['uses' => function() use($_crp) {
+        return App::make('App\Http\Controllers\NewUserController')->CustomRegistrationPage($_crp->title, $_crp->subtitle);
+    }]);
+}

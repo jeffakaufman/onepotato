@@ -35,19 +35,21 @@ class Kernel extends ConsoleKernel
 
         $logsFolder = realpath(dirname(__FILE__)."/../../storage/logs");
 
+/*
         $schedule->command("cron:test")
             ->dailyAt('13:00')
             ->sendOutputTo("{$logsFolder}/cronTest.log")
             ->emailOutputTo("ahhmed@mail.ru");
-
+*/
         //Completed automation on 09/29/2016 at 06:01
 
+/*
          $schedule->command('inspire')
             ->everyFiveMinutes()
 //            ->everyMinute()
             ->sendOutputTo("{$logsFolder}/inspireTest.log")
             ->emailOutputTo("ahhmed@mail.ru");
-
+*/
 
         $schedule->command('renewal:reminder')
 //            ->thursdays()->at('23:59');

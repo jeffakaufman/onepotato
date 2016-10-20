@@ -52,9 +52,18 @@ class NewUserController extends Controller
                 $request->flashOnly('email');
             }
         }
-		return view('register-1');
+		return view('register-1')->with(['title'=> false, 'subtitle'=>false]);
 	}
-	
+
+	public function CustomRegistrationPage ($title, $subTitle) {
+
+		return view('register-1')->with([
+		    'title' => $title,
+            'subtitle' => $subTitle,
+        ]);
+	}
+
+
 	public function RecordNewuser (Request $request) {
 
 //	    var_dump($request->email);

@@ -20,9 +20,18 @@ $('#register1').addClass('active');
 	            <div class="panel-heading">
 	                
 	                <h1>
-	                    Let’s get started!
-	                    <div class="panel-subtitle">Everything you need to make organic & delicious dinners
-	the whole family will love delivered straight to your door each week.</div>
+						@if($title)
+							{!! $title !!}
+						@else
+	                    	Let’s get started!
+						@endif
+	                    <div class="panel-subtitle">
+							@if($subtitle)
+								{!! $subtitle !!}
+							@else
+								Everything you need to make organic & delicious dinners the whole family will love delivered straight to your door each week.
+							@endif
+						</div>
 	                </h1>
 	            </div>
 				 <!-- Display Validation Errors -->
