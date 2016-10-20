@@ -99,6 +99,19 @@ class ProductSku {
         return $this->__toString();
     }
 
+    public function GetNumAdults() {
+        return $this->numAdults;
+    }
+
+    public function GetNumChildren() {
+        return $this->numChildren;
+    }
+
+    public function IsGlutenFree() {
+        return (bool)$this->glutenFree;
+    }
+
+
     public function __toString() {
         $sku = '';
         $sku .= $this->_getPlanTypePart();
