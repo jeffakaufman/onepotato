@@ -12,6 +12,8 @@ use App\Shipping_address;
 use App\Csr_note;
 use App\UserSubscription;
 use App\Product;
+use App\SimpleLogger;
+
 use App\Referral;
 use App\Order;
 use App\Cancellation;
@@ -706,7 +708,11 @@ class SubinvoiceController extends Controller
 	}
 	
 	public function recordStripeInvoice() {
-		
+
+	    $now = new DateTime('now');
+	    $logger = new SimpleLogger("stripe_payment_{$now->format('Ymd')}.log");
+
+        $logger->Log("Webhook Registered");
 			// Set your secret key: remember to change this to your live secret key in production
 			// See your keys here https://dashboard.stripe.com/account/apikeys
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -714,6 +720,11 @@ class SubinvoiceController extends Controller
 			// Retrieve the request's body and parse it as JSON
 			$input = @file_get_contents("php://input");
 			$event_json = json_decode($input);
+
+        if(!$event_json) {
+            $logger->Log("Unable to decode input :: {$input}");
+        }
+
 //file_put_contents(__DIR__."/../../../storage/logs/stripe.log", $input);
 		// Do something with $event_json
 
@@ -727,21 +738,21 @@ class SubinvoiceController extends Controller
 
         switch($event_json->type) {
             case 'invoice.payment_failed':
-                $this->_invoicePaymentFailed($event_json);
+                $logger->Log("Payment failed");
+                $this->_invoicePaymentFailed($event_json, $logger);
                 break;
 
             case 'invoice.payment_succeeded':
             default:
+                $logger->Log("Payment successful");
                 $this->_invoicePaymentSucceeded($event_json);
                 break;
         }
 
-		http_response_code(200); // PHP 5.4 or greater
-		
-		
+		return http_response_code(200); // PHP 5.4 or greater
 	}
 
-    private function _invoicePaymentFailed($event_json) {
+    private function _invoicePaymentFailed($event_json, SimpleLogger $logger) {
         // Need to send data to Active Campaign
         // By adding tag 'CC-Fail' to the correct customer
         // We are able to get him by subscription_id from stripe
@@ -749,8 +760,17 @@ class SubinvoiceController extends Controller
         $user = $this->_getUser($event_json);
 
         if($user instanceof User) {
+            $logger->Log("User recognized :: #{$user->id} {$user->email} {$user->name}");
             $ac = AC_Mediator::GetInstance();
-            $ac->PaymentFailed($user);
+
+            try {
+                $ac->PaymentFailed($user);
+                $logger->Log("Processed OK");
+            } catch (\Exception $e) {
+                $logger->Log("Problem :: {$e->getMessage()}");
+            }
+        } else {
+            $logger->Log("Unable to find user :: ".json_encode($event_json));
         }
     }
 
@@ -770,7 +790,7 @@ class SubinvoiceController extends Controller
     }
 
 	private function _invoicePaymentSucceeded($event_json) {
-		
+
         //date function here is pesky
         $subinvoice = new Subinvoice;
 

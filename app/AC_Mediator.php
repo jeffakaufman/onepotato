@@ -128,11 +128,8 @@ class AC_Mediator {
     }
 
     public function PaymentFailed(User $user) {
-        try {
-            $customerData = $this->GetCustomerData($user);
-        } catch (\Exception $e) {
-            return;
-        }
+
+        $customerData = $this->GetCustomerData($user);
 
         $currentFailedCountValue = 0;
 
