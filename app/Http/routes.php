@@ -248,14 +248,14 @@ Route::get('/__test__/test/{email}', function($email) { //TODO :: remove or comm
     $user = \App\User::where('email', $email)->first();
     echo \App\Cancellation::GenerateCancelLink($user);
 
-//    \Illuminate\Support\Facades\Artisan::call('test:command');
-//    echo "ok";
-});
 
-
-$_customRegisterPages = App\CustomRegisterPage::where('status', 1)->get();
+//    \Illuminate\Support\Facades\Artisa$_customRegisterPages = App\CustomRegisterPage::where('status', 1)->get();
 foreach($_customRegisterPages as $_crp) {
     Route::get('/'.$_crp->route, ['uses' => function() use($_crp) {
         return App::make('App\Http\Controllers\NewUserController')->CustomRegistrationPage($_crp->title, $_crp->subtitle);
     }]);
-}
+}n::call('test:command');
+//    echo "ok";
+});
+
+
