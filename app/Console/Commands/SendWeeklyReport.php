@@ -46,8 +46,8 @@ class SendWeeklyReport extends Command
         $today = new \DateTime('today');
         $fromDate = new \DateTime("-7 days");
 
-        $today = new \DateTime('-7 days');
-        $fromDate = new \DateTime("-14 days");
+//        $today = new \DateTime('-7 days');
+//        $fromDate = new \DateTime("-14 days");
 
         $dbData = DB::table('menus_users')
             ->whereDate('menus_users.delivery_date', '>=', $fromDate->format('Y-m-d'))
