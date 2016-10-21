@@ -12,12 +12,13 @@ use DB;
 
 class ReportsBuilder {
     public function GetWeeklyKitchenReport(\DateTime $fromDate, \DateTime $toDate) {
+
         $query = DB::table('menus_users')
             ->join('users', 'users.id', '=', 'menus_users.users_id')
             ->leftJoin('shippingholds', function($join) {
                 $join->on('shippingholds.user_id', '=', 'menus_users.users_id')
                     ->on('shippingholds.date_to_hold', '=', 'menus_users.delivery_date')
-                    ->whereIn('shippingholds.hold_status', ['hold', 'held']);
+                    ->whereIn('shippingholds.hold_status', [DeliveryManager::STATUS_HOLD, DeliveryManager::STATUS_HELD, ]);
 
             })
             ->whereDate('menus_users.delivery_date', '>=', $fromDate->format('Y-m-d'))
