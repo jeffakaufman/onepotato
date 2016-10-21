@@ -425,7 +425,7 @@ class DashboardController extends Controller
 		$omnivoreUsersID =  DB::table('users')
 				->select('users.id')
 	    		->join('menus_users','menus_users.users_id','=','users.id')
-	    		->where('start_date','<=',"2016-10-11")
+	    		->where('start_date','<=',$thisTuesday)
 	    		->whereNotIn('users.id',$skipIdsThisWeek)
 	    		->whereIn('users.status',['active','inactive'])
 	    		->whereIn('users_id',function($q) use ($omnivoreMealsID) {
@@ -474,7 +474,7 @@ class DashboardController extends Controller
 		$vegetarianUsersID =  DB::table('users')
 				->select('users.id')
 	    		->join('menus_users','menus_users.users_id','=','users.id')
-	    		->where('start_date','<=',"2016-10-11")
+	    		->where('start_date','<=',$thisTuesday)
 	    		->whereNotIn('users.id',$skipIdsThisWeek)
 	    		->whereIn('users.status',['active','inactive'])
 	    		->whereIn('users_id',function($q) use ($vegetarianMealsID) {
