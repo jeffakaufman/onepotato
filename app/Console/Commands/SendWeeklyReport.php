@@ -43,15 +43,15 @@ class SendWeeklyReport extends Command
      */
     public function handle()
     {
-        $today = new \DateTime('today');
-        $fromDate = new \DateTime("-7 days");
+        $toDate = new \DateTime('+7 days');
+        $fromDate = new \DateTime("today");
 
 //        $today = new \DateTime('-7 days');
 //        $fromDate = new \DateTime("-14 days");
 
         $dbData = DB::table('menus_users')
             ->whereDate('menus_users.delivery_date', '>=', $fromDate->format('Y-m-d'))
-            ->whereDate('menus_users.delivery_date', '<=', $today->format('Y-m-d'))
+            ->whereDate('menus_users.delivery_date', '<=', $toDate->format('Y-m-d'))
             ->get();
 
         $byUserData = array();
@@ -137,8 +137,8 @@ class SendWeeklyReport extends Command
         Mail::send('emails.weekly_report', [], function($message) use($csv){
             $message->to('ahhmed@mail.ru', "Aleksey Zagarov");
             $message->to('agedgouda@gmail.com', "Jeff Kauffman");
-            $message->to('chris@onepotato.com', "Chris Heyman");
-            $message->to('jenna@onepotato.com', "Jenna Stein");
+//            $message->to('chris@onepotato.com', "Chris Heyman");
+//            $message->to('jenna@onepotato.com', "Jenna Stein");
 
             $message->subject("One Potato Weekly Report");
             $message->attachData($csv, "report.csv");
