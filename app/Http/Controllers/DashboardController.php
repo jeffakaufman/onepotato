@@ -207,11 +207,17 @@ class DashboardController extends Controller
 				->orderBy('charge_date','desc')
 				->get();
 
-		$oldMenus = $user->menus()
-				->where('delivery_date','<',date('Y-m-d',strtotime($deliveryHistory[0]->charge_date.'+1 week')))
-				->where('delivery_date','>','2016-10-4')
-				->orderBy('delivery_date','desc')
-				->get();
+
+        if(isset($deliveryHistory[0])) {
+            $oldMenus = $user->menus()
+                ->where('delivery_date','<',date('Y-m-d',strtotime($deliveryHistory[0]->charge_date.'+1 week')))
+                ->where('delivery_date','>','2016-10-4')
+                ->orderBy('delivery_date','desc')
+                ->get();
+        } else {
+            $oldMenus = [];
+        }
+
 		$oldDeliveries = new stdClass;
 		$invoiceMenus = [] ;
 		$oldDate = "";

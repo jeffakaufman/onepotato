@@ -250,37 +250,43 @@
         </div>
     </div>
 </div>
-<script>
-$('#menuEditModal').on('show.bs.modal', function(e) {
+<script type="text/javascript">
 
-    Date.prototype.addDays = function(days) {
-    var dat = new Date(this.valueOf())
-    	dat.setDate(dat.getDate() + days);
-    	return dat;
+	Date.prototype.addDays = function(days) {
+		var dat = new Date(this.valueOf())
+		dat.setDate(dat.getDate() + days);
+		return dat;
 	};
+
 
 	function getAllDays() {
-	    var s = new Date();
-	    var e = new Date(s);
-	    var a = [];
+		var s = new Date();
+		var e = new Date(s);
+		var a = [];
 
-    	e.setDate(e.getDay() +126);
+		e.setDate(e.getDay() +126);
 
-    	while(s < e) {
-    	    if (s.getDay() == 1 ) {a.push(s)};
-    	    s = new Date(s.setDate(
-    	        s.getDate() + 1
-    	    ))
-        
-    	}
+		while(s < e) {
+			if (s.getDay() == 1 ) {a.push(s)};
+			s = new Date(s.setDate(
+					s.getDate() + 1
+			))
 
-    	return a;
-	};
+		}
+
+		return a;
+	}
+
+$('#menuEditModal').on('show.bs.modal', function(e) {
 
     var menu = $(e.relatedTarget).data('menu');
     var whatscooking = $(e.relatedTarget).data('whatscooking');
     
-	var weekOfCompare = new Date (whatscooking.week_of)
+	var weekOfCompare = new Date (whatscooking.week_of);
+
+console.log("Week Of Compare :: ");
+console.log(weekOfCompare);
+
     var weekOfDiv = document.getElementById("dateSelect");
 
 	//Create array of options to be added
@@ -290,7 +296,7 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	var week_of = document.createElement("select");
 	
 //    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate()+1);
-    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate());
+//    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate());
 
 	week_of.id = "week_of";
 	week_of.className += "form-control" 
@@ -307,10 +313,10 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 	    option.value = array[i].getFullYear()+"-"+(array[i].getMonth()+1)+"-"+array[i].getDate();
 	    option.text = (array[i].getMonth()+1)+"/"+array[i].getDate()+"/"+array[i].getFullYear();
 	    week_of.appendChild(option);
-//console.log(option.value);
+console.log(option.value);
 	}
 
-//console.log(weekOfCompare);
+console.log(weekOfCompare);
 	
     $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
