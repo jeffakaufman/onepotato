@@ -281,8 +281,10 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 
     var menu = $(e.relatedTarget).data('menu');
     var whatscooking = $(e.relatedTarget).data('whatscooking');
-    
-	var weekOfCompare = new Date (whatscooking.week_of);
+
+	var _dp = whatscooking.week_of.match(/(\d+)/g);
+
+	var weekOfCompare = new Date(_dp[0], _dp[1]-1, _dp[2]);
 
 console.log("Week Of Compare :: ");
 console.log(weekOfCompare);
@@ -296,7 +298,7 @@ console.log(weekOfCompare);
 	var week_of = document.createElement("select");
 	
 //    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate()+1);
-//    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate());
+    weekOfCompare = weekOfCompare.getFullYear()+"-"+(weekOfCompare.getMonth()+1)+"-"+(weekOfCompare.getDate());
 
 	week_of.id = "week_of";
 	week_of.className += "form-control" 
