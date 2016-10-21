@@ -19,7 +19,7 @@ class WelcomeController extends Controller
         	//$id = Auth::user()->id;
         	return redirect('/account'); 
         } else {
-        	return view('register-1');
+        	return view('register-1')->with(['title'=> false, 'subtitle'=>false]);
         }
     }
 }
