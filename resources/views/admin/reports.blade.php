@@ -14,17 +14,6 @@
 @section('content')
 <home :recipes="recipes" inline-template>
     <div class="container">
-        <!-- Application Dashboard -->
-		{{--foreach($reportData['bigGroups'] as $bgData) {--}}
-			{{--$csv .= "\"".$bgData['name']."\"\r\n";--}}
-			{{--foreach($bgData['groups'] as $gData) {--}}
-				{{--$csv .= "\"".$gData['name']."\"\r\n";--}}
-				{{--foreach($gData['products'] as $pData) {--}}
-					{{--$csv .= "\"".$pData['name']."\",".$pData['count']."\r\n";--}}
-				{{--}--}}
-			{{--}--}}
-		{{--}--}}
-
 
 @foreach($reportData['bigGroups'] as $bgData)
 			<div class="row">
