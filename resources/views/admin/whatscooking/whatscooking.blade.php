@@ -286,8 +286,8 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
 
 	var weekOfCompare = new Date(_dp[0], _dp[1]-1, _dp[2]);
 
-console.log("Week Of Compare :: ");
-console.log(weekOfCompare);
+//console.log("Week Of Compare :: ");
+//console.log(weekOfCompare);
 
     var weekOfDiv = document.getElementById("dateSelect");
 
@@ -315,10 +315,10 @@ console.log(weekOfCompare);
 	    option.value = array[i].getFullYear()+"-"+(array[i].getMonth()+1)+"-"+array[i].getDate();
 	    option.text = (array[i].getMonth()+1)+"/"+array[i].getDate()+"/"+array[i].getFullYear();
 	    week_of.appendChild(option);
-console.log(option.value);
+//console.log(option.value);
 	}
 
-console.log(weekOfCompare);
+//console.log(weekOfCompare);
 	
     $("#menuEditModal #week_of").val( weekOfCompare );
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
