@@ -17,7 +17,6 @@
 				<li><a href="/recycling">Recycling</a></li>
 				<li><a href="mailto:hello@onepotato.com">contact us</a></li>
 				<li><a href="/handling">Handling</a></li>
-				<li><a href="/pricing">Pricing</a></li>
 			</ul>
 		</div>
 		<div class="social">
