@@ -102,6 +102,14 @@
         	    <input name="image" type="file">
         	</div>
         </div>
+
+        <div class="form-group">
+            <label for="pdf" class="col-sm-2 control-label">PDF</label>
+            <div class="col-sm-6">
+            	<div id="pdf_link"><a href="#" target="_blank"></a></div>
+        	    <input name="pdf" type="file">
+        	</div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right:10px;">Close</button>

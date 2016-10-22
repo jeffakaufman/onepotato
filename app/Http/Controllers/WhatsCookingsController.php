@@ -130,6 +130,7 @@ class WhatsCookingsController extends Controller
     	//echo $id;
     	
     	$image = $request->file('image');
+    	$pdf = $request->file('pdf');
     	$datestamp = date("FY");
 
 	    $menu = Menus::find($request->menu_id);
@@ -155,11 +156,20 @@ class WhatsCookingsController extends Controller
         $menu->isNotAvailable = $request->isNotAvailable ? $request->isNotAvailable : 0;
 		
 		if ($image) {
-	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+	    	$filename = $datestamp.'/'.$request->menu_title. '_Image.' . $request->file('image')->guessExtension();
    		 	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
-    		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+    		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$filename;
 			$menu->image = $imagename;
 		}
+
+        if ($pdf) {
+            $filename = $datestamp.'/'.$request->menu_title. '_Pdf.' . $pdf->guessExtension();
+            Storage::disk('s3')->put('/' . $filename, file_get_contents($pdf));
+            $pdfName = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$filename;
+            $menu->pdf = $pdfName;
+        }
+
+
  	    $menu->save();
 
      	if ($request->whatscooking_id != $id) {
@@ -202,6 +212,7 @@ class WhatsCookingsController extends Controller
     	
     	
     	$image = $request->file('image');
+    	$pdf = $request->file('pdf');
     	$datestamp = date("FY");
 
 	    $menu = new Menus;
@@ -227,12 +238,19 @@ class WhatsCookingsController extends Controller
         $menu->isNotAvailable = $request->isNotAvailable ? $request->isNotAvailable : 0;
 		
 		if ($image) {
-	    	$filename = $datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+	    	$filename = $datestamp.'/'.$request->menu_title. '_Image.' . $request->file('image')->guessExtension();
    		 	Storage::disk('s3')->put('/' . $filename, file_get_contents($image));
-    		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$datestamp.'/'.$request->menu_title. '.' . $request->file('image')->guessExtension();
+    		$imagename = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$filename;
 			$menu->image = $imagename;
 		}   
 	   
+		if ($pdf) {
+	    	$filename = $datestamp.'/'.$request->menu_title. '_Pdf.' . $pdf->guessExtension();
+   		 	Storage::disk('s3')->put('/' . $filename, file_get_contents($pdf));
+    		$pdfName = "https://s3-us-west-1.amazonaws.com/onepotato-menu-cards/".$filename;
+			$menu->pdf = $pdfName;
+		}
+
 		$mainIngredientNumber =  "%".$menu->getDietaryPreferencesNumber()."%";
 
 		$menu->save();

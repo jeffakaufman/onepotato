@@ -48,7 +48,8 @@ var _defaultWhatsCookingWeek = false;
                             
                             <div class="text-center">
                                 <div v-if="meal.image">
-                                    <a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
+                                    {{--<a href="#" data-toggle="modal" data-target="#imagemodal-@{{ meal.id }}" v-if="clickable"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>--}}
+                                    <a href="@{{ meal.pdf }}" target="_blank" v-if="meal.pdf"><img :src="meal.image" alt="@{{ meal.menu_title }}" class="meal_image"></a>
                                     <img :src="meal.image" v-else alt="@{{ meal.menu_title }}" class="meal_image">
                                 </div>
                                 <img src="/img/foodpot.jpg" v-else alt="@{{ meal.menu_title }}">

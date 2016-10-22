@@ -120,6 +120,12 @@
 							        	    {!! Form::file('image', null, array('class'=>'form-control')) !!}
 							        	</div>
 							        </div>
+							        <div class="form-group">
+							            {!! Form::label('PDF', null,array('class'=>'col-sm-2 control-label')) !!}
+							            <div class="col-sm-6">
+							        	    {!! Form::file('pdf', null, array('class'=>'form-control')) !!}
+							        	</div>
+							        </div>
 					        <div class="form-group">
 					        	<div class="col-sm-offset-3 col-sm-6"><button type="submit" class="btn btn-default">
 			                        <i class="fa fa-plus"></i> Add Menu</button>
@@ -324,7 +330,11 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #whatscooking_id").val( whatscooking.id );
     $("#menuEditModal #menu_title").val( menu.menu_title );
     $("#menuEditModal #menu_id").val( menu.id );
-    if (menu.image) {$("#menuEditModal #image").attr("src", menu.image ); }
+    if (menu.image) {
+    	$("#menuEditModal #image").attr("src", menu.image );
+    } else {
+		$("#menuEditModal #image").attr("src", '/img/foodpot.jpg');
+	}
     $("#menuEditModal #menu_description").val( menu.menu_description );
     $("#menuEditModal #hasBeef").prop( "checked", menu.hasBeef );
     $("#menuEditModal #hasFish").prop( "checked", menu.hasFish );
@@ -345,6 +355,13 @@ $('#menuEditModal').on('show.bs.modal', function(e) {
     $("#menuEditModal #isOmnivore").prop( "checked", menu.isOmnivore );
     $("#menuEditModal #isNotAvailable").prop( "checked", menu.isNotAvailable );
     $("#menuEditModal #vegetarianBackup").prop( "checked", menu.vegetarianBackup );
+
+
+	if(menu.pdf) {
+		$("#menuEditModal #pdf_link a").attr("href", menu.pdf).html(menu.pdf);
+	} else {
+		$("#menuEditModal #pdf_link a").attr("href", '#').html('');
+	}
 });
 </script>
 </whatscookings>
