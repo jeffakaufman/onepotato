@@ -22,7 +22,7 @@
  	   		<div style="text-align: center;"><em>Skip any week. Cancel any time.</em></div>
     	</div>
     </div>
-	<div class="col-sm-5 col-sm-offset-1">
+	<div class="col-sm-6 col-sm-offset-1">
     	<img src="/img/pricing1.jpg" alt="" />
     </div>
   </div>
