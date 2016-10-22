@@ -224,25 +224,30 @@ function build_calendar($month,$year,$deliveryDates,$skipDates) {
                     @if (count($weeksMenu->menus) > 0) 
                         
                         @foreach ($weeksMenu->menus as $menu)
+<?php $_menu = $menu->menu()->first(); ?>
                             <div class="col-xs-4">
-                                @if($menu->menu()->first()->image)
-                                <a href="#" data-toggle="modal" data-target="#imagemodal-{{ $menu->menu()->first()->id }}"><img src="{{$menu->menu()->first()->image}}" /></a>
+                                @if($_menu->image)
+                                    @if($_menu->pdf)
+                                        <a href="{{$_menu->pdf}}" target="_blank"><img src="{{$_menu->image}}" /></a>
+                                    @else
+                                        <a href="#" data-toggle="modal" data-target="#imagemodal-{{ $_menu->id }}"><img src="{{$_menu->image}}" /></a>
+                                    @endif
                                 @else
                                 <img height="100px" src="/img/foodpot.jpg"  class="center-block" />
                                 @endif
-                                <p class="caption">{{$menu->menu()->first()->menu_title}}<br/>
-                                    <em>{{$menu->menu()->first()->menu_description}}</em>
+                                <p class="caption">{{$_menu->menu_title}}<br/>
+                                    <em>{{$_menu->menu_description}}</em>
                                 </p>
                             </div>
-                            <div id="imagemodal-{{ $menu->menu()->first()->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                            <div id="imagemodal-{{ $_menu->id }}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                               <div class="modal-dialog">
                                 <div class="modal-content">
                                   <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                    <h4 class="modal-title">{{ $menu->menu()->first()->menu_title }}</h4>
+                                    <h4 class="modal-title">{{ $_menu->menu_title }}</h4>
                                   </div>
                                   <div class="modal-body">
-                                    <img src="{{ $menu->menu()->first()->image }}" id="imagepreview">
+                                    <img src="{{ $_menu->image }}" id="imagepreview">
                                   </div>
                                 </div>
                               </div>

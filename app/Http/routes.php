@@ -64,6 +64,9 @@ Route::get('/recycling', array('as' => 'static.recycling', function() {
 Route::get('/handling', array('as' => 'static.handling', function() {
     return view('static.handling');
 }));
+Route::get('/pricing', array('as' => 'static.pricing', function() {
+    return view('static.pricing');
+}));
 
 // Account...
 //Route::get('/account/{id?}', array('middleware' => 'auth', 'uses' => 'UserController@getAccount'));
