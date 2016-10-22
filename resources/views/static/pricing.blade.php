@@ -12,7 +12,7 @@
       <p>
       <h2>Meals per week: <span style="color:black">3</h2>
       <h2>Price per Adult Meal: <span style="color:black"> $11.99*</h2>
-      <h2>Meals per week: <span style="color:black"> $4.50</span></h2>
+      <h2>Price per Child Meal: <span style="color:black"> $4.50</span></h2>
       </p>
       *Gluten Free pricing of $1.50 per meal per adult
       <h2 style="text-align: center;"></h2>
