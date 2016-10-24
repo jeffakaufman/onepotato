@@ -41,6 +41,17 @@ class NewUserController extends Controller
        
     }
 
+    public function ReadReferralHash($hash, Request $request) {
+        if($user = ReferralManager::ResolveUserByReferralHash($hash)) {
+            $request->session()->put('referrer_user_id', $user->id);
+            return redirect("/register");
+        } else {
+            $request->session()->forget('referrer_user_id');
+            return redirect("/register");
+        }
+    }
+
+
 	public function DisplayUserForm ($referralId = null) {
         $request = request();
 
@@ -66,7 +77,7 @@ class NewUserController extends Controller
 
 	public function RecordNewuser (Request $request) {
 
-//	    var_dump($request->email);
+//	    var_dump($request->email);die();
         $request->session()->put('has_registered', 'false');
 
         $existingUser = User::where('email', $request->email)->first();
@@ -158,6 +169,11 @@ class NewUserController extends Controller
 		$request->session()->put('zip', $request->zip);
 		$request->session()->put('adult_price', $productAdult->cost - $adultDiscount);
 		$request->session()->put('family1_price', $productFamily1->cost - $familyDiscount);
+
+        if($referrerUserId = $request->session()->get('referrer_user_id')) {
+            $request->session()->set('referralId', ReferralManager::ReferredUserFilledForm($referrerUserId, $user));
+            $request->session()->forget('referrer_user_id');
+        }
 
 		return Redirect::route('register.select_plan', array('user' => $user, 'zip' => $request->zip));
 		

@@ -22,6 +22,7 @@ Route::post('/coupon', 'CouponController@saveCoupon');
 Route::get('/join', 'NewUserController@DisplayUserForm');
 Route::get('/register', 'NewUserController@DisplayUserForm');
 Route::get('/register/{referralId}', 'NewUserController@DisplayUserForm');
+Route::get('/refer/{hash}', array('uses' => 'NewUserController@ReadReferralHash', 'as' => 'shared.referral.link'));
 Route::post('/register', 'NewUserController@RecordNewuser');
 Route::post('/register/select_plan', 'NewUserController@RecordPlan');
 Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');

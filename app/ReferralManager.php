@@ -34,6 +34,39 @@ class ReferralManager {
 
     }
 
+    public static function CreateUserHash(User $user) {
+        return $user->id.'-'.preg_replace("/[^A-Za-z0-9]/", '', $user->first_name).'-'.strtoupper(preg_replace("/[^A-Za-z0-9 ]/", '', $user->last_name));
+    }
+
+    public static function CreateShareLink(User $user) {
+        return route("shared.referral.link", ['hash'=>self::CreateUserHash($user)]);
+    }
+
+    public static function ResolveUserByReferralHash($hash) {
+        $hash = trim($hash);
+        $explodedHash = explode('-', $hash, 3);
+
+        if(isset($explodedHash[0]) && is_numeric($explodedHash[0])) {
+            if($user = User::find($explodedHash[0])) {
+                if($hash == self::CreateUserHash($user)) {
+                    return $user;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static function ReferredUserFilledForm($referrerUserId, User $user) {
+        $refRecord = new Referral();
+        $refRecord->referral_email = $user->email;
+        $refRecord->did_subscribe = 0;
+        $refRecord->referrer_user_id = $referrerUserId;
+        $refRecord->friend_name = $user->first_name.' '.$user->last_name;
+        $refRecord->save();
+
+        return $refRecord->id;
+    }
+
     public static function GetReferral($referralId) {
         return Referral::find($referralId);
     }
@@ -58,7 +91,7 @@ class ReferralManager {
         $referral->save();
 
 
-        $appliedCount = Referral::where('referrer_user_id', $userId)
+        $appliedCount = Referral::where('referrer_user_id', $user->id)
             ->where('did_subscribe', '1')
             ->count();
 

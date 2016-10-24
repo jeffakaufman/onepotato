@@ -54,6 +54,10 @@ class TestCommand extends Command
     public function handle()
     {
 
+        var_dump(ReferralManager::CreateShareLink(User::where('email', 'agedgouda@gmail.com')->first()));
+
+        return;
+
 //        $ac = AC_Mediator::GetInstance();
 //        $ac->MenuShipped(User::where('email', 'agedgouda@gmail.com')->first(), "TEST_TRACKING_NUMBER");
 //return;
