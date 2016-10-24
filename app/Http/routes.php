@@ -195,8 +195,6 @@ Route::get ('/run/scheduled/tasks/', 'CronTasksController@RunTasks');
 $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/whatscooking/{id?}', 'WhatsCookingsController@showWhatsCookings');
 
-    Route::get('/admin/users', 'UserController@showUsers');
-    Route::get('/admin/users/updateListParams/{type}/{value?}', 'UserController@updateListParams');
 
     Route::get('/admin/user/{id}', 'UserController@showUser');
     Route::get('/admin/user_details/{id}', 'DashboardController@showUserDetails');
@@ -241,6 +239,8 @@ $router->group(['middleware' => 'admin'], function($router) {
     Route::get('/admin/coupons', 'CouponController@show');
     Route::get('/admin/menu_information', 'MenuInformationController@show');
     Route::get('/admin/recipes', 'RecipesController@showRecipes');
+    Route::get('/admin/users', 'DashboardController@showUsers');
+    Route::get('/admin/users/updateListParams/{type}/{value?}', 'UserController@updateListParams');
 
     Route::get('/admin/test', 'UserController@adminTest');
 });

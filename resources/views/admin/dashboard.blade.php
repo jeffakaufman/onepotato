@@ -2,251 +2,116 @@
 
 @section('page_header')
     <h1>
-        Dashboard
-        <small>Control panel</small>
+        <center>Dashboard</center>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">UI</a></li>
-        <li class="active">Buttons</li>
-    </ol>
+
 @endsection
 
 @section('content')
+ 
 <home :recipes="recipes" inline-template>
     <div class="container">
-        <!-- Application Dashboard -->
-        <div class="row">
-      		<div class="col-sm-5"> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>{{ $thisTuesday }} Subscribers</strong></div>
-                		<div class="panel-body">
-	    					<div class="row">
-            					<a role="button" data-toggle="collapse" href="#activeThisWeek" aria-expanded="false" aria-controls="collapseThisWeek">
-            					<div class="col-sm-10">
-            							Active
-                					</div>
-               						<div class="col-sm-2 text-right">
-            							{{  count($activeThisWeek)  }}
-                					</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="activeThisWeek">
-            					    @foreach ($activeThisWeek as $i => $subscriber)
-            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-	    					<div class="row" style="background-color:lightblue">
-            					<a role="button" data-toggle="collapse" href="#skipsThisWeek" aria-expanded="false" aria-controls="collapseSkipsThisWeek">
-            					<div class="col-sm-10">
-            					Skips
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  count($skipsThisWeek) }}
-                				</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="skipsThisWeek">
-            					    @foreach ($skipsThisWeek as $i => $skipper)
-            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-            			</div>	
-      				</div>  
-      			</div> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '+7 days')) }} Subscribers</strong></div>
-                		<div class="panel-body">
-	    					<div class="row">
-            					<a role="button" data-toggle="collapse" href="#activeNextWeek" aria-expanded="false" aria-controls="collapseNextWeek">
-            					<div class="col-sm-10">
-            					Active
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  count($activeNextWeek)  }}
-                				</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="activeNextWeek">
-            					    @foreach ($activeNextWeek as $i => $subscriber)
-            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-	    					<div class="row" style="background-color:lightblue">
-            					<a role="button" data-toggle="collapse" href="#skipsNextWeek" aria-expanded="false" aria-controls="collapseNextWeek">
-            					<div class="col-sm-10">
-            					Skips
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  count($skipsNextWeek) }}
-                				</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="skipsNextWeek">
-            					    @foreach ($skipsNextWeek as $i => $skipper)
-            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-            			</div>	
-      				</div>  
-      			</div> 
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>{{ date('F d',strtotime($thisTuesday . '-7 days')) }} Subscribers</strong></div>
-                		<div class="panel-body">
-	    					<div class="row">
-            					<a role="button" data-toggle="collapse" href="#shippedLastWeek" aria-expanded="false" aria-controls="collapseLastWeek">
-            					<div class="col-sm-10">
-            					Shipped
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  count($shippedLastWeek)  }}
-                				</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="shippedLastWeek">
-            					    @foreach ($shippedLastWeek as $i => $subscriber)
-            					    	<div class="row" style="background-color: {{ $i % 2 == 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $subscriber->id }} ">{{ $subscriber->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-	    					<div class="row" style="background-color:lightblue">
-            					<a role="button" data-toggle="collapse" href="#skipslastWeek" aria-expanded="false" aria-controls="collapseLastWeek">
-            					<div class="col-sm-10">
-            					Skips
-                				</div>
-               					<div class="col-sm-2 text-right">
-            					{{  count($skipsLastWeek) }}
-                				</div>
-                				</a>
-            				</div>
-            				<div class="collapse" id="skipslastWeek">
-            					    @foreach ($skipsNextWeek as $i => $skipper)
-            					    	<div class="row" style="background-color: {{ $i % 2 != 0 ? 'lightblue': '#ffffff' }};">
-            					    		<div class="col-sm-10 col-sm-offset-1">
-	            					    		<a style="color: {{ $i % 2 == 0 ? '#dd4b39': '#000000' }};" href="/admin/user_details/{{ $skipper->id }} ">{{ $skipper->name }}</a>
-    	        					    	</div>
-            					    	</div>
-            					    @endforeach
-            				</div>
-            			</div>	
-      				</div>  
-      			</div> 
-
-
-      			<div class="row">
-        			<div class="panel panel-default">
-            			<div class="panel-heading"><strong>New Users</strong></div>
-                		<div class="panel-body">
-                		<?php 
-                	    		$oldDate = "";
-                	    ?>
-        				@foreach ($newSubs as $newSub)
-        					@if ( ($oldDate !=  $newSub->start_date))
-        					<?php $i = 0; ?>
-                	    	<div class="row" style="background-color:black; color:white;border-bottom: black;border-width: 2px;border-style: solid;border-right: white;border-left: white;border-top: white;">
-                	    		<div class="col-sm-5"> 
-                	    			<strong>{{ date('F dS', strtotime($newSub->start_date)) }}</strong>
-                	    		</div>
-                	    	</div>
-                	    	@endif
-	    					<div class="row" @if  ($i%2 != 0) style="background-color:lightblue" @endif   >
-            					<div class="col-sm-10">
-                					{{ $newSub->product_description }}
-                				</div>
-               					<div class="col-sm-2 text-right">
-                					{{$newSub->total}}
-                				</div>
-            				</div>	
-            				<?php
-            					$i++; 
-                    			$oldDate =$newSub->start_date;
-                    		?>
-            				@endforeach
+		<div class="row">
+			<div class="col-md-9">
+				<div class="panel panel-default">
+					<div class="panel-heading"><strong></strong></div>
+					<div class="panel-body">
+							<div class="row" >
+								<div  class="col-md-9 col-md-offset-1">
+									<canvas id="subcriberSummary"></canvas>
+								</div>
+							</div>
+							<div class="row" >
+								<div  class="col-md-9 col-md-offset-1">
+									<canvas id="subBreakdown"></canvas>
+								</div>
+							</div>
 						</div>
-      				</div>  
-      			</div>  
-			</div>  
-
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><strong>Menus for {{ $thisTuesday }}</strong></div>
-                    <div class="panel-body">
-                    @foreach ($menus as $menu)
-                    	@if ( ($oldMenu !=  $menu->menu_title))
-                    	<?php $i = 0; ?>
-                    	<div class="row" style="border-bottom: black;border-width: 1px;border-style: solid;border-right: white;border-left: white;">
-                    		<div class="col-sm-10">
-                    			<strong>{{ $menu->menu_title }}                 			
-		            		@if($menu->hasBeef)
-		            			(Beef)
-							@endif
-	        	    		@if($menu->hasPoultry)
-	            			    (Poultry)
-							@endif
-	            	    	@if($menu->hasFish)
-	            	    	    (Fish)
-							@endif
-	            	    	@if($menu->hasLamb)
-	            	    	    (Lamb)
-							@endif
-		            		@if($menu->hasPork)
-	    	        			(Pork)
-							@endif
-	            			@if($menu->hasShellfish)
-	            				(Shellfish)
-							@endif
-							</strong>  
-                    </div>
-                    		</div>
-                    	@endif
-                    	<div class="row" @if  ($i%2 == 0) style="background-color:lightblue" @endif   >
-                    		<div class="col-sm-10"> 
-                    		{{ $menu->product_title }} 
-                    		</div> 
-                    		<div class="col-sm-2 text-right">
-                    			{{ $menu->total }}
-                    		</div>
-                    	</div>                 	
-                         			              	
-                    	<?php 
-                    		$i++;
-                    		$oldDate = $menu->delivery_date;
-                    		$oldMenu = $menu->menu_title;
-                    	?>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-
-
-
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>    
-</div>               		
-
+	</div>
 </home>
+
+<script>
+var ctx2 = document.getElementById("subcriberSummary");
+var myChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: [ @foreach ($weeklySummaries as $week) "{{date('M d, Y',strtotime($week->start_date))}}", @endforeach ],
+        datasets: [{
+            label: 'Active Subscribers',
+            data: [ @foreach ($weeklySummaries as $week) {{$week->totalSubs}}, @endforeach ],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1
+        },{
+            label: 'New Subscribers',
+            data:  [ @foreach ($weeklySummaries as $week) {{$week->newSubCount}}, @endforeach ],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        },{
+            label: 'Skips',
+            data:  [ @foreach ($weeklySummaries as $week) {{$week->skips}}, @endforeach ],
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+var ctx = document.getElementById("subBreakdown");
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [ @foreach ($subs as $i=>$sub) "{{$i}}", @endforeach ],
+        datasets: [{
+            label: 'Incomplete Signups',
+            data: [ @foreach ($subs as $i=>$sub) {{$subs[$i][0]->statusTotal}}, @endforeach],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1
+        },{
+            label: 'Active Subscribers',
+            data:  [ @foreach ($subs as $i=>$sub) @if (isset($subs[$i][1])){{$subs[$i][1]->statusTotal}}, @endif @endforeach],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        },{
+            label: 'Cancelled',
+            data:  [ @foreach ($subs as $i=>$sub) @if (isset($subs[$i][2])){{$subs[$i][2]->statusTotal}}, @endif @endforeach],
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1
+        },{
+            label: 'New Signups',
+            data:  [ @foreach ($subs as $i=>$sub) {{ $newSubs[$i]->new }}, @endforeach ],
+            backgroundColor: 'rgba(56, 110, 2, 0.2)',
+            borderColor: 'rgba(56, 110, 2, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+</script>
 @endsection
 
 
