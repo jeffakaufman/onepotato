@@ -223,6 +223,14 @@
 								    	@endif  
 												</div>
 											</div>
+
+											@if($menu->pdf)
+												<div class="row">
+													<div class="col-md-12" style="margin-top: 10px;">
+														<a href="{{$menu->pdf}}" target="_blank">{{$menu->pdf}}</a>
+													</div>
+												</div>
+											@endif
 										</div>	
 										
 								    	<div class="col-md-4">     	        
