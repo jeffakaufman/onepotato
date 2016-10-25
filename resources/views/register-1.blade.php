@@ -137,24 +137,23 @@ $('#register1').addClass('active');
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h1 class="modal-title">Imagine a Thanksgiving week...</h1>
-                <h4>with less shopping, less cooking, less stress -- and a whole lot less expense</h4>
+                <h4>With less shopping, less cooking, less stress -- and a whole lot less expense</h4>
             </div>
             <div class="modal-body">
                 <p><img src="/img/thanksgiving.jpg"></p>
                 <p>Whether you’re cooking for your entire family, or just love eating leftovers all weekend, One Potato has you covered!</p>
 
-				<p>Our November 22nd delivery will be Thanksgiving in a box - all for the <b>same price of your normal weekly One Potato delivery.*</b></p>
+				<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
 
-				<p>If you’re not cooking yourself this holiday, but love eating Thanksgiving all week (we definitely do!) our holiday boxes can easily be split up into 3 separate meals that you can enjoy over the course of the week.</p>
 
-				<p>Most important, since the holiday is really about giving and family, for every Thanksgiving box you order, One Potato will donate a meal to a family in need through the Alliance of Moms charity.</p>
-
-				<p>Hosting more than just your family? Order another (or two!) more boxes! <b>Email us by Friday, November 11th</b> at hello@onepotato.com so we can guide you through the ordering process.</p>
+				<p>Hosting more than just your family? Order another (or two!) more boxes! <b><a href="mailto:hello@onepotato.com">Email</a> us by Friday, November 11th</b> at <a href="mailto:hello@onepotato.com">hello@onepotato.com</a> so we can guide you through the ordering process.</p>
 
 				<p>Have a great Thanksgiving, and as always, we are thankful for your business!</p>
 
 				<p><b>The Potatoes,</b><br>
 				Jenna, Chris & Catherine</p>
+				
+				<p>Since the holiday is really about giving and family, for every Thanksgiving box you order One Potato will donate a meal to a family in need through the <strong><a href="http://allianceofmoms.org/" target="_blank">Alliance of Moms</a></strong> charity . <a href="http://allianceofmoms.org/" target="_blank">Click here</a> to find out more about what they do.</p>
                 
             </div>
 
@@ -166,15 +165,6 @@ $('#register1').addClass('active');
 	$(document).ready(function() {
 		$('#thanksgiving').modal();
 	});
-{{--
-	var crthk_setup='mid_g7aOPnJz';
-	var crthk_cart = {};
-	(function() {
-    	var ch = document.createElement('script'); ch.type='text/javascript'; ch.async=true;
-    	ch.src = '//api.carthook.com/api/js/';
-    	var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(ch, x);
-  })();
---}}
 </script>
 
 

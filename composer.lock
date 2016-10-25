@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "50aa07c86ec47b145266702a3b8e388e",
-    "content-hash": "02a0978023da231936bb445c8e1b7bbf",
+    "hash": "385889f6beef527f772335a6dd8553c6",
+    "content-hash": "21f5b5f53a3471f1a6bba33636df600e",
     "packages": [
         {
             "name": "activecampaign/api-php",
@@ -51,16 +51,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.19.13",
+            "version": "3.19.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "57b0efed8fcf5d8c854bc1c26cf4a685af9108d9"
+                "reference": "c1bd15f806fa12062cf1d0167ba2b0c42dcf1e60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/57b0efed8fcf5d8c854bc1c26cf4a685af9108d9",
-                "reference": "57b0efed8fcf5d8c854bc1c26cf4a685af9108d9",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/c1bd15f806fa12062cf1d0167ba2b0c42dcf1e60",
+                "reference": "c1bd15f806fa12062cf1d0167ba2b0c42dcf1e60",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2016-10-06 21:17:44"
+            "time": "2016-10-24 20:45:41"
         },
         {
             "name": "aws/aws-sdk-php-laravel",
@@ -382,16 +382,16 @@
         },
         {
             "name": "dougsisk/laravel-country-state",
-            "version": "1.2",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DougSisk/laravel-country-state.git",
-                "reference": "90b1caccfe2b90b14f0d331db2bfb02e0e7b92fb"
+                "reference": "e1cb0a3a56a3538c6483bd0a74b358d7ae251020"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DougSisk/laravel-country-state/zipball/90b1caccfe2b90b14f0d331db2bfb02e0e7b92fb",
-                "reference": "90b1caccfe2b90b14f0d331db2bfb02e0e7b92fb",
+                "url": "https://api.github.com/repos/DougSisk/laravel-country-state/zipball/e1cb0a3a56a3538c6483bd0a74b358d7ae251020",
+                "reference": "e1cb0a3a56a3538c6483bd0a74b358d7ae251020",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +433,7 @@
                 "state",
                 "states"
             ],
-            "time": "2016-07-28 17:04:36"
+            "time": "2016-10-13 21:43:34"
         },
         {
             "name": "erusev/parsedown",
@@ -1146,20 +1146,20 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.28",
+            "version": "1.0.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044"
+                "reference": "1b5c4a0031697f46e779a9d1b309c2e1b24daeab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
-                "reference": "a9663643ff2d16d7f66ed1e0d3212c5491bc9044",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1b5c4a0031697f46e779a9d1b309c2e1b24daeab",
+                "reference": "1b5c4a0031697f46e779a9d1b309c2e1b24daeab",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
+                "php": ">=5.5.9"
             },
             "conflict": {
                 "league/flysystem-sftp": "<1.0.6"
@@ -1225,7 +1225,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-10-07 12:20:37"
+            "time": "2016-10-19 20:38:46"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -1733,6 +1733,56 @@
             "time": "2013-08-27 17:43:25"
         },
         {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16 16:22:20"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -1784,16 +1834,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -1827,7 +1877,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "psy/psysh",

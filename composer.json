@@ -16,7 +16,8 @@
         "league/flysystem-aws-s3-v3": "^1.0",
         "laravelcollective/html": "^5.2",
         "dougsisk/laravel-country-state": "^1.1",
-        "activecampaign/api-php": "1.0.0"
+        "activecampaign/api-php": "1.0.0",
+        "predis/predis": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
