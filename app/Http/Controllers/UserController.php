@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\CancelLink;
 use App\ReferralManager;
+use App\SimpleLogger;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -1484,6 +1485,9 @@ class UserController extends Controller
         }
 
         Auth::logout();
+
+        $logger = new SimpleLogger("cancellations.log");
+        $logger->Log("[{$user->email}] {$user->first_name} {$user->last_name} Cancelled account by himself");
 
         //By clicking “Reactivate Account,” you agree you are purchasing a continuous subscription and will receive weekly deliveries billed to your designated payment method.
         // You can skip a delivery on our website, or cancel your subscription by contacting us and following the instructions we provide you in our response,
