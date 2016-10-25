@@ -19,18 +19,18 @@ class LogHttpAction
     {
         $response = $next($request);
 
-        echo $request->path();
-        return $response;
+//        echo $request->path();
+//        return $response;
 
         $now = new \DateTime('now');
 
         $fileName = "register_{$now->format('Ymd')}.log";
 
-        $logger = new SimpleLogger($fileName);
-        $logger->Log("[{$now->format('m/d/Y H:i:s')}] [$request->ip()] [$request->header('User-Agent')]");
+        $logger = new SimpleLogger($fileName, false);
+        $logger->Log("[{$now->format('m/d/Y H:i:s')}] [{$request->ip()}] [{$request->header('User-Agent')}]");
 
         if($request->user_id && ($user = User::find($request->user_id))) {
-            $logger->Log("    #{$user->id} [{$user}]");
+            $logger->Log("    #{$user->id} [{$user->email}] {$user->first_name} {$user->last_name}");
         }
 
         $logger->Log("    {$request->method()} /{$request->path()} [{$this->_getActionDescription($request->method(), $request->path())}]");
@@ -43,9 +43,52 @@ class LogHttpAction
 
         $response = '';
 
+        $explodedPath = explode('/', $path);
+        if('refer' == $explodedPath[0]) {
+            $path = 'refer';
+        } elseif('register' == $explodedPath[0]) {
+            if(isset($explodedPath[1])) {
+                if(is_numeric($explodedPath[1])) {
+                    $path = "register";
+                }
+            }
+        }
+
+
+
+
         switch(strtoupper($method)) {
             case 'GET':
                 switch($path) {
+                    case 'join':
+                    case 'register':
+                        $response = "Display register form (step 1)";
+                        break;
+
+                    case 'refer':
+                        $response = "Read Refer link";
+                        break;
+
+                    case 'register/select_plan':
+                        $response = "Display Select Plan form (step 2)";
+                        break;
+
+                    case 'register/preferences':
+                        $response = "Display Preferences form (step 3)";
+                        break;
+
+                    case 'register/delivery':
+                        $response = "Display Delivery form (step 4)";
+                        break;
+
+                    case 'register/payment':
+                        $response = "Display Payment form (step 5)";
+                        break;
+
+                    case 'congrats':
+                        $response = "Display Congratulations Form (FINAL step)";
+                        break;
+
                     default:
                         //Do Nothing
                         break;
@@ -72,7 +115,7 @@ class LogHttpAction
                         break;
 
                     case 'register/payment':
-                        $response = "Select Payment form submitted (FINAL step)";
+                        $response = "Select Payment form submitted (step 5)";
                         break;
 
                     case 'register/waiting_list':
