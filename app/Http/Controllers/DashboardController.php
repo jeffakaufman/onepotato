@@ -38,6 +38,148 @@ class DashboardController extends Controller
      */
     public function show()
     {
+        // last week is the last week we have "shipped" invoices for
+        $lastPeriodEndDate = Subinvoice::max('ship_date');
+        $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate."+8 days"));
+        
+        $activeWeeks = DB::table('users')
+            ->select('start_date', DB::raw('count(*) as newSubCount'))
+            ->where('status','active')
+            ->groupBy('start_date')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+        $skips = DB::table('shippingholds')
+            ->select('date_to_hold', DB::raw('count(*) as skips'))
+            ->whereIn('hold_status',['released-after-hold','hold'])
+            ->groupBy('date_to_hold')
+            ->orderBy('date_to_hold','asc')
+            ->get();
+            
+        $subs = [];
+        $newSubs = [];
+        
+        $subs["Today"] = DB::table('users')
+            ->select('status', DB::raw('count(*) as statusTotal'))
+            ->where('created_at','<=',date('Y-m-d'))
+            ->where('status','<>','admin')
+            ->groupBy('status')
+            ->orderBy('start_date','asc')
+            ->get();
+
+        $newSubs["Today"] = DB::table('users')
+            ->select(DB::raw('count(*) as new'))
+            ->where('created_at','>=',date('Y-m-d'))
+            ->where('status','active')
+            ->groupBy('status')
+            ->first();
+
+        
+        $subs["Yesterday"] = DB::table('users')
+            ->select('status', DB::raw('count(*) as statusTotal'))
+            ->where('created_at','<=',date('Y-m-d',strtotime('-1 day')))
+            ->where('status','<>','admin')
+            ->groupBy('status')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+            
+        $newSubs["Yesterday"] = DB::table('users')
+            ->select(DB::raw('count(*) as new'))
+            ->where('created_at','>=',date('Y-m-d',strtotime('-1 day')))
+            ->where('created_at','<',date('Y-m-d'))
+            ->where('status','active')
+            ->groupBy('status')
+            ->first();
+
+        
+        $subs["Last Week"] = DB::table('users')
+            ->select('status', DB::raw('count(*) as statusTotal'))
+            ->where('created_at','<=',date('Y-m-d',strtotime('-7 days')))
+            ->where('status','<>','admin')
+            ->groupBy('status')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+            
+        $newSubs["Last Week"] = DB::table('users')
+            ->select(DB::raw('count(*) as new'))
+            ->where('created_at','>=',date('Y-m-d',strtotime('-7 days')))
+            ->where('status','active')
+            ->groupBy('status')
+            ->first();
+
+        
+        $subs["Last Month"] = DB::table('users')
+            ->select('status', DB::raw('count(*) as statusTotal'))
+            ->where('created_at','<=',date('Y-m-d',strtotime('-1 month')))
+            ->where('status','<>','admin')
+            ->groupBy('status')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+            
+        $newSubs["Last Month"] = DB::table('users')
+            ->select(DB::raw('count(*) as new'))
+            ->where('created_at','>=',date('Y-m-d',strtotime('-1 month')))
+            ->where('status','active')
+            ->groupBy('status')
+            ->first();
+        
+        $subs["Last Ninety"] = DB::table('users')
+            ->select('status', DB::raw('count(*) as statusTotal'))
+            ->where('created_at','<=',date('Y-m-d',strtotime('-90 days')))
+            ->where('status','<>','admin')
+            ->groupBy('status')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+        $newSubs["Last Ninety"] = DB::table('users')
+            ->select(DB::raw('count(*) as new'))
+            ->where('created_at','>=',date('Y-m-d',strtotime('-90 days')))
+            ->where('status','active')
+            ->groupBy('status')
+            ->first();
+
+
+//echo json_encode($subs);die;
+
+        
+        $weeklySummaries = [];
+       	$week  = new stdClass;
+       	$totalSubs = 0;
+        foreach($activeWeeks as $activeWeek) {
+        	$week->start_date = $activeWeek->start_date;
+        	$week->newSubCount = $activeWeek->newSubCount;
+        	$totalSubs += $activeWeek->newSubCount;
+        	$week->totalSubs = $totalSubs;
+        	foreach ($skips as $skip) {
+    			if (date('Y-m-d',strtotime($skip->date_to_hold)) == date('Y-m-d',strtotime($activeWeek->start_date))) { 
+    				$week->skips = $skip->skips; 
+    			} 
+    		}
+    		if(!isset($week->skips)){$week->skips = 0;}
+    		if (strtotime($activeWeek->start_date) > strtotime('-30 days')) {
+    			array_push($weeklySummaries,$week);
+    		}
+    		$week = new stdClass;
+        }        
+
+    	return view('admin.dashboard')
+    			->with([
+    				'weeklySummaries' => $weeklySummaries,
+    				'subs' => $subs,
+    				'newSubs' => $newSubs,
+                ]);
+	
+    
+    
+    
+    } 
+     
+     
+    public function showUsers()
+    {
 	    	$users = $this->_getUsersList();
 			return view('admin.users.users')->with(['users'=>$users, 'params' => $this->_getListParams()]);
     }
