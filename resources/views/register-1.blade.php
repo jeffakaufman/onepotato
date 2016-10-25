@@ -145,15 +145,14 @@ $('#register1').addClass('active');
 
 				<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
 
-
-				<p>Hosting more than just your family? Order another (or two!) more boxes! <b><a href="mailto:hello@onepotato.com">Email</a> us by Friday, November 11th</b> at <a href="mailto:hello@onepotato.com">hello@onepotato.com</a> so we can guide you through the ordering process.</p>
+				<p>Hosting more than just your family? Order another box (or two)! <b><a href="mailto:hello@onepotato.com">Email</a> us by Friday, November 11th</b> at <a href="mailto:hello@onepotato.com">hello@onepotato.com</a> so we can guide you through the ordering process.</p>
 
 				<p>Have a great Thanksgiving, and as always, we are thankful for your business!</p>
 
 				<p><b>The Potatoes,</b><br>
 				Jenna, Chris & Catherine</p>
 				
-				<p>Since the holiday is really about giving and family, for every Thanksgiving box you order One Potato will donate a meal to a family in need through the <strong><a href="http://allianceofmoms.org/" target="_blank">Alliance of Moms</a></strong> charity . <a href="http://allianceofmoms.org/" target="_blank">Click here</a> to find out more about what they do.</p>
+				<p><strong>Note:</strong>Since the holiday is really about giving and family, for every Thanksgiving box you order One Potato will donate a meal to a family in need through the <strong><a href="http://allianceofmoms.org/" target="_blank">Alliance of Moms</a></strong> charity . <a href="http://allianceofmoms.org/" target="_blank">Click here</a> to find out more about what they do.</p>
                 
             </div>
 
