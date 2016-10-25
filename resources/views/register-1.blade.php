@@ -152,7 +152,7 @@ $('#register1').addClass('active');
 				<p><b>The Potatoes,</b><br>
 				Jenna, Chris & Catherine</p>
 				
-				<p><strong>Note:</strong>Since the holiday is really about giving and family, for every Thanksgiving box you order One Potato will donate a meal to a family in need through the <strong><a href="http://allianceofmoms.org/" target="_blank">Alliance of Moms</a></strong> charity . <a href="http://allianceofmoms.org/" target="_blank">Click here</a> to find out more about what they do.</p>
+				<p><strong>Note: </strong>Since the holiday is really about giving and family, for every Thanksgiving box you order One Potato will donate a meal to a family in need through the <strong><a href="http://allianceofmoms.org/" target="_blank">Alliance of Moms</a></strong> charity . <a href="http://allianceofmoms.org/" target="_blank">Click here</a> to find out more about what they do.</p>
                 
             </div>
 
