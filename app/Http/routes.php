@@ -188,6 +188,9 @@ Route::get('/hold/checkall/', 'SubinvoiceController@CheckHolds');
 Route::get('/test/menucontent/', 'SubinvoiceController@testMenus');
 Route::get('/restart/held/{holddate}', 'SubinvoiceController@ReleaseAllHoldsByDate');
 
+//utlity function
+Route::get('/fix/subinvoices/', 'SubinvoiceController@FixSubInvoices');
+
 //coupon checker
 Route::get('/coupon/getamount/{price}/{couponcode}', 'NewUserController@CheckCoupon');
 
