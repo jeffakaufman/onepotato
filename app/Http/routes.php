@@ -18,33 +18,38 @@ Route::get('/home', 'HomeController@show');
 
 Route::get('/admin/coupons', 'CouponController@show');
 Route::post('/coupon', 'CouponController@saveCoupon');
-// Registration...
-Route::get('/join', 'NewUserController@DisplayUserForm');
-Route::get('/register', 'NewUserController@DisplayUserForm');
-Route::get('/register/{referralId}', 'NewUserController@DisplayUserForm');
-Route::get('/refer/{hash}', array('uses' => 'NewUserController@ReadReferralHash', 'as' => 'shared.referral.link'));
-Route::post('/register', 'NewUserController@RecordNewuser');
-Route::post('/register/select_plan', 'NewUserController@RecordPlan');
-Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
-Route::post('/register/delivery','NewUserController@RecordDeliveryPreferences');
-Route::post('/register/payment','NewUserController@RecordPayment');
-Route::post('/register/waiting_list','NewUserController@SubscribeToWaitingList');
 
-Route::get('/register/select_plan', array('as' => 'register.select_plan', function() {
-	return view('register.select_plan');
-}));
-Route::get('/register/preferences', array('as' => 'register.preferences', function() {
-	return view('register.preferences');
-}));
-Route::get('/register/delivery', array('as' => 'register.delivery', function() {
-	return view('register.delivery');
-}));
-Route::get('/register/payment', array('as' => 'register.payment', function() {
-	return view('register.payment');
-}));
-Route::get('/congrats', array('as' => 'register.congrats', function() {
-	return view('register.congrats');
-}));
+$router->group(['middleware' => 'logHttpAction'], function($router) {
+
+// Registration...
+    Route::get('/join', 'NewUserController@DisplayUserForm');
+    Route::get('/register', 'NewUserController@DisplayUserForm');
+    Route::get('/register/{referralId}', 'NewUserController@DisplayUserForm');
+    Route::get('/refer/{hash}', array('uses' => 'NewUserController@ReadReferralHash', 'as' => 'shared.referral.link'));
+    Route::post('/register', 'NewUserController@RecordNewuser');
+    Route::post('/register/select_plan', 'NewUserController@RecordPlan');
+    Route::post('/register/preferences', 'NewUserController@RecordPlanPreferences');
+    Route::post('/register/delivery', 'NewUserController@RecordDeliveryPreferences');
+    Route::post('/register/payment', 'NewUserController@RecordPayment');
+    Route::post('/register/waiting_list', 'NewUserController@SubscribeToWaitingList');
+
+    Route::get('/register/select_plan', array('as' => 'register.select_plan', function () {
+        return view('register.select_plan');
+    }));
+    Route::get('/register/preferences', array('as' => 'register.preferences', function () {
+        return view('register.preferences');
+    }));
+    Route::get('/register/delivery', array('as' => 'register.delivery', function () {
+        return view('register.delivery');
+    }));
+    Route::get('/register/payment', array('as' => 'register.payment', function () {
+        return view('register.payment');
+    }));
+    Route::get('/congrats', array('as' => 'register.congrats', function () {
+        return view('register.congrats');
+    }));
+
+});
 
 // Static...
 Route::get('/faq', array('as' => 'faq', function() {
