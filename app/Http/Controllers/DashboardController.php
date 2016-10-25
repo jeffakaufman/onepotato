@@ -607,6 +607,10 @@ class DashboardController extends Controller
 
         $subscription->save();
 
+        $user = User::find($userId);
+        $logger = new App\SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY ADMIN");
+
         return redirect("/admin/user_details/{$userId}");
 
     }

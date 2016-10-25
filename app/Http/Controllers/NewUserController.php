@@ -7,6 +7,7 @@ use App\Events\UserHasRegistered;
 use App\MenuAssigner;
 use App\ReferralManager;
 use App\SubscriptionManager;
+use App\SimpleLogger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -418,6 +419,10 @@ class NewUserController extends Controller
 		$request->session()->put('start_date', $request->start_date);
 		$request->session()->put('dietprefs', $request->dietprefs);
 		$request->session()->put('state', $state->state);
+
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY REGISTER");
+
 
 		return view('register.delivery')->with(['user'=>$user, 'product' => $newProduct, 'zip'=>$request->zip]);
 	}
