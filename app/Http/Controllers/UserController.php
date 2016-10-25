@@ -508,6 +508,11 @@ class UserController extends Controller
 
         $subscription->save();
 
+        $user = User::find($request->user_id);
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY ACCOUNT PAGE");
+
+
     }
 
 	public function editAccount(Request $request) {
@@ -787,8 +792,11 @@ class UserController extends Controller
 		$subscription = \Stripe\Subscription::retrieve($userSubscription->stripe_id );
 		$subscription->plan = $newProduct->stripe_plan_id;
 		$subscription->save();
-		
-		
+
+        $user = User::find($id);
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY createUserSubscription");
+
 	}
 	
 
@@ -1029,9 +1037,12 @@ class UserController extends Controller
 			//figure out the sku based on plan_type, plan_size, and number of children
 
 			//update the subscription record with the new plan_type
-			
-				
-		
+
+
+        $user = User::find($id);
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY updateSubscription");
+
 		 return redirect()->back();
 		
 	}
