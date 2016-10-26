@@ -83,7 +83,7 @@ class TestCommand extends Command
                                 $this->error("    {$e->getMessage()}");
                             }
 
-                            break;
+//                            break;
                         }
                     } catch (\Exception $e) {
                         $this->error("    {$e->getMessage()}");
