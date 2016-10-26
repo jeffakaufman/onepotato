@@ -17,7 +17,7 @@ class StripeMediator {
      * @param $subscriptionId
      * @return Subscription
      */
-    private function RetrieveSubscription($subscriptionId) {
+    public function RetrieveSubscription($subscriptionId) {
         return Subscription::retrieve($subscriptionId);
     }
 

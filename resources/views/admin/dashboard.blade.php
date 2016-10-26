@@ -104,6 +104,15 @@ var myChart = new Chart(ctx, {
             backgroundColor: 'rgba(255, 206, 86, 0.2)',
             borderColor: 'rgba(255, 206, 86, 1)',
             borderWidth: 1
+<<<<<<< HEAD
+=======
+        },{
+            label: 'New Signups',
+            data:  [ @foreach ($subs as $i=>$sub) @if (isset($newSubs[$i])) {{ $newSubs[$i]->new }} @else 0 @endif, @endforeach ],
+            backgroundColor: 'rgba(56, 110, 2, 0.2)',
+            borderColor: 'rgba(56, 110, 2, 1)',
+            borderWidth: 1
+>>>>>>> master
         }]
     },
     options: {

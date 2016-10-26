@@ -280,6 +280,8 @@ class UserController extends Controller
             $tab = 'plan_details';
         }
 
+        $shareLink = ReferralManager::CreateShareLink($user);
+
 		return view('account')
 					->with(['user'=>$user, 
 							'shippingAddress'=>$shippingAddress, 
@@ -291,6 +293,7 @@ class UserController extends Controller
 							'changeDate'=>$changeDate,
 							'cancelMessage'=>$cancelMessage,
                             'tab' => $tab,
+                            'shareLink' => $shareLink,
                     ]);
 	}	
 

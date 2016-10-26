@@ -10,6 +10,7 @@ use App\MenuAssigner;
 use App\Product;
 use App\Referral;
 use App\ReferralManager;
+use App\StripeMediator;
 use App\UserSubscription;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
@@ -54,6 +55,36 @@ class TestCommand extends Command
     public function handle()
     {
 
+        $stripe = StripeMediator::GetInstance();
+
+
+        foreach(User::whereIn('status', [User::STATUS_ACTIVE, User::STATUS_INACTIVE])->/*where('id', '>=', 3615)->*/get() as $u) {
+            $this->comment("#{$u->id} [{$u->email}] {$u->first_name}");
+            $subscription = UserSubscription::GetByUserId($u->id);
+            if($subscription) {
+                $product = Product::find($subscription->product_id);
+                if($product) {
+                    $this->comment("    {$subscription->stripe_id} DB Plan :: {$product->stripe_plan_id}");
+                    try {
+                        $ss = $stripe->RetrieveSubscription($subscription->stripe_id);
+                        $this->comment("    Stripe Plan :: {$ss->plan->id}");
+
+                        if($ss->plan->id == $product->stripe_plan_id) {
+                            $this->comment('    OK!!!');
+                        } else {
+                            $this->error('    MISMATCH!!!');
+                        }
+                    } catch (\Exception $e) {
+                        $this->error("    {$e->getMessage()}");
+                    }
+                } else {
+                    $this->warn("WARN::Product not found");
+                }
+            } else {
+                $this->warn("WARN::Subscription not found");
+            }
+        }
+return;
         var_dump(ReferralManager::CreateShareLink(User::where('email', 'agedgouda@gmail.com')->first()));
 
         return;

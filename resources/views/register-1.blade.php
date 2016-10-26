@@ -3,7 +3,20 @@ session_start();
     if( isset( $_SESSION['registered']) ) session_destroy();
     else if (isset( $user->id)) header("Location: /account");
 ?>
+<?php
+$_parsed = parse_url( url()->current() );
+$_appDomain = $_parsed['scheme'].'://'.$_parsed['host'];
+?>
+
 @extends('spark::layouts.app')
+
+@section('scripts')
+	<meta property="og:url"          content="{{$_appDomain}}/register" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="One Potato" />
+	<meta property="og:description"   content="Check out One Potato! Everything you need to make organic, healthy, and delicious dinners the whole family will love delivered straight to your door each week. From the founder of Weelicious. Get $30 off your first box by clicking the link below and entering code REFER30." />
+	<meta property="og:image"         content="{{$_appDomain}}/img/onepotato-share.jpg" />
+@endsection
 
 @section('register_nav')
 <script>
@@ -140,11 +153,14 @@ $('#register1').addClass('active');
                 <h4>With less shopping, less cooking, less stress -- and a whole lot less expense</h4>
             </div>
             <div class="modal-body">
-                <p><img src="/img/thanksgiving.jpg"></p>
-                <p>Whether you’re cooking for your entire family, or just love eating leftovers all weekend, One Potato has you covered!</p>
+            	<div class="row">
+                	<p class="col-xs-12 col-sm-7"><img src="/img/thanksgiving.jpg"></p>
+	                <div class="col-xs-12 col-sm-5 font16">
+	                	<p>Whether you’re cooking for your entire family, or just love eating leftovers all weekend, One Potato has you covered!</p>
 
-				<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
-
+						<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
+					</div>
+				</div>
 				<p>Hosting more than just your family? Order another box (or two)! <b><a href="mailto:hello@onepotato.com">Email</a> us by Friday, November 11th</b> at <a href="mailto:hello@onepotato.com">hello@onepotato.com</a> so we can guide you through the ordering process.</p>
 
 				<p>Have a great Thanksgiving, and as always, we are thankful for your business!</p>
@@ -162,7 +178,7 @@ $('#register1').addClass('active');
 
 <script type='text/javascript'>
 	$(document).ready(function() {
-		$('#thanksgiving').modal();
+		//$('#thanksgiving').modal();
 	});
 </script>
 

@@ -297,7 +297,6 @@ class DashboardController extends Controller
 				$upcomingDeliveries = new stdClass();
 			}
 		}
-		
 		$upcomingSkipsNoMenu = $user->getSkips()
 				->where('date_to_hold','>',date('Y-m-d'))
 				->whereNotIn('date_to_hold',array_pluck($weeksMenus,'delivery_date'))
