@@ -178,7 +178,7 @@ $('#register1').addClass('active');
 
 <script type='text/javascript'>
 	$(document).ready(function() {
-		$('#thanksgiving').modal();
+		//$('#thanksgiving').modal();
 	});
 </script>
 
