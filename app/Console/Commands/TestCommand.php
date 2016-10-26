@@ -11,6 +11,7 @@ use App\Product;
 use App\Referral;
 use App\ReferralManager;
 use App\StripeMediator;
+use App\SubscriptionManager;
 use App\UserSubscription;
 use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
@@ -72,7 +73,17 @@ class TestCommand extends Command
                         if($ss->plan->id == $product->stripe_plan_id) {
                             $this->comment('    OK!!!');
                         } else {
+
                             $this->error('    MISMATCH!!!');
+
+                            try {
+                                SubscriptionManager::UpdateUserProduct($u, $product);
+                                $this->comment("    Product Updated");
+                            } catch (\Exception $e) {
+                                $this->error("    {$e->getMessage()}");
+                            }
+
+                            break;
                         }
                     } catch (\Exception $e) {
                         $this->error("    {$e->getMessage()}");
