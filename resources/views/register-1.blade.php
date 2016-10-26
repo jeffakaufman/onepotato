@@ -10,12 +10,14 @@ $_appDomain = $_parsed['scheme'].'://'.$_parsed['host'];
 
 @extends('spark::layouts.app')
 
-@section('register_nav')
+@section('scripts')
 	<meta property="og:type"          content="website" />
 	<meta property="og:title"         content="One Potato" />
 	<meta property="og:description"   content="Check out One Potato! Everything you need to make organic, healthy, and delicious dinners the whole family will love delivered straight to your door each week. From the founder of Weelicious. Get $30 off your first box by clicking the link below and entering code REFER30." />
 	<meta property="og:image"         content="{{$_appDomain}}/img/onepotato-share.jpg" />
+@endsection
 
+@section('register_nav')
 <script>
 $('#register1').addClass('active');
 </script>
