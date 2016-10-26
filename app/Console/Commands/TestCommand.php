@@ -59,7 +59,7 @@ class TestCommand extends Command
         $stripe = StripeMediator::GetInstance();
 
 
-        foreach(User::whereIn('status', [User::STATUS_ACTIVE, User::STATUS_INACTIVE])->/*where('id', '>=', 3615)->*/get() as $u) {
+        foreach(User::whereIn('status', [User::STATUS_ACTIVE, /*User::STATUS_INACTIVE*/ ])->/*where('id', '>=', 3615)->*/get() as $u) {
             $this->comment("#{$u->id} [{$u->email}] {$u->first_name}");
             $subscription = UserSubscription::GetByUserId($u->id);
             if($subscription) {
