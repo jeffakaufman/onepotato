@@ -5845,6 +5845,9 @@ button.close {
 .btn:focus {
   outline: 0; }
 
+.fb_iframe_widget, #twitter-widget-0 {
+  vertical-align: middle; }
+
 .radio, .checkbox {
   display: inline-block;
   padding-right: 0; }
