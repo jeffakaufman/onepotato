@@ -12,7 +12,7 @@
 		<div class="links">
 			<ul>
 				<li><a href="/how-it-works">How it Works</a></li>
-				<li><a href="/learn-more">Learn More</a></li>
+				<!--<li><a href="/learn-more">Learn More</a></li>-->
 				<li><a href="/about-us">About Us</a></li>
 				<li><a href="/recycling">Recycling</a></li>
 				<li><a href="mailto:hello@onepotato.com">contact us</a></li>
