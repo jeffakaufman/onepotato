@@ -23,8 +23,6 @@ class SubscriptionManager {
         $stripeMediator = StripeMediator::GetInstance();
         $stripeMediator->UpdateSubscription($userSubscription->stripe_id, $newProduct->stripe_plan_id, $prorate, $trialEnd);
 
-        $logger = new SimpleLogger("ProductChanges.log");
-        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY Temporary Plan Change");
 
     }
 
@@ -98,6 +96,9 @@ class SubscriptionManager {
         $newProduct = Product::GetBySku($skuToChange);
 
         self::UpdateUserProduct($user, $newProduct, 'false');
+
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY Temporary Plan Change");
     }
 
 
@@ -120,5 +121,8 @@ class SubscriptionManager {
         $newProduct = Product::GetBySku($skuToChange);
 
         self::UpdateUserProduct($user, $newProduct, 'false');
+
+        $logger = new SimpleLogger("ProductChanges.log");
+        $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Product changed to #{$newProduct->id} {$newProduct->sku} {$newProduct->product_descritpion} \${$newProduct->cost} BY Temporary Plan Change BACK");
     }
 }
