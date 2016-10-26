@@ -95,7 +95,7 @@ var myChart = new Chart(ctx, {
             borderWidth: 1
         },{
             label: 'New Signups',
-            data:  [ @foreach ($subs as $i=>$sub) {{ $newSubs[$i]->new }}, @endforeach ],
+            data:  [ @foreach ($subs as $i=>$sub) @if (isset($newSubs[$i])) {{ $newSubs[$i]->new }} @else 0 @endif, @endforeach ],
             backgroundColor: 'rgba(56, 110, 2, 0.2)',
             borderColor: 'rgba(56, 110, 2, 1)',
             borderWidth: 1

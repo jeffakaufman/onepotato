@@ -160,11 +160,7 @@ $('#register1').addClass('active');
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<script type='text/javascript'>
-	$(document).ready(function() {
-		$('#thanksgiving').modal();
-	});
-</script>
+
 
 
 @endsection
