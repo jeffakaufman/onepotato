@@ -23,6 +23,14 @@
 							</div>
 							<div class="row" >
 								<div  class="col-md-9 col-md-offset-1">
+								
+								{{ json_encode($subs) }}
+								 @foreach ($subs["Today"] as $sub)  {{ json_encode($sub) }} @endforeach
+								 @foreach ($subs["Today"] as $sub) {{ null !== ($sub->status=='active')}}@if ($sub->status =='active') {{ $sub->total }}, @elseif ($sub->status=='active') 0,  @endif @endforeach
+            		@foreach ($subs["Yesterday"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Last Week"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Last Month"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Last Ninety"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
 									<canvas id="subBreakdown"></canvas>
 								</div>
 							</div>
@@ -41,8 +49,8 @@ var myChart = new Chart(ctx2, {
     data: {
         labels: [ @foreach ($weeklySummaries as $week) "{{date('M d, Y',strtotime($week->start_date))}}", @endforeach ],
         datasets: [{
-            label: 'Active Subscribers',
-            data: [ @foreach ($weeklySummaries as $week) {{$week->totalSubs}}, @endforeach ],
+            label: 'Recurring Subscribers',
+            data: [ @foreach ($weeklySummaries as $week) {{$week->recurringSubCount}}, @endforeach ],
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255,99,132,1)',
             borderWidth: 1
@@ -77,27 +85,24 @@ var myChart = new Chart(ctx, {
         labels: [ @foreach ($subs as $i=>$sub) "{{$i}}", @endforeach ],
         datasets: [{
             label: 'Incomplete Signups',
-            data: [ @foreach ($subs as $i=>$sub) {{$subs[$i][0]->statusTotal}}, @endforeach],
+            data: [],
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255,99,132,1)',
             borderWidth: 1
         },{
             label: 'Active Subscribers',
-            data:  [ @foreach ($subs as $i=>$sub) @if (isset($subs[$i][1])){{$subs[$i][1]->statusTotal}}, @endif @endforeach],
+            data: [@foreach ($subs["Today"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Yesterday"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Last Week"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach
+            		@foreach ($subs["Last Month"] as $sub) @if ($sub->status =='active') {{ $sub->total }}, @elseif (NULL == $sub->status='active') 0,  @endif @endforeach],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
         },{
             label: 'Cancelled',
-            data:  [ @foreach ($subs as $i=>$sub) @if (isset($subs[$i][2])){{$subs[$i][2]->statusTotal}}, @endif @endforeach],
+            data: [],
             backgroundColor: 'rgba(255, 206, 86, 0.2)',
             borderColor: 'rgba(255, 206, 86, 1)',
-            borderWidth: 1
-        },{
-            label: 'New Signups',
-            data:  [ @foreach ($subs as $i=>$sub) {{ $newSubs[$i]->new }}, @endforeach ],
-            backgroundColor: 'rgba(56, 110, 2, 0.2)',
-            borderColor: 'rgba(56, 110, 2, 1)',
             borderWidth: 1
         }]
     },

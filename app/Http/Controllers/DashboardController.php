@@ -59,90 +59,49 @@ class DashboardController extends Controller
         $subs = [];
         $newSubs = [];
         
-        $subs["Today"] = DB::table('users')
-            ->select('status', DB::raw('count(*) as statusTotal'))
-            ->where('created_at','<=',date('Y-m-d'))
-            ->where('status','<>','admin')
-            ->groupBy('status')
-            ->orderBy('start_date','asc')
-            ->get();
 
-        $newSubs["Today"] = DB::table('users')
-            ->select(DB::raw('count(*) as new'))
+        $subs["Today"] = DB::table('users')
+        	->select('status', DB::raw('count(*) as total'))
+            ->where('status','<>','admin')
             ->where('created_at','>=',date('Y-m-d'))
             ->where('status','active')
             ->groupBy('status')
-            ->first();
-
-        
-        $subs["Yesterday"] = DB::table('users')
-            ->select('status', DB::raw('count(*) as statusTotal'))
-            ->where('created_at','<=',date('Y-m-d',strtotime('-1 day')))
-            ->where('status','<>','admin')
-            ->groupBy('status')
-            ->orderBy('start_date','asc')
             ->get();
+          
             
-            
-        $newSubs["Yesterday"] = DB::table('users')
-            ->select(DB::raw('count(*) as new'))
+        $subs["Yesterday"] = DB::table('users')
+        	->select('status', DB::raw('count(*) as total'))
+            ->where('status','<>','admin')
             ->where('created_at','>=',date('Y-m-d',strtotime('-1 day')))
             ->where('created_at','<',date('Y-m-d'))
-            ->where('status','active')
             ->groupBy('status')
-            ->first();
-
-        
-        $subs["Last Week"] = DB::table('users')
-            ->select('status', DB::raw('count(*) as statusTotal'))
-            ->where('created_at','<=',date('Y-m-d',strtotime('-7 days')))
-            ->where('status','<>','admin')
-            ->groupBy('status')
-            ->orderBy('start_date','asc')
             ->get();
-            
-            
-        $newSubs["Last Week"] = DB::table('users')
-            ->select(DB::raw('count(*) as new'))
-            ->where('created_at','>=',date('Y-m-d',strtotime('-7 days')))
-            ->where('status','active')
-            ->groupBy('status')
-            ->first();
 
-        
-        $subs["Last Month"] = DB::table('users')
-            ->select('status', DB::raw('count(*) as statusTotal'))
-            ->where('created_at','<=',date('Y-m-d',strtotime('-1 month')))
+    	$subs["Last Week"] = DB::table('users')
+        	->select('status', DB::raw('count(*) as total'))
             ->where('status','<>','admin')
+            ->where('created_at','>=',date('Y-m-d',strtotime('-7 day')))
+            ->where('created_at','<',date('Y-m-d'))
             ->groupBy('status')
-            ->orderBy('start_date','asc')
             ->get();
-            
-            
-        $newSubs["Last Month"] = DB::table('users')
-            ->select(DB::raw('count(*) as new'))
+
+    	$subs["Last Month"] = DB::table('users')
+        	->select('status', DB::raw('count(*) as total'))
+            ->where('status','<>','admin')
             ->where('created_at','>=',date('Y-m-d',strtotime('-1 month')))
-            ->where('status','active')
+            ->where('created_at','<',date('Y-m-d'))
             ->groupBy('status')
-            ->first();
-        
+            ->get();   
+             
         $subs["Last Ninety"] = DB::table('users')
-            ->select('status', DB::raw('count(*) as statusTotal'))
-            ->where('created_at','<=',date('Y-m-d',strtotime('-90 days')))
+        	->select('status', DB::raw('count(*) as total'))
             ->where('status','<>','admin')
-            ->groupBy('status')
-            ->orderBy('start_date','asc')
-            ->get();
-            
-        $newSubs["Last Ninety"] = DB::table('users')
-            ->select(DB::raw('count(*) as new'))
             ->where('created_at','>=',date('Y-m-d',strtotime('-90 days')))
-            ->where('status','active')
+            ->where('created_at','<',date('Y-m-d'))
             ->groupBy('status')
-            ->first();
-
-
-//echo json_encode($subs);die;
+            ->get();   
+         
+//echo json_encode($subs["Today"]);die;     
 
         
         $weeklySummaries = [];
@@ -151,6 +110,7 @@ class DashboardController extends Controller
         foreach($activeWeeks as $activeWeek) {
         	$week->start_date = $activeWeek->start_date;
         	$week->newSubCount = $activeWeek->newSubCount;
+        	$week->recurringSubCount = $totalSubs;
         	$totalSubs += $activeWeek->newSubCount;
         	$week->totalSubs = $totalSubs;
         	foreach ($skips as $skip) {
