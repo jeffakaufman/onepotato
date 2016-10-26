@@ -3,9 +3,19 @@ session_start();
     if( isset( $_SESSION['registered']) ) session_destroy();
     else if (isset( $user->id)) header("Location: /account");
 ?>
+<?php
+$_parsed = parse_url( url()->current() );
+$_appDomain = $_parsed['scheme'].'://'.$_parsed['host'];
+?>
+
 @extends('spark::layouts.app')
 
 @section('register_nav')
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="One Potato" />
+	<meta property="og:description"   content="Check out One Potato! Everything you need to make organic, healthy, and delicious dinners the whole family will love delivered straight to your door each week. From the founder of Weelicious. Get $30 off your first box by clicking the link below and entering code REFER30." />
+	<meta property="og:image"         content="{{$_appDomain}}/img/onepotato-share.jpg" />
+
 <script>
 $('#register1').addClass('active');
 </script>

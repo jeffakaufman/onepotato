@@ -2,9 +2,7 @@
 
 <?php
 $_parsed = parse_url( url()->current() );
-
 $_appDomain = $_parsed['scheme'].'://'.$_parsed['host'];
-
 ?>
 
 @section('scripts')
