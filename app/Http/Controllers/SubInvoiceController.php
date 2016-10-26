@@ -2187,6 +2187,50 @@ class SubinvoiceController extends Controller
 
 	}
 	
+	//utility function to pull data out of the XML stored in subinvoices and insert into rows
+	public function FixSubInvoices () {
+	
+		//get all the subinvoices
+		$subinvoices = Subinvoice::all();
+		$invoice_charges_total = 0;
+		//loop over them, find the amount_due
+		foreach ($subinvoices as $subinvoice) {
+			
+			//echo $subinvoice->id . "<br />";
+		
+			$invoice_json = json_decode($subinvoice->raw_json);
+			
+			//loop over invoice items
+			if (isset( $invoice_json->data->object->lines->total_count)) {
+				$invoiceitemCount = $invoice_json->data->object->lines->total_count;
+			}else{
+				$invoiceitemCount = 0;
+			}
+		
+			for ($i = 0; $i < $invoiceitemCount; $i++) {
+		 		$line_item_type = $invoice_json->data->object->lines->data[$i]->type;
+				if ($line_item_type=="invoiceitem") {
+					echo $invoice_json->data->object->lines->data[$i]->id . "<br />";
+					$item_charge = $invoice_json->data->object->lines->data[$i]->amount;
+					echo " Item Charge: " . $item_charge . "<br />";
+					$invoice_charges_total += $item_charge; 
+					//echo "<br />" . $invoice_charges . " <br />";
+					$subinvoice->invoiceitem_charges = $invoice_charges_total;
+					echo "TEST: " . $subinvoice->invoiceitem_charges . "<br />";
+					$subinvoice->save();
+				}
+			}
+		
+			
+			//$subinvoice->invoice_charges = $invoice_charges_total;
+			
+			echo "Invoice Charges Total: " . $invoice_charges_total . "<br />";
+		    $invoice_charges_total = 0;
+		
+		}
+		
+		
+	}
 	
 	public function TestOrderXMLUser ($invoiceid) {
 		

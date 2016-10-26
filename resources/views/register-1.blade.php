@@ -140,11 +140,14 @@ $('#register1').addClass('active');
                 <h4>With less shopping, less cooking, less stress -- and a whole lot less expense</h4>
             </div>
             <div class="modal-body">
-                <p><img src="/img/thanksgiving.jpg"></p>
-                <p>Whether you’re cooking for your entire family, or just love eating leftovers all weekend, One Potato has you covered!</p>
+            	<div class="row">
+                	<p class="col-xs-12 col-sm-7"><img src="/img/thanksgiving.jpg"></p>
+	                <div class="col-xs-12 col-sm-5 font16">
+	                	<p>Whether you’re cooking for your entire family, or just love eating leftovers all weekend, One Potato has you covered!</p>
 
-				<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
-
+						<p>Our November 22nd delivery will be <strong>Thanksgiving in a Box</strong> - all for the <i>same price of your normal weekly One Potato delivery.</i></p>
+					</div>
+				</div>
 				<p>Hosting more than just your family? Order another box (or two)! <b><a href="mailto:hello@onepotato.com">Email</a> us by Friday, November 11th</b> at <a href="mailto:hello@onepotato.com">hello@onepotato.com</a> so we can guide you through the ordering process.</p>
 
 				<p>Have a great Thanksgiving, and as always, we are thankful for your business!</p>
