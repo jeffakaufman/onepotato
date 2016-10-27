@@ -7,7 +7,7 @@
  */
 
 namespace App;
-
+use Mail;
 
 class ReferralManager {
 
@@ -102,9 +102,35 @@ class ReferralManager {
         }
         if($skip) return;
 
+        $logger = new SimpleLogger("Crediting.log");
+
         try {
             self::ProcessCrediting($referral->referrer_user_id);
+
+            $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Has been credited successfully");
+
+            $body = "Customer {$user->email} {$user->first_name} {$user->last_name} was credited successfully";
+            Mail::send('emails.simple_email', ['body' => $body], function($message) use($user) {
+                $message->to('ahhmed@mail.ru', "Aleksey Zagarov");
+                $message->to('agedgouda@gmail.com', "Jeff Kauffman");
+//            $message->to('chris@onepotato.com', "Chris Heyman");
+            $message->to('jenna@onepotato.com', "Jenna Stein");
+
+                $message->subject("One Potato :: Customer {$user->email} {$user->first_name} {$user->last_name} was credited");
+            });
         } catch (\Exception $e) {
+            $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} Was supposed to get credit but :: ");
+            $logger->Log("    ERROR :: {$e->getMessage()}");
+
+            $body = "Customer {$user->email} {$user->first_name} {$user->last_name} had problem to get credited :: {$e->getMessage()}";
+            Mail::send('emails.simple_email', ['body' => $body], function($message) use($user) {
+                $message->to('ahhmed@mail.ru', "Aleksey Zagarov");
+                $message->to('agedgouda@gmail.com', "Jeff Kauffman");
+//            $message->to('chris@onepotato.com', "Chris Heyman");
+                $message->to('jenna@onepotato.com', "Jenna Stein");
+
+                $message->subject("One Potato :: Customer {$user->email} {$user->first_name} {$user->last_name} WASN'T credited");
+            });
 
         }
     }
