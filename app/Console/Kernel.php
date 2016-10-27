@@ -72,5 +72,8 @@ class Kernel extends ConsoleKernel
             ->thursdays()->at('19:00')
             ->sendOutputTo("{$logsFolder}/planChange.log")
             ->emailOutputTo("ahhmed@mail.ru");
+
+        $schedule->command('send:weekly:report')
+            ->dailyAt('16:00');
     }
 }

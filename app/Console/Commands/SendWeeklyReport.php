@@ -65,18 +65,18 @@ class SendWeeklyReport extends Command
         }
         $csv .= ",".$reportData['total']['count']."\r\n";
 
-echo $csv;
-/*
+//echo $csv;
+
         Mail::send('emails.weekly_report', [], function($message) use($csv){
             $message->to('ahhmed@mail.ru', "Aleksey Zagarov");
-            $message->to('agedgouda@gmail.com', "Jeff Kauffman");
-//            $message->to('chris@onepotato.com', "Chris Heyman");
+//            $message->to('agedgouda@gmail.com', "Jeff Kauffman");
+            $message->to('chris@onepotato.com', "Chris Heyman");
+            $message->to('grobins@onepotato.com');
 //            $message->to('jenna@onepotato.com', "Jenna Stein");
 
             $message->subject("One Potato Weekly Report");
             $message->attachData($csv, "report.csv");
         });
-*/
     }
 
 }
