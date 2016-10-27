@@ -42,7 +42,7 @@ var ctx2 = document.getElementById("subcriberSummary");
 var myChart = new Chart(ctx2, {
     type: 'bar',
     data: {
-        labels: [ @foreach ($weeklySummaries as $week) "{{date('M d, Y',strtotime($week->start_date))}}", @endforeach ],
+        labels: [ @foreach ($weeklySummaries as $week) "{{date('M d',strtotime($week->start_date))}}", @endforeach ],
         datasets: [{
             label: 'Recurring',
             data: [ @foreach ($weeklySummaries as $week) {{$week->recurringSubCount}}, @endforeach ],
@@ -65,12 +65,17 @@ var myChart = new Chart(ctx2, {
     },
     options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
+    		xAxes: [{
+                gridLines: {
+                    display:false
                 }
+            }],
+    		yAxes: [{
+                gridLines: {
+                    display:false
+                }   
             }]
-        }
+    	}
     }
 });
 var ctx = document.getElementById("subBreakdown");
@@ -100,12 +105,17 @@ var myChart = new Chart(ctx, {
     },
     options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
+    		xAxes: [{
+                gridLines: {
+                    display:false
                 }
+            }],
+    		yAxes: [{
+                gridLines: {
+                    display:false
+                }   
             }]
-        }
+    	}
     }
 });
 var ctx = document.getElementById("revenue");
@@ -129,16 +139,24 @@ var myChart = new Chart(ctx, {
     },
     options: {
         scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
+    		xAxes: [{
+                gridLines: {
+                    display:false
                 }
+            }],
+    		yAxes: [{
+                gridLines: {
+                    display:false
+                },
+                ticks: {
+            		beginAtZero: true,
+            		callback: function(value, index, values) {
+                		return '$' + value; 
+                	}
+                }       
             }]
-        }
+    	},
     }
 });
 </script>
 @endsection
-
-
-//$week->week.'+2 days'
