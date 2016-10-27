@@ -51,20 +51,19 @@ class DashboardController extends Controller
             
         $skips = DB::table('shippingholds')
             ->select('date_to_hold', DB::raw('count(*) as skips'))
-            ->whereIn('hold_status',['released-after-hold','hold'])
+            ->whereIn('hold_status',['released-after-hold','hold','held'])
             ->groupBy('date_to_hold')
             ->orderBy('date_to_hold','asc')
             ->get();
-            
+         
         $subs = [];
         $newSubs = [];
-        
+        $statuses = ['active','inactive-cancelled','incomplete'];
 
         $subs["Today"] = DB::table('users')
         	->select('status', DB::raw('count(*) as total'))
             ->where('status','<>','admin')
             ->where('created_at','>=',date('Y-m-d'))
-            ->where('status','active')
             ->groupBy('status')
             ->get();
           
@@ -100,14 +99,75 @@ class DashboardController extends Controller
             ->where('created_at','<',date('Y-m-d'))
             ->groupBy('status')
             ->get();   
-         
-//echo json_encode($subs["Today"]);die;     
 
-        
+		$item = new stdClass;
+        $subReport = [];
+		
+		foreach ($statuses as $status) {
+			//$subReport = $status;
+			foreach($subs["Today"] as $obj) {
+    			if ($status == $obj->status) {
+        			$item->today = $obj->total;
+        			//break;
+    			}
+			}
+			foreach($subs["Yesterday"] as $obj) {
+    			if ($status == $obj->status) {
+        			$item->yesterday = $obj->total;
+        			//break;
+    			}
+			}
+			foreach($subs["Last Week"] as $obj) {
+    			if ($status == $obj->status) {
+        			$item->lastWeek = $obj->total;
+        			//break;
+    			}
+			}
+			foreach($subs["Last Month"] as $obj) {
+    			if ($status == $obj->status) {
+        			$item->lastMonth = $obj->total;
+        			//break;
+    			}
+			}
+			foreach($subs["Last Ninety"] as $obj) {
+    			if ($status == $obj->status) {
+        			$item->last90 = $obj->total;
+        			//break;
+    			}
+			}
+			if (!isset($item->today)) { $item->today = 0; }
+			if (!isset($item->yesterday)) { $item->yesterday = 0; }
+			if (!isset($item->lastWeek)) { $item->lastWeek = 0; }
+			if (!isset($item->lastMonth)) { $item->lastMonth = 0; }
+			if (!isset($item->last90)) { $item->last90 = 0; }
+			$subReport[$status] = $item;
+			$item = new stdClass;
+		}
+
+         
         $weeklySummaries = [];
        	$week  = new stdClass;
        	$totalSubs = 0;
-        foreach($activeWeeks as $activeWeek) {
+       	
+        foreach($activeWeeks as $i => $activeWeek) {
+        	if ($i <> 0 && ((strtotime($activeWeek->start_date)-strtotime($lastWeek))/86400)>7) {
+        		
+        		$week->start_date = date('Y-m-d',strtotime($activeWeek->start_date.'-7 days'));
+        		$week->newSubCount = 0;
+        		$week->recurringSubCount = $totalSubs;
+        		$week->totalSubs = $totalSubs;
+        		foreach ($skips as $skip) {
+    				if (date('Y-m-d',strtotime($skip->date_to_hold)) == date('Y-m-d',strtotime($week->start_date))) { 
+    					$week->skips = $skip->skips; 
+	    				} 
+	   			}
+	    		if(!isset($week->skips)){$week->skips = 0;}
+	    		if (strtotime($activeWeek->start_date) > strtotime('-30 days')) {
+	    			array_push($weeklySummaries,$week);
+	    		}
+	    		$lastWeek = $activeWeek->start_date;
+	    		$week = new stdClass;
+        	}
         	$week->start_date = $activeWeek->start_date;
         	$week->newSubCount = $activeWeek->newSubCount;
         	$week->recurringSubCount = $totalSubs;
@@ -122,6 +182,7 @@ class DashboardController extends Controller
     		if (strtotime($activeWeek->start_date) > strtotime('-30 days')) {
     			array_push($weeklySummaries,$week);
     		}
+    		$lastWeek = $activeWeek->start_date;
     		$week = new stdClass;
         }        
 
@@ -129,7 +190,7 @@ class DashboardController extends Controller
     			->with([
     				'weeklySummaries' => $weeklySummaries,
     				'subs' => $subs,
-    				'newSubs' => $newSubs,
+    				'subReport' => $subReport,
                 ]);
 	
     
