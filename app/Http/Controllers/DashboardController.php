@@ -42,23 +42,18 @@ class DashboardController extends Controller
         $lastPeriodEndDate = Subinvoice::max('ship_date');
         $lastPeriodEndDate = date('Y-m-d',strtotime($lastPeriodEndDate."+8 days"));
         
-        $activeWeeks = DB::table('users')
-            ->select('start_date', DB::raw('count(*) as newSubCount'))
-            ->where('status','active')
-            ->groupBy('start_date')
-            ->orderBy('start_date','asc')
-            ->get();
-            
-        $skips = DB::table('shippingholds')
-            ->select('date_to_hold', DB::raw('count(*) as skips'))
-            ->whereIn('hold_status',['released-after-hold','hold','held'])
-            ->groupBy('date_to_hold')
-            ->orderBy('date_to_hold','asc')
-            ->get();
          
+/*********************
+
+Get the number of subscribers by status for today, yesterday, last week,
+last month, and 90 days ago, then put them into an array by status instead of time period.
+
+**********************/
+
         $subs = [];
         $newSubs = [];
         $statuses = ['active','inactive-cancelled','incomplete'];
+        
 
         $subs["Today"] = DB::table('users')
         	->select('status', DB::raw('count(*) as total'))
@@ -144,11 +139,31 @@ class DashboardController extends Controller
 			$item = new stdClass;
 		}
 
+/********************
+
+Get number of existing, new, and skips for each week going back one month and forward as far as we have skips.
+
+*********************/
+
          
         $weeklySummaries = [];
        	$week  = new stdClass;
        	$totalSubs = 0;
-       	
+        
+        $activeWeeks = DB::table('users')
+            ->select('start_date', DB::raw('count(*) as newSubCount'))
+            ->where('status','active')
+            ->groupBy('start_date')
+            ->orderBy('start_date','asc')
+            ->get();
+            
+        $skips = DB::table('shippingholds')
+            ->select('date_to_hold', DB::raw('count(*) as skips'))
+            ->whereIn('hold_status',['released-after-hold','hold','held'])
+            ->groupBy('date_to_hold')
+            ->orderBy('date_to_hold','asc')
+            ->get();
+                   	
         foreach($activeWeeks as $i => $activeWeek) {
         	if ($i <> 0 && ((strtotime($activeWeek->start_date)-strtotime($lastWeek))/86400)>7) {
         		
@@ -184,13 +199,27 @@ class DashboardController extends Controller
     		}
     		$lastWeek = $activeWeek->start_date;
     		$week = new stdClass;
-        }        
+        }  
+        
+        
+/************
+
+Get subscriber information.
+
+*************/        
+    	$revenue = DB::table('subinvoices')
+            ->select(DB::raw('yearweek(charge_date) as week,count(user_id) as numSubs,avg(charge_amount)/100 as amountToCharge,avg(charge_actual)/100 as amountCharged,sum(invoiceitem_charges)/100 as chargesDebits'))
+            ->where('invoice_status','<>','does_not_ship')
+            ->whereNotNull('user_id')
+            ->groupBy('week')
+            ->get();    
 
     	return view('admin.dashboard')
     			->with([
     				'weeklySummaries' => $weeklySummaries,
     				'subs' => $subs,
     				'subReport' => $subReport,
+    				'revenue' => $revenue,
                 ]);
 	
     
@@ -418,7 +447,6 @@ class DashboardController extends Controller
             $linkSent = new \DateTime($lastCancelLinkRecord->created_at);
             $lastCancelLinkSent = $linkSent->format("m/d/Y @ H:i");
         }
-
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
 						'shippingAddress'=>$shippingAddress,
