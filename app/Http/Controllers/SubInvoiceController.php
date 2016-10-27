@@ -812,6 +812,7 @@ class SubinvoiceController extends Controller
 
         $subinvoice->charge_date = $charge_date_formatted;
         $subinvoice->stripe_customer_id = $event_json->data->object->customer;
+		
 
         if (isset($event_json->data->object->charge)) {
             $subinvoice->stripe_charge_code = $event_json->data->object->charge;
@@ -846,9 +847,35 @@ class SubinvoiceController extends Controller
 
 
         $subinvoice->charge_amount = $event_json->data->object->lines->data[$lastItem]->amount;
+
+		if (isset($event_json->data->object->amount_due)) {
+			$subinvoice->charge_actual = $event_json->data->object->amount_due;
+		}
+		
         $subinvoice->plan_id = $event_json->data->object->lines->data[$lastItem]->plan->id;
 
 
+		//loop over invoice items
+		if (isset( $event_json->data->object->lines->total_count)) {
+			$invoiceitemCount = $event_json->data->object->lines->total_count;
+		}else{
+			$invoiceitemCount = 0;
+		}
+	
+		$invoice_charges_total = 0;
+		
+		for ($i = 0; $i < $invoiceitemCount; $i++) {
+	 		$line_item_type = $event_json->data->object->lines->data[$i]->type;
+			if ($line_item_type=="invoiceitem") {
+				
+				$item_charge = $event_json->data->object->lines->data[$i]->amount;
+			
+				$invoice_charges_total += $item_charge; 
+				//echo "<br />" . $invoice_charges . " <br />";
+			
+			}
+		}
+		$subinvoice->invoiceitem_charges = $invoice_charges_total;
 
         $subinvoice->invoice_status = "charged_not_shipped";
         $subinvoice->raw_json = json_encode($event_json);

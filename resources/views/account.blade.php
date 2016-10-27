@@ -910,22 +910,15 @@ $(document).ready(function() {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-xs-12">
 
-                                    <div class="fb-share-button"
+                                    <span class="fb-share-button"
                                          data-href="{{$shareLink}}"
                                          data-layout="button_count"
-                                    data-size="large">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-
+                                    data-size="large"></span>
                                     <a class="twitter-share-button"
                                        href="https://twitter.com/intent/tweet?text=Check out One Potato! Everything you need to make organic, healthy, and delicious dinners the whole family will love delivered straight to your door each week. From the founder of Weelicious. Get $30 off your first box by clicking the link below and entering code REFER30"
-                                       data-size="large">
-                                        Tweet</a>
+                                       data-size="large">Tweet</a>
                                 </div>
                             </div>
                         </div>
