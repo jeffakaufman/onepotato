@@ -1,94 +1,200 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Meta Information -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('spark::layouts.app')
 
-    <title>Spark</title>
+@section('scripts')
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+@endsection
 
-    <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+@section('content')
+<div id="hero">
+  <div id="hero-text">
+    <h2>Family Meals <span>made easy</span>
+      <div class="subtitle">Organic, pre-prepped ingredients and family friendly recipes with special child pricing delivered weekly.</div>
+    </h2>
+    <button type="button" class="btn btn-primary" onclick="location.href='/register';">
+      Get Started
+    </button>
+  </div>
+</div>
+<div class="container">
+  <h3 class="slogan">The One Potato <span>difference</span></h3>
 
-    <style>
-        body, html {
-            background: url('/img/spark-bg.png');
-            background-repeat: repeat;
-            background-size: 300px 200px;
-            height: 100%;
-            margin: 0;
-        }
+  <div class="slick">
+    <div class="item"><img src="/img/topslide1.jpg"></div>
+    <div class="item"><img src="/img/topslide2.jpg"></div>
+  </div>
 
-        .full-height {
-            min-height: 100%;
-        }
+  <div class="row cards">
 
-        .flex-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .flex-fill {
-            flex: 1;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-
-        .text-center {
-            text-align: center;
-        }
-
-        .links {
-            padding: 1em;
-            text-align: right;
-        }
-
-        .links a {
-            text-decoration: none;
-        }
-
-        .links button {
-            background-color: #3097D1;
-            border: 0;
-            border-radius: 4px;
-            color: white;
-            cursor: pointer;
-            font-family: 'Open Sans';
-            font-size: 14px;
-            font-weight: 600;
-            padding: 15px;
-            text-transform: uppercase;
-            width: 100px;
-        }
-    </style>
-</head>
-<body>
-    <div class="full-height flex-column">
-        <nav class="links">
-            <a href="/login" style="margin-right: 15px;">
-                <button>
-                    Login
-                </button>
-            </a>
-
-            <a href="/register">
-                <button>
-                    Register
-                </button>
-            </a>
-        </nav>
-
-        <div class="flex-fill flex-center">
-            <h1 class="text-center">
-                <img src="/img/color-logo.png">
-            </h1>
+    <div class="col-xs-12 col-sm-4 card">
+      <img src="/img/card1.jpg">
+      <div class="text">
+        <h3>Family Friendly</h3>
+        <div class="list">
+          <div class="item">
+            <div class="icon"><img src="/img/icon-pot.svg"></div>
+            <div class="text"><img src="/img/logo-weelicious.png" style="width: 75px">-tested recipes</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-silverware.svg"></div>
+            <div class="text">Low pricing for kids saves you money</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-cookie.svg"></div>
+            <div class="text">Free cookie dough in every box!</div>
+          </div>
         </div>
+      </div>
+    </div><!--.card-->
+
+    <div class="col-xs-12 col-sm-4 card">
+      <img src="/img/card2.jpg">
+      <div class="text">
+        <h3>Organic & Sustainable</h3>
+        <div class="list">
+          <div class="item">
+            <div class="icon"><img src="/img/icon-carrot.svg"></div>
+            <div class="text">Organic, non-GMO seasonal produce</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-wheat.svg"></div>
+            <div class="text">Ingredients sourced from the country’s top farms</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-box.svg" style="width: 20px;"></div>
+            <div class="text">Recyclable and reusable packaging</div>
+          </div>
+        </div>
+      </div>
+    </div><!--.card-->
+
+    <div class="col-xs-12 col-sm-4 card">
+      <img src="/img/card3.jpg">
+      <div class="text">
+        <h3>Quick & Convenient</h3>
+        <div class="list">
+          <div class="item">
+            <div class="icon"><img src="/img/icon-clock.svg"></div>
+            <div class="text">Meals ready in 30 minutes or less</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-knife.svg"></div>
+            <div class="text">Fresh ingredients arrived pre-chopped and pre-measured in a refrigerated box</div>
+          </div>
+          <div class="item">
+            <div class="icon"><img src="/img/icon-truck.svg"></div>
+            <div class="text">FREE delivery</div>
+          </div>
+        </div>
+      </div>
+    </div><!--.card-->
+
+  </div>
+</div><!--.container-->
+
+
+<div id="menu" class="menu_slider">
+  @if (count($currentMenu[0]) > 0) 
+    @foreach ($currentMenu[0] as $menu)
+    <div class="meal">
+      <div class="bg" style="background-image: url('{{$menu->image}}');">
+        <div class="title">
+          <h3>See what our <span>families</span> are <span>loving</span></h3>
+          Quick, nutritious and fresh recipes<br>
+          that appeal to the whole family<br>
+          <a href="/whats-cooking" class="btn btn-secondary" type="button">See This Week's Menu</a>
+        </div>
+        <div class="caption">
+            <h4>{{$menu->menu_title}} {{$menu->menu_description}}</h4>
+        </div>
+      </div>
+      
+      <!-- <img src="{{$menu->image}}" alt="{{$menu->menu_title}}"> -->
+        
     </div>
-</body>
-</html>
+    @endforeach
+  @endif
+</div>
+
+
+<div class="container">
+
+  <h3 class="slogan green">See why we’re <span>responsible</span></h3>
+
+  <div class="slick">
+    <div class="item">
+      <div class="text">
+        <h4>...and our planet</h4>
+        In addition to working with farmers that treat our soil, water and animals with respect and care, One Potato makes every effort to ensure that the packaging is as environmentally responsible as possible. Everything we ship in is recyclable and/or biodegradable. Our boxes are made from recyclable, biodegrable 98% post-consumer cardboard, our insulation is made from recycled denim jeans (really!) and completely recyclable, our ice packs and containers are also completely recyclable.  <b><a href="#">Read more...</a></b>
+      </div>
+      <img src="/img/bottomslide2.jpg">
+    </div>
+    <div class="item"><img src="/img/bottomslide1.jpg"></div>
+  </div>
+  
+  <div class="mobile-content">
+    <h4>...and our planet</h4>
+    In addition to working with farmers that treat our soil, water and animals with respect and care, One Potato makes every effort to ensure that the packaging is as environmentally responsible as possible. Everything we ship in is recyclable and/or biodegradable. Our boxes are made from recyclable, biodegrable 98% post-consumer cardboard, our insulation is made from recycled denim jeans (really!) and completely recyclable, our ice packs and containers are also completely recyclable.  <b><a href="#">Read more...</a></b>
+  </div>
+  
+</div><!--.container -->
+
+<div class="hero3">
+  <div class="text">
+    <h4>We cook with <img src="/img/logo-weelicious.png"></h4>
+    Many of our recipes come from the pages of One Potato co-founder Catherine McCord's best selling Weelicious cookbooks and website. Families around the world rely on Catherine for delicious, easy, and healthy family meals.
+  </div>
+  <img src="/img/hero3.jpg">
+</div>
+
+<div class="container">
+  <h3 class="slogan">See what our <span>families</span> are <span>saying</span></h3>
+  <div class="row testimonials">
+
+    <div class="col-xs-12 col-sm-4 testimonial">
+      <img src="/img/testimonial1.jpg">
+      <div class="text">
+        <div class="quote open-quote">&#8220;</div>
+        “Another winner from @onepotatobox! This is the spring vegetable pasta with bruschetta. We seriously haven’t struck out yet and I love introducing Grayson to new flavors and foods!”
+        <div class="byline">&#8212;@eatliverun</div>
+        <div class="quote close-quote">&#8221;</div>
+      </div>
+    </div><!--.testimonial-->
+
+    <div class="col-xs-12 col-sm-4 testimonial">
+      <img src="/img/testimonial2.jpg">
+      <div class="text">
+        <div class="quote open-quote">&#8220;</div>
+        “My pickiest eater just devoured 2 servings of Arepas with Slow Cooked Pulled Chicken from #onepotatobox WITH SLAW. He says it was the best meal ever. I’m in shock with happiness.”
+
+        <div class="byline">&#8212;@ramonarose</div>
+        <div class="quote close-quote">&#8221;</div>
+      </div>
+    </div><!--.testimonial-->
+
+    <div class="col-xs-12 col-sm-4 testimonial">
+      <img src="/img/testimonial3.jpg">
+      <div class="text">
+        <div class="quote open-quote">&#8220;</div>
+        So excited because our first @onepotatobox by @weelicious arrived today! Kids picked pizza balls for dinner, so that’s what’s up first! Between moving, working two full time jobs and being a mama and wife I needed this in my life!
+
+        <div class="byline">&#8212;@zozubaby</div>
+        <div class="quote close-quote">&#8221;</div>
+      </div>
+    </div><!--.testimonial-->
+
+  </div>
+</div><!--.container-->
+
+<div id="footer-action">
+  <div class="container">
+    <div class="col-md-8 col-md-offset-2">
+      <h4>Let’s cook <span>together</span>!</h4>
+      Try One Potato today with no commitment.<br>
+      Skip or cancel anytime.<br>
+      <button type="button" class="btn btn-secondary" onclick="location.href='/register';">
+        Get Started
+      </button>
+    </div>
+  </div>
+</div>
+@endsection

@@ -22,6 +22,55 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'biorhymelight';
+    src: url('/font/biorhyme-light-webfont.woff2') format('woff2'),
+         url('/font/biorhyme-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'work_sansmedium';
+    src: url('/font/worksans-medium-webfont.woff2') format('woff2'),
+         url('/font/worksans-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'work_sansregular';
+    src: url('/font/worksans-regular-webfont.woff2') format('woff2'),
+         url('/font/worksans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'work_sanssemibold';
+    src: url('/font/worksans-semibold-webfont.woff2') format('woff2'),
+         url('/font/worksans-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'biorhymeregular';
+    src: url('/font/biorhyme-regular-webfont.woff2') format('woff2'),
+         url('/font/biorhyme-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'libre_franklinsemibold';
+    src: url('/font/librefranklin-semibold-webfont.woff2') format('woff2'),
+         url('/font/librefranklin-semibold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'santelia_scriptregular';
+    src: url('/font/yellow_design_studio_-_santeliascript-regular-webfont.woff2') format('woff2'),
+         url('/font/yellow_design_studio_-_santeliascript-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 /*
  * Variables...
@@ -52,14 +101,16 @@ $text-color3: #a8a8a8;
 $text-color-light: #a8a8a8;
 $link-hover-color: #e91e25;
 $edit-link-color: #e82128;
+$green: #3ca249;
 $link-hover-decoration: none;
 
 $border-color: #c2eef1;
 $border-color2: #d4d4d4;
 
-$font-family-sans-serif: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
-$font-family-semibold: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: "work_sansregular", Helvetica, Arial, sans-serif;
+$font-family-semibold: "work_sanssemibold", Helvetica, Arial, sans-serif;
 $font-family-bold: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
+$font-btn: 'work_sansmedium', Helvetica, Arial, sans-serif;
 $font-size-base: 14px;
 
 $btn-font-weight: 300;

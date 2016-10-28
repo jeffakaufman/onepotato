@@ -26,6 +26,7 @@ elixir(function(mix) {
 	    ], 'public/js/vendor_header.js')
 	    .scripts([
 	    	'device.min.js',
+	    	'slick.min.js',
 	    	'jquery.matchHeight.js',
 	    	'sweetalert.min.js'
 	    ], 'public/js/vendor_footer.js')
