@@ -11,6 +11,28 @@ use DB;
 
 
 class ReportsBuilder {
+    public function GetWeeklyMenuReport(\DateTime $fromDate, \DateTime $toDate) {
+        $menus = DB::table('menus_users')
+        	->select('menu_title', DB::raw('count(*) as count'))
+            ->join('users', 'users.id', '=', 'menus_users.users_id')
+            ->join('menus', 'menus.id', '=', 'menus_users.menus_id')
+            ->leftJoin('shippingholds', function($join) {
+                $join->on('shippingholds.user_id', '=', 'menus_users.users_id')
+                    ->on('shippingholds.date_to_hold', '=', 'menus_users.delivery_date')
+                    ->whereIn('shippingholds.hold_status', [DeliveryManager::STATUS_HOLD, DeliveryManager::STATUS_HELD, ]);
+
+            })
+            ->whereDate('menus_users.delivery_date', '>=', $fromDate->format('Y-m-d'))
+            ->whereDate('menus_users.delivery_date', '<=', $toDate->format('Y-m-d'))
+            ->whereColumn('users.start_date', '<=', 'menus_users.delivery_date')
+            ->whereIn('users.status', [User::STATUS_ACTIVE, User::STATUS_INACTIVE, ])
+            ->whereNull('shippingholds.id')
+            ->groupBy('menu_title')
+            ->get();
+        
+        return $menus;	
+    }
+    
     public function GetWeeklyKitchenReport(\DateTime $fromDate, \DateTime $toDate) {
 
         $query = DB::table('menus_users')
@@ -31,8 +53,6 @@ class ReportsBuilder {
 
 
         $dbData = $query->get();
-
-
         $byUserData = array();
 
         foreach($dbData as $dbRow) {

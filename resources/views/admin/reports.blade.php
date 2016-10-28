@@ -14,6 +14,24 @@
 @section('content')
 <home :recipes="recipes" inline-template>
     <div class="container">
+    
+			<div class="row">
+				<div class="col-md-9">
+					<div class="panel panel-default">
+						<div class="panel-heading"><strong>Menus</strong></div>
+						<div class="panel-body">
+								<table id="menus" class="table table-striped table-hover table-order-column" width="100%" cellspacing="0">
+									@foreach($menuReport as $menu)
+										<tr>
+											<td>{{ $menu->menu_title}}</td>
+											<td class="text-right">{{$menu->count}}</td>
+										</tr>
+									@endforeach
+								</table>
+						</div>
+					</div>
+				</div>
+			</div>
 
 @foreach($reportData['bigGroups'] as $bgData)
 			<div class="row">

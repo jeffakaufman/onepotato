@@ -541,14 +541,27 @@ Get subscriber information.
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
 
+    	$meals = DB::table('menus_users')
+        	->select('menu_title', DB::raw('count(*) as count'))
+            ->join('menus', 'menus.id', '=', 'menus_users.menus_id')
+
+            ->where('delivery_date',$thisTuesday)
+            ->groupBy('menu_title')
+            ->get();
+            
+            
+
 
         $reportsBuilder = new App\ReportsBuilder();
         $reportData = $reportsBuilder->GetWeeklyKitchenReport(new \DateTime($thisTuesday), new \DateTime($thisTuesday));
+        $menuReport = $reportsBuilder->GetWeeklyMenuReport(new \DateTime($thisTuesday), new \DateTime($thisTuesday));
+
 
     	return view('admin.reports')
     			->with([
     				'thisTuesday' => date('F d', strtotime($thisTuesday)),
     				'reportData' => $reportData,
+    				'menuReport' => $menuReport,
                 ]);
 	
     
