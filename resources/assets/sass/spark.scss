@@ -571,7 +571,7 @@ h3.slogan {
 	}
 }
 .mobile-content {
-	
+	margin-bottom: 40px;
 	h4 {
 		color: $green;
 		font-family: 'biorhymelight';
@@ -617,13 +617,14 @@ h3.slogan {
 			text-transform: uppercase;
 			white-space: nowrap;
 			font-size: 18px; 
+			margin-top: 0;
 			
 			img {
 				vertical-align: bottom;
-				width: 150px;
+				width: 190px;
 				
-				@media (min-width: 768px) {
-					
+				@media (max-width: 480px) {
+					width: 150px;
 				}
 			}
 		}
@@ -840,6 +841,9 @@ h3.slogan {
 	}
 }
 .testimonials {
+	.testimonial {
+		margin-bottom: 40px;
+	}
 	img {
 		box-shadow: 1px 2px 9px 1px rgba(153,153,153,.35);
 		border: solid 6px #fff;

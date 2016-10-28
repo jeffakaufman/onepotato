@@ -139,11 +139,11 @@
 </div><!--.container -->
 
 <div class="hero3">
+  <img src="/img/hero3.jpg">
   <div class="text">
     <h4>We cook with <img src="/img/logo-weelicious.png"></h4>
     Many of our recipes come from the pages of One Potato co-founder Catherine McCord's best selling Weelicious cookbooks and website. Families around the world rely on Catherine for delicious, easy, and healthy family meals.
   </div>
-  <img src="/img/hero3.jpg">
 </div>
 
 <div class="container">

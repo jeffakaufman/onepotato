@@ -7669,14 +7669,15 @@ h3.slogan {
         left: 40px;
         width: 50%; } }
 
-.mobile-content h4 {
-  color: #3ca249;
-  font-family: 'biorhymelight';
-  text-transform: uppercase; }
-
-@media (min-width: 768px) {
-  .mobile-content {
-    display: none; } }
+.mobile-content {
+  margin-bottom: 40px; }
+  .mobile-content h4 {
+    color: #3ca249;
+    font-family: 'biorhymelight';
+    text-transform: uppercase; }
+  @media (min-width: 768px) {
+    .mobile-content {
+      display: none; } }
 
 .hero3 {
   position: relative; }
@@ -7710,10 +7711,14 @@ h3.slogan {
       font-family: 'biorhymelight';
       text-transform: uppercase;
       white-space: nowrap;
-      font-size: 18px; }
+      font-size: 18px;
+      margin-top: 0; }
       .hero3 .text h4 img {
         vertical-align: bottom;
-        width: 150px; }
+        width: 190px; }
+        @media (max-width: 480px) {
+          .hero3 .text h4 img {
+            width: 150px; } }
 
 .menu_slider .bg {
   height: 400px;
@@ -7884,6 +7889,9 @@ h3.slogan {
       margin-left: 28px; }
       .cards .card .list .item .text img {
         vertical-align: baseline; }
+
+.testimonials .testimonial {
+  margin-bottom: 40px; }
 
 .testimonials img {
   box-shadow: 1px 2px 9px 1px rgba(153, 153, 153, 0.35);
