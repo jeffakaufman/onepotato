@@ -92,7 +92,7 @@ class AssignMenus extends Command
 
         $deliveryDate = $this->_fetchDeliveryDate();
 
-        $menuAssigner = new MenuAssigner(new \DateTime($deliveryDate));
+        $menuAssigner = MenuAssigner::GetInstance(new \DateTime($deliveryDate));
 
         DB::table('menus_users')->where('delivery_date', '=', $deliveryDate)->delete();
 

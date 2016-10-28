@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\AC_Mediator;
 use App\Cancellation;
-use App\Events\UserHasRegistered;
 use App\Menu;
 use App\MenuAssigner;
 use App\Product;
@@ -12,8 +11,8 @@ use App\Referral;
 use App\ReferralManager;
 use App\StripeMediator;
 use App\SubscriptionManager;
+use App\UserMenuSet;
 use App\UserSubscription;
-use Faker\Provider\DateTime;
 use Illuminate\Console\Command;
 use App\User;
 use App\MenusUsers;
@@ -56,8 +55,27 @@ class TestCommand extends Command
     public function handle()
     {
 
-        $stripe = StripeMediator::GetInstance();
+        MenuAssigner::ReassignAllForDate(new \DateTime('2016-11-29'));
 
+return;
+        //Default :: 71, 76, 77
+        $menuSet = new UserMenuSet(User::where('email', 'agedgouda@gmail.com')->first(), new \DateTime('2016-10-18'));
+//var_dump($menuSet);
+
+        var_dump($menuSet->GetFirstId());
+        var_dump($menuSet->GetSecondId());
+        var_dump($menuSet->GetThirdId());
+        var_dump($menuSet->IsOverwritten());
+        var_dump($menuSet->MatchDefault());
+
+//        $menuSet->SetMenuIds(77, 76, 71);
+
+//        var_dump($menuSet->IsOverwritten());
+
+//        $menuSet->Save();
+
+return;
+        $stripe = StripeMediator::GetInstance();
 
         foreach(User::whereIn('status', [User::STATUS_ACTIVE, /*User::STATUS_INACTIVE*/ ])->/*where('id', '>=', 3615)->*/get() as $u) {
             $this->comment("#{$u->id} [{$u->email}] {$u->first_name}");

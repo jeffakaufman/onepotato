@@ -7,53 +7,55 @@
  */
 
 namespace App;
-
-use App\Console\Commands\AssignMenus;
 use DB;
 
 
 class MenuAssigner {
 
-    public static function ReassignAllForDate(\DateTime $deliveryDate) {
+    public static function AssignManually(User $user, \DateTime $deliveryDate, array $menuIds) {
+        $set = new UserMenuSet($user, $deliveryDate);
 
-        $menuAssigner = new self($deliveryDate);
+        $menuIds = array_values($menuIds);
+        if(count($menuIds) >= 3) {
+            $set->SetMenuIds($menuIds[0], $menuIds[1], $menuIds[2]);
+            $set->Save();
+        }
+    }
 
-        $insertArray = [];
-        $deliveryDateText = $deliveryDate->format('Y-m-d');
+    public static function RestoreDefault(User $user, \DateTime $deliveryDate) {
+        $set = new UserMenuSet($user, $deliveryDate);
+        $set->RestoreDefault();
+    }
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($menuAssigner, $deliveryDateText, &$insertArray) {
+    /**
+     * @param \DateTime $deliveryDate
+     * @return MenuAssigner
+     */
+    public static function GetInstance(\DateTime $deliveryDate) {
+        $hash = $deliveryDate->format('Y-m-d');
+        if((!isset(self::$_repository[$hash])) || (!(self::$_repository[$hash] instanceof self))) {
+            self::$_repository[$hash] = new self($deliveryDate);
+        }
+        return self::$_repository[$hash];
+    }
+
+    private static $_repository = [];
+
+    public static function ReassignAllForDate(\DateTime $deliveryDate, $force = false) {
+
+        User::where('password', '<>', '')->chunk(20, function($users) use($deliveryDate, $force) {
             foreach($users as $user) {
                 /**
                  * @var User $user
                  */
 
-//                $subscription = UserSubscription::where('user_id', $user->id)->first();
-//                if(!$subscription) {
-//                    echo "NO SUBSCRIPTION\r\n";
-//                    continue;
-//                }
-//                /**
-//                 * @var UserSubscription $subscription
-//                 */
-
-
-//                $product = Product::find($subscription->product_id);
-//                if(!$product) {
-//                    echo "NO PRODUCT\r\n";
-//                    continue;
-//                };
-//                /**
-//                 * @var Product $product
-//                 */
-
                 try {
-                    $menusToAssign = $menuAssigner->GetUserMenus($user);
-                    foreach($menusToAssign as $m) {
-                        $insertArray[] = [
-                            'menus_id' => $m->id,
-                            'users_id' => $user->id,
-                            'delivery_date' => $deliveryDateText,
-                        ];
+                    $set = new UserMenuSet($user, $deliveryDate);
+//var_dump($set->IsOverwritten());
+//var_dump($set->MatchDefault());
+//die();
+                    if($force || !$set->IsOverwritten()) {
+                        $set->RestoreDefault();
                     }
 
                 } catch (\Exception $e) {
@@ -80,10 +82,6 @@ class MenuAssigner {
 
             }
         });
-
-        DB::table('menus_users')->where('delivery_date', '=', $deliveryDateText)->delete();
-        DB::table("menus_users")->insert($insertArray);
-
     }
 
     public function __construct(\DateTime $deliveryDate) {
@@ -619,4 +617,235 @@ class MenuAssignerStrategyExtended extends MenuAssignerStrategy {
     }
 
     private $weekMenuList;
+}
+
+
+class UserMenuSet {
+
+    public function GetFirstId() {
+        return $this->menuIds[0];
+    }
+
+    public function GetSecondId() {
+        return $this->menuIds[1];
+    }
+
+    public function GetThirdId() {
+        return $this->menuIds[2];
+    }
+
+    public function SetMenuIds($menuId_1, $menuId_2, $menuId_3) {
+
+        if(
+            in_array($menuId_1, $this->menuIds)
+            && in_array($menuId_2, $this->menuIds)
+            && in_array($menuId_3, $this->menuIds)
+        ) { // The Same, no need to make any changes
+            return;
+        }
+
+        $this->menuIds = [
+            $menuId_1,
+            $menuId_2,
+            $menuId_3,
+        ];
+
+        $this->_cleanUp();
+
+        $this->_needToSave = true;
+    }
+
+    private $_needToSave = false;
+
+    public function Save() {
+
+        if(!$this->_needToSave) return;
+
+        $changed = !$this->MatchDefault();
+
+        foreach($this->assignments as $_key => $a) {
+            /**
+             * @var UserMenuAssignment $a
+             */
+
+            if(isset($this->menusUsersList[$_key])) { // Save to current record
+                $record = $this->menusUsersList[$_key];
+            } else { // Create new record
+                $record = new MenusUsers();
+                $record->users_id = $this->user->id;
+                $record->delivery_date = $this->deliveryDate->format('Y-m-d');
+            }
+
+            $record->menus_id = $a->GetMenuId();
+
+            if($changed) {
+                $record->instead_of = $a->GetDefaultId();
+            } else {
+                $record->instead_of = null;
+            }
+
+            $record->save();
+        }
+
+        $this->_needToSave = false;
+
+        $this->_grabCurrent();
+    }
+
+    public function RestoreDefault() {
+        $this->SetMenuIds($this->defaultMenuIds[0], $this->defaultMenuIds[1], $this->defaultMenuIds[2]);
+        $this->Save();
+    }
+
+    public function IsOverwritten() {
+        $response = false;
+
+        foreach($this->menusUsersList as $_m) {
+            if($_m->instead_of) {
+                $response = true;
+                break;
+            }
+        }
+
+        return $response;
+    }
+
+    public function MatchDefault() {
+        $response = true;
+        foreach($this->assignments as $assignment) {
+            /**
+             * @var UserMenuAssignment $assignment
+             */
+
+            if(!$assignment->IsMatch()) {
+                $response = false;
+                break;
+            }
+        }
+
+        return $response;
+    }
+
+    public function __construct(User $user, \DateTime $deliveryDate) {
+        $this->user = $user;
+        $this->deliveryDate = $deliveryDate;
+
+        $this->assigner = MenuAssigner::GetInstance($deliveryDate);
+
+        $this->_grabCurrent();
+    }
+
+    private function _has($menuId) {
+        return in_array($menuId, $this->menuIds);
+    }
+
+    private function _grabCurrent() {
+        $this->menusUsersList = MenusUsers::where('users_id', '=', $this->user->id)
+            ->where('delivery_date', '=', $this->deliveryDate->format('Y-m-d'))
+            ->get();
+
+        if(count($this->menusUsersList) < 3) {
+            $this->_needToSave = true;
+        }
+
+        $this->menuIds = [];
+        foreach($this->menusUsersList as $_m) {
+            $this->menuIds[] = $_m->menus_id;
+        }
+
+        $this->defaultMenuIds = [];
+        foreach($this->assigner->GetUserMenus($this->user) as $_menu) {
+            $this->defaultMenuIds[] = $_menu->id;
+        }
+
+        $this->_cleanUp();
+    }
+
+    private function _cleanUp() {
+        $this->assignments = [];
+
+        // Fill with default IDs if count is < 3
+        if(3 > count($this->menuIds)) {
+            for($i = count($this->menuIds); $i < 3; $i++) {
+                foreach($this->defaultMenuIds as $dmId) {
+                    if(!in_array($dmId, $this->menuIds)) {
+                        $this->menuIds[] = $dmId;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $pairs = [];
+
+        foreach($this->defaultMenuIds as $dmId) {
+            if(in_array($dmId, $this->menuIds)) {
+                $pairs[$dmId] = $dmId;
+            } else {
+                foreach($this->menuIds as $mId) {
+                    if(in_array($mId, $this->defaultMenuIds)) continue;
+                    if(in_array($mId, $pairs)) continue;
+                    $pairs[$dmId] = $mId;
+                    break;
+                }
+            }
+        }
+//var_dump($pairs);
+        foreach($pairs as $dmId => $mId) {
+            $assignment = new UserMenuAssignment();
+            $assignment->SetMenuId($mId);
+            $assignment->SetDefaultId($dmId);
+            $this->assignments[] = $assignment;
+        }
+    }
+
+
+    private $defaultMenuIds = [];
+
+    private $menusUsersList = [];
+
+    private $menuIds = [];
+
+    private $assignments = [];
+
+    /**
+     * @var \DateTime
+     */
+    private $deliveryDate;
+
+    /**
+     * @var User
+     */
+    private $user;
+
+    /**
+     * @var MenuAssigner
+     */
+    private $assigner;
+}
+
+class UserMenuAssignment {
+
+    public function GetMenuId() {
+        return $this->menuId;
+    }
+
+    public function GetDefaultId() {
+        return $this->defaultId;
+    }
+
+    public function SetMenuId($id) {
+        $this->menuId = $id;
+    }
+
+    public function SetDefaultId($id) {
+        $this->defaultId = $id;
+    }
+
+    public function IsMatch() {
+        return ($this->menuId == $this->defaultId);
+    }
+
+    private $menuId;
+    private $defaultId;
 }

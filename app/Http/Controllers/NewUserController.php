@@ -382,7 +382,7 @@ class NewUserController extends Controller
 
         foreach($allMenus as $_date => $dateMenus) {
             foreach($dateMenus as $_m) {
-                $newMenu = new MenusUsers;
+                $newMenu = new MenusUsers();
                 $newMenu->users_id = $user->id;
                 $newMenu->menus_id = $_m->id;
                 $newMenu->delivery_date = $_date;

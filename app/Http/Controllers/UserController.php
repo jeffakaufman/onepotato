@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CancelLink;
+use App\MenuAssigner;
 use App\ReferralManager;
 use App\SimpleLogger;
 use Faker\Provider\DateTime;
@@ -247,11 +248,11 @@ class UserController extends Controller
 			$deliveryHistory->ship_date = date('F j, Y', strtotime($invoices[$i]->period_end_date."-1 day"));
 			$deliveryHistory->cost = ($invoices[$i]->charge_amount)/100;
 			$deliveryHistory->menus = MenusUsers::where('users_id',$id)
-			->where( function($q) use ($invoices, $i){		
+			    ->where( function($q) use ($invoices, $i){
 						$q->where('delivery_date', date('Y-m-d', strtotime($invoices[$i]->period_end_date."-1 day")) )
 						->orWhere('delivery_date', date('Y-m-d', strtotime($invoices[$i]->ship_date."+1 day")) );
-			})
-			->get();
+			    })
+			    ->get();
 
             $deliveryHistory->tracking_number = false;
 
@@ -1408,19 +1409,8 @@ class UserController extends Controller
 	}
 	
 	public function changeDelivery (Request $request) {
-		
-		$id =  Auth::id();
-		$user = User::find($id);
-
-		$menususers = MenusUsers::where('users_id',$id)->where('delivery_date',$request->date_to_change)->get();
-		$i = 0;
-		foreach ($menususers as $menususer) {
-			$menususer->menus_id = $request->menu_id[$i];
-			$i++;
-			$menususer->save();
-		}
-
-		return redirect('/delivery-schedule'); 
+        MenuAssigner::AssignManually(User::find(Auth::id()), new \DateTime($request->date_to_change), $request->menu_id);
+		return redirect('/delivery-schedule');
 	}
 
 

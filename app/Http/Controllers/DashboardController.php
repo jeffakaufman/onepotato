@@ -773,22 +773,7 @@ class DashboardController extends Controller
 
     public function SaveMenus($userId, $deliveryDate) {
         $request = request();
-
-        DB::table('menus_users')
-            ->where('users_id', '=', $userId)
-            ->where('delivery_date', '=', $deliveryDate)
-            ->delete();
-
-        $insertArray = [];
-        foreach((array)$request->menu_id as $menuId) {
-            $insertArray[] = [
-                'menus_id' => $menuId,
-                'users_id' => $userId,
-                'delivery_date' => $deliveryDate,
-            ];
-        }
-        DB::table("menus_users")->insert($insertArray);
-
+        App\MenuAssigner::AssignManually(User::find($userId), new \DateTime($deliveryDate), (array)$request->menu_id);
         return redirect("/admin/user_details/{$userId}");
     }
 

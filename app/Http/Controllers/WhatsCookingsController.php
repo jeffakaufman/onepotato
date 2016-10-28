@@ -251,107 +251,15 @@ class WhatsCookingsController extends Controller
 			$menu->pdf = $pdfName;
 		}
 
-		$mainIngredientNumber =  "%".$menu->getDietaryPreferencesNumber()."%";
-
 		$menu->save();
-	    
-	    //add new menu to subscribers
-	    $deliveryDate = "'".$request->week_of."' as delivery_date";
-	    $menusID = "'".$menu->id."' as menus_id";
-	    
-	    //find proper subscribers
-	    if ( $request->isOmnivore && !$request->isVegetarian ) {
-	    	$subs = DB::table('products')
-	    		->where('product_type',2)
-	    		->join('subscriptions','products.id','=','subscriptions.product_id')
-	    		->where('subscriptions.dietary_preferences','like',$mainIngredientNumber)
-	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
-			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-			
-	    	DB::table('menus_users')->insert($subs);
-	    }
-	    elseif ( !$request->isOmnivore && $request->isVegetarian ){
-	       	$subs = DB::table('products')
-	    		->where('product_type',1)
-	    		->join('subscriptions','products.id','=','subscriptions.product_id')
-	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
-			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-	    	DB::table('menus_users')->insert($subs);
-	    
-	    }
-	    elseif($request->isOmnivore && $request->isVegetarian){
-	    	$subs = DB::table('products')
-	    		->join('subscriptions','products.id','=','subscriptions.product_id')
-	    		->get(['user_id as users_id',DB::raw($deliveryDate),DB::raw($menusID)]);
-			$subs = json_decode(json_encode($subs), true); //i have to do this. i don't know why
-	    	DB::table('menus_users')->insert($subs);
-	    }
-	    
-	  
-		
+
+
 		$menu->whatscookings()->attach($id);
 		$weeksMenuCount = WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()->get()->count();
 
-  		if ( $weeksMenuCount >= 5 ) {//assign all unassigned meals if this week has 5 meals
+  		if ( 4 < $weeksMenuCount ) {//assign all unassigned meals if this week has 5 meals
 			//assign vegetarian replacement
-			
-			//get the vegetarian backup for the week
-			$vegetarianBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
-									->where('vegetarianBackup','1')
-									->first();
-
-			//find the omnivore subscribers that are are missing at least one meal
-			$subs = DB::table('menus_users')
-					->select('users_id', DB::raw('count(*) as total'))
-					->where('delivery_date', $whatscookings['week_of'])
-                	->having('total', '<', 3)
-					->groupBy('users_id')
-					->get();
-			echo json_encode($subs);
-			//remove the total element from the objects because all life is pain
-			if ($subs) {
-				foreach($subs as $sub) {
-					$scrubbedSubs[] = array(
-						"users_id" => $sub->users_id,
-						"delivery_date" => $request->week_of,
-						"menus_id" => $vegetarianBackup->id
-						); 
-				}
-				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
-				
-				//add the replacement meal to the subscriber
-	    		DB::table('menus_users')->insert($scrubbedSubs);
-	    		}
-	    		
-	    		$vegetarianBackupBackup =  WhatsCookings::where('week_of', $whatscookings['week_of'])->first()->menus()
-					->where('isOmnivore','0')
-					->where('isVegetarian','1')
-					->where('vegetarianBackup','0')
-									->first();
-					
-	    		//find the omnivore subscribers that are missing only one meal
-				$scrubbedSubs = [];
-				$subs = DB::table('menus_users')
-					->select('users_id', DB::raw('count(*) as total'))
-					->where('delivery_date', $whatscookings['week_of'])
-                	->having('total', '=', 2)
-					->groupBy('users_id')
-					->get();
-			
-				//remove the total element from the objects because all life is pain
-				if ($subs) {
-					foreach($subs as $sub) {
-						$scrubbedSubs[] = array(
-							"users_id" => $sub->users_id,
-							"delivery_date" => $request->week_of,
-							"menus_id" => $vegetarianBackupBackup->id
-							); 
-				}
-				$scrubbedSubs = json_decode(json_encode($scrubbedSubs), true); //again, don't ask
-				
-				//add the final replacement meal to the subscriber
-	    		DB::table('menus_users')->insert($scrubbedSubs);
-	    	}
+			MenuAssigner::ReassignAllForDate(new \DateTime($whatscookings['week_of']));
 		}
 		return redirect('/admin/whatscooking/'.$id);
     }

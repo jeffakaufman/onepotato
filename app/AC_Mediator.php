@@ -497,9 +497,8 @@ var_dump($response);die();
 //var_dump($nextDeliveryDate);die();
 
         $nextDeliveryDate = $user->GetNextDeliveryDate($now);
-        $nextDelivery = MenusUsers::where('users_id',$user->id)
-            ->where('delivery_date',$nextDeliveryDate)
-            ->get();
+
+        $set = new UserMenuSet($user, new \DateTime($nextDeliveryDate));
 
         $arr = [];
         $arr['NEXT_DELIVERY_DATE'] = $this->_formatDate($nextDeliveryDate); //Next Delivery Date	Text Input	%NEXT_DELIVERY_DATE%	Next Delivery Date
@@ -508,7 +507,7 @@ var_dump($response);die();
 
 
         try {
-            $meal1 = $nextDelivery[0]->menus_id;
+            $meal1 = $set->GetFirstId();
             $menu1 = Menu::find($meal1);
             $arr['YOUR_MEAL_IMAGE'] = $menu1 ? $menu1->image : ''; //Your Meal Image	Text Input	%YOUR_MEAL_IMAGE%	URL to image
             $arr['YOUR_MEAL_NAME'] = $menu1 ? $menu1->menu_title : ''; //Your Meal Name	Text Input	"	%YOUR_MEAL_NAME%"	Your Meal Name
@@ -519,7 +518,7 @@ var_dump($response);die();
         }
 
         try {
-            $meal2 = $nextDelivery[1]->menus_id;
+            $meal2 = $set->GetSecondId();
             $menu2 = Menu::find($meal2);
             $arr['YOUR_MEAL_IMAGE_2'] = $menu2 ? $menu2->image : ''; //Your Meal Image 2	Text Input	%YOUR_MEAL_IMAGE_2%	URL to image 2
             $arr['YOUR_MEAL_NAME_2'] = $menu2 ? $menu2->menu_title : ''; //Your Meal Name 2	Text Input	%YOUR_MEAL_NAME_2%
@@ -530,7 +529,7 @@ var_dump($response);die();
         }
 
         try {
-            $meal3 = $nextDelivery[2]->menus_id;
+            $meal3 = $set->GetThirdId();
             $menu3 = Menu::find($meal3);
             $arr['YOUR_MEAL_IMAGE_3'] = $menu3 ? $menu3->image : ''; //Your Meal Image 3	Text Input	%YOUR_MEAL_IMAGE_3%	URL to image 3
             $arr['YOUR_MEAL_NAME_3'] = $menu3 ? $menu3->menu_title : ''; //        Your Meal Name 3	Text Input	%YOUR_MEAL_NAME_3%
