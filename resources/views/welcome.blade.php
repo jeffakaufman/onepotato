@@ -121,6 +121,7 @@
   <h3 class="slogan green">See why we’re <span>responsible</span></h3>
 
   <div class="slick">
+    <div class="item"><img src="/img/bottomslide1.jpg"></div>
     <div class="item">
       <div class="text">
         <h4>...and our planet</h4>
@@ -128,7 +129,6 @@
       </div>
       <img src="/img/bottomslide2.jpg">
     </div>
-    <div class="item"><img src="/img/bottomslide1.jpg"></div>
   </div>
   
   <div class="mobile-content">
