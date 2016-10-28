@@ -564,8 +564,8 @@ h3.slogan {
 			background: rgba(255,255,255,0.8);
 			padding: 20px;
 			position: absolute;
-			top: 40px;
-			left: 40px;
+			top: 60px;
+			left: 60px;
 			width: 50%;
 		}
 	}
@@ -599,9 +599,9 @@ h3.slogan {
 		@media (min-width: 768px) {
 			margin: 0;
 			position: absolute;
-			padding: 20px;
+			padding: 10px 20px 20px 20px;
 			bottom: 20%;
-			right: 15%;
+			right: 10%;
 			width: 55%;
 		}
 		@media (min-width: 992px) {
