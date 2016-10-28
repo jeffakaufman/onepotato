@@ -187,6 +187,23 @@
 					</form>
 				</div>
 					</div>
+
+				@if($lastCancellation)
+						<div class="row">
+							<div class="col-md-12" style="padding:10px 20px;">
+								<p>Cancelled : {{$lastCancellation->created_at}}</p>
+								<p>Reason :
+									@if($lastCancellation->cancel_reason == 'other')
+										{{$lastCancellation->cancel_specify}}
+									@else
+										{{$lastCancellation->cancel_reason}}
+									@endif
+								</p>
+								<p>Suggestion : {{$lastCancellation->cancel_suggestion}}</p>
+							</div>
+						</div>
+				@endif
+
 			@endif
 			</div>
 

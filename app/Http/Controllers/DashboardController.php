@@ -450,6 +450,11 @@ Get subscriber information.
 
         $totalReferralsCount = App\Referral::where('referrer_user_id', $user->id)->count();
         $subscribedReferralsCount = App\Referral::where('referrer_user_id', $user->id)->where('did_subscribe', '1')->count();
+
+        $lastCancellation = App\Cancellation::where('user_id', '=', $user->id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
 						'shippingAddress'=>$shippingAddress,
@@ -466,6 +471,8 @@ Get subscriber information.
 
                         'totalReferralsCount' => $totalReferralsCount,
                         'subscribedReferralsCount' => $subscribedReferralsCount,
+
+                        'lastCancellation' => $lastCancellation,
 						]);
 
     }
