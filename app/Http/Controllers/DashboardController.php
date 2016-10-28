@@ -447,6 +447,9 @@ Get subscriber information.
             $linkSent = new \DateTime($lastCancelLinkRecord->created_at);
             $lastCancelLinkSent = $linkSent->format("m/d/Y @ H:i");
         }
+
+        $totalReferralsCount = App\Referral::where('referrer_user_id', $user->id)->count();
+        $subscribedReferralsCount = App\Referral::where('referrer_user_id', $user->id)->where('did_subscribe', '1')->count();
 		return view('admin.users.user_details')
 				->with(['user'=>$user,
 						'shippingAddress'=>$shippingAddress,
@@ -460,6 +463,9 @@ Get subscriber information.
 						'credits'=>$credits,
 						'deliveryHistory'=>$deliveryHistory,
                         'lastCancelLinkSent' => $lastCancelLinkSent,
+
+                        'totalReferralsCount' => $totalReferralsCount,
+                        'subscribedReferralsCount' => $subscribedReferralsCount,
 						]);
 
     }

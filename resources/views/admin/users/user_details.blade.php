@@ -189,6 +189,16 @@
 					</div>
 			@endif
 			</div>
+
+			<div class="panel panel-default ">
+
+				<div class="row">
+					<div class="col-md-12 " style="text-align: center;">
+						Referrals : {{$totalReferralsCount}} / {{$subscribedReferralsCount}}
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div> 
 <!-- Row 1 End -->
