@@ -31,7 +31,7 @@
 </div>
 
 <div id="copyright">
-	<div class="container">© one potato <?php echo date('Y'); ?></div>
+	<div class="container">© One Potato <?php echo date('Y'); ?></div>
 </div>
 <script type="text/javascript">
     var _mfq = _mfq || [];
