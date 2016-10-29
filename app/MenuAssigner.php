@@ -12,13 +12,13 @@ use DB;
 
 class MenuAssigner {
 
-    public static function AssignManually(User $user, \DateTime $deliveryDate, array $menuIds) {
+    public static function AssignManually(User $user, \DateTime $deliveryDate, array $menuIds, $comments = false) {
         $set = new UserMenuSet($user, $deliveryDate);
 
         $menuIds = array_values($menuIds);
         if(count($menuIds) >= 3) {
             $set->SetMenuIds($menuIds[0], $menuIds[1], $menuIds[2]);
-            $set->Save();
+            $set->Save($comments);
         }
     }
 
@@ -41,9 +41,9 @@ class MenuAssigner {
 
     private static $_repository = [];
 
-    public static function ReassignAllForDate(\DateTime $deliveryDate, $force = false) {
+    public static function ReassignAllForDate(\DateTime $deliveryDate, $force = false, $comments = false) {
 
-        User::where('password', '<>', '')->chunk(20, function($users) use($deliveryDate, $force) {
+        User::where('password', '<>', '')->chunk(20, function($users) use($deliveryDate, $force, $comments) {
             foreach($users as $user) {
                 /**
                  * @var User $user
@@ -55,7 +55,7 @@ class MenuAssigner {
 //var_dump($set->MatchDefault());
 //die();
                     if($force || !$set->IsOverwritten()) {
-                        $set->RestoreDefault();
+                        $set->RestoreDefault($comments);
                     }
 
                 } catch (\Exception $e) {
@@ -657,7 +657,7 @@ class UserMenuSet {
 
     private $_needToSave = false;
 
-    public function Save() {
+    public function Save($comments = false) {
 
         if(!$this->_needToSave) return;
 
@@ -684,17 +684,25 @@ class UserMenuSet {
                 $record->instead_of = null;
             }
 
+            if($comments) {
+                $record->change_comments = $comments;
+            }
+
             $record->save();
         }
+
+        $logger = new SimpleLogger("MenuChanges_for_{$this->deliveryDate->format('Y-m-d')}.log");
+        $logger->Log("#{$this->user->id} [{$this->user->email}] {$this->user->first_name} {$this->user->last_name} for {$this->deliveryDate->format('Y-m-d')} :: ".($comments ? $comments : "No comments"));
+
 
         $this->_needToSave = false;
 
         $this->_grabCurrent();
     }
 
-    public function RestoreDefault() {
+    public function RestoreDefault($comments = false) {
         $this->SetMenuIds($this->defaultMenuIds[0], $this->defaultMenuIds[1], $this->defaultMenuIds[2]);
-        $this->Save();
+        $this->Save($comments);
     }
 
     public function IsOverwritten() {

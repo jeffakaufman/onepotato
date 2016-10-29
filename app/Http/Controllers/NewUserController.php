@@ -388,6 +388,10 @@ class NewUserController extends Controller
                 $newMenu->delivery_date = $_date;
                 $newMenu->save();
             }
+
+            $_dateObj = new \DateTime($_date);
+            $logger = new SimpleLogger("MenuChanges_for_{$_dateObj->format('Y-m-d')}.log");
+            $logger->Log("#{$user->id} [{$user->email}] {$user->first_name} {$user->last_name} for {$_dateObj->format('Y-m-d')} :: Added on registration step");
         }
 
 

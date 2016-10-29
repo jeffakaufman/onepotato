@@ -1414,7 +1414,8 @@ class UserController extends Controller
 	}
 	
 	public function changeDelivery (Request $request) {
-        MenuAssigner::AssignManually(User::find(Auth::id()), new \DateTime($request->date_to_change), $request->menu_id);
+        MenuAssigner::AssignManually(User::find(Auth::id()), new \DateTime($request->date_to_change), $request->menu_id,
+            "Assigned manually in delivery schedule");
 		return redirect('/delivery-schedule');
 	}
 
