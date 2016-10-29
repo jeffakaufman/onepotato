@@ -11,7 +11,7 @@
 
 require('./../spark-components/bootstrap');
 
-//require('./welcome');
+// require('./welcome');
 //require('./home');
 require('./user');
 require('./whats_cooking');

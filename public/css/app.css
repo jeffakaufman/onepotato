@@ -18,6 +18,48 @@
   font-weight: normal;
   font-style: normal; }
 
+@font-face {
+  font-family: 'biorhymelight';
+  src: url("/font/biorhyme-light-webfont.woff2") format("woff2"), url("/font/biorhyme-light-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'work_sansmedium';
+  src: url("/font/worksans-medium-webfont.woff2") format("woff2"), url("/font/worksans-medium-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'work_sansregular';
+  src: url("/font/worksans-regular-webfont.woff2") format("woff2"), url("/font/worksans-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'work_sanssemibold';
+  src: url("/font/worksans-semibold-webfont.woff2") format("woff2"), url("/font/worksans-semibold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'biorhymeregular';
+  src: url("/font/biorhyme-regular-webfont.woff2") format("woff2"), url("/font/biorhyme-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'libre_franklinsemibold';
+  src: url("/font/librefranklin-semibold-webfont.woff2") format("woff2"), url("/font/librefranklin-semibold-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'santelia_scriptregular';
+  src: url("/font/yellow_design_studio_-_santeliascript-regular-webfont.woff2") format("woff2"), url("/font/yellow_design_studio_-_santeliascript-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
 /*
  * Variables...
  */
@@ -1076,7 +1118,7 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+  font-family: "work_sansregular", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
   color: #404040;
@@ -5145,7 +5187,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+  font-family: "work_sansregular", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -5258,7 +5300,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+  font-family: "work_sansregular", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -5772,7 +5814,7 @@ button.close {
 
 .btn-primary, .btn-info, .btn-success, .btn-warning, .btn-danger {
   border: 0;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sansmedium", Helvetica, Arial, sans-serif; }
 
 .btn-default:hover {
   background-color: white; }
@@ -6024,7 +6066,7 @@ input.number {
   text-align: center;
   background: #1db8bf;
   color: #fff;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
 
 .field-label {
   line-height: 45px; }
@@ -6178,10 +6220,17 @@ input.number {
     .navbar .navbar-nav .caret {
       color: #1db8bf; }
     .navbar .navbar-nav > li > a {
-      color: #1db8bf;
+      color: #778384;
       /* #9d9d9d */
       cursor: pointer;
       font-weight: 400; }
+      .navbar .navbar-nav > li > a.join span {
+        display: inline-block;
+        padding: 2px 10px;
+        background: #e91e25;
+        color: #fff; }
+        .navbar .navbar-nav > li > a.join span:hover {
+          background: #1db8bf; }
     .navbar .navbar-nav > li > a.has-activity-indicator {
       color: #1db8bf; }
     .navbar .navbar-nav > li > a:hover {
@@ -6229,7 +6278,7 @@ input.number {
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
   color: #e91e25;
   background: none;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
   border-color: #c2eef1; }
@@ -6329,7 +6378,7 @@ body.register .hamburger {
 
 .nav-sidebar > li {
   text-transform: uppercase;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   color: #585858;
   font-size: 14px; }
   .nav-sidebar > li > a {
@@ -6428,7 +6477,7 @@ body.register .hamburger {
     color: #1db8bf;
     text-transform: uppercase;
     text-align: center;
-    font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+    font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
 
 .panel-heading, .panel-default > .panel-heading {
   padding: 25px 15px 0 15px;
@@ -6455,7 +6504,7 @@ body.register .hamburger {
   .panel-heading .panel-subtitle, .panel-default > .panel-heading .panel-subtitle {
     font-size: 14px;
     color: #404040;
-    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    font-family: "work_sansregular", Helvetica, Arial, sans-serif;
     line-height: 1.2em;
     text-transform: none;
     letter-spacing: 0; }
@@ -6491,7 +6540,7 @@ body#settings .panel-heading, body#settings .panel-default > .panel-heading {
 table.month {
   width: 100%;
   border: 1px solid #1db8bf;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   margin: 21px 0 32px 0; }
   table.month .month_name {
     background: #1db8bf;
@@ -7182,7 +7231,7 @@ body, html, #spark-app {
 body {
   background: #f9ffff;
   font-weight: 300;
-  font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+  font-family: "work_sansregular", Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #404040; }
 
@@ -7199,7 +7248,7 @@ h1 {
   h1 .subtitle {
     float: right;
     margin-top: -2.4em;
-    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    font-family: "work_sansregular", Helvetica, Arial, sans-serif;
     font-size: 16px; }
     h1 .subtitle.alt {
       color: #404040;
@@ -7217,7 +7266,7 @@ h2 {
   color: #1db8bf;
   font-size: 21px;
   text-transform: none;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
   @media (min-width: 1200px) {
     #static h2 {
       font-size: 24px; } }
@@ -7225,7 +7274,7 @@ h2 {
 #static h3 {
   color: #585858;
   font-size: 16px;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
   @media (min-width: 1200px) {
     #static h3 {
       font-size: 18px; } }
@@ -7247,7 +7296,7 @@ h2 {
     .schedule h2 {
       font-size: 24px; } }
   .schedule h2 .subtitle {
-    font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+    font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
     font-size: 13px;
     color: #e91e25;
     margin-top: 15px;
@@ -7295,7 +7344,7 @@ h2 {
   .schedule .week .plan_size {
     font-size: 12px;
     color: #404040;
-    font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+    font-family: "work_sansregular", Helvetica, Arial, sans-serif;
     letter-spacing: 0; }
     @media only screen and (min-width: 992px) {
       .schedule .week .plan_size {
@@ -7311,7 +7360,7 @@ h2 {
       margin: 0; } }
 
 #delivery_history h4 .subtitle {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: #404040;
   margin-top: 15px;
@@ -7331,7 +7380,7 @@ h2 {
       color: #1db8bf; }
 
 h3, h4, h5 {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   color: #1db8bf;
   letter-spacing: 0.05em; }
   h3 .red, h4 .red, h5 .red {
@@ -7353,7 +7402,8 @@ h3, h4, h5 {
   font-size: 12px; }
 
 strong, b {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
+  font-weight: normal; }
 
 a {
   color: #1db8bf;
@@ -7376,15 +7426,15 @@ body.account {
     letter-spacing: 0.05em; }
     body.account h2 .edit-link {
       text-transform: none;
-      font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+      font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
   body.account h4 {
     color: #404040;
     font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif; }
     body.account h4.thin {
-      font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+      font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
       letter-spacing: 0; }
   body.account h6 {
-    font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+    font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
     color: #585858;
     text-transform: uppercase;
     font-size: 16px; }
@@ -7512,50 +7562,358 @@ body.with-navbar {
   height: 100vh;
   overflow: hidden;
   position: relative;
-  clear: both; }
-  #hero .bg {
-    background: url(/img/hero1.jpg) transparent no-repeat;
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale');
-    -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')";
-    background-position: center center;
-    background-size: cover;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 1; }
+  clear: both;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: url(/img/hero1.jpg) transparent no-repeat;
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale');
+  -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='/img/hero1.jpg',sizingMethod='scale')";
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  z-index: 1; }
   #hero #hero-text {
-    padding-top: 120px;
     z-index: 2;
     position: relative;
     text-align: center;
-    width: 75%; }
-    @media only screen and (min-width: 768px) {
+    width: 80%; }
+    @media (min-width: 768px) {
       #hero #hero-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -120%);
-        margin: 0;
-        padding: 0; } }
+        width: 60%; } }
+    @media (min-width: 992px) {
+      #hero #hero-text {
+        width: 50%; } }
     #hero #hero-text h2 {
-      font-family: "proxima_novaextrabold", Helvetica, Arial, sans-serif;
+      font-family: 'santelia_scriptregular';
       color: #e91e25;
-      font-size: 32px;
+      font-size: 24px;
       text-transform: none;
       line-height: 1.3em;
       letter-spacing: 0.09em; }
+      @media (max-width: 767px) and (orientation: portrait) {
+        #hero #hero-text h2 {
+          font-size: 36px; } }
+      @media (min-width: 768px) {
+        #hero #hero-text h2 {
+          font-size: 30px; } }
+      @media (min-width: 992px) {
+        #hero #hero-text h2 {
+          font-size: 34px; } }
       @media (min-width: 1200px) {
         #hero #hero-text h2 {
-          font-size: 52px; } }
+          font-size: 40px; } }
+      #hero #hero-text h2 span {
+        font-family: 'biorhymelight'; }
+        @media (max-width: 767px) and (orientation: portrait) {
+          #hero #hero-text h2 span {
+            display: block;
+            font-size: 32px; } }
       #hero #hero-text h2 .subtitle {
-        font-size: 21px;
-        color: #404040;
-        font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        color: #344647;
+        font-family: 'work_sansregular';
         line-height: 1.3em;
-        letter-spacing: 0; }
+        letter-spacing: 0;
+        margin: 10px 0 20px 0; }
+        @media (max-width: 767px) and (orientation: portrait) {
+          #hero #hero-text h2 .subtitle {
+            font-size: 16px; } }
+        @media (min-width: 768px) {
+          #hero #hero-text h2 .subtitle {
+            font-size: 16px; } }
+        @media (min-width: 992px) {
+          #hero #hero-text h2 .subtitle {
+            font-size: 18px; } }
         @media (min-width: 1200px) {
           #hero #hero-text h2 .subtitle {
-            font-size: 26px; } }
+            font-size: 21px; } }
+    #hero #hero-text .btn {
+      text-transform: none;
+      font-size: 18px;
+      padding: 8px 30px; }
+
+h3.slogan {
+  font-family: 'biorhymelight';
+  text-align: center;
+  font-size: 28px;
+  color: #e91e25;
+  margin-bottom: 25px;
+  margin-top: 30px; }
+  h3.slogan span {
+    font-family: 'santelia_scriptregular'; }
+  h3.slogan.green {
+    color: #3ca249; }
+
+.slick {
+  margin-bottom: 40px; }
+  .slick .item {
+    position: relative; }
+  .slick .text {
+    display: none; }
+    .slick .text h4 {
+      color: #3ca249;
+      font-family: 'biorhymelight';
+      text-transform: uppercase; }
+    @media (min-width: 768px) {
+      .slick .text {
+        display: block;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        position: absolute;
+        top: 60px;
+        left: 60px;
+        width: 50%; } }
+
+.mobile-content {
+  margin-bottom: 40px; }
+  .mobile-content h4 {
+    color: #3ca249;
+    font-family: 'biorhymelight';
+    text-transform: uppercase; }
+  @media (min-width: 768px) {
+    .mobile-content {
+      display: none; } }
+
+.hero3 {
+  position: relative; }
+  .hero3 img {
+    width: 100%; }
+  .hero3 .text {
+    background: rgba(255, 255, 255, 0.8);
+    margin: 2em 0;
+    z-index: 5;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    max-width: 1170px; }
+    @media (min-width: 768px) {
+      .hero3 .text {
+        margin: 0;
+        position: absolute;
+        padding: 10px 20px 20px 20px;
+        bottom: 20%;
+        right: 10%;
+        width: 55%; } }
+    @media (min-width: 992px) {
+      .hero3 .text {
+        width: 45%; } }
+    @media (min-width: 1200px) {
+      .hero3 .text {
+        width: 35%; } }
+    .hero3 .text h4 {
+      color: #e91e25;
+      font-family: 'biorhymelight';
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-size: 18px;
+      margin-top: 0; }
+      .hero3 .text h4 img {
+        vertical-align: bottom;
+        width: 190px; }
+        @media (max-width: 480px) {
+          .hero3 .text h4 img {
+            width: 150px; } }
+
+.menu_slider .bg {
+  height: 400px;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat; }
+  @media (min-width: 768px) {
+    .menu_slider .bg {
+      height: 500px; } }
+  @media (min-width: 992px) {
+    .menu_slider .bg {
+      height: 600px; } }
+
+.menu_slider .title {
+  position: absolute;
+  width: 100%;
+  top: 5%;
+  text-align: center;
+  font-family: 'work_sansmedium';
+  color: #fff;
+  z-index: 5;
+  text-shadow: -1px -1px 25px #969696; }
+  .menu_slider .title h3 {
+    font-family: 'biorhymeregular';
+    color: #fff; }
+    .menu_slider .title h3 span {
+      font-family: 'santelia_scriptregular'; }
+  .menu_slider .title .btn {
+    text-transform: none;
+    font-size: 15px;
+    margin-top: 1em;
+    padding: 7px 20px; }
+    .menu_slider .title .btn:hover {
+      color: #fff;
+      background: #e91e25; }
+
+.menu_slider .meal {
+  position: relative; }
+
+.menu_slider img {
+  width: 100%; }
+
+.menu_slider .caption {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  color: #fff;
+  width: 50%;
+  text-align: center;
+  font-family: 'libre_franklinsemibold';
+  z-index: 10;
+  text-shadow: 1px 1px 5px #969696; }
+  .menu_slider .caption h4 {
+    color: #fff;
+    font-size: 15px; }
+
+.slick-arrow {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 42px;
+  color: #e91e25;
+  height: 70px;
+  width: 35px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 5; }
+  .slick-arrow.slick-prev {
+    left: 0;
+    border-radius: 0 70px 70px 0; }
+    .slick-arrow.slick-prev .fa {
+      margin-right: 10px; }
+  .slick-arrow.slick-next {
+    right: 0;
+    border-radius: 70px 0 0 70px; }
+    .slick-arrow.slick-next .fa {
+      margin-left: 10px; }
+  .slick-arrow.slick-disabled {
+    cursor: default;
+    opacity: 0; }
+
+.slick-dots {
+  position: absolute;
+  bottom: 10px;
+  list-style: none;
+  display: block;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  width: 100%; }
+  .slick-dots li {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer; }
+    .slick-dots li button {
+      border: 0;
+      background: transparent;
+      display: block;
+      height: 20px;
+      width: 20px;
+      outline: none;
+      line-height: 0px;
+      font-size: 0px;
+      color: transparent;
+      padding: 0;
+      cursor: pointer; }
+      .slick-dots li button:hover, .slick-dots li button:focus {
+        outline: none; }
+      .slick-dots li button:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: "\f10c";
+        width: 20px;
+        height: 20px;
+        font: normal normal normal 14px/1 FontAwesome;
+        line-height: 20px;
+        text-align: center;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; }
+    .slick-dots li.slick-active button:before {
+      content: "\f111"; }
+
+.cards {
+  margin-bottom: 20px; }
+  .cards .card > img {
+    width: 100%; }
+  .cards .card > .text {
+    padding: 1em; }
+    @media (min-width: 768px) {
+      .cards .card > .text {
+        padding: 1em 0 1em 1.5em; } }
+    @media (min-width: 992px) {
+      .cards .card > .text {
+        padding: 1em 1em 1em 2em; } }
+  .cards .card h3 {
+    font-family: 'santelia_scriptregular';
+    color: #1db8bf;
+    margin: 15px 0;
+    font-size: 27px; }
+    @media (min-width: 768px) {
+      .cards .card h3 {
+        font-size: 21px; } }
+    @media (min-width: 992px) {
+      .cards .card h3 {
+        font-size: 24px; } }
+  .cards .card .list .item {
+    margin: 10px 0;
+    font-family: 'work_sansregular'; }
+    .cards .card .list .item .icon {
+      position: absolute;
+      width: 18px; }
+      .cards .card .list .item .icon img {
+        width: 100%; }
+    .cards .card .list .item .text {
+      margin-left: 28px; }
+      .cards .card .list .item .text img {
+        vertical-align: baseline; }
+
+.testimonials .testimonial {
+  margin-bottom: 40px; }
+
+.testimonials img {
+  box-shadow: 1px 2px 9px 1px rgba(153, 153, 153, 0.35);
+  border: solid 6px #fff;
+  width: 100%; }
+
+.testimonials .text {
+  position: relative; }
+
+.testimonials .quote {
+  color: #c2eef1;
+  font-size: 72px;
+  font-family: 'work_sansregular';
+  height: 50px; }
+  .testimonials .quote.close-quote {
+    position: absolute;
+    bottom: 0;
+    right: 0; }
+
+.testimonials .byline {
+  text-align: center;
+  margin-top: 8px; }
 
 #planType {
   position: fixed;
@@ -7583,7 +7941,7 @@ body.with-navbar {
 .sidelink {
   color: #e82128;
   font-size: 11px;
-  font-family: "proxima_nova_rgregular", Helvetica, Arial, sans-serif;
+  font-family: "work_sansregular", Helvetica, Arial, sans-serif;
   text-transform: none;
   letter-spacing: 0; }
   .sidelink:hover {
@@ -7601,7 +7959,7 @@ h1 .sidelink {
     color: #e91e25; }
 
 .total {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif; }
 
 .discount {
   color: #e91e25; }
@@ -7623,7 +7981,7 @@ h1 .sidelink {
   color: #fff;
   text-align: center;
   font-size: 18px;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   padding: 2.5em 0;
   margin-top: 1.5em;
   line-height: 1.8em; }
@@ -7631,12 +7989,34 @@ h1 .sidelink {
     font-size: 15px;
     text-transform: uppercase; }
 
+body.home #quote {
+  display: none; }
+
+#footer-action {
+  background: #e91e25;
+  color: #344647;
+  text-align: center;
+  font-size: 18px;
+  padding: 2.5em 0;
+  margin-top: 1.5em; }
+  #footer-action h4 {
+    color: #fff;
+    font-family: 'santelia_scriptregular';
+    font-size: 32px; }
+    #footer-action h4 span {
+      font-family: 'biorhymelight'; }
+  #footer-action .btn {
+    margin: 1.5rem;
+    text-transform: none;
+    padding: 8px 20px; }
+    #footer-action .btn:hover {
+      color: #fff; }
+
 #footer {
   background: #d8fafc;
   color: #1db8bf;
-  text-transform: uppercase;
   font-size: 12px;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif; }
+  font-family: 'work_sansmedium'; }
   #footer ul {
     margin: 0;
     padding: 0; }
@@ -7713,7 +8093,7 @@ h1 .sidelink {
   padding: 5px 10px;
   color: #fff;
   margin-left: 2px;
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
+  font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
   position: absolute;
   width: 90%;
   text-align: center;
@@ -7736,8 +8116,7 @@ h1 .sidelink {
     outline: 5px solid #1db8bf; }
 
 #copyright {
-  font-family: "proxima_novasemibold", Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
+  font-family: 'work_sansmedium';
   font-size: 10px;
   color: #1db8bf;
   padding: 10px 0; }

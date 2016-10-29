@@ -33760,6 +33760,22 @@ var app = new Vue({
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   //$('[data-toggle="popover"]').popover();
+  $('.slick').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: '<div class="slick-prev"><i class="fa fa-angle-left" aria-hidden="true"></i></div>',
+    nextArrow: '<div class="slick-next"><i class="fa fa-angle-right" aria-hidden="true"></i></div>',
+    infinite: false
+  });
+  $('.menu_slider').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    arrows: false,
+    fade: true,
+    autoplay: true,
+    autoplaySpeed: 2000
+  });
 });
 
 },{"./components/bootstrap":55,"spark":174,"spark-bootstrap":173}],54:[function(require,module,exports){
@@ -33854,7 +33870,7 @@ function removeHash() {
 
 require('./../spark-components/bootstrap');
 
-//require('./welcome');
+// require('./welcome');
 //require('./home');
 require('./user');
 require('./whats_cooking');

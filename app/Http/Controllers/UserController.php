@@ -1211,6 +1211,11 @@ class UserController extends Controller
 
         $lastDeliveryDate = (clone $limit)->modify("last {$shipDay}");
 
+
+        Shippingholds::where('user_id', $user->id)
+            ->whereDate('date_to_hold', '>', $lastDeliveryDate->format('Y-m-d'))
+            ->delete();
+
         try {
             $ac->UpdateCustomerFields($user, ['FINAL_DELIVERY_DATE' => $lastDeliveryDate->format('l, F jS')]);
             $ac->AddCustomerTag($user, 'Cancellation');
@@ -1487,6 +1492,11 @@ class UserController extends Controller
         if($lastDeliveryDate >= $today) {
             $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
         }
+
+        //remove all future records in the shippingholds table for users when they cancel.
+        Shippingholds::where('user_id', $user->id)
+            ->whereDate('date_to_hold', '>', $lastDeliveryDate->format('Y-m-d'))
+            ->delete();
 
         Auth::logout();
 

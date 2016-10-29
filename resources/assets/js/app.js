@@ -25,4 +25,20 @@ var app = new Vue({
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({html:true});
   //$('[data-toggle="popover"]').popover();
+  $('.slick').slick({
+  	slidesToShow: 1,
+  	slidesToScroll: 1,
+  	prevArrow: '<div class="slick-prev"><i class="fa fa-angle-left" aria-hidden="true"></i></div>',
+  	nextArrow: '<div class="slick-next"><i class="fa fa-angle-right" aria-hidden="true"></i></div>',
+  	infinite: false,
+  });
+  $('.menu_slider').slick({
+  	slidesToShow: 1,
+  	slidesToScroll: 1,
+  	dots: true,
+  	arrows: false,
+  	fade: true,
+  	autoplay: true,
+  	autoplaySpeed: 2000,
+  });
 });

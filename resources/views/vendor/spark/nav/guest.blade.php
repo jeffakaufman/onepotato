@@ -28,8 +28,8 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
-                <li @if (Request::is('login'))class="active"@endif><a href="/login" class="navbar-link">Login</a></li>
-                <li @if (Request::is('register'))class="active"@endif><a href="/register" class="navbar-link">Register</a></li>
+                <li @if (Request::is('login'))class="active"@endif><a href="/login" class="navbar-link">LOGIN</a></li>
+                <li @if (Request::is('register'))class="active"@endif><a href="/register" class="navbar-link join"><span>JOIN</span></a></li>
             </ul>
         </div>
     </div>
