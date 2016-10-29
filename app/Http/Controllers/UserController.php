@@ -1430,12 +1430,12 @@ class UserController extends Controller
 		
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
-		$user = User::where('id', $request->user_id)->first();
+		$user = User::find($request->user_id);
 		$user->status = User::STATUS_INACTIVE_CANCELLED;
 
 
 		//retrieve stripe ID from subscriptions table
-		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+		$userSubscription = UserSubscription::GetByUserId($request->user_id);
 		$userSubscription->status = "cancelled";
 		
 		$stripe_sub_id = $userSubscription->stripe_id;
