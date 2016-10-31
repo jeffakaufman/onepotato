@@ -209,17 +209,25 @@ Get subscriber information.
 *************/        
     	$revenue = DB::table('subinvoices')
             ->select(DB::raw('yearweek(charge_date) as week,count(user_id) as numSubs,avg(charge_amount)/100 as amountToCharge,avg(charge_actual)/100 as amountCharged,sum(invoiceitem_charges)/100 as chargesDebits'))
-            ->where('invoice_status','<>','does_not_ship')
+            ->whereNotIn('invoice_status',['does_not_ship','charged_not_shipped'])
+            ->whereNotNull('user_id')
+            ->groupBy('week')
+            ->get();         
+    	
+    	$revenueTotal = DB::table('subinvoices')
+            ->select(DB::raw('yearweek(charge_date) as week,count(user_id) as numSubs,sum(charge_amount)/100 as amountToCharge,sum(charge_actual)/100 as amountCharged,sum(invoiceitem_charges)/100 as chargesDebits'))
+            ->whereNotIn('invoice_status',['does_not_ship','charged_not_shipped'])
             ->whereNotNull('user_id')
             ->groupBy('week')
             ->get();    
-
+            
     	return view('admin.dashboard')
     			->with([
     				'weeklySummaries' => $weeklySummaries,
     				'subs' => $subs,
     				'subReport' => $subReport,
     				'revenue' => $revenue,
+    				'revenueTotal' => $revenueTotal,
                 ]);
 	
     
