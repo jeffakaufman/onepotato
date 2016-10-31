@@ -827,7 +827,8 @@ Get subscriber information.
 
     public function SaveMenus($userId, $deliveryDate) {
         $request = request();
-        App\MenuAssigner::AssignManually(User::find($userId), new \DateTime($deliveryDate), (array)$request->menu_id);
+        App\MenuAssigner::AssignManually(User::find($userId), new \DateTime($deliveryDate), (array)$request->menu_id,
+            "Assigned by Admin");
         return redirect("/admin/user_details/{$userId}");
     }
 

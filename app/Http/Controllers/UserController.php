@@ -1211,6 +1211,11 @@ class UserController extends Controller
 
         $lastDeliveryDate = (clone $limit)->modify("last {$shipDay}");
 
+
+        Shippingholds::where('user_id', $user->id)
+            ->whereDate('date_to_hold', '>', $lastDeliveryDate->format('Y-m-d'))
+            ->delete();
+
         try {
             $ac->UpdateCustomerFields($user, ['FINAL_DELIVERY_DATE' => $lastDeliveryDate->format('l, F jS')]);
             $ac->AddCustomerTag($user, 'Cancellation');
@@ -1409,7 +1414,8 @@ class UserController extends Controller
 	}
 	
 	public function changeDelivery (Request $request) {
-        MenuAssigner::AssignManually(User::find(Auth::id()), new \DateTime($request->date_to_change), $request->menu_id);
+        MenuAssigner::AssignManually(User::find(Auth::id()), new \DateTime($request->date_to_change), $request->menu_id,
+            "Assigned manually in delivery schedule");
 		return redirect('/delivery-schedule');
 	}
 
@@ -1430,12 +1436,12 @@ class UserController extends Controller
 		
 		//permanently deactive an account
 		//mark record as cancelled in Users, Subscriptions tables
-		$user = User::where('id', $request->user_id)->first();
+		$user = User::find($request->user_id);
 		$user->status = User::STATUS_INACTIVE_CANCELLED;
 
 
 		//retrieve stripe ID from subscriptions table
-		$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
+		$userSubscription = UserSubscription::GetByUserId($request->user_id);
 		$userSubscription->status = "cancelled";
 		
 		$stripe_sub_id = $userSubscription->stripe_id;
@@ -1487,6 +1493,11 @@ class UserController extends Controller
         if($lastDeliveryDate >= $today) {
             $reactivateMessage = "You will receive your final meal delivery on {$lastDeliveryDate->format('l, F jS')}.";
         }
+
+        //remove all future records in the shippingholds table for users when they cancel.
+        Shippingholds::where('user_id', $user->id)
+            ->whereDate('date_to_hold', '>', $lastDeliveryDate->format('Y-m-d'))
+            ->delete();
 
         Auth::logout();
 

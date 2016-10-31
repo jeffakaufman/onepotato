@@ -179,7 +179,7 @@ class WhatsCookingsController extends Controller
 
         $weeksMenuCount = WhatsCookings::where('week_of', $whatsCooking['week_of'])->first()->menus()->get()->count();
         if(4 < $weeksMenuCount) { //at least 5 menus exist for updated cooking date
-            MenuAssigner::ReassignAllForDate(new \DateTime($whatsCooking['week_of']));
+            MenuAssigner::ReassignAllForDate(new \DateTime($whatsCooking['week_of']), false, "Reassigned after admin changed menu item");
         }
 
 	    return redirect('/admin/whatscooking/'.$id); 
@@ -259,7 +259,7 @@ class WhatsCookingsController extends Controller
 
   		if ( 4 < $weeksMenuCount ) {//assign all unassigned meals if this week has 5 meals
 			//assign vegetarian replacement
-			MenuAssigner::ReassignAllForDate(new \DateTime($whatscookings['week_of']));
+			MenuAssigner::ReassignAllForDate(new \DateTime($whatscookings['week_of']), false, "Reassigned after admin added menu item");
 		}
 		return redirect('/admin/whatscooking/'.$id);
     }
