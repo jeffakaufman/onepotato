@@ -187,7 +187,7 @@
         <img src="/img/bottomslide2.jpg">
         <div class="text">
           <h4>...and our planet</h4>
-          In addition to working with farmers that treat our soil, water and animals with respect and care, One Potato makes every effort to ensure that the packaging is as environmentally responsible as possible. Everything we ship in is recyclable and/or biodegradable. Our boxes are made from recyclable, biodegrable 98% post-consumer cardboard, our insulation is made from recycled denim jeans (really!) and completely recyclable, our ice packs and containers are also completely recyclable.  <b><a href="#">Read more...</a></b>
+          In addition to working with farmers that treat our soil, water and animals with respect and care, One Potato makes every effort to ensure that the packaging is as environmentally responsible as possible. Everything we ship in is recyclable and/or biodegradable. Our boxes are made from recyclable, biodegrable 98% post-consumer cardboard, our insulation is made from recycled denim jeans (really!) and completely recyclable, our ice packs and containers are also completely recyclable.  <b><a href="/recycling">Read more...</a></b>
         </div>
       </div>
     </div>
