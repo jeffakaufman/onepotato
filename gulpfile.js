@@ -21,6 +21,7 @@ elixir(function(mix) {
 	    ], 'public/css/vendor.css')
 	    .copy('node_modules/sweetalert/dist/sweetalert.min.js', 'resources/assets/js/sweetalert.min.js')
 	    .scripts([
+	    	'modernizr-custom.js', 
 	    	'moment.min.js', 
 	    	'moment-timezone-with-data-2010-2020.min.js',
 	    ], 'public/js/vendor_header.js')

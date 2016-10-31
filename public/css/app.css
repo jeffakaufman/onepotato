@@ -7240,8 +7240,7 @@ h1 {
   color: #e91e25;
   font-size: 24px;
   text-transform: none;
-  line-height: 1.3em;
-  letter-spacing: 0.09em; }
+  line-height: 1.3em; }
   @media (min-width: 1200px) {
     h1 {
       font-size: 30px; } }
@@ -7381,8 +7380,7 @@ h2 {
 
 h3, h4, h5 {
   font-family: "work_sanssemibold", Helvetica, Arial, sans-serif;
-  color: #1db8bf;
-  letter-spacing: 0.05em; }
+  color: #1db8bf; }
   h3 .red, h4 .red, h5 .red {
     color: #e91e25; }
 
@@ -7584,26 +7582,22 @@ body.with-navbar {
     width: 80%; }
     @media (min-width: 768px) {
       #hero #hero-text {
-        width: 60%; } }
-    @media (min-width: 992px) {
-      #hero #hero-text {
-        width: 50%; } }
+        width: 70%; } }
     #hero #hero-text h2 {
       font-family: 'santelia_scriptregular';
       color: #e91e25;
       font-size: 24px;
       text-transform: none;
-      line-height: 1.3em;
-      letter-spacing: 0.09em; }
+      line-height: 1.3em; }
       @media (max-width: 767px) and (orientation: portrait) {
         #hero #hero-text h2 {
           font-size: 36px; } }
       @media (min-width: 768px) {
         #hero #hero-text h2 {
-          font-size: 30px; } }
+          font-size: 35px; } }
       @media (min-width: 992px) {
         #hero #hero-text h2 {
-          font-size: 34px; } }
+          font-size: 38px; } }
       @media (min-width: 1200px) {
         #hero #hero-text h2 {
           font-size: 40px; } }
@@ -7634,8 +7628,8 @@ body.with-navbar {
             font-size: 21px; } }
     #hero #hero-text .btn {
       text-transform: none;
-      font-size: 18px;
-      padding: 8px 30px; }
+      font-size: 21px;
+      padding: 10px 30px 8px 30px; }
 
 h3.slogan {
   font-family: 'biorhymelight';
@@ -7654,20 +7648,55 @@ h3.slogan {
   .slick .item {
     position: relative; }
   .slick .text {
-    display: none; }
-    .slick .text h4 {
-      color: #3ca249;
-      font-family: 'biorhymelight';
-      text-transform: uppercase; }
+    position: relative;
+    padding-top: 20px; }
     @media (min-width: 768px) {
       .slick .text {
         display: block;
         background: rgba(255, 255, 255, 0.8);
         padding: 20px;
+        width: 50%;
         position: absolute;
         top: 60px;
-        left: 60px;
-        width: 50%; } }
+        left: 60px; } }
+    .slick .text.inline {
+      display: block;
+      background: none;
+      color: #e91e25;
+      font-family: 'biorhymelight';
+      line-height: 1.2em;
+      font-size: 21px;
+      top: 4%;
+      left: 2%;
+      position: absolute; }
+      @media (min-width: 480px) {
+        .slick .text.inline {
+          font-size: 25px; } }
+      @media (min-width: 600px) {
+        .slick .text.inline {
+          font-size: 32px;
+          top: 5%;
+          left: 3%; } }
+      @media (min-width: 768px) {
+        .slick .text.inline {
+          font-size: 35px;
+          top: 6%;
+          left: 3%; } }
+      @media (min-width: 992px) {
+        .slick .text.inline {
+          font-size: 45px;
+          top: 10%;
+          left: 5%; } }
+      .slick .text.inline span {
+        font-family: 'santelia_scriptregular'; }
+    .slick .text h4 {
+      color: #3ca249;
+      font-family: 'biorhymelight';
+      text-transform: uppercase; }
+
+@media (max-width: 767px) {
+  .slick .item:first-child .text {
+    padding-bottom: 20px; } }
 
 .mobile-content {
   margin-bottom: 40px; }
@@ -7720,61 +7749,82 @@ h3.slogan {
           .hero3 .text h4 img {
             width: 150px; } }
 
-.menu_slider .bg {
-  height: 400px;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat; }
-  @media (min-width: 768px) {
-    .menu_slider .bg {
-      height: 500px; } }
-  @media (min-width: 992px) {
-    .menu_slider .bg {
-      height: 600px; } }
-
-.menu_slider .title {
-  position: absolute;
-  width: 100%;
-  top: 5%;
-  text-align: center;
-  font-family: 'work_sansmedium';
-  color: #fff;
-  z-index: 5;
-  text-shadow: -1px -1px 25px #969696; }
-  .menu_slider .title h3 {
-    font-family: 'biorhymeregular';
-    color: #fff; }
-    .menu_slider .title h3 span {
-      font-family: 'santelia_scriptregular'; }
-  .menu_slider .title .btn {
-    text-transform: none;
-    font-size: 15px;
-    margin-top: 1em;
-    padding: 7px 20px; }
-    .menu_slider .title .btn:hover {
-      color: #fff;
-      background: #e91e25; }
-
-.menu_slider .meal {
+#menu {
   position: relative; }
-
-.menu_slider img {
-  width: 100%; }
-
-.menu_slider .caption {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20px;
-  color: #fff;
-  width: 50%;
-  text-align: center;
-  font-family: 'libre_franklinsemibold';
-  z-index: 10;
-  text-shadow: 1px 1px 5px #969696; }
-  .menu_slider .caption h4 {
+  #menu .bg {
+    height: 400px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat; }
+    @media (min-width: 768px) {
+      #menu .bg {
+        height: 500px; } }
+    @media (min-width: 992px) {
+      #menu .bg {
+        height: 600px; } }
+  #menu .title {
+    position: absolute;
+    width: 100%;
+    top: 5%;
+    text-align: center;
+    font-family: 'work_sansmedium';
     color: #fff;
-    font-size: 15px; }
+    z-index: 5;
+    text-shadow: -1px -1px 25px #969696; }
+    @media (min-width: 768px) {
+      #menu .title {
+        font-size: 16px; } }
+    @media (min-width: 992px) {
+      #menu .title {
+        font-size: 18px; } }
+    #menu .title h3 {
+      font-family: 'biorhymeregular';
+      color: #fff;
+      font-size: 21px; }
+      @media (max-width: 767px) {
+        #menu .title h3 {
+          margin-top: 0; } }
+      @media (min-width: 768px) {
+        #menu .title h3 {
+          font-size: 28px; } }
+      @media (min-width: 992px) {
+        #menu .title h3 {
+          font-size: 32px; } }
+      #menu .title h3 span {
+        font-family: 'santelia_scriptregular'; }
+    #menu .title .btn {
+      text-transform: none;
+      font-size: 15px;
+      margin-top: 1em;
+      padding: 7px 15px 5px 15px; }
+      @media (min-width: 768px) {
+        #menu .title .btn {
+          font-size: 16px;
+          padding: 9px 20px 7px 20px; } }
+      @media (min-width: 992px) {
+        #menu .title .btn {
+          font-size: 17px; } }
+      #menu .title .btn:hover {
+        color: #fff;
+        background: #e91e25; }
+  #menu .meal {
+    position: relative; }
+  #menu img {
+    width: 100%; }
+  #menu .caption {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    color: #fff;
+    width: 50%;
+    text-align: center;
+    font-family: 'libre_franklinsemibold';
+    z-index: 10;
+    text-shadow: 1px 1px 5px #969696; }
+    #menu .caption h4 {
+      color: #fff;
+      font-size: 15px; }
 
 .slick-arrow {
   display: -ms-flexbox !important;
@@ -7871,12 +7921,6 @@ h3.slogan {
     color: #1db8bf;
     margin: 15px 0;
     font-size: 27px; }
-    @media (min-width: 768px) {
-      .cards .card h3 {
-        font-size: 21px; } }
-    @media (min-width: 992px) {
-      .cards .card h3 {
-        font-size: 24px; } }
   .cards .card .list .item {
     margin: 10px 0;
     font-family: 'work_sansregular'; }
@@ -7888,7 +7932,8 @@ h3.slogan {
     .cards .card .list .item .text {
       margin-left: 28px; }
       .cards .card .list .item .text img {
-        vertical-align: baseline; }
+        vertical-align: baseline;
+        width: 75px; }
 
 .testimonials .testimonial {
   margin-bottom: 40px; }

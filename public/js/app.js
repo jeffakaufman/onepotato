@@ -33756,16 +33756,40 @@ require('./components/bootstrap');
 var app = new Vue({
   mixins: [require('spark')]
 });
+document.createElement("picture");
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({ html: true });
   //$('[data-toggle="popover"]').popover();
-  $('.slick').slick({
+  $('.slick1').slick({
     slidesToShow: 1,
     slidesToScroll: 1,
     prevArrow: '<div class="slick-prev"><i class="fa fa-angle-left" aria-hidden="true"></i></div>',
     nextArrow: '<div class="slick-next"><i class="fa fa-angle-right" aria-hidden="true"></i></div>',
     infinite: false
+  });
+  function slickify() {
+    if ($('.slick2.slick-initialized').length) {
+      $('.slick2').slick('unslick');
+    }
+    $('.slick2').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      prevArrow: '<div class="slick-prev"><i class="fa fa-angle-left" aria-hidden="true"></i></div>',
+      nextArrow: '<div class="slick-next"><i class="fa fa-angle-right" aria-hidden="true"></i></div>',
+      infinite: false,
+      responsive: [{
+        breakpoint: 767,
+        settings: 'unslick'
+      }]
+    });
+  }
+  slickify();
+  $(window).resize(function () {
+    var $windowWidth = $(window).width();
+    if ($windowWidth > 767) {
+      slickify();
+    }
   });
   $('.menu_slider').slick({
     slidesToShow: 1,
