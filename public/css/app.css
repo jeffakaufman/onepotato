@@ -7670,17 +7670,16 @@ h3.slogan {
       font-family: 'biorhymelight';
       line-height: 1.2em;
       font-size: 21px;
-      top: 4%;
-      left: 2%;
-      position: absolute; }
+      top: 0;
+      left: 3%;
+      position: absolute;
+      padding-top: 10px; }
       @media (min-width: 480px) {
         .slick .text.inline {
           font-size: 25px; } }
       @media (min-width: 600px) {
         .slick .text.inline {
-          font-size: 32px;
-          top: 5%;
-          left: 3%; } }
+          font-size: 32px; } }
       @media (min-width: 768px) {
         .slick .text.inline {
           font-size: 35px;
