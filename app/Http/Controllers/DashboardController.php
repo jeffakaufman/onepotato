@@ -209,17 +209,25 @@ Get subscriber information.
 *************/        
     	$revenue = DB::table('subinvoices')
             ->select(DB::raw('yearweek(charge_date) as week,count(user_id) as numSubs,avg(charge_amount)/100 as amountToCharge,avg(charge_actual)/100 as amountCharged,sum(invoiceitem_charges)/100 as chargesDebits'))
-            ->where('invoice_status','<>','does_not_ship')
+            ->whereNotIn('invoice_status',['does_not_ship','charged_not_shipped'])
+            ->whereNotNull('user_id')
+            ->groupBy('week')
+            ->get();         
+    	
+    	$revenueTotal = DB::table('subinvoices')
+            ->select(DB::raw('yearweek(charge_date) as week,count(user_id) as numSubs,sum(charge_amount)/100 as amountToCharge,sum(charge_actual)/100 as amountCharged,sum(invoiceitem_charges)/100 as chargesDebits'))
+            ->whereNotIn('invoice_status',['does_not_ship','charged_not_shipped'])
             ->whereNotNull('user_id')
             ->groupBy('week')
             ->get();    
-
+            
     	return view('admin.dashboard')
     			->with([
     				'weeklySummaries' => $weeklySummaries,
     				'subs' => $subs,
     				'subReport' => $subReport,
     				'revenue' => $revenue,
+    				'revenueTotal' => $revenueTotal,
                 ]);
 	
     
@@ -541,14 +549,27 @@ Get subscriber information.
         $thisTuesday = date('Y-m-d',strtotime($lastTuesday . '+7 days'));
         $nextTuesday = date('Y-m-d',strtotime($thisTuesday . '+7 days'));
 
+    	$meals = DB::table('menus_users')
+        	->select('menu_title', DB::raw('count(*) as count'))
+            ->join('menus', 'menus.id', '=', 'menus_users.menus_id')
+
+            ->where('delivery_date',$thisTuesday)
+            ->groupBy('menu_title')
+            ->get();
+            
+            
+
 
         $reportsBuilder = new App\ReportsBuilder();
         $reportData = $reportsBuilder->GetWeeklyKitchenReport(new \DateTime($thisTuesday), new \DateTime($thisTuesday));
+        $menuReport = $reportsBuilder->GetWeeklyMenuReport(new \DateTime($thisTuesday), new \DateTime($thisTuesday));
+
 
     	return view('admin.reports')
     			->with([
     				'thisTuesday' => date('F d', strtotime($thisTuesday)),
     				'reportData' => $reportData,
+    				'menuReport' => $menuReport,
                 ]);
 	
     

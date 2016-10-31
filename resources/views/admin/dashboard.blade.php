@@ -17,15 +17,22 @@
 					<div class="panel-heading"><strong></strong></div>
 					<div class="panel-body">
 							<div class="row" >
-								<div  class="col-md-9 col-md-offset-1">
+								<div  class="col-md-6">
+									<h3><center>Average Revenue Per User/Week</center></h3>
 									<canvas id="revenue"></canvas>
+								</div>
+								<div  class="col-md-6">
+									<h3><center>Total Revenue/Week</center></h3>
+									<canvas id="revenueTotal"></canvas>
 								</div>
 							</div>
 							<div class="row" >
 								<div  class="col-md-6">
+									<h3><center>Weekly Subscriber Summary</center></h3>
 									<canvas id="subcriberSummary"></canvas>
 								</div>
 								<div  class="col-md-6">
+									<h3><center>Subscriber Status</center></h3>
 									<canvas id="subBreakdown"></canvas>
 								</div>
 							</div>
@@ -132,6 +139,47 @@ var myChart = new Chart(ctx, {
         },{
             label: 'Actual',
             data: [@foreach ($revenue as $week) {{ money_format ('%i',$week->amountCharged)}}, @endforeach],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+    		xAxes: [{
+                gridLines: {
+                    display:false
+                }
+            }],
+    		yAxes: [{
+                gridLines: {
+                    display:false
+                },
+                ticks: {
+            		beginAtZero: true,
+            		callback: function(value, index, values) {
+                		return '$' + value; 
+                	}
+                }       
+            }]
+    	},
+    }
+});
+
+var ctx = document.getElementById("revenueTotal");
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [ @foreach ($revenueTotal as $week) "{{date('M d',strtotime('Y'.substr($week->week,0,4).'W'.substr($week->week,4).'+2 days'))}}", @endforeach ],
+        datasets: [{
+            label: 'Chargeable',
+            data: [@foreach ($revenueTotal as $week) {{ money_format ('%i',$week->amountToCharge) }}, @endforeach],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1
+        },{
+            label: 'Actual',
+            data: [@foreach ($revenueTotal as $week) {{ money_format ('%i',$week->amountCharged)}}, @endforeach],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
