@@ -424,6 +424,11 @@ body.account .caption {
 		display: inline-block;
 	}
 }
+@media (max-width: 767px) {
+	.navbar-fixed-top {
+		position: absolute !important;
+	}
+}
 body.with-navbar {
     padding-top: 60px;
     
