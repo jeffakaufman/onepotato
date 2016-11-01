@@ -18,7 +18,7 @@
 					<div class="panel-body">
 							<div class="row" >
 								<div  class="col-md-6">
-									<h3><center>Average Revenue Per User/Week</center></h3>
+									<h3><center>Average Revenue Per Subscriber/Week</center></h3>
 									<canvas id="revenue"></canvas>
 								</div>
 								<div  class="col-md-6">
