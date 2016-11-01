@@ -181,6 +181,8 @@ function checkLuhn(input) {
 <div id="payment">
     <div class="container">
 
+        @include('errors.errors')
+
        	<form class="form-horizontal" role="form" id="payment-form" method="post"  action="{{ url('/register/payment') }}">
 							 {{ csrf_field() }}
 							<input type="hidden" name="start_date" value="{{ $start_date }}" />
