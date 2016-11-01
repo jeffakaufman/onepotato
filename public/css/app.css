@@ -7590,7 +7590,7 @@ body.with-navbar {
     #hero #hero-text h2 {
       font-family: 'santelia_scriptregular';
       color: #e91e25;
-      font-size: 24px;
+      font-size: 32px;
       text-transform: none;
       line-height: 1.3em; }
       @media (max-width: 767px) and (orientation: portrait) {
@@ -7617,19 +7617,22 @@ body.with-navbar {
         font-family: 'work_sansregular';
         line-height: 1.3em;
         letter-spacing: 0;
-        margin: 10px 0 20px 0; }
+        margin: 10px auto 20px auto; }
         @media (max-width: 767px) and (orientation: portrait) {
           #hero #hero-text h2 .subtitle {
             font-size: 16px; } }
         @media (min-width: 768px) {
           #hero #hero-text h2 .subtitle {
-            font-size: 16px; } }
+            font-size: 16px;
+            width: 90%; } }
         @media (min-width: 992px) {
           #hero #hero-text h2 .subtitle {
-            font-size: 18px; } }
+            font-size: 18px;
+            width: 75%; } }
         @media (min-width: 1200px) {
           #hero #hero-text h2 .subtitle {
-            font-size: 21px; } }
+            font-size: 21px;
+            width: 60%; } }
     #hero #hero-text .btn {
       text-transform: none;
       font-size: 21px;

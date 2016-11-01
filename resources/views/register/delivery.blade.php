@@ -84,7 +84,9 @@ $(function() {
                     </div>
                 </div>
             </div>
-        </div>		
+        </div>
+        @include('errors.errors')
+
 <form class="form-horizontal" role="form" method="post"  action="{{ url('/register/delivery') }}">
 					 {{ csrf_field() }}
 

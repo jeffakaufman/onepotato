@@ -417,14 +417,51 @@ class NewUserController extends Controller
 				return redirect('/account/' . $request->user_id); 
 				
 			}
-		
+
+
+        $request->session()->put('delivery_loc', $request->delivery_loc);
+        $request->session()->put('firstname', $request->firstname);
+        $request->session()->put('lastname', $request->lastname);
+        $request->session()->put('address', $request->address);
+        $request->session()->put('address2', $request->address_line_2);
+        $request->session()->put('state', $request->state);
+        $request->session()->put('zip', $request->zip);
+        $request->session()->put('city', $request->city);
+        $request->session()->put('phone', $request->phone);
+        $request->session()->put('instructions', $request->delivery_instructions);
+
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'required|max:200',
+            'lastname' => 'required|max:200',
+            'address' => 'required|max:200',
+            'city' => 'required|max:100',
+            'state' => 'required|max:10',
+            'zip' => 'required|digits:5',
+            'phone' => 'required|max:100',
+
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('/register/delivery')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+
 		//store first and last name in User field
 		$user = User::find($request->user_id);
 		$userSubscription = UserSubscription::where('user_id',$request->user_id)->orderBy('id','desc')->first();
 		$product = Product::where('id',$userSubscription->product_id)->first();
 //var_dump($product);
 		//store shipping address
-		$shippingAddress = new Shipping_address;
+
+        $shippingAddress = Shipping_address::where('user_id', $request->user_id)->first();
+        if($shippingAddress) {
+            Shipping_address::where('user_id', $request->user_id)->where('id', '<>', $shippingAddress->id)->delete();
+        } else {
+            $shippingAddress = new Shipping_address;
+        }
+
 		$shippingAddress->shipping_first_name = $request->firstname;
 		$shippingAddress->shipping_last_name = $request->lastname;
 		$user->first_name = $request->firstname;
@@ -457,17 +494,7 @@ class NewUserController extends Controller
 		//take them to the next step!
 
 		$request->session()->put('step4', true);
-		$request->session()->put('delivery_loc', $request->delivery_loc);
-		$request->session()->put('firstname', $request->firstname);
-		$request->session()->put('lastname', $request->lastname);
-		$request->session()->put('address', $request->address);
-		$request->session()->put('address2', $request->address_line_2);
-		$request->session()->put('state', $request->state);
-		$request->session()->put('zip', $request->zip);
-		$request->session()->put('city', $request->city);
-		$request->session()->put('phone', $request->phone);
-		$request->session()->put('instructions', $request->delivery_instructions);
-		
+
 		return view('register.payment')->
 			with([
 				'user'=>$user,
@@ -511,17 +538,52 @@ class NewUserController extends Controller
 				return redirect('/account/' . $request->user_id); 
 				
 			}
-		
+
+//        $user->billing_address = $request->address;
+//        $user->billing_address_line_2 = $request->address_2;
+//        $user->billing_city =  $request->city;
+//        $user->billing_state =  $request->state;
+//        $user->billing_zip =  $request->zip;
+//        $user->phone =  $request->phone;
+
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'required|max:200',
+            'lastname' => 'required|max:200',
+            'address' => 'required|max:200',
+            'city' => 'required|max:100',
+            'state' => 'required|max:10',
+            'zip' => 'required|digits:5',
+            'phone' => 'required|max:100',
+
+        ]);
+
+        $user = User::find($request->user_id);
+        $userSubscription = UserSubscription::GetByUserId($request->user_id);
+        $productID = $userSubscription->product_id;
+        $userProduct = Product::find($productID);
+
+
+        if ($validator->fails()) {
+
+            return view('register.payment')->
+            with([
+                'user'=>$user,
+                'start_date'=>$request->start_date,
+                'product'=>$userProduct,
+                'prefilledCoupon' => $request->session()->get('existingUser') ? @$this->_existingCoupons[$userProduct->sku] : '',
+                'stripeError' => '',
+            ])
+                ->withErrors($validator);
+
+        }
+
+
 			//engage STRIPE
 			//check Stripe first, before anything happens, so user can be returned to the right place
 				
 			\Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 			
 		
-			$user = User::find($request->user_id);
-			$userSubscription = UserSubscription::where('user_id',$request->user_id)->first();
-			$productID = $userSubscription->product_id;
-			$userProduct = Product::where('id',$productID)->first();
 
 			//figure out date logic for trial period - 
 			// - mist be UNIX timestamp
