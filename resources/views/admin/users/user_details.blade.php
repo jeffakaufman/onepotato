@@ -267,7 +267,7 @@
 							?>
 							@if ($hold_status == 'held') 
 							<td class="skip-status bg-danger text-danger text-center">SKIPPED <br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>
-							elseif ($hold_status == 'hold') 
+							@elseif ($hold_status == 'hold') 
 							<td class="skip-status bg-warning text-warning text-center">SKIP<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>
 							@elseif ($hold_status == 'released') 
 							<td class="skip-status bg-success text-success text-center">RELEASED<br/><span style="font-size:x-small">set {{ date('n/j',strtotime($invoice->skipStatus->updated_at)) }}</span></td>

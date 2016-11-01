@@ -434,9 +434,11 @@ Get subscriber information.
 				$oldDeliveries->weekMenu[$i%3] = $oldMenu->menu_title;
 			}
 			if ($i%3 == 2) {
-				$deliveryHistory[$invoiceIndex]->menus = $oldDeliveries->weekMenu;
+				if (isset($deliveryHistory[$invoiceIndex])) {
+					$deliveryHistory[$invoiceIndex]->menus = $oldDeliveries->weekMenu;
+					$deliveryHistory[$invoiceIndex]->skipStatus = isset($oldDeliveries->skipStatus) ? $oldDeliveries->skipStatus : "";
+				}
 				$hold_status = isset($weekMenus->skipStatus->hold_status) ? $weekMenus->skipStatus->hold_status : "";
-				$deliveryHistory[$invoiceIndex]->skipStatus = isset($oldDeliveries->skipStatus) ? $oldDeliveries->skipStatus : "";
 				array_push($invoiceMenus,$oldDeliveries);
 				$oldDeliveries = new stdClass();
 				$invoiceIndex++;
