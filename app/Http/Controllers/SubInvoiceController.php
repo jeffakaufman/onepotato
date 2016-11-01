@@ -595,7 +595,8 @@ class SubinvoiceController extends Controller
 		$order = Order::where('order_id',$order_id)->first();
 		
 		//convert the date
-		$ship_date = str_replace('/', '-', $shipnotice->ShipDate);
+		//$ship_date = str_replace('/', '-', $shipnotice->ShipDate);
+		$ship_date = $shipnotice->ShipDate;
 		$ship_date_format = date('Y-m-d', strtotime($ship_date));
 		
 		$order->ship_date = $ship_date_format;
@@ -644,7 +645,7 @@ class SubinvoiceController extends Controller
 
 		  <LabelCreateDate>12/8/2011 12:56 PM</LabelCreateDate>
 
-		  <ShipDate>12/8/2011</ShipDate>
+		  <ShipDate>11/1/2016</ShipDate>
 
 		  <Carrier>OnTrac</Carrier>
 
