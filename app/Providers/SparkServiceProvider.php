@@ -43,6 +43,8 @@ class SparkServiceProvider extends ServiceProvider
     protected $admins = [
         'jeffkaufman@kaufmaninternational.com',
         'mattkirkpatrick@gmail.com',
+        'agedgouda@gmail.com',
+        'cj@chuckjoe.co',
         'azagarov@gmail.com',
         'jennamstein@gmail.com',
         'beverlytang@gmail.com'
